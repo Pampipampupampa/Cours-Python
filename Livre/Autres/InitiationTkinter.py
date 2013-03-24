@@ -33,20 +33,20 @@ fen1.mainloop() # permet d'initier la boucle du réceptionneur d'évènements (p
 def drawline():
     "trace une ligne dans le canevas can1"
     global x1, y1, x2, y2, coul
-    can1.create_oval(x1,y1,x2,y2,width=2,fill=coul)
+    can1.create_line(x1,y1,x2,y2,width=2,fill=coul)
     y2, y1 = y2 - 5, y1 - 5 # modification des coordonnées pour la ligne suivante
 
 def changecolor():
     "changement aléatoire de la couleur"
     global coul
     pal = ["purple", "cyan", "maroon", "green", "red", "blue", "orange", "yellow"]
-    c = randrange(1,3) # génère un nombre aléatoire entre 0 et 7
+    c = randrange(1,7) # génère un nombre aléatoire entre 0 et 7
     coul = pal[c] # assigne la couleur correspondante au numéro tiré aléatoirement
 
 def drawline2():
     "trace une croix au centre de la zone de tracage"
-    hx1, hy1, hx2, hy2, coul = 0, 325, 400, 325, "red"
-    vx1, vy1, vx2, vy2, coul = 200, 525, 200, 125, "red"
+    hx1, hy1, hx2, hy2= 0, 325, 400, 325, 
+    vx1, vy1, vx2, vy2= 200, 525, 200, 125
     can1.create_line(hx1,hy1,hx2,hy2,width=2,fill=coul)
     can1.create_line(vx1,vy1,vx2,vy2,width=2,fill=coul)
     
@@ -58,8 +58,7 @@ from random import randrange # importe la fonction aléatoire
 
 # utiliation de manière globale les variables ci dessous
 x1, y1, x2, y2 = 0, 650, 400, 650 # coordonnées ligne
-coul = "dark green" # couleur ligne
-
+coul = "grey"
 # création du widget maître
 fen1 = Tk()
 # création des widgets esclaves
