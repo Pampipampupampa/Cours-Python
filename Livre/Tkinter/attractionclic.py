@@ -3,7 +3,7 @@
 
 
 
-"PROGRAMME AUTOUR DE L'ATTRACTION TERRESTRE"
+"PROGRAMME AUTOUR DE L'ATTRACTION TERRESTRE AVEC CLIC"
 
 
 ################################################################
@@ -25,7 +25,7 @@ def avance(n, xcoord, ycoord):
 	"Procédure générale"
 	global x, y
 	x[n], y[n] = x[n] + xcoord, y[n] + ycoord
-	can1.coords(astre[n], x[n], y[n], x[n]+30, y[n]+30)
+	can1.coords(astre[n], x[n], y[n], x[n]+xx, y[n]+yy)
 	"distance entre le 2 astres"
 	distanceastres = mesuredistance(x[0], x[1], y[0], y[1])
 	"distance en km entre les 2 astres"
@@ -35,6 +35,25 @@ def avance(n, xcoord, ycoord):
 	distance.configure(text = 'Distance de ' + str(distancereele) + ' Km')
 	forcegrav.configure(text = 'Force de ' + str(force) + ' KN')
 	decalage = distanceastres / 10
+
+
+
+def avanceclic(event):
+	"Procédure générale"
+	global x, y
+	x[masseclic], y[masseclic] = event.x-xx/2, event.y-yy/2
+	"on décale l'astre afin de le faire apparaître au centre du clic et non en décalage"
+	can1.coords(astre[masseclic], x[masseclic], y[masseclic], x[masseclic]+xx, y[masseclic]+yy)
+	"distance entre les 2 astres : on déduit de chaques astres la moitié  afin de corriger l'écart dû au clic (clic prend des coordonnées point haut à gauche"
+	distanceastres = mesuredistance(x[0], x[1], y[0], y[1])
+	"distance en km entre les 2 astres"
+	distancereele = distanceastres * 1e9 # assimile 1 pixel à 1 000 000 de km
+	"force gravittionelle entre les 2 astres"
+	force =  forceG(m1, m2, distancereele)
+	distance.configure(text = 'Distance de ' + str(distancereele) + ' Km')
+	forcegrav.configure(text = 'Force de ' + str(force) + ' KN')
+	decalage = distanceastres / 10
+
 
 
 def forceG(m1, m2, distanceastres):
@@ -73,6 +92,15 @@ def deplacement_haut2():
 	avance(1, 0, -decalage)
 
 
+def selection1():
+	global masseclic
+	masseclic = 0
+
+def selection2():
+	global masseclic
+	masseclic = 1
+	
+	
 
 
 ######################################################
@@ -95,6 +123,7 @@ m2 = 6e24
 
 "décalage de base"
 decalage = 5
+masseclic = 0
 
 "Liste permettant de mémoriser les indices du dessin"
 astre = [0]*2 # liste servant à mémoriser les références des dessins
@@ -144,6 +173,13 @@ Button(fra2, fg = 'green', command = deplacement_gauche2, text = '<-').pack(side
 
 #############################################
 
+"permet de bouger les 2 astres par sélection par un boutton puis nouvelle position par clic"
+can1.bind("<Button-1>", avanceclic)
+
+Button(fen1, fg = 'black', command = selection1, text = 'Astre bleu').grid(row = 0, column = 1)
+Button(fen1, fg = 'black', command = selection2, text = 'Astre vert').grid(row = 0, column = 3)
+
+#############################################
 Button(fen1, command = fen1.quit, text = 'Quitter').grid(row = 5, column = 3)
 
 fen1.mainloop()
