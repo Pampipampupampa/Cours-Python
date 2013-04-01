@@ -92,7 +92,7 @@ m1 = 6e24
 m2 = 6e24
 
 "décalage de base"
-decalage = 20
+decalage = 5
 
 "Liste permettant de mémoriser les indices du dessin"
 astre = [0]*2 # liste servant à mémoriser les références des dessins
