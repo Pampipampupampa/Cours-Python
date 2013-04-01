@@ -39,6 +39,8 @@ def avance(n, xcoord, ycoord):
 
 def forceG(m1, m2, distanceastres):
 	"force de gravitation s'exerçant entre m1 et m2 pour une distance di"
+	if mesuredistance == 0:
+		return 0
 	return int((m1*m2*6.67e-11/distanceastres**2)/1000)
 
 def mesuredistance(x1, x2, y1, y2):
