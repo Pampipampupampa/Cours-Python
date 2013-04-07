@@ -16,7 +16,7 @@ from tkinter import *
 
 
 def evaluer(event):
-	"Permet de modifier la variable chaine afin d'ajouter le réultat du calcul"
+	"Permet de modifier la variable chaine afin d'ajouter le résultat du calcul"
 	chaine.configure(text = "Résultat = " + str(eval(entree.get())))
 
 
