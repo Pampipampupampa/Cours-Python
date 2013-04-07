@@ -58,7 +58,7 @@ def avanceclic(event):
 
 def forceG(m1, m2, distanceastres):
 	"force de gravitation s'exerçant entre m1 et m2 pour une distance di"
-	if distanceastres == 0:
+	if distanceastres == 0: # evite une division par 0 qui se solde par une erreur
 		return 'infini'
 	return int((m1*m2*6.67e-11/distanceastres**2)/1000)
 
@@ -123,7 +123,7 @@ m2 = 6e24
 
 "décalage de base"
 decalage = 5
-masseclic = 0
+masseclic = 0 # permet de sélectionner une ou l'autre des masses
 
 "Liste permettant de mémoriser les indices du dessin"
 astre = [0]*2 # liste servant à mémoriser les références des dessins
