@@ -59,7 +59,7 @@ fen.title('Passage pour piétons')
 
 
 "Passage piétons"
-can1 = Canvas(fen, width = 190, height = 600, bg = '#735B5B')
+can1 = Canvas(fen, width = 190, height = 600, bg = '250, 250, 250')
 can1.grid(row = 1, column = 2, padx = 0, pady = 0)
 
 # Création du pssage pour piétons
