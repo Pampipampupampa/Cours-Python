@@ -62,3 +62,5 @@ fichier.writelines(lignes)              # réenregistrement du fichier
 fichier.close()
 
 
+
+
