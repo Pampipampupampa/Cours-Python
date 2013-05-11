@@ -1,0 +1,50 @@
+
+Fichier suivant ma démarchede résolution du problème lié au lecteur flash sous linux mint 64 bits (Nadia)
+
+
+###########################
+message d'erreur : "bash: /usr/bin/flashplayer: No such file or directory""
+
+###########################
+ACTIONS
+
+//REMOVE
+mint flash plugin 11 
+mint flash plugin
+
+//ADD
+adobe-flashplugin
+adobe-flash-properties-gtk
+
+//REMOVE
+adobe-flashplugin
+adobe-flash-properties-gtk
+
+//ADD
+flashplugin-installer
+flashplugin-nonfree-extrasound
+librairies allant avec (le gestionnaire demande de les installer)
+
+//REMOVE
+flashplugin-installer
+flashplugin-nonfree-extrasound
+
+//ADD
+adobe-flashplugin
+adobe-flash-properties-gtk
+
+###########################
+modification du message d'erreur : "flashplayer: error while loading shared libraries: libX11.so.6: cannot open shared object file: No such file or directory"
+
+Il manque donc des librairies maintenant mais l'ajout de la verion flash non free à résolu le premier problème !!!
+
+###########################
+ACTIONS
+
+//ADD
+Ajout des librairies 32 bits pour faire fonctionner correctement le lecteur sur un système 64 bits
+"apt-get install ia32-libs"
+
+###########################
+
+Problème résolu !!!!!!!!!!!!!!!!!

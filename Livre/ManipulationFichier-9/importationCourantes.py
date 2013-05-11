@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
-
+"ENSEMBLE DU COURS SUR LA MANIPULATION DE FICHIER (COURS 9)"
+"COURS 9"
 
 ################################################################
 ############# Importation fonction et modules : ################
@@ -9,7 +10,7 @@
 
 from os import chdir, getcwd
 
-# import os = importation de toutes les fonctions du module (risque de doublons de variables et donc d'interférence : méthode à utilisé le moins souvent possible)
+# import os = importation de toutes les fonctions du module (risque de doublons de variables et donc d'interférence : méthode a utilisé le moins souvent possible)
 # On préfèrera utilise la forme ci-dessus (from "module" import "fonction1, fonction2")
 
 # Module spécialisé dans l'enregistrement de valeurs en conservant leur type
@@ -39,7 +40,7 @@ def filtre(source, destination):
 	fs = open(source, 'r')
 	fd = open(destination,'w')
 	while 1:
-		txt = fs.readline(50)
+		txt = fs.readline()
 		if txt == "":
 			break
 		if txt[0] != '#':
@@ -78,7 +79,7 @@ print(rep_courant)
 
 
 "Ecriture séquentielle dans un fichier"
-# La fonction "open" permet l'écriture dans un fichier et le mode "a" définit comment (a = append = ajout à la fin, w = write = reécriture et donc efface avant d'écrire, r = read = en lecture)
+# La fonction "open" permet l'écriture dans un fichier et le mode "a" définit comment (<a> = append = ajout à la fin, <w> = write = reécriture et donc efface avant d'écrire, <r> = read = en lecture, <r+> = lecture et écriture)
 obFichier = open('monFichier','w') # Variable objet-fichier
 obFichier.write('Bonjour mon enfant !!!') # On ajoute du contenu dans le fichier créé (seulement des chaînes de caractères peuvent être écrites : la fonction str() permettra donc de formater en chaîne de caractères un nombre par exemple avant de l'écrire)
 obFichier.write('Comment ça va ??')

@@ -93,7 +93,6 @@ print(tc)
 ch=input("choisir 3 nombres séparés par une virgule")
 liste = list(eval(ch))
 print(liste)
-
     
 os.system("pause")
 
