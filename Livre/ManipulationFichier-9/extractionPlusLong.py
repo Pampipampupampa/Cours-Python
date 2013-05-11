@@ -3,6 +3,7 @@
 
 
 "PROGRAMME RECHERCHANT LA PHRASE LA PLUS LONGUE ET L'AFFICHE"
+"EXERCICE 9.2"
 
 ################################################################
 ############# Importation fonction et modules : ################

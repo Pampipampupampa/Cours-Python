@@ -4,6 +4,8 @@
 
 "PROGRAMME PERMETTANT DE MODIFIER UN FICHIER EN AJOUTANT DES TRIPLES ESPACES"
 "PROGRAMME DU LIVRE AJOUTANT CERTAINES METHODES DE <OPEN>"
+"EXERCICE 9.4"
+
 ################################################################
 ############# Importation fonction et modules : ################
 ################################################################

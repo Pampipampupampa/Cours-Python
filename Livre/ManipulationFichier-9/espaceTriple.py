@@ -3,6 +3,7 @@
 
 
 "PROGRAMME PERMETTANT DE MODIFIER UN FICHIER EN AJOUTANT DES TRIPLE ESPACES"
+"EXERCICE 9.4"
 
 ################################################################
 ############# Importation fonction et modules : ################

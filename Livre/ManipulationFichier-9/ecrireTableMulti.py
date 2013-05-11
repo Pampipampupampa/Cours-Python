@@ -3,6 +3,7 @@
 
 
 "PROGRAMME GÉNÉRANT UN FICHIER AVEC LES TABLES DE MULTIPLICATION DE 2 À 30 (20 POUR CHAQUE)"
+"EXERCICE 9.3"
 
 ################################################################
 ############# Importation fonction et modules : ################
