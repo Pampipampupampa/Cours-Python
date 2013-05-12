@@ -62,7 +62,3 @@ while n < len(lignes):
 fichier.seek(0)                         # retour au début du fichier
 fichier.writelines(lignes)              # réenregistrement du fichier
 fichier.close()
-
-
-
-
