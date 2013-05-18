@@ -2,7 +2,7 @@
 # -*- coding:Utf8 -*-
 
 
-"PROGRAMME CRÉANT UN FICHIER EN ALTERNANT UNE LIGNE DE L'UN PUIS DE L'AUTRE"
+"PROGRAMME CRÉANT UN FICHIER CONTENANT DES INFOS SUR LES MEMBRES D'UN CLUB"
 "EXERCICE 9.7"
 
 ################################################################
@@ -44,7 +44,7 @@ def ajout():
 def enregistrement(listeAjout):
 	i = 0
 	while i < len(listeAjout):
-		opFichier.write(listeAjout[i] + ' ## ')
+		opFichier.write(listeAjout[i] + '#')
 		i += 1
 	opFichier.write('\n') # Permet de séparer par un saut de ligne les différents membres
 
