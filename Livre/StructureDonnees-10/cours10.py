@@ -39,3 +39,29 @@ print(nom[0:2], nom[3:6])
 n = 'abc' + 'def' # Concaténation
 m = 'zut ! ' * 4 # Répétition
 print(n, m)
+
+
+
+# Utilisation d'une boucle while pour parcourir une chaine à proscrire
+nom = "Nadia Bois"
+index = 0
+while index < len(nom):
+	print(nom[index] + '**', end = ' ')
+	index += 1
+print(end = '\n') # Seulement pour revenir à la ligne avant d'éffectuer le code suivant
+
+
+
+# On préfèrera la forme suivante moins lourde autant en ligne qu'en rendement
+nom = "Nadia Bois"
+for car in nom:
+	print(car + '&', end = ' ')
+
+
+
+#Evaluation des différentes erreurs possibles sur le slicing
+mot = "Je suis un gros chat et donc j'aime les canards ?"
+print(mot[-22:-112]) # Aucunes erreurs mais n'affiche rien
+print(mot[22:111]) # Aucunes erreurs mais n'affiche rien
+print([mot['e']]) # TypeError: string indices must be integers
+print(mot[1111]) # IndexError: string index out of range
