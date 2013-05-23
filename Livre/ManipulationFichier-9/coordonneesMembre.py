@@ -3,7 +3,7 @@
 
 
 "PROGRAMME CRÉANT UN FICHIER CONTENANT DES INFOS SUR LES MEMBRES D'UN CLUB"
-"EXERCICE 9.7"
+"EXERCICE 9.8"
 
 ################################################################
 ############# Importation fonction et modules : ################

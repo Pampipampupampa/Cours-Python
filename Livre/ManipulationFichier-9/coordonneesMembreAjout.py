@@ -3,7 +3,7 @@
 
 
 "PROGRAMME AJOUTANT DES INFORMATIONS À UN FICHIER CONTENANT DES INFOS SUR LES MEMBRES D'UN CLUB OU UN AUTRE"
-"EXERCICE 9.7"
+"EXERCICE 9.9"
 
 ################################################################
 ############# Importation fonction et modules : ################
