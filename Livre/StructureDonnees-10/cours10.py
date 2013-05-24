@@ -56,7 +56,30 @@ print(end = '\n') # Seulement pour revenir à la ligne avant d'éffectuer le cod
 nom = "Nadia Bois"
 for car in nom:
 	print(car + '&', end = ' ')
+print(end = '\n') # Seulement pour revenir à la ligne avant d'éffectuer le code suivant
 
+
+
+# Autre avantage : il a bon goût de conserver le typage des éléments
+divers = ['lézard', 3, 3.22, [5, 'Jean']]
+for element in divers:
+	print(element, type(element))
+
+
+
+# Utilisation de l'instruction <in> seule (sans <for>)
+car = "e"
+voyelles = "aeiouyAEIOUYàâÀÂéèêëÊËÉÈùÙîïÎÏ"
+if car in voyelles:
+	print(car, " est une voyelle.")
+
+
+
+# Utilisation de l'instruction <in> pour les listes
+n = 5
+liste = [1, 2, 3, 4, 5, 6]
+if n in liste:
+	print(n, " est dans la liste")
 
 
 #Evaluation des différentes erreurs possibles sur le slicing
