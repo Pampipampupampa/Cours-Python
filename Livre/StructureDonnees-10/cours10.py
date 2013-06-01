@@ -88,3 +88,4 @@ print(mot[-22:-112]) # Aucunes erreurs mais n'affiche rien
 print(mot[22:111]) # Aucunes erreurs mais n'affiche rien
 print([mot['e']]) # TypeError: string indices must be integers
 print(mot[1111]) # IndexError: string index out of range
+
