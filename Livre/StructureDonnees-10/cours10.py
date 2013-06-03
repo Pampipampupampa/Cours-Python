@@ -2,26 +2,30 @@
 # -*- coding:Utf8 -*-
 
 
-"ENSEMBLE DE COURS SUR LE CHAPITRE : APPROFONDIR LES STRUCTURES DE DONNEES (COURS 10)"
+"""ENSEMBLE DE COURS SUR LE CHAPITRE : APPROFONDIR LES STRUCTURES DE DONNEES"""
 "COURS 10"
 
-################################################################
-############# Importation fonction et modules : ################
-################################################################
+###########################################
+#### Importation fonction et modules : ####
+###########################################
+
+
+
+from os import chdir
+
+
+
+###############################################################################
+#### Gestion d'évènements : définition de différentes fonctions utiliées : ####
+###############################################################################
 
 
 
 
-###################################################################################################
-############# Gestion d'évènements : définition de différentes fonctions utiliées  : ##############
-###################################################################################################
+###############################
+#### Programme principal : ####
+###############################
 
-
-
-
-######################################################
-############## Programme principal : #################
-######################################################
 
 
 
@@ -80,6 +84,53 @@ n = 5
 liste = [1, 2, 3, 4, 5, 6]
 if n in liste:
 	print(n, " est dans la liste")
+
+
+
+# Les chaînes de sont pas modifiables mais on peut les composer entres elles
+salut = "Bonjour les enfants"
+salut = 'b' + salut[1:] # On modifie la première lettre de la chaine en créant une autre chaine
+print(salut)
+
+
+
+# On peut trier avec certaines limites les chaines
+# Attention il ne faut pas mélanger maj avec minuscule ou accentuation sinon 
+# À cause de la norme ASCII qui attribut un nombre à chaque caractère le trie
+# sera éronné
+while  True:
+	mot = input("Entrez un truc : ")
+	if mot == "":
+		break
+	if mot < "limonade":
+		place = "précède"
+	elif mot > "limonade":
+		place = "suit"
+	else:
+		place = "se confond avec"
+	print("Le mot " + mot + " " + place + \
+	      " le mot limonade dans l'ordre alphabétique")
+
+
+
+# Séquences d'octects : le type bytes
+chaine = "Amélie et Eugène\n"
+of = open("Sources/text1.txt", 'w')
+of.write(chaine)
+of.close()
+of = open("Sources/text1.txt", 'rb') # Ouverture en mode binaire
+octet = of.read()
+of.close()
+print(type(octet)) # On a bien récupérer une variable <bytes> et non <string>
+print(octet) # On affuche la chaîne en bytes (mélange ASCII, hexadécimal, valeurs numériques)
+for oct in octet: # On affiche l'ensemble des valeurs en octet 
+	print(oct, end = ' ')
+print("en octet " + str(len(octet)) + " en caractères  " + str(len(chaine)))
+
+# On ne peut pas enregistrer une chaine d'octects dans un fichier texte il faut utiliser <wb>
+of = open("Sources/text1.txt", 'awb') # Ouverture en mode binaire
+of.write(octet)
+# Définir une variable de type <bytes> : var = b'chaîne écrite en ASCII'
 
 
 #Evaluation des différentes erreurs possibles sur le slicing
