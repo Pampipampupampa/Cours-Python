@@ -10,13 +10,9 @@
 ###########################################
 
 
-
-
 ###############################################################################
 #### Gestion d'évènements : définition de différentes fonctions utiliées : ####
 ###############################################################################
-
-
 
 def estUnChiffre(car):
 	"""Vérifie chaques caractères d'une chaine et renvoi vrai si c'est un chiffre"""
@@ -24,7 +20,6 @@ def estUnChiffre(car):
 		return 'true'
 	else:
 		return 'false'
-
 
 
 def estUneMaj(car):
@@ -38,7 +33,7 @@ def estUneMaj(car):
 def versListe(car):
 	"""Création d'une liste des mots d'une phrase"""
 	li, mot = [], ""
-	for caractere in car: # Parcourt de la phrase et ajout des mot à la liste  <li>
+	for caractere in car:  # Parcourt de la phrase et ajout des mot à la liste  <li>
 		if caractere == " ":
 			li.append(mot)
 			mot = ""
@@ -48,7 +43,6 @@ def versListe(car):
 	if mot:
 		li.append(mot)
 	return li
-
 
 
 def extractionMotMaj(car):
@@ -66,7 +60,6 @@ def extractionMotMaj(car):
 	return liste
 
 
-
 def compteMaj(car):
 	"""Vérifie chaques caractères d'une chaine et compte les majuscules"""
 	compteur = 0
@@ -75,12 +68,9 @@ def compteMaj(car):
 			compteur += 1
 	return compteur
 
-
-
 ###############################
 #### Programme principal : ####
 ###############################
-
 
 
 # Exercice 10.9
@@ -88,35 +78,31 @@ if __name__ == '__main__':
 	chaine1 = "Bonjour les 3 chats du village, je me nomme Bambi 1er ; roi des 23 forêts sombres"
 	print("La chaine testée est : " + chaine1)
 	for car in chaine1:
-		print(car, estUnChiffre(car), end = " : ")
-
+		print(car, estUnChiffre(car), end=' : ')
 
 
 # Exercice 10.10
 if __name__ == '__main__':
 	print("La chaine testée est : " + chaine1)
 	for car in chaine1:
-		print(car, estUneMaj(car), end = " : ")
-
+		print(car, estUneMaj(car), end=' : ')
 
 
 # Exercice 10.11
 if __name__ == '__main__':
 	chaine2 = "Je suis le grand roi Agamendon"
 	futurListe = versListe(chaine2)
-	for mot in futurListe: # Affiche chaque élément de la liste avec séparation
+	for mot in futurListe:  # Affiche chaque élément de la liste avec séparation
 		print(mot + "--", end=' ')
-	for mot in futurListe[1]: # Affiche chaque élément d'un élément de la liste (ici le 2nd)
+	for mot in futurListe[1]:  # Affiche chaque élément d'un élément de la liste (ici le 2nd)
 		print(mot + "--", end=' ')
-
 
 
 # Exercice 10.12
 if __name__ == '__main__':
 	futurListe = extractionMotMaj("Bonjour les enfants de Dieu Martin Pêcheur Àéris")
-	for mot in futurListe: # Affiche chaque élément de la liste avec séparation
+	for mot in futurListe:  # Affiche chaque élément de la liste avec séparation
 		print(mot + "--", end=' ')
-
 
 
 # Exercice 10.13
