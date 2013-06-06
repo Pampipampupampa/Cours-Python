@@ -3,7 +3,7 @@
 
 
 """ENSEMBLE DE COURS SUR LE CHAPITRE : APPROFONDIR LES STRUCTURES DE DONNEES"""
-"COURS 10"
+"COURS 10 PART 1"
 
 ###########################################
 #### Importation fonction et modules : ####
