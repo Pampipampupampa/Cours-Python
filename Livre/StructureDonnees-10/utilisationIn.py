@@ -3,7 +3,7 @@
 
 
 """PROGRAMMES UTILISANT L'INSTRUCTION IN ET FOR ... IN ..."""
-"EXERCICE 10.9 ET 10.10 ET 10.11 ET 10.12 ET 10.13"
+"EXERCICE 10.9 ET 10.10 ET 10.11 ET 10.12 ET 10.13 ET 10.18 ET 10.19"
 
 ###########################################
 #### Importation fonction et modules : ####
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 		print(car, estUnChiffre(car), end=' : ')
 
 
-# Exercice 10.10
+# Exercice 10.10 (équivalent 10.18)
 if __name__ == '__main__':
 	print("La chaine testée est : " + chaine1)
 	for car in chaine1:
@@ -105,7 +105,7 @@ if __name__ == '__main__':
 		print(mot + "--", end=' ')
 
 
-# Exercice 10.13
+# Exercice 10.13 (équivalent 10.19)
 if __name__ == '__main__':
 	print("Il y a dans ce texte : " + str(compteMaj("Bon je suis dans les \
 	      abysses de ce monde")) + " majuscules")
