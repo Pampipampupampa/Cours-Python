@@ -92,3 +92,38 @@ print(ch.format(coul, temp))
 """Le point sur les listes"""
 """                       """
 
+# Accès un élément d'une liste dans une liste
+liste = ["chocolat", "lettre", ['chat', 'souris', 'autruche'], 3]
+print(liste)
+liste[2][1] = "nouveau"  # On remplace le second élément de la liste dans la liste
+print(liste)
+
+
+# Méthodes principales sur les listes (il est souvent possible en plus de
+# définir l'intervalle d'action)
+
+# Trier la liste
+liste = [2, 7, 1, 88, 3.9, 3.1, 6]
+print(liste.sort())
+
+# Ajouter un élément
+liste.append(44)
+print(liste)
+
+# Inverser l'ordre
+liste.reverse()
+print(liste)
+
+# Retrouver l'index d'un élément
+print(liste.index(7))
+
+# Effacer un élément de la liste (seulement la première itération)
+liste.remove(88)
+print(liste)
+
+
+# Les instructions sur les listes
+del liste[3]  # efface un élément à partir de l'index contrairement à remove
+print(liste)
+del liste[1:4]
+print(liste)

@@ -45,6 +45,7 @@ def minVersMaj(chaine):
 
 
 def traiteLigne(ligne):
+	"""Remplace les espaces par _*_ dans une chaine de caractères"""
 	newLigne = ""
 	a, b = 0, 0
 	while a < len(ligne):
@@ -88,9 +89,9 @@ if __name__ == '__main__':
 #Exercice 10.17
 if __name__ == '__main__':
 	# fichier ouvert devant être encodé en Latin1
-	fichierSource = open("Sources/latin", 'r', encoding="Latin1")
+	fichierSource = open("Sources/latin", 'r', encoding="Latin-1")
 	# Fichier cible encodé en UTF-8
-	fichierCible = open("Sources/versUTF8.txt", 'w', encoding="Utf8")
+	fichierCible = open("Sources/versUTF8.txt", 'w', encoding="Utf-8")
 	while 1:
 		li = fichierSource.readline()
 		if li == "":
