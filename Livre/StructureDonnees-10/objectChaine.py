@@ -3,7 +3,7 @@
 
 
 """PROGRAMMES AUTOUR DES CHAINES DE CARACTÈRES"""
-"EXERCICE 10.31 ET 10.22 ET 10.23 ET 10.24 ET 10.25 ET 10.26"
+"EXERCICE 10.21 ET 10.22 ET 10.23 ET 10.24 ET 10.25 ET 10.26"
 
 ###########################################
 #### Importation fonction et modules : ####
