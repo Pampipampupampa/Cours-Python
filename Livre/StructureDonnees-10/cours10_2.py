@@ -127,3 +127,89 @@ del liste[3]  # efface un élément à partir de l'index contrairement à remove
 print(liste)
 del liste[1:4]
 print(liste)
+
+
+# Slicing avancé
+
+
+# Ajout d'élément dans une liste
+mots = ["jambon", "fromage", "souris", "gruyère", "banane"]
+mots[2:2] = ["miel", "saucisse"]  # Insertion des éléments à la 3ème place
+print(mots)
+
+
+# Suppression d'éléments
+mots[2:5] = []  # supprime les éléments 3, 4 et 5 de la liste
+print(mots)
+
+
+# Remplacement d'éléments
+mots[2:3] = ["ihihih"]  # Remplace le 3ème élément de la liste
+print(mots)
+mots[1:] = ["bambi", "choucroute"]  # Remplace l'ensemble des éléments après le premier
+print(mots)
+
+
+# Fonction range (comporte 3 arguments ; les négatifs sont autorisés)
+print(list(range(10)))  # Convertir en liste une séquence de nombre
+
+
+# Parcours de liste
+prov = ["La", "raison", "du", "plus", "fort", "est", "toujours", "la", "meilleure"]
+for mot in prov:
+	print(mot, end=' ')
+
+
+# Parcours de liste avec range
+for n in range(3, 12, 3):
+	print(n, n+1, n**2)
+
+
+# Parcours de liste avec len et range afin d'obtenir chaques éléments et leurs indices
+fable = ["Maître", "Corbeau", "sur", "un", "arbre", "perché"]
+for n in range(len(fable)):
+	print(n, fable[n])
+
+
+# Particularité des variables dynamiques
+divers = [3, 3.4, "chat", ["souris", 3, "EE"]]
+for elem in divers:
+	print(elem, type(elem))
+
+
+# Opérations sur les listes
+
+
+# L'addition
+liste1 = divers
+liste2 = fable
+listeFinale = liste1 + liste2
+print(listeFinale)
+
+
+# La multiplication
+listeFinale = liste1 * 3
+print(listeFinale)
+
+
+# Test d'appartenance
+v = "chat"
+if v in listeFinale:
+	print("Ben oui !!")
+if "souris" in listeFinale[3]:
+	print("Ben oui ENCORE!!")
+
+
+# L'affectation ne crée pas de copie indépendante mais elle renvoie vers la même liste
+fable = ["Maître", "Corbeau", "sur", "un", "arbre", "perché"]
+# Une simple affectation ne fait que attribuer à la une autre variable la liste en mémoire
+copieFausse = fable
+print(fable)
+copieFausse[1] = "ttttt"
+print(fable)  # On voit bien que les 2 variable sont liées
+# C'est ce qu'on appelle un <ALIAS> !!!
+# Pour faire une vraie copie on peut par exemple utilisé une fonction qui va ajouter à une liste les élément de la première (.append(x))
+
+# Améliorer la syntaxe
+couleurs = [noir, coco, marron, jaune, violet, bleue,
+ 			vert, turquoise, rouge, orange, cacao]
