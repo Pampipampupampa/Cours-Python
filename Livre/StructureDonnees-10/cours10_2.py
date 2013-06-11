@@ -9,6 +9,10 @@
 #### Importation fonction et modules : ####
 ###########################################
 
+
+from random import *
+
+
 ###############################################################################
 #### Gestion d'évènements : définition de différentes fonctions utiliées : ####
 ###############################################################################
@@ -211,5 +215,15 @@ print(fable)  # On voit bien que les 2 variable sont liées
 # Pour faire une vraie copie on peut par exemple utilisé une fonction qui va ajouter à une liste les élément de la première (.append(x))
 
 # Améliorer la syntaxe
-couleurs = [noir, coco, marron, jaune, violet, bleue,
- 			vert, turquoise, rouge, orange, cacao]
+couleurs = ["noir", "coco", "marron", "jaune", "violet", "bleue", "vert", "turquoise", "rouge", "orange", "cacao"]
+
+
+# Nombre aléatoire
+def liste(n):
+	s = [0]*n
+	for i in range(n):
+		s[i] = random()
+	return s
+print(liste(3))
+print(liste(3))
+print(liste(3))
