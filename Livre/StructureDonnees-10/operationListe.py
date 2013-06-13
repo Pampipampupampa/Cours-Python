@@ -3,11 +3,14 @@
 
 
 """PROGRAMME RÉALISANT DES OPÉRATIONS SUR LES LISTES"""
-"EXERCICE 10.36 ET 10.37 ET 10.38 ET 10.39 ET 10.40"
+"EXERCICE 10.36 ET 10.37 ET 10.38 ET 10.39 ET 10.40 ET 10.41 ET 10.42 ET 10.43 ET 10.44"
 
 ###########################################
 #### Importation fonction et modules : ####
 ###########################################
+
+
+from random import random, randrange
 
 
 ###############################################################################
@@ -30,6 +33,46 @@ def alternanceListeCour(list1, list2):
 		i += 2
 		n += 1
 	return list2
+
+
+def listeAleatoire(nombre):
+	s = []
+	for elem in range(nombre):
+		s.append(random())
+	return s
+
+
+def imprimeListe(element):
+	for elem in element:
+		print(elem)
+
+
+def verifAleatoire(test=1000, fraction=4):
+	compteur = [0] * fraction
+	nbrAleatoire = listeAleatoire(test)
+	for nbr in nbrAleatoire:
+			index = int(nbr * fraction)
+			compteur[index] = compteur[index] + 1
+	for compte in compteur:
+		print(compte, end=' ')
+	print()
+
+
+def carteHazardeuse1():
+	carte = [["trèfle", "carreau", "pique", "coeur"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "valet", "dame", "roi", "as"]]
+	val2 = carte[0][randrange(0, len(carte[0]))]
+	val1 = carte[1][randrange(0, len(carte[1]))]
+	print("{} de {}".format(val1, val2))
+
+
+def carteHazardeuse2():
+	carteListe = [["trèfle", "carreau", "pique", "coeur"], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, "valet", "dame", "roi", "as"]]
+	carte = []
+	for couleur in carteListe[0]:
+		for num in carteListe[1]:
+			carte.append("{} de {}".format(num, couleur))
+	carte = carte[randrange(0, len(carte))]
+	return carte
 
 
 ###############################
@@ -75,7 +118,7 @@ if __name__ == '__main__':
 	print(bb, aa)
 
 
-# Exercice 10.40 :
+# Exercice 10.40 : Etablie la liste des nombres premiers
 if __name__ == '__main__':
 	liste = [1] * 1000
 	# On débute la liste à partir de 2
@@ -87,3 +130,20 @@ if __name__ == '__main__':
 	for elem in range(1, 1000):  # On enlève le 0
 		if liste[elem]:
 			print(elem, end=' ')  # Affiche le résultat
+
+
+# Exercice 10.41 et 10.42 : Génère une liste de nombre aléatoire et les affiche en colonne
+if __name__ == '__main__':
+	print(listeAleatoire(3))
+	print(imprimeListe(listeAleatoire(3)))
+
+
+# Exercice 10.43 : Vérification de l'éfficacité de la fonction générant des nombres aléatoires
+if __name__ == '__main__':
+	verifAleatoire(10000, 10)
+
+
+# Exercice 10.44 : Tire une carte au hazard dans un jeu de 52 cartes
+if __name__ == '__main__':
+	carteHazardeuse1()
+	print(carteHazardeuse2())
