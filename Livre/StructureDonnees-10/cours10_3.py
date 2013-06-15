@@ -135,9 +135,34 @@ print(arb, arb[6, 5])
 
 # Prévoir les erreurs pouvant survenir grâce à la méthode get
 print(arb.get((1, 2), "rien"), arb.get((2, 1), "rien"))
-# L'utilisation de la méthode get en plus permet d'éviter d'obtenir une erreur
+# L'utilisation de la méthode get permet d'éviter d'obtenir une erreur
 # si on cherche à avoir une clé qui n'existe pas
 
 
 # Attention les dictionnaires ne sont pas des séquences
 """ print(arb[1:3]) renvoi une <TypeError: unhashable type>"""
+
+
+# Construction d'un histogramme
+texte = "Les saucisses et saucissons secs sont dans le saloir"
+lettres = {}
+for car in texte:
+    car = car.lower()  # Permet d'accepter les majuscules comme les minuscules
+    lettres[car] = lettres.get(car, 0) + 1
+print(lettres)
+listeTrie = list(lettres.items())  # On transforme en liste le dictionnaire
+listeTrie.sort()  # Trie du dictionnaire
+print(listeTrie)
+
+
+# Contrôle du flux d'exécution
+# Grâce aux dictionnaire on peut ainsi renvoyer vers une fonction pour chaque
+# cas et ce plus simplement que avec des elif, elif, elif, ..., while
+"""materiau = input("Choisissez le matériau : ")"""
+"""dico1 = {fer: fonction1, bois: fonction2, cuivre: fonction3}"""
+
+# L'utilisation de .get permet de renvoyer une fonction si aucunes occurences
+# n'est dans le dico (assimilable à <else>)
+"""dico1.get(materiau, fonctionElse)()"""
+
+# ----> On obtient donc un équivalent à if , elif, ..., else

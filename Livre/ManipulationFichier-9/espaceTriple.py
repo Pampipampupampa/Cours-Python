@@ -24,7 +24,7 @@ def ecritureTriple(source, destination):
 	fd = open(destination,'w')
 	while 1:
 		txt = fs.read(1)
-		if txt == "": # Si on atteintla fin du fichier alors on stop la boucle avec l'instruction "break"
+		if txt == "": # Si on atteint la fin du fichier alors on stop la boucle avec l'instruction "break"
 			break
 		if txt == " ":
 			txt = txt*3
