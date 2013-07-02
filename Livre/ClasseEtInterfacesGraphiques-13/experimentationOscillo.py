@@ -3,7 +3,7 @@
 
 
 """UTILISATION DE LA CLASSE OSCILLOGRAPHE"""
-"UTILISATION DE WIDGET PERSO"
+"EXERCICE 13.8"
 
 ###########################################
 #### Importation fonction et modules : ####
