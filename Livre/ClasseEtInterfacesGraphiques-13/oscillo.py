@@ -24,7 +24,7 @@ from math import sin, pi
 
 class OscilloGraphe(Canvas):
     """Canevas pour le dessin de courbes élongation/temps"""
-    def __init__(self, boss=None, larg=400, haut=250):
+    def __init__(self, boss=None, larg=400, haut=350):
         """Constructeur du graphique : axes et échelle horizontale"""
         Canvas.__init__(self)
         self.configure(width=larg, height=haut)
@@ -33,14 +33,14 @@ class OscilloGraphe(Canvas):
         self.haut = haut
         # Tracé d'une échelle avec 8 graduations sur l'horizontale
         pas = (larg-25)/8  # Intervalle des graduations
-        for t in range(1, 9):
+        for t in range(0, 9):
             stx = 10 + t*pas  # + 10 permet de commencer sur le début de l'axe
-            self.create_line(stx, haut, stx, 15, fill='grey')
+            self.create_line(stx, haut-12, stx, 15, fill='grey')
         # Tracé d'une échelle avec 10 graduations sur la verticale
         pas = (haut-25)/10
         for t in range(-5, 6):
             sty = haut/2 - t*pas
-            self.create_line(6, sty, larg-15, sty, fill='grey')
+            self.create_line(10, sty, larg-15, sty, fill='grey')
         self.axes()
 
     def axes(self):
@@ -48,9 +48,10 @@ class OscilloGraphe(Canvas):
         # Création de l'axe X
         self.create_line(10, self.haut/2, self.larg, self.haut/2,
                          arrow=LAST, fill='black')
-        self.create_text(20, 10, text="e", anchor=CENTER)
+        self.create_text(10+self.larg/2, 10, text="e", anchor=CENTER)
         # Création de l'axe Y
-        self.create_line(10, self.haut-5, 10, 5, arrow=LAST, fill='black')
+        self.create_line(self.larg/2, self.haut-5, self.larg/2, 5,
+                         arrow=LAST, fill='black')
         self.create_text(self.larg-5, self.haut/2-10, text="t", anchor=CENTER)
 
     def traceCourbe(self, freq=1, phase=0, ampl=10, coul='red'):

@@ -51,10 +51,12 @@ class ChoixVibratoire(Frame):
         self.event_generate('<Control-Z>')
 
     def setFrequence(self, f):
+        """Modification d'un paramètre :Fréquence"""
         self.freq = float(f)
         self.event_generate('<Control-Z>')
 
     def setPhase(self, p):
+        """Modification d'un paramètre : Phase"""
         # TypeError: can't multiply sequence by non-int of type 'float'
         # ---> On doit créer une variable intermédiaire
         pp = float(p)
@@ -62,9 +64,13 @@ class ChoixVibratoire(Frame):
         self.event_generate('<Control-Z>')
 
     def setAmplitude(self, a):
+        """Modification d'un paramètre : Amplitude"""
         self.ampl = float(a)
         self.event_generate('<Control-Z>')
 
+    def valeurs(self):
+        """Tuple des paramètres d'une courbe"""
+        return (self.freq, self.phase, self.ampl)
 
 ############# Création des Fonctions #############
 
@@ -89,3 +95,4 @@ if __name__ == '__main__':
     lab.pack()
     root.bind('<Control-Z>', afficherTout)
     root.mainloop()
+    print(fra.valeurs())

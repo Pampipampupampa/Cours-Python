@@ -30,13 +30,14 @@ class ShowVibra(Frame):
         self.trace = [0] * nbrCourbe     # liste du nombre de courbes
         self.controle = [0] * nbrCourbe  # liste du nombre de panneaux de contrôle
         # Instanciation du canevas contenant les courbes
-        self.graph = OscilloGraphe(self, larg=400, haut=200)
-        self.graph.configure(bg='white', bd=2, relief=SOLID)
+        self.graph = OscilloGraphe(self, larg=400, haut=300)
+        self.graph.configure(bg='light blue', bd=2, relief=SOLID)
         self.graph.pack(side=TOP, pady=10)
         # Instanciation des panneaux de contrôle
         for i in range(nbrCourbe):
             self.controle[i] = ChoixVibratoire(self, coul=self.couleur[i])
-            self.controle[i].pack()
+            self.controle[i].configure(relief=GROOVE, bd=2)
+            self.controle[i].pack(padx=10, pady=10)
         # Mappage de l'évènement principal (déclencheur)
         # On vient détecter l'évènement à la fenêtre principale avec <master>
         self.master.bind('<Control-Z>', self.montreCourbes)
@@ -48,11 +49,11 @@ class ShowVibra(Frame):
         for i in range(self.nbrCourbe):
             self.graph.delete(self.trace[i])  # On efface l'ancien tracé
             if self.controle[i].chk.get():
+                freq, phase, ampl = self.controle[i].valeurs()
                 self.trace[i] = self.graph.traceCourbe(coul=self.couleur[i],
-                                                freq=self.controle[i].freq,
-                                                phase=self.controle[i].phase,
-                                                ampl=self.controle[i].ampl)
-
+                                                       freq=freq,
+                                                       phase=phase,
+                                                       ampl=ampl)
 
 ############# Création des Fonctions #############
 
@@ -64,4 +65,4 @@ class ShowVibra(Frame):
 
 # La fenêtre Tkinter est instancié directement à l'intérieur des Classes
 if __name__ == '__main__':
-    ShowVibra(nbrCourbe=8).mainloop()
+    ShowVibra(nbrCourbe=5).mainloop()
