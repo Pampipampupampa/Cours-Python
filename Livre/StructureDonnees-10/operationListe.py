@@ -25,7 +25,6 @@ def alternanceListe(list1, list2):
 		i += 2
 	return list2
 
-
 def alternanceListeCour(list1, list2):
 	i, n = 1, 0
 	while n > len(list1):

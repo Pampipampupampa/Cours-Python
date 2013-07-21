@@ -29,7 +29,7 @@ from math import sin, cos
 
 def avance(pas = 20):
 	global x1, y1, i # nécessaire afin de pas avoir ces variables de réinitialiées à chaque appels de la fonction
-	if i == 1: 
+	if i == 1:
 		if x1+rayon*2 >= longueur: # si la balle sort du canevas alors on inverse le sens de déplacement
 			i = 0
 		else: # tant que la balle n'est pas hors du canevas (vers la droite)
@@ -38,7 +38,7 @@ def avance(pas = 20):
 			can1.create_line(x1-pas, y1, x1, y1, fill = 'dark blue') # trace la trajectoire de la balle
 	if i == 0:
 		if x1-rayon*2 <= 0: # si la balle sort du canevas alors on inverse le sens de déplacement
-			i = 1 
+			i = 1
 		else: # tant que la balle est pas hors du canevas (vers la gauche)
 			x1 = x1-pas
 			can1.coords(balle, x1-rayon, y1-rayon, x1+rayon, y1+rayon)
@@ -62,7 +62,7 @@ def cercle():
 def lissajous():
 	global x1, y1, ang
 	" Extrémité du cercle afin qu'il ne dépase pas (marche sous cette forme car la fonction sin ou cos ne donne jamais une valeur supérieur à 1) "
-	rayoncercle, centre = hauteur/2, hauteur/2 
+	rayoncercle, centre = hauteur/2, hauteur/2
 	xvar, yvar = x1, y1 # mémorise les anciennes coordonnées
 	ang = ang + 0.1 # décalage de 0.1 radian
 	x1, y1 = sin(2*ang), cos(3*ang) # avec f1/f2 = 2/3 : fonction de lissajous
@@ -100,7 +100,7 @@ longueur = 400
 " PRINCIPAUX ELEMENTS "
 fen1 = Tk()
 fen1.title("Aller et retour")
-can1 = Canvas(fen1, width = longueur, height = hauteur, bg = 'grey') # Ne pas directement affecter ".grid" à "can1" 
+can1 = Canvas(fen1, width = longueur, height = hauteur, bg = 'grey') # Ne pas directement affecter ".grid" à "can1"
 can1.grid(row = 1, column = 1, columnspan = 4, padx = 20, pady = 20)
 balle = can1.create_oval(x1-rayon, y1-rayon, x1+rayon, y1+rayon, width = 2, fill = 'red')
 

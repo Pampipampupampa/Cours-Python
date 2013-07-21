@@ -10,14 +10,13 @@
 ################################################################
 
 
-
 from os import chdir
-
 
 
 ###################################################################################################
 ############# Gestion d'évènements : définition de différentes fonctions utiliées  : ##############
 ###################################################################################################
+
 
 def organisation(source):
 	"Organize source file in list"
@@ -31,7 +30,6 @@ def organisation(source):
 			mot = mot + source[i]
 		i += 1
 	return infos
-
 
 
 def encodage(infos):
@@ -58,7 +56,6 @@ def encodage(infos):
 	return infos
 
 
-
 def enregistrer(infos):
 	"Write new data with a '#' separator"
 	i = 0
@@ -68,27 +65,24 @@ def enregistrer(infos):
 	fichierDestination.write('\n') # Retour à la ligne
 
 
-
 ######################################################
 ############## Programme principal : #################
 ######################################################
-
 
 
 # Définition du répertoire courant
 chdir("/home/pampi/Documents/Git/Cours-Python/Livre/ManipulationFichier-9/Stockage")
 
 
-
 # Ajout et inscription d'informations dans le fichier
 fichierSource = open('membreClub', 'r')
 fichierDestination = open('membreClubAjout', 'w')
-
 while 1:
 	ligne = fichierSource.readline()
 	if ligne == "" or ligne == "\n":
 		break
-	liste = organisation(ligne) # Permet d'organiser sous forme de liste les éléments de la ligne
+	# Permet d'organiser sous forme de liste les éléments de la ligne
+	liste = organisation(ligne)
 	liste = encodage(liste)
 	enregistrer(liste)
 
