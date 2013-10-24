@@ -179,13 +179,15 @@ class Application(Frame):
         self.master.title("#### Jeu de Bombarde ####")
         self.pack()
         # Ajout du canevas
-        self.can = Canvas(self, width=800, height=250, bg='ivory',
+        self.larg = 500
+        self.haut = 450
+        self.can = Canvas(self, width=self.larg, height=self.haut, bg='ivory',
                           relief=SUNKEN)
         self.can.pack(padx=10, pady=10)
         # Ajout des canons
         self.guns = {}
         self.guns["Jeremy"] = Canon(self.can, 50, 200, 1, 'blue', "Jeremy")
-        self.guns["Nadia"] = Canon(self.can, 750, 200, -1, 'red', "Nadia")
+        self.guns["Nadia"] = Canon(self.can, self.larg-50, 200, -1, 'red', "Nadia")
         # Ajout des frame des canons
         self.pupitre = {}
         self.pupitre["Jeremy"] = PupitreCanon(self, self.guns["Jeremy"])
@@ -196,10 +198,10 @@ class Application(Frame):
         for id in self.guns:
             gun = self.guns[id]
             if gun.sens == -1:
-                x = randrange(720, 780)
+                x = randrange(self.larg-80, self.larg-20)
             else:
                 x = randrange(20, 80)
-            gun.deplacer(x, randrange(150, 240))
+            gun.deplacer(x, randrange(self.haut-self.haut/2, self.haut-10))
 
     def goal(self, tireur, cible):
         """Attribution de points au tireur gagnant"""
