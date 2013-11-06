@@ -9,7 +9,6 @@
 ### Importation fonction et modules : ###
 #########################################
 
-
 from tkinter import *
 
 
@@ -48,7 +47,6 @@ def chercheCible(event=None):
     """Défilement du texte jusqu'à la balise voulue"""
     index = st.text.tag_nextrange('cible', '0.0', END)
     st.text.see(index[0])
-
 
 #############################
 ### Programme principal : ###
