@@ -43,8 +43,8 @@ class FenPrincipale(QWidget):
         # Récupération de la taille de la fenêtre et de l'écran
         sizeEcran = QDesktopWidget().screenGeometry()
         sizeFenetre = self.geometry()
-        self.move((sizeEcran.width()-sizeFenetre.width())/2,
-                  (sizeEcran.height()-sizeFenetre.height())/2)
+        self.move((sizeEcran.width() - sizeFenetre.width()) / 2,
+                  (sizeEcran.height() - sizeFenetre.height()) / 2)
 
         # Ajout de l'image de fond
         self.pixmap = QPixmap(imageAccueil)
@@ -74,15 +74,15 @@ class FenPrincipale(QWidget):
         # Ajout du bouton pour quitter l'application
         self.quitter = QPushButton("Quitter", self)
         self.quitter.clicked.connect(self.close)
-        self.quitter.move(fenPrinLong*0.8, fenPrinLarg*0.9)
+        self.quitter.move(fenPrinLong * 0.8, fenPrinLarg * 0.9)
         # Boutton ouvrant le niveau 1
         self.niveau1 = QPushButton("Niveau 1", self)
         self.niveau1.clicked.connect(lambda: self.lanceNiveau(lv1))
-        self.niveau1.move(fenPrinLong*0.1, fenPrinLarg*0.9)
+        self.niveau1.move(fenPrinLong * 0.1, fenPrinLarg * 0.9)
         # Boutton ouvrant le niveau 2
         self.niveau1 = QPushButton("Niveau 2", self)
         self.niveau1.clicked.connect(lambda: self.lanceNiveau(lv2))
-        self.niveau1.move(fenPrinLong*0.4, fenPrinLarg*0.9)
+        self.niveau1.move(fenPrinLong * 0.4, fenPrinLarg * 0.9)
 
     def closeEvent(self, event):
         """Ouverture d'une fenêtre de confirmation"""
@@ -144,7 +144,8 @@ class FenPrincipale(QWidget):
             if niveau.structure[dk.numCaseY][dk.numCaseX] == b'a':
                 font = pygame.font.SysFont("Loma", 30)
                 rendered = font.render("FÉLICITATION L'AMI !!!", 0, (0, 0, 0))
-                fenetre.blit(rendered, (50, fenTaille/2))
+                fenetre.blit(rendered, (50, fenTaille / 2))
+                # Flip permet de faire une modification instantannée
                 pygame.display.flip()
                 continuer = 0
 
