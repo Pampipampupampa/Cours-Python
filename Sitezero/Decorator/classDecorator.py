@@ -69,7 +69,8 @@ class Kebab(Sandwich):
 
 
 class DecoratorSandwich(Sandwich):
-    """Encapsule la classe maîtresse"""
+    """Encapsule la classe maîtresse et fait croire à l'utiliation directe
+    de la classe maitresse (Sandwich)"""
     def __init__(self, sandwich):
         super().__init__(sandwich.sauce)
         self.sandwich = sandwich
@@ -111,6 +112,7 @@ class Supplement(DecoratorSandwich):
 
 
 class ModViande(DecoratorSandwich):
+    """Modification du type de viande dans le sandwich"""
     def __init__(self, sandwich, viande):
         super().__init__(sandwich)
         self.viande = viande
@@ -132,6 +134,7 @@ class ModViande(DecoratorSandwich):
 
 
 class ModPain(DecoratorSandwich):
+    """Modification du type de pain dans le sandwich"""
     def __init__(self, sandwich, pain):
         super().__init__(sandwich)
         self.pain = pain
@@ -153,6 +156,8 @@ class ModPain(DecoratorSandwich):
 
 
 class Cheeseburger(Sandwich):
+    """Création d'un nouveau type de sandwich héritant de l'ensemble des
+    Decorateurs et de Sandwich"""
     def __init__(self, sauce):
         super().__init__(sauce)
         self._ing['base'] = Ingredient(prixBase, 1)
@@ -168,6 +173,7 @@ class Cheeseburger(Sandwich):
 
 
 # ----- Création des Fonctions ----- #
+# Ensemble de fonction permettant de réaliser plus facilement les modifications
 
 def sansOignons(sandwich):
     return RetraitIngredient(sandwich, 'oignons')
