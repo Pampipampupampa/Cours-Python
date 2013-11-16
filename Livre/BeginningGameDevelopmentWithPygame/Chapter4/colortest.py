@@ -4,7 +4,7 @@
 
 """RÉALISATION D'UN TESTEUR DE COULEUR
    FONCTION RÉALISANT UNE MISE À L'ÉCHELLE D'UNE COULEUR"""
-"""APPRESS BEGINNING GAME DEVELOPMENT - CHAPTER 3"""
+"""APPRESS BEGINNING GAME DEVELOPMENT - CHAPTER 4"""
 
 #########################################
 ### Importation fonction et modules : ###
