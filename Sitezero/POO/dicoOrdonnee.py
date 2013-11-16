@@ -48,7 +48,7 @@ class DicoOrdonnee(object):
         representation += "}"
         return representation
 
-    def __str(self):
+    def __str__(self):
         """On renvoit à l'attribut __repr__ afin d'afficher comme on le
         souhaite l'ensemble des couples clés/valeurs"""
         return repr(self)
