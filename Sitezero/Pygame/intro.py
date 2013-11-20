@@ -10,7 +10,6 @@
 #########################################
 
 
-import pygame.mixer
 import pygame
 from pygame.locals import *
 import pygame.constants

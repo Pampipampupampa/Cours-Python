@@ -10,7 +10,6 @@
 #########################################
 
 
-import pygame.mixer
 import pygame
 from pygame.locals import *
 import pygame.constants
@@ -110,8 +109,6 @@ class Niveau:
                     fenetre.blit(mur, (x, y))
                 numColonne += 1
             numLigne += 1
-
-
 
 
 # ----- Création des Fonctions ----- #
