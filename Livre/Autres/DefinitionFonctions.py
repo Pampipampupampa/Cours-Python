@@ -2,6 +2,7 @@ import os
 
 """CREATION D'UNE FONCTION AVEC MULTIPLES CRITERES"""
 
+
 def tablemulti(base, deb, fin): # differents parametres
     while deb <= fin:
         print(base, "fois", deb, "est égal à", base * deb)
@@ -31,7 +32,7 @@ def test():
     print(p,q)
 
 p, q = 15, 38
-test() # on remarque que p change de valeur 
+test() # on remarque que p change de valeur
 print(p, q) # on remarque que la valeur de p n'a pas été modifiée (la varible p dans la fonction test est donc une variable locale)
 
 # afin de passer la variable de la fonction test en variable globale il faut ajouter l'instruction suivante
