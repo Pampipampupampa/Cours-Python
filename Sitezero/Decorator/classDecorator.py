@@ -56,7 +56,7 @@ class Sandwich:
 class Kebab(Sandwich):
     """Sous classe de Sandwich construisant des kebabs"""
     def __init__(self, sauce):
-        Sandwich.__init__(self, sauce)  # Ne supporte pas l'héritage multiple
+        # Sandwich.__init__(self, sauce)  # Ne supporte pas l'héritage multiple
         super().__init__(sauce)  # Supporte l'héritage multiple (préférable)
         self._ing['base'] = Ingredient(prixBase, 1)
         self._ing['salade'] = Ingredient(prixSalade, 1)

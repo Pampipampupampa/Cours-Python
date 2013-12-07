@@ -88,15 +88,15 @@ class Vector2D:
         else:
             return True
 
-    def __nonzero__(self):
+    def __bool__(self):
         """Utilisée pour vérifier que le vecteur n'est pas vide"""
         return bool(self.x or self.y)
 
     # Fonctions "patron" pour les fonctions utilisants le module operator
-    def _operatorHandler(self, other, func):
+    def _operator_handler(self, other, func):
         """Retourne le vecteur transformé (copie)
            Le vecteur doit être à gauche de l'opérateur
-           Voir _r_operatorHandler pour un vecteur à droite"""
+           Voir _r_operator_handler pour un vecteur à droite"""
         if isinstance(other, Vector2D):
             return Vector2D(func(self.x, other.x),
                             func(self.y, other.y))
@@ -107,10 +107,10 @@ class Vector2D:
             return Vector2D(func(self.x, other),
                             func(self.y, other))
 
-    def _r_operatorHandler(self, other, func):
+    def _r_operator_handler(self, other, func):
         """Retourne le vecteur transformé (copie)
         Le vecteur doit être à droite de l'opérateur
-        Voir _operatorHandler pour un vecteur à gauche"""
+        Voir _operator_handler pour un vecteur à gauche"""
         if hasattr(other, "__getitem__"):
             return Vector2D(func(other[0], self.x),
                             func(other[1], self.y))
@@ -118,7 +118,7 @@ class Vector2D:
             return Vector2D(func(other, self.x),
                             func(other, self.y))
 
-    def _i_operatorHandler(self, other, func):
+    def _i_operator_handler(self, other, func):
         """Modification du vecteur par la fonction de l'opérateur"""
         if hasattr(other, "__getitem__"):
             self.x = func(self.x, other[0]),
@@ -129,19 +129,19 @@ class Vector2D:
 
     # Création de nouveau vecteur à partir de 2 autres
     @classmethod
-    def fromPoints(cls, p1, p2):
+    def from_points(cls, p1, p2):
         """Création d'un nouveau vecteur à partir de points :
            Accepte : Tuple, Vector2D, Liste, Array"""
         return cls(p2[0] - p1[0], p2[1] - p1[1])
 
     # Fonction du vecteur
-    def getMagnitude(self):
+    def get_magnitude(self):
         """Retourne la longueur du vecteur"""
         return math.sqrt(self.x ** 2 + self.y ** 2)
 
-    def _setMagnitude(self, value):
+    def _set_magnitude(self, value):
         """Modification de la longueur du vecteur"""
-        magnitude = self.getMagnitude()
+        magnitude = self.get_magnitude()
         self.x *= value/magnitude
         self.y *= value/magnitude
 
@@ -149,7 +149,7 @@ class Vector2D:
     # 1er paramètre : fonction pour obtenir la valeur de l'attribut
     # 2ème paramètre : fonction pour définir la valeur de l'attribut
     # 3ème paramètre : fonction pour supprimer la valeur de l'attribut (None)
-    magnitude = property(getMagnitude, _setMagnitude, None, "Gets or sets the magnitude of the vector")
+    magnitude = property(get_magnitude, _set_magnitude, None, "Gets or sets the magnitude of the vector")
 
     def rotate(self, angle):
         """Rotation du vecteur selon un angle en degrès (sens anti-horaire)"""
@@ -166,22 +166,22 @@ class Vector2D:
         y = self.x * math.sin(rad) - self.y * math.cos(rad)
         return Vector2D(round(x, 8), round(y, 8))
 
-    def getAngle(self):
+    def get_angle(self):
         """Renvois l'angle du vecteur en degrès"""
         if ((self.x ** 2 + self.y ** 2) == 0):  # N'est pas Vect2D(0, 0)
             return 0
         return math.degrees(math.atan2(self.y, self.x))
 
-    def setAngle(self, angle):
+    def set_angle(self, angle):
         """Modifie l'angle du vecteur (angle en degrès)"""
         self.x = self.magnitude
         self.y = 0
         self.rotate(angle)
 
     # Création d'une propriété d'attribut
-    angle = property(getAngle, setAngle, None, "Gets or sets the angle of a vector")
+    angle = property(get_angle, set_angle, None, "Gets or sets the angle of a vector")
 
-    def getAngleBetween(self, other):
+    def get_angle_between(self, other):
         """Retourne l'angle entre 2 vecteurs grâce aux produits vectoriels,
            scalaires et à l'arc tangente"""
         cross = self.cross(other)
@@ -189,7 +189,7 @@ class Vector2D:
         # <atan2> prend en compte le signe des 2 éléments contrairement à <atan>
         return round(math.degrees(math.atan2(cross, dot)), 8)
 
-    def getDistance(self, other):
+    def get_distance(self, other):
         """Retourne la distance entre 2 vecteurs"""
         return math.sqrt((self.x - other[0])**2 + (self.y - other[1])**2)
 
@@ -345,20 +345,20 @@ class Vector2D:
     #     """Retourne la division d'un vecteur par un élément (int ou float)
     #        Éléments supportés : Liste, Tuple, Array, ou nombre
     #        Éléments à gauche de l'opérateur"""
-    #     return self._operatorHandler(other, operator.truediv)
+    #     return self._operator_handler(other, operator.truediv)
     # # __div__ = __truediv__
 
     # def __rtruediv__(self, other):
     #     """Retourne la division d'un élément (int ou float) par un vecteur
     #        Éléments supportés : Liste, Tuple, Array, ou nombre
     #        Éléments à droite de l'opérateur"""
-    #     return self._r_operatorHandler(other, operator.truediv)
+    #     return self._r_operator_handler(other, operator.truediv)
     # # __rdiv__ = __rtruediv__
 
     # def __itruediv__(self, other):
     #     """Modification du vecteur après division par un élément (int ou float)
     #        Éléments supportés : Liste, Tuple, Array, ou nombre"""
-    #     return self._i_operatorHandler(other, operator.truediv)
+    #     return self._i_operator_handler(other, operator.truediv)
     # # __idiv__ = __itruediv__
 
     # Division réelle
@@ -412,18 +412,18 @@ class Vector2D:
     #     """Retourne la division entière d'un vecteur par un élément (int ou float)
     #        Éléments supportés : Liste, Tuple, Array, ou nombre
     #        Éléments à gauche de l'opérateur"""
-    #     return self._operatorHandler(other, operator.floordiv)
+    #     return self._operator_handler(other, operator.floordiv)
 
     # def __rfloordiv__(self, other):
     #     """Retourne la division entière d'un élément (int ou float)par un vecteur
     #        Éléments supportés : Liste, Tuple, Array, ou nombre
     #        Éléments à droite de l'opérateur"""
-    #     return self._r_operatorHandler(other, operator.floordiv)
+    #     return self._r_operator_handler(other, operator.floordiv)
 
     # def __ifloordiv__(self, other):
     #     """Modification du vecteur après division entière par un élément (int ou float)
     #        Éléments supportés : Liste, Tuple, Array, ou nombre"""
-    #     return self._i_operatorHandler(other, operator.floordiv)
+    #     return self._i_operator_handler(other, operator.floordiv)
 
     def __floordiv__(self, other):
         """Retourne la division d'un vecteur par un élément (int ou float)
@@ -475,20 +475,20 @@ class Vector2D:
         """Retourne le modulo du vecteur par un élément
            Éléments supportés : Liste, Tuple, Array, ou nombre
            Éléments à gauche de l'opérateur"""
-        return self._operatorHandler(other, operator.mod)
+        return self._operator_handler(other, operator.mod)
 
     def __rmod__(self, other):
         """Retourne le modulo de l'élément par le vecteur
            Éléments supportés : Liste, Tuple, Array, ou nombre
            Éléments à droite de l'opérateur"""
-        return self._r_operatorHandler(other, operator.mod)
+        return self._r_operator_handler(other, operator.mod)
 
     # Puissance
     def __pow__(self, other):
-        return self._operatorHandler(other, operator.pow)
+        return self._operator_handler(other, operator.pow)
 
     def __rpow__(self, other):
-        return self._r_operatorHandler(other, operator.pow)
+        return self._r_operator_handler(other, operator.pow)
 
     # Arithmetic operation
     def __neg__(self):
@@ -605,7 +605,7 @@ if __name__ == "__main__":
             v.magnitude = 5
             self.assertEqual(v, Vector2D(3, 4))
             v2 = Vector2D(10, -2)
-            self.assertEqual(v.getDistance(v2), (v - v2).getMagnitude())
+            self.assertEqual(v.get_distance(v2), (v - v2).get_magnitude())
             print("Tests de calcul de magnitude réussis")
 
         def testCrossInterpolate(self):
@@ -629,7 +629,7 @@ if __name__ == "__main__":
             self.assertEqual(v.angle, 90)
             v2 = Vector2D(v)
             v.rotate(-90)
-            self.assertEqual(v.getAngleBetween(v2), 90)
+            self.assertEqual(v.get_angle_between(v2), 90)
             v2.angle -= 90
             self.assertEqual(v.magnitude, v2.magnitude)
             self.assertEqual(v2.angle, 0)
@@ -637,9 +637,9 @@ if __name__ == "__main__":
             self.assertAlmostEqual((v - v2).magnitude, 0, 15)
             self.assertEqual(v.magnitude, v2.magnitude)
             v2.rotate(300)
-            self.assertAlmostEqual(v.getAngleBetween(v2), -60)
-            v2.rotate(v2.getAngleBetween(v))
-            self.assertAlmostEqual(v.getAngleBetween(v2), 0)
+            self.assertAlmostEqual(v.get_angle_between(v2), -60)
+            v2.rotate(v2.get_angle_between(v))
+            self.assertAlmostEqual(v.get_angle_between(v2), 0)
             print(".Tests des opérations d'angles réussis")
 
         def testCrossDot(self):
