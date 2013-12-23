@@ -1,8 +1,8 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
 
-"""INITIATION À LA MISE EN MOUVEMENT SELON s2 AXES (x et y)"""
+"""INITIATION À LA MISE EN MOUVEMENT SELON 2 AXES (x et y)"""
 "APPRESS BEGINNING GAME DEVELOPMENT - CHAPTER 5"
 
 

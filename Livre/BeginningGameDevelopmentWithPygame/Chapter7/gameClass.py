@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
 
@@ -157,8 +157,8 @@ class GameEntity:
 class Ant(GameEntity):
     """Create a new ant inthe world based on GameEntity class"""
     def __init__(self, world, image):
-        # super().__init__(world, name="ant", image)
-        GameEntity.__init__(self, world, "ant", image)
+        super().__init__(world, "ant", image)
+        # GameEntity.__init__(self, world, "ant", image)
 
         # Instance of each states
         exploring_state = AntStateExploring(self)
@@ -201,15 +201,15 @@ class Ant(GameEntity):
 class Leaf(GameEntity):
     """Create a new leaf into the world"""
     def __init__(self, world, image):
-        # super().__init__(world, "leaf", image)
-        GameEntity.__init__(self, world, "leaf", image)
+        super().__init__(world, "leaf", image)
+        # GameEntity.__init__(self, world, "leaf", image)
 
 
 class Spider(GameEntity):
     """Create a new spider into the world"""
     def __init__(self, world, image):
-        # super().__init__(world, "spider", image)
-        GameEntity.__init__(self, world, "spider", image)
+        super().__init__(world, "spider", image)
+        # GameEntity.__init__(self, world, "spider", image)
 
         # Dead spider
         self.dead_image = pygame.transform.flip(image, 0, 1)
@@ -224,7 +224,7 @@ class Spider(GameEntity):
             self.speed = 0
             self.image = self.dead_image
         # Speed up to run away
-        self.speed = 140
+        self.speed = 170
 
     def render(self, surface):
         """Display the spider and it's heath bar"""
@@ -290,8 +290,8 @@ class AntStateExploring(State):
 class AntStateSeeking(State):
     """Capture the leaf"""
     def __init__(self, ant):
-        # super().__init__(SEEKING)
-        State.__init__(self, SEEKING)
+        super().__init__(SEEKING)
+        # State.__init__(self, SEEKING)
 
         self.ant = ant
         self.leaf_id = None
@@ -320,8 +320,8 @@ class AntStateSeeking(State):
 class AntStateDelivering(State):
     """Delivre the leaf"""
     def __init__(self, ant):
-        # super().__init__(DELIVERING)
-        State.__init__(self, DELIVERING)
+        super().__init__(DELIVERING)
+        # State.__init__(self, DELIVERING)
 
         self.ant = ant
 
@@ -345,8 +345,8 @@ class AntStateDelivering(State):
 class AntStateHunting(State):
     """Hunt spiders"""
     def __init__(self, ant):
-        # super().__init__(HUNTING)
-        State.__init__(self, HUNTING)
+        super().__init__(HUNTING)
+        # State.__init__(self, HUNTING)
 
         self.ant = ant
         self.got_kill = False  # Spider alive
@@ -413,13 +413,6 @@ def run():
         ant.brain.set_state(EXPLORING)
         world.add_entity(ant)
 
-    for ant_no in range(ANT_COUNT):
-
-        ant = Ant(world, ant_image)
-        ant.location = Vector2D(randint(0, w), randint(0, h))
-        ant.brain.set_state(EXPLORING)
-        world.add_entity(ant)
-
     while True:
 
         for event in pygame.event.get():
@@ -454,7 +447,7 @@ SEEKING = "seeking"
 DELIVERING = "delivring"
 SCREEN_SIZE = (1200, 900)
 NEST_POSITION = (int(SCREEN_SIZE[0] / 2), int(SCREEN_SIZE[1] / 2))
-ANT_COUNT = 50
+ANT_COUNT = 180
 NEST_SIZE = 200.
 
 if __name__ == '__main__':

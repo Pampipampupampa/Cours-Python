@@ -52,3 +52,9 @@ docs/_build/
 *.jpg
 *.gif
 *.bmp
+
+# Musics
+*.wav
+*.ogg
+*.mid
+

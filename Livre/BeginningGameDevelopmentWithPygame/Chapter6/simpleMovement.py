@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
 """MOUVEMENT UNIDIRECTIONNELS"""
@@ -52,8 +52,10 @@ while True:
     direction = Vector2D(0, 0)
     if pressed_keys[K_LEFT]:
         direction[0] = -1
+        print(direction)
     elif pressed_keys[K_RIGHT]:
         direction[0] = +1
+        print(direction)
     if pressed_keys[K_UP]:
         direction[1] = -1
     elif pressed_keys[K_DOWN]:
