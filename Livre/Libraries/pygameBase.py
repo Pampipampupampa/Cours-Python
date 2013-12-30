@@ -37,6 +37,7 @@ class PygameStarter:
         self.time_passed = 0  # Compute time passed since last loop
         self.background = background
         self.title = title
+        pygame.display.set_caption(self.title)
 
     # Handle events
     def handle_events(self):
@@ -47,11 +48,14 @@ class PygameStarter:
             elif event.type == KEYUP:
                 if event.key == K_ESCAPE:
                     self.running = False  # Quit (useful when mouse hide/block)
-                self.key_up(event.key)
+                else:
+                    self.key_up(event.key)
             elif event.type == KEYDOWN:
                 self.key_down(event.key)
             elif event.type == MOUSEBUTTONUP:
                 self.mouse_up(event.button, event.pos)
+            elif event.type == MOUSEBUTTONDOWN:
+                self.mouse_down(event.button, event.pos)
             elif event.type == MOUSEMOTION:
                 self.mouse_motion(event.buttons, event.pos, event.rel)
 
@@ -70,9 +74,6 @@ class PygameStarter:
         self.running = True
         self.fps = fps
         while self.running:
-            # Print FPS support
-            pygame.display.set_caption("{1} -- FPS: {0:.0f}"
-                                       .format(self.clock.get_fps(), self.title))
             self.start_actions()
             self.handle_events()
             self.update()
@@ -81,10 +82,25 @@ class PygameStarter:
             self.time_passed = self.clock.tick(self.fps)
             self.restart()
         # Close pygame properly if user try to quit
+        self.action_quit()
+
+    def handle_quit(self):
+        """Recup all quit event to force quit inside other methode, function, ...
+           Should be use inside long loop"""
+        for event in pygame.event.get(QUIT):  # get all the QUIT events
+            self.running = False
+            self.action_quit()
+        for event in pygame.event.get(KEYUP):  # get all the KEYUP events
+            if event.key == K_ESCAPE:
+                self.running = False
+                self.action_quit()
+            pygame.event.post(event)  # add other KEYUP event to queue
+
+    def action_quit(self):
+        """Print quit message and quit pygame window properly"""
         print(' Pygame says Good Bye ')
         pygame.quit()
         sys.exit()
-        return
 
     def update(self):
         pass
@@ -99,6 +115,9 @@ class PygameStarter:
         pass
 
     def mouse_up(self, button, pos):
+        pass
+
+    def mouse_down(self, button, pos):
         pass
 
     def mouse_motion(self, buttons, pos, rel):

@@ -34,7 +34,9 @@ YELLOW = (255, 255, 0)
 ORANGE = (255, 128, 0)
 PURPLE = (255, 0, 255)
 CYAN = (0, 255, 255)
-ALL_COLORS = (RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, CYAN)
+PINK = (150, 40, 80)
+LIGHT_GREEN = (170, 190, 140)
+ALL_COLORS = (RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, CYAN, PINK, LIGHT_GREEN)
 
 # Shapes
 DONUT = 'donut'
@@ -42,7 +44,14 @@ SQUARE = 'square'
 DIAMOND = 'diamond'
 LINES = 'lines'
 OVAL = 'oval'
-ALL_SHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
+DOUBLE_SQUARE = 'double_square'
+ALL_SHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL, DOUBLE_SQUARE)
+
+# Pictures
+CAT = 'cat.png'
+GEM = 'gem1.png'
+PINK_GIRL = 'pinkgirl.png'
+ALL_PICTURES = (CAT, GEM, PINK_GIRL)
 
 ##############################################################################
 #### Gestion d'évènements : définition de différentes Fonctions/Classes : ####
@@ -50,7 +59,7 @@ ALL_SHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
 
 
 def split_into_groups(groupSize, list_in):
-    """Return a generator set with list of list where groupSize is the max size"""
+    """Return a generator compute with list of list where groupSize is the max size"""
     # Generator
     return (list_in[i:i + groupSize] for i in range(0, len(list_in), groupSize))
 
@@ -64,43 +73,24 @@ def split_into_groups(groupSize, list_in):
     # return {list_in[i:i + groupSize]: i for i in range(0, len(list_in), groupSize)}
 
 
-class Board:
-    """Base class to compute puzzle game
-       len(self.colors) * len(self.shapes) * 2 >= self.nb_column * self.nb_row
-       display is  the surface where the puzzle will be drawing
-       <nb_column * nb_row> must be even"""
-    def __init__(self, shapes, colors, display=pygame.Surface((640, 480)),
-                 size=40, gap=10, nb_column=10, nb_row=7):
+class BaseBoard:
+    """Bae class to create a board"""
+    def __init__(self, display=pygame.Surface((640, 480)), size=40, gap=0,
+                 nb_column=10, nb_row=7):
         self.size = size
         self.gap = gap
         self.box_color = (200, 150, 100)
+        self.border_color = (255, 255, 255)
         self.nb_column = nb_column
         self.nb_row = nb_row
-        assert(self.nb_row * self.nb_column) % 2 == 0, 'Odd number of boxes'
-
-        self.colors = colors
-        self.shapes = shapes
-        if not isinstance(self.colors, tuple) or not isinstance(self.shapes, tuple):
-            raise TypeError('colors and shapes must be tuples')
-        else:
-            assert len(self.colors) * len(self.shapes) * 2 >= \
-                self.nb_column * self.nb_row,\
-                'Board too big for the actual number of colors/shapes'
 
         # Display and margin by default (can change it whith set_display)
         self.display = display
         self.x_margin = int((display.get_width() - (nb_column * (size + gap))) / 2)
         self.y_margin = int((display.get_height() - (nb_row * (size + gap))) / 2)
 
-        # Fill in double the set of shapes/colors needed
-        self.board = self.get_randomized()  # Board data structure
-        self.states = self.generate_revealed_boxes(False)
-        # Highlight Color
-        self.hightlight_color = (200, 200, 200)  # Blue
-        self.bg_color = (80, 80, 120)  # Navy blue
-
     def __repr__(self):
-        """Debug"""
+        """Debug display"""
         return "(Board : size={}, nbCol={}, nbRow={})". \
                format(self.size, self.nb_column, self.nb_row)
 
@@ -111,28 +101,6 @@ class Board:
                             (self.size + self.gap))) / 2)
         self.y_margin = int((display.get_height() - (self.nb_row *
                             (self.size + self.gap))) / 2)
-
-    def generate_revealed_boxes(self, state):
-        """Return a list of state value size of self.board"""
-        return [[state] * self.nb_row for i in range(self.nb_column)]
-
-    def get_randomized(self):
-        icons = []
-        for color in self.colors:
-            for shape in self.shapes:
-                icons.append((shape, color))
-        shuffle(icons)
-        nb_needed = int(self.nb_column * self.nb_row / 2)
-        icons = icons[:nb_needed] * 2
-        shuffle(icons)
-        board = []
-        for x in range(self.nb_column):
-            column = []
-            for y in range(self.nb_row):
-                column.append(icons[0])
-                del icons[0]  # Avoid an other for statement on icons size
-            board.append(column)
-        return board
 
     def getbox_atpixel(self, x, y):
         """If exist return box under x and y position, with x and y in pixel"""
@@ -149,6 +117,100 @@ class Board:
         left = self.x_margin + (self.size + self.gap) * box_x
         top = self.y_margin + (self.size + self.gap) * box_y
         return (left, top)
+
+    def draw_border(self):
+        """Add a border to delimit the game"""
+        left, top = self.left_top_coords(0, 0)
+        width = (self.size + self.gap) * self.nb_column
+        height = (self.size + self.gap) * self.nb_row
+        pygame.draw.rect(self.display, self.border_color,
+                        (left, top, width, height), 4)
+
+
+class EvenPuzzle(BaseBoard):
+    """Base class to compute puzzle game
+
+       Steps after initialize :
+       Change display surface to main screen with <set_display>.
+       Set the picture dictionnary with <set_picture_dico>.
+       Initialize the board with <get_randomized>.
+
+    """
+    def __init__(self, shapes, colors, pictures=None, display=pygame.Surface((640, 480)),
+                 size=40, gap=10, nb_column=10, nb_row=7):
+        super().__init__(display=pygame.Surface((640, 480)),
+                         size=size, gap=gap, nb_column=nb_column, nb_row=nb_row)
+        self.size = size
+        self.gap = gap
+        self.box_color = (200, 150, 100)
+        self.nb_column = nb_column
+        self.nb_row = nb_row
+        assert(self.nb_row * self.nb_column) % 2 == 0, 'Odd number of boxes'
+
+        self.colors = colors
+        self.shapes = shapes
+        self.pictures = pictures
+        # Control input type
+        if self.pictures and not isinstance(self.pictures, tuple):
+            raise TypeError('Pictures must be tuples')
+        elif not isinstance(self.colors, tuple):
+            raise TypeError('Colors must be tuples')
+        elif not isinstance(self.shapes, tuple):
+            raise TypeError('Shapes must be tuples')
+
+        # Control if we have enough elements to display
+        if self.pictures:
+            assert (len(self.colors) * len(self.shapes)*2 + len(self.pictures)*2) >= \
+                self.nb_column * self.nb_row,\
+                'Board too big for the actual number of colors/shapes, pictures'
+        else:
+            assert (len(self.colors) * len(self.shapes)*2) >= \
+                self.nb_column * self.nb_row,\
+                'Board too big for the actual number of colors/shapes, pictures'
+
+        # Fill in double the set of shapes/colors needed
+        self.board = []  # Board data structure
+        self.states = self.generate_revealed_boxes(False)  # All covered
+        # Background color
+        self.bg_color = (80, 80, 120)  # Navy blue
+        # Highlight color
+        self.hightlight_color = (200, 200, 200)  # Gray
+
+    def set_picture_dico(self, pictures):
+        """Create a dico with pictures images to load them only once
+           Pictures are load, rescale, and then added"""
+        dico = {}
+        for picture in pictures:
+            image = pygame.image.load("Stock/" + picture).convert_alpha()
+            image = pygame.transform.scale(image, (self.size, self.size))
+            dico[picture] = image
+        return dico
+
+    def generate_revealed_boxes(self, state):
+        """Return a list of state value size of self.board"""
+        return [[state] * self.nb_row for i in range(self.nb_column)]
+
+    def get_randomized(self):
+        icons = []
+        for color in self.colors:
+            for shape in self.shapes:
+                icons.append((shape, color))
+        shuffle(icons)
+        if self.pictures:  # Only if we have pictures
+            for picture in self.pictures:
+                icons.append((picture, self.colors[0]))
+        shuffle(icons)
+        nb_needed = int(self.nb_column * self.nb_row / 2)
+        icons = icons[:nb_needed] * 2
+        shuffle(icons)
+        board = []
+        for x in range(self.nb_column):
+            column = []
+            for y in range(self.nb_row):
+                column.append(icons[0])
+                del icons[0]  # Avoid an other for statement on icons size
+            board.append(column)
+        return board
 
     def get_shape_color(self, box_x, box_y):
         """Return shape and color at box_x and box_y coordinates"""
@@ -193,6 +255,14 @@ class Board:
         elif shape == OVAL:
             pygame.draw.ellipse(self.display, color,
                                (left, top + quarter, self.size, half))
+        elif shape == DOUBLE_SQUARE:
+            pygame.draw.rect(self.display, color, (left + quarter, top,
+                             half, quarter))
+            pygame.draw.rect(self.display, color, (left + quarter,
+                             top + (half+quarter), self.size - half,
+                             quarter))
+        else:  # Display pictures
+            self.display.blit(self.dico_picture[shape], (left, top))
 
     def draw_board(self, revealed):
         """Draw the board with all shapes, covered if box not revealed"""
@@ -212,13 +282,25 @@ class Board:
         pygame.draw.rect(self.display, color,
                         (left - 5, top - 5, self.size + 10, self.size + 10), 4)
 
+    def draw_border(self):
+        """Add a border to delimit the game"""
+        left, top = self.left_top_coords(0, 0)
+        width = (self.size + self.gap) * self.nb_column
+        height = (self.size + self.gap) * self.nb_row
+        pad = 0.1*self.x_margin
+        pygame.draw.rect(self.display, self.border_color,
+                        (left - pad, top - pad, width + pad,
+                         height + pad), 4)
 
-class AnimBoard(Board):
-    """Add some actions to the Board class"""
-    def __init__(self, shapes, colors, reveal_speed=8, size=40, gap=10,
+
+class AnimEvenPuzzle(EvenPuzzle):
+    """Add some actions to Board class
+       ---> Glazed door animation on cover and reveal
+    """
+    def __init__(self, shapes, colors, pictures=None, reveal_speed=8, size=40, gap=10,
                  nb_column=10, nb_row=7):
-        super().__init__(shapes, colors, display=pygame.Surface((640, 480)),
-                         size=size, gap=gap, nb_column=10, nb_row=7)
+        super().__init__(shapes, colors, pictures, display=pygame.Surface((640, 480)),
+                         size=size, gap=gap, nb_column=nb_column, nb_row=nb_row)
         self.reveal_speed = reveal_speed
 
     def reveal_box(self, boxes, clock, speed=None):
@@ -251,9 +333,9 @@ class AnimBoard(Board):
             self.draw_icons(shape, color, box[0], box[1])
             if coverage > 0:  # only draw the coverage if there is an coverage
                 pygame.draw.rect(self.display, self.box_color,
-                                (left, top, coverage, self.size))
+                                (left, top, min(coverage, self.size), self.size))
         pygame.display.update()
-        clock.tick(25)
+        clock.tick(20)
 
 
 class PygameMain(PygameStarter):
@@ -265,6 +347,11 @@ class PygameMain(PygameStarter):
         self.board = board
         # Change display surface to main screen and update margins
         self.board.set_display(self.screen)
+        # Load pictures and adapt scales to boxes, then store them in dico
+        self.board.dico_picture = self.board.set_picture_dico(self.board.pictures)
+        # Initialize the board
+        self.board.board = self.board.get_randomized()
+
         # Define background colors
         self.background = self.board.bg_color  # Navy blue
         self.light_background = (235, 235, 235)  # Gray
@@ -277,6 +364,7 @@ class PygameMain(PygameStarter):
 
     def draw(self):
         self.screen.fill(self.background)
+        self.board.draw_border()
         self.board.draw_board(self.board.states)
         if self.start:
             pygame.time.wait(300)
@@ -332,7 +420,7 @@ class PygameMain(PygameStarter):
         if self.game_won() is True:
             self.won_animation()
             # Reset the board
-            pygame.time.wait(2000)
+            pygame.time.wait(3000)
             self.board.states = self.board.generate_revealed_boxes(False)
             self.start = True
         self.first_selection = None  # reset first_selection
@@ -342,10 +430,11 @@ class PygameMain(PygameStarter):
         boxes = [[x, y] for y in range(self.board.nb_row) for x in range(self.board.nb_column)]
         shuffle(boxes)
         # Reveal slower than during the game
-        for box_group in split_into_groups(10, boxes):
-            self.board.reveal_box(box_group, self.clock, 6)
-            pygame.time.wait(4000)
-            self.board.cover_box(box_group, self.clock, 6)
+        for box_group in split_into_groups(8, boxes):
+            self.board.reveal_box(box_group, self.clock)
+            self.handle_quit()  # Add quit event if user want to quit now
+            pygame.time.wait(500)
+            self.board.cover_box(box_group, self.clock)
         self.start = False
 
     def won_animation(self):
@@ -372,13 +461,14 @@ class PygameMain(PygameStarter):
 #### Programme principal : ####
 ###############################
 
-
-main = PygameMain(AnimBoard(ALL_SHAPES, ALL_COLORS, size=30, gap=2), size=(1200, 800))
-main.mainloop(10)
+if __name__ == '__main__':
+    main = PygameMain(AnimEvenPuzzle(ALL_SHAPES, ALL_COLORS, ALL_PICTURES, size=50,
+                      gap=10, nb_column=12, nb_row=8), size=(1000, 600))
+    main.mainloop(20)
 
 
 ###########################################################
-##### Test de la classe Board avec le module unittest #####
+##### Test de la classe EvenPuzzle avec le module unittest #####
 ###########################################################
 
 # if __name__ == "__main__":
@@ -392,19 +482,19 @@ main.mainloop(10)
 
     #     def testCreationAndAccess(self):
     #         with self.assertRaises(TypeError):
-    #             Board(ALL_SHAPES, "1")
+    #             EvenPuzzle(ALL_SHAPES, "1")
     #         with self.assertRaises(AssertionError):
-    #             Board(ALL_SHAPES, ALL_COLORS, nb_column=9)
+    #             EvenPuzzle(ALL_SHAPES, ALL_COLORS, nb_column=9)
     #         with self.assertRaises(AssertionError):
-    #             Board(WHITE, ALL_SHAPES)
+    #             EvenPuzzle(WHITE, ALL_SHAPES)
 
-    #         mainBoard = Board(ALL_SHAPES, ALL_COLORS)
+    #         mainBoard = EvenPuzzle(ALL_SHAPES, ALL_COLORS)
     #         self.assertEqual(mainBoard.left_top_coords(1, 1), (120, 115))
     #         self.assertEqual((mainBoard.x_margin, mainBoard.y_margin), (70, 65))
     #         print(".Creation and access tests passed")
 
     #     def testFunctions(self):
-    #         mainBoard = Board(ALL_SHAPES, ALL_COLORS)
+    #         mainBoard = EvenPuzzle(ALL_SHAPES, ALL_COLORS)
     #         test = split_into_groups(5, ALL_SHAPES)
     #         test = list(test)  # Transform generator into list
     #         self.assertEqual(len(test[0]), 5)
@@ -412,7 +502,7 @@ main.mainloop(10)
 
     # unittest.main()
 
-    # mainBoard = Board(ALL_SHAPES, ALL_COLORS)
+    # mainBoard = EvenPuzzle(ALL_SHAPES, ALL_COLORS)
     # for elem in mainBoard.board:
     #     for shape, color in elem:
     #         print(shape, color)
