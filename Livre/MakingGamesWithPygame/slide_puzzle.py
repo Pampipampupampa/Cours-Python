@@ -7,9 +7,9 @@
 
 "You have to find the correct position of all boxes, Have fun !!"" "
 
-###########################################
-#### Importation fonction et modules : ####
-###########################################
+########################################
+#### Classes and Methods imported : ####
+########################################
 
 
 import pygame
@@ -29,9 +29,9 @@ DOWN = 'down'
 LEFT = 'left'
 RIGHT = 'right'
 
-##############################################################################
-#### Gestion d'évènements : définition de différentes Fonctions/Classes : ####
-##############################################################################
+#######################################
+#### Classes, Methods, Functions : ####
+#######################################
 
 
 class BaseBoard:
@@ -426,11 +426,11 @@ class PygameMain(PygameStarter):
             y += self.board.size  # Shift to box size
         return group
 
-###############################
-#### Programme principal : ####
-###############################
+########################
+#### Main Program : ####
+########################
 
 
 if __name__ == '__main__':
-    main = PygameMain(SlidePuzzle(nb_column=2, nb_row=2, size=80), size=(1100, 600))
+    main = PygameMain(SlidePuzzle(nb_column=5, nb_row=3, size=80), size=(1100, 600))
     main.mainloop(20)

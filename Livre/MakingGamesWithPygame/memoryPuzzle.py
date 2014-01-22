@@ -7,9 +7,9 @@
 
 "You have find all pairs on the board by using the mouse to win, Have fun !!"
 
-###########################################
-#### Importation fonction et modules : ####
-###########################################
+########################################
+#### Classes and Methods imported : ####
+########################################
 
 import pygame
 from pygame.locals import *
@@ -53,9 +53,9 @@ GEM = 'gem1.png'
 PINK_GIRL = 'pinkgirl.png'
 ALL_PICTURES = (CAT, GEM, PINK_GIRL)
 
-##############################################################################
-#### Gestion d'évènements : définition de différentes Fonctions/Classes : ####
-##############################################################################
+#######################################
+#### Classes, Methods, Functions : ####
+#######################################
 
 
 def split_into_groups(groupSize, list_in):
@@ -118,14 +118,14 @@ class BaseBoard:
         top = self.y_margin + (self.size + self.gap) * box_y
         return (left, top)
 
-    def draw_border(self):
+    def draw_border(self, thick=4):
         """Add a border to delimit the game"""
         left, top = self.left_top_coords(0, 0)
         width = (self.size + self.gap) * self.nb_column
         height = (self.size + self.gap) * self.nb_row
         pygame.draw.rect(self.display, self.border_color,
-                        (left, top, width, height), 4)
-
+                        (left-thick+1, top-thick+1, width+thick, height+thick),
+                         thick)
 
 class EvenPuzzle(BaseBoard):
     """Base class to compute puzzle game
@@ -295,7 +295,7 @@ class EvenPuzzle(BaseBoard):
 
 class AnimEvenPuzzle(EvenPuzzle):
     """Add some actions to Board class
-       ---> Glazed door animation on cover and reveal
+       ---> Sliding door animation on cover and reveal
     """
     def __init__(self, shapes, colors, pictures=None, reveal_speed=8, size=40, gap=10,
                  nb_column=10, nb_row=7):
@@ -314,7 +314,7 @@ class AnimEvenPuzzle(EvenPuzzle):
             self.draw_boxcover(boxes, coverage, clock)
 
     def cover_box(self, boxes, clock, speed=None):
-        """Reveal boxes animation
+        """Cover boxes animation
            Clock needed to see the animation (timer)"""
         if speed is None:
             speed = self.reveal_speed
@@ -324,7 +324,6 @@ class AnimEvenPuzzle(EvenPuzzle):
             self.draw_boxcover(boxes, coverage, clock)
 
     def draw_boxcover(self, boxes, coverage, clock):
-        """pass"""
         for box in boxes:
             left, top = self.left_top_coords(box[0], box[1])
             pygame.draw.rect(self.display, self.bg_color,
@@ -457,9 +456,11 @@ class PygameMain(PygameStarter):
         """Set some values to start values"""
         self.mouse_clic = False
 
-###############################
-#### Programme principal : ####
-###############################
+
+########################
+#### Main Program : ####
+########################
+
 
 if __name__ == '__main__':
     main = PygameMain(AnimEvenPuzzle(ALL_SHAPES, ALL_COLORS, ALL_PICTURES, size=50,
@@ -467,9 +468,9 @@ if __name__ == '__main__':
     main.mainloop(20)
 
 
-###########################################################
-##### Test de la classe EvenPuzzle avec le module unittest #####
-###########################################################
+#########################################
+##### Test EvenPuzzle with unittest #####
+#########################################
 
 # if __name__ == "__main__":
 

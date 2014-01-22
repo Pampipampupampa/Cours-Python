@@ -4,18 +4,18 @@
 
 """HELPER FOR MAIN CLASS OF A PYTHON PROGRAM"""
 
-###########################################
-#### Importation fonction et modules : ####
-###########################################
+########################################
+#### Classes and Methods imported : ####
+########################################
 
 import sys
 import pygame
 from pygame.locals import *
 
 
-##############################################################################
-#### Gestion d'évènements : définition de différentes Fonctions/Classes : ####
-##############################################################################
+#######################################
+#### Classes, Methods, Functions : ####
+#######################################
 
 
 class PygameStarter:
@@ -129,9 +129,9 @@ class PygameStarter:
     def start_actions(self):
         pass
 
-###############################
-#### Programme principal : ####
-###############################
+########################
+#### Main Program : ####
+########################
 
 
 if __name__ == '__main__':
