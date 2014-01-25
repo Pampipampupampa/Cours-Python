@@ -101,24 +101,24 @@ def fonction_argumente(nom, prenom):
 def createur_de_decorateur():
 
     print("Je fabrique des décorateurs. Je suis éxécuté une seule fois :" +
-          "à la création du décorateur")
+          "à la création du décorateur 1")
 
     def mon_decorateur(func):
 
         print("Je suis un décorateur, je suis éxécuté une seule fois quand" +
-              " on décore la fonction")
+              " on décore la fonction 3")
 
         def wrapper():
-            print("Je suis le wrapper autour de la fonction décorée. "
+            print("Je suis le wrapper autour de la fonction décorée. 5"
                   "Je suis appelé quand on appelle la fonction décorée. "
                   "En tant que wrapper, je retourne le RESULTAT de la fonction décorée.")
             return func()
 
-        print("En tant que décorateur, je retourne le wrapper")
+        print("En tant que décorateur, je retourne le wrapper 4")
 
         return wrapper
 
-    print("En tant que créateur de décorateur, je retourne un décorateur")
+    print("En tant que créateur de décorateur, je retourne un décorateur 2")
     return mon_decorateur
 
 
@@ -246,7 +246,7 @@ def reverse_string(string):
 # fonction_decoree_avec_arguments("Marabou", "Bouclier")
 
 # Ordre des décorateurs et décorateurs utiles
-print(reverse_string("Karine alla en Irak"))
-print(reverse_string("Sa nana snob porte de trop bons ananas"))
+# print(reverse_string("Karine alla en Irak"))
+# print(reverse_string("Sa nana snob porte de trop bons ananas"))
 
 
