@@ -3,8 +3,16 @@
 
 """
 
+
     Read a  xml file and add new item into it.
     field_dict used to add text according to tag name
+
+    Hack used to print pretty xml, but better way can be used :
+    ---> The lxml module which is a externe library can be used
+
+    ---> Tail can be used too : Provide a way to add all type of object
+         except application-specific object after the element’s end tag and
+         before the next tag.
 
 
 """
@@ -69,11 +77,11 @@ def add_item(tree, new_fields, template, title="Yes"):
        <template[0]>
         <template[1]>str(field)</template[1]>
         <template[2]>
-            <field_dict>0</field_dict>
+            <field_dict>dict value</field_dict>
             <no inside field_dict>0 to 255</no inside field_dict>
             <no inside field_dict>0 to 255</no inside field_dict>
             <no inside field_dict>0 to 255</no inside field_dict>
-            <field_dict>2</field_dict>
+            <field_dict>dict value</field_dict>
         </template[2]>
        </template[0]>
 
@@ -130,6 +138,23 @@ def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
         with open(xml_out, "w") as f:
             f.write(head)
             f.write(pretty_xml)
+
+
+def indent(elem, level=0):
+    """Inplace prettyprint formatter"""
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
 
 
 ########################
