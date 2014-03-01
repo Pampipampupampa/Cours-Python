@@ -124,8 +124,9 @@ class BaseBoard:
         width = (self.size + self.gap) * self.nb_column
         height = (self.size + self.gap) * self.nb_row
         pygame.draw.rect(self.display, self.border_color,
-                        (left-thick+1, top-thick+1, width+thick, height+thick),
+                        (left-thick/2, top-thick/2, width+thick, height+thick),
                          thick)
+
 
 class EvenPuzzle(BaseBoard):
     """Base class to compute puzzle game

@@ -103,7 +103,7 @@ class FenPrincipale(QWidget):
         icone = pygame.image.load(fenIcone)
         pygame.display.set_icon(icone)
         pygame.display.set_caption(fenTitre)
-        pygame.time.Clock().tick(50)  # Limitation de vitesse de la boucle
+        pygame.time.Clock().tick(10)  # Limitation de vitesse de la boucle
         # Boucle infinie permettant de garder le programme ouvert
         continuer = 1
         #Chargement du fond
@@ -145,8 +145,8 @@ class FenPrincipale(QWidget):
                 font = pygame.font.SysFont("Loma", 30)
                 rendered = font.render("FÉLICITATION L'AMI !!!", 0, (0, 0, 0))
                 fenetre.blit(rendered, (50, fenTaille / 2))
-                # Flip permet de faire une modification instantannée
                 pygame.display.flip()
+                pygame.time.wait(1000)
                 continuer = 0
 
         pygame.quit()

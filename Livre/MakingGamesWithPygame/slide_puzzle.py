@@ -84,7 +84,7 @@ class BaseBoard:
         width = (self.size + self.gap) * self.nb_column
         height = (self.size + self.gap) * self.nb_row
         pygame.draw.rect(self.display, self.border_color,
-                        (left-thick+1, top-thick+1, width+thick, height+thick),
+                        (left-thick/2, top-thick/2, width+thick, height+thick),
                          thick)
 
 
@@ -161,8 +161,8 @@ class SlidePuzzle(BaseBoard):
            font : This parameter must be a pygame prepared font"""
 
         left, top = self.left_top_coords(box_x, box_y)
-        pygame.draw.rect(self.display, self.box_color, (left+pad_x, top+pad_y,
-                         self.size, self.size))
+        pygame.draw.rect(self.display, self.box_color,
+                        (left+pad_x+1, top+pad_y+1, self.size, self.size))
 
         text = font.render(str(number), True, self.text_color)
         text_rect = text.get_rect()
@@ -390,7 +390,7 @@ class PygameMain(PygameStarter):
         # Get the moving box
         left, top = self.board.left_top_coords(box_x, box_y)
         # Cover the box initial position which is currently moving
-        pygame.draw.rect(surface, self.background, (left, top, self.board.size,
+        pygame.draw.rect(surface, self.background, (left+1, top+1, self.board.size,
                                                     self.board.size))
         # Move the box to the blank position with step
         for i in range(0, self.board.size, animation_speed):

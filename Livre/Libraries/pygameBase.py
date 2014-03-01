@@ -19,25 +19,37 @@ from pygame.locals import *
 
 
 class PygameStarter:
-    """A class which defines a starter to create a pygame application
+    """
+
+        A class which defines a starter to create a pygame application.
+
         Initiate the main window with size and background color
         Handle_events : keyboard and mouse
-        Print the current application FPS
         Start the mainloop by calling self.mainloop()
-                                                     """
-    def __init__(self, size=(640, 480), background=(255, 255, 255), title="Game"):
-        pygame.init()
+
+     """
+
+    def __init__(self, size=(640, 480), background=(255, 255, 255),
+                 title="Game", init=True):
+
+        # Allow to init only if needed
+        self.init = init
+        if self.init:
+            pygame.init()
+
+        # Minimal window elements
         self.screen = pygame.display.set_mode(size, 0, 32)
         self.screen.fill(background)
-        pygame.display.flip()  # Update the entire content
-        self.running = False  # Wait for mainloop to start
-        self.clock = pygame.time.Clock()  # Track FPS
-        self.size = size  # Size of the screen
-        self.fps = 0  # Define FPS when start mainloop
-        self.time_passed = 0  # Compute time passed since last loop
-        self.background = background
         self.title = title
         pygame.display.set_caption(self.title)
+        pygame.display.flip()  # Update the entire content
+
+        self.running = False  # Allow to create a game instance without running it
+        self.clock = pygame.time.Clock()  # Track FPS
+        self.size = size  # Size of the screen
+        self.fps = 0  # Keep trace of game FPS
+        self.time_passed = 0  # Compute time passed since last loop
+        self.background = background
 
     # Handle events
     def handle_events(self):
@@ -45,9 +57,11 @@ class PygameStarter:
         for event in pygame.event.get():
             if event.type == QUIT:
                 self.running = False  # Quit
+                self.action_quit()
             elif event.type == KEYUP:
                 if event.key == K_ESCAPE:
                     self.running = False  # Quit (useful when mouse hide/block)
+                    self.action_quit()
                 else:
                     self.key_up(event.key)
             elif event.type == KEYDOWN:
@@ -59,18 +73,38 @@ class PygameStarter:
             elif event.type == MOUSEMOTION:
                 self.mouse_motion(event.buttons, event.pos, event.rel)
 
-    # Wait for key (pressed)
-    def wait_for_key(self):
+    def handle_quit(self):
+        """Recup all quit event to force quit inside other methode, function, ...
+           Should be use inside long loop to break it and quit a program"""
+        for event in pygame.event.get(QUIT):  # get all the QUIT events
+            self.running = False
+            self.action_quit()
+        for event in pygame.event.get(KEYUP):  # get all the KEYUP events
+            if event.key == K_ESCAPE:
+                self.running = False
+                self.action_quit()
+            pygame.event.post(event)  # add other KEYUP event to queue
+
+    # Wait until a specific key is pressed
+    def wait_for_key(self, key):
         """Wait for key pressed"""
         press = False
+        # Pause game and clear events list
+        # Avoid leaving pause mode without meaning to
+        pygame.time.wait(100)
+        pygame.event.clear()  # Clear events
         while not press:
             for event in pygame.event.get():
-                if event.type == KEYUP:
+                if event.type == KEYUP and event.key == key:
                     press = True
+            # Limit loop speed with clock.tick which spends less CPU usage
+            # than pygame.time.wait
+            self.clock.tick(self.fps)
+            self.handle_quit()  # Check for QUIT events
 
     # Enter the main loop
     def mainloop(self, fps=0):
-        """Start the program mainloop"""
+        """Start the program mainloop which calls methods every loops"""
         self.running = True
         self.fps = fps
         while self.running:
@@ -81,20 +115,7 @@ class PygameStarter:
             pygame.display.flip()
             self.time_passed = self.clock.tick(self.fps)
             self.restart()
-        # Close pygame properly if user try to quit
-        self.action_quit()
-
-    def handle_quit(self):
-        """Recup all quit event to force quit inside other methode, function, ...
-           Should be use inside long loop"""
-        for event in pygame.event.get(QUIT):  # get all the QUIT events
-            self.running = False
-            self.action_quit()
-        for event in pygame.event.get(KEYUP):  # get all the KEYUP events
-            if event.key == K_ESCAPE:
-                self.running = False
-                self.action_quit()
-            pygame.event.post(event)  # add other KEYUP event to queue
+        return
 
     def action_quit(self):
         """Print quit message and quit pygame window properly"""
@@ -102,31 +123,66 @@ class PygameStarter:
         pygame.quit()
         sys.exit()
 
+    def prepare_text(self, text, font, color, x, y, bg_color=None,
+                     pos="topleft"):
+        """
+            Prepare a text to be blit to the screen.
+
+            Necessary :
+            text : Text to print on the window
+            font : Pygame.font.Font
+            color : Text color
+            x, y : Pixel coordinates to define where to draw
+
+            Optional
+            bg_color : Background color
+            pos : Define if x and y are topleft or center coordinates
+
+        """
+        if bg_color:
+            text_surf = font.render(text, True, color, bg_color)
+        else:
+            text_surf = font.render(text, True, color)
+        text_rect = text_surf.get_rect()
+        if pos == "topleft":
+            text_rect.topleft = x, y
+        elif pos == "center":
+            text_rect.center = x, y
+        return (text_surf, text_rect)
+
     def update(self):
         pass
 
     def draw(self):
+        """Draw all shapes and pictures on the screen surface"""
         pass
 
     def key_down(self, key):
+        """Called when a key is pushed"""
         pass
 
     def key_up(self, key):
+        """Called when a key is released"""
         pass
 
     def mouse_up(self, button, pos):
+        """Called when mouse clic is released"""
         pass
 
     def mouse_down(self, button, pos):
+        """Called when mouse clic is pushed"""
         pass
 
     def mouse_motion(self, buttons, pos, rel):
+        """Call when mouse is moved"""
         pass
 
     def restart(self):
+        """Compute some update to some variables before run an other loop"""
         pass
 
     def start_actions(self):
+        """Compute some update when new loop begins"""
         pass
 
 ########################
