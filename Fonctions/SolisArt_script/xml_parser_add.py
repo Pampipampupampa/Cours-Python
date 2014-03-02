@@ -7,7 +7,8 @@
     Read a  xml file and add new item into it.
     field_dict used to add text according to tag name
 
-    Hack used to print pretty xml, but better way can be used :
+    Some useful solutions to print a pretty xml file :
+    ---> Hack used to print pretty xml (to_beautiful_xml)
     ---> The lxml module which is a externe library can be used
 
     ---> Tail can be used too : Provide a way to add all type of object
@@ -22,7 +23,7 @@
 ########################################
 
 import xml.etree.ElementTree as ET
-import xml.dom.minidom as md
+# import xml.dom.minidom as md
 from random import randint
 
 from functools import wraps
@@ -99,7 +100,7 @@ def add_item(tree, new_fields, template, title="Yes"):
         # Base of current tree
         root = ET.SubElement(tree, template[0])
         # Keep trace of when this tag was added by using an attribute
-        root.set('updated', title)
+        # root.set('updated', title)
         # Add text inside template[1] tag
         ET.SubElement(root, tree.find(template[1]).tag).text = str(elem)
         child = ET.SubElement(root, tree.find(template[2]).tag)
@@ -114,7 +115,7 @@ def add_item(tree, new_fields, template, title="Yes"):
 
 def to_beautiful_xml(bad_xml):
     """
-        Return a pretty xml.
+        Return a pretty xml. Deprecated, use indent function instead
     """
     bad_xml = md.parseString(ET.tostring(bad_xml, encoding="unicode"))
     # Pretty xml with bad method... (other way ????)
@@ -134,7 +135,8 @@ def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
         print("Nothing to change, script now ended")
     else:
         print("{} new element[s] to add, now continue".format(length))
-        pretty_xml = to_beautiful_xml(tree)
+        indent(tree)
+        pretty_xml = ET.tostring(tree, encoding="unicode")
         with open(xml_out, "w") as f:
             f.write(head)
             f.write(pretty_xml)
@@ -142,19 +144,20 @@ def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
 
 def indent(elem, level=0):
     """Inplace prettyprint formatter"""
-    i = "\n" + level*"  "
+    indentation = "\n" + level*"    "  # End line + indentation
     if len(elem):
+        # Used to indent after element with subelement
         if not elem.text or not elem.text.strip():
-            elem.text = i + "  "
+            elem.text = indentation + "    "  # first SubElement of an Element
         if not elem.tail or not elem.tail.strip():
-            elem.tail = i
+            elem.tail = indentation
         for elem in elem:
             indent(elem, level+1)
         if not elem.tail or not elem.tail.strip():
-            elem.tail = i
+            elem.tail = indentation
     else:
         if level and (not elem.tail or not elem.tail.strip()):
-            elem.tail = i
+            elem.tail = indentation
 
 
 ########################
