@@ -23,7 +23,6 @@
 ########################################
 
 import xml.etree.ElementTree as ET
-# import xml.dom.minidom as md
 from random import randint
 
 from functools import wraps
@@ -117,6 +116,8 @@ def to_beautiful_xml(bad_xml):
     """
         Return a pretty xml. Deprecated, use indent function instead
     """
+    import xml.dom.minidom as md
+
     bad_xml = md.parseString(ET.tostring(bad_xml, encoding="unicode"))
     # Pretty xml with bad method... (other way ????)
     # No need for first line
@@ -143,7 +144,7 @@ def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
 
 
 def indent(elem, level=0):
-    """Inplace prettyprint formatter"""
+    """Recursive prettyprint formatter"""
     indentation = "\n" + level*"    "  # End line + indentation
     if len(elem):
         # Used to indent after element with subelement

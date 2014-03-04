@@ -31,6 +31,7 @@ start = datetime.datetime(year, month, day)
 
 # Add a description in the csv file (First row)
 title = ["Created on {:%B\t%d/%m/%Y %H:%M}".format(datetime.datetime.now())]
+title2 = "Created on {:%B\t%d/%m/%Y %H:%M}".format(datetime.datetime.now())
 date = "{:%B\t%d\t%Y at %H:%M}".format(datetime.datetime.today())
 
 # Data Template for xml
@@ -56,7 +57,7 @@ def parse_and_store(csv_in, csv_out, xml_in, xml_out, template):
         # Parse and clean CSV file
         print("\n### Start to build {} ###".format(csv_out))
         # Cast to set because update_xml_linestyle accept only set
-        fields = set(format_csv(csv_in, csv_out, title, start))
+        fields = set(format_csv_yield11(csv_in, csv_out, start, title2))
         print("Fields are", fields)
         print(" ----> File {} was generated without errors".format(csv_out))
         # Update XML file

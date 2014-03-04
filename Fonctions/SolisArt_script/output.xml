@@ -435,11 +435,11 @@
         </second>
     </item>
     <item>
-        <first>T5.T</first>
+        <first>T3.T</first>
         <second>
-            <R>219</R>
-            <G>71</G>
-            <B>29</B>
+            <R>171</R>
+            <G>166</G>
+            <B>113</B>
             <Style>0</Style>
             <Width>2</Width>
         </second>
@@ -447,19 +447,19 @@
     <item>
         <first>T1.T</first>
         <second>
-            <R>139</R>
-            <G>83</G>
-            <B>180</B>
+            <R>219</R>
+            <G>229</G>
+            <B>10</B>
             <Style>0</Style>
             <Width>2</Width>
         </second>
     </item>
     <item>
-        <first>T3.T</first>
+        <first>T5.T</first>
         <second>
-            <R>255</R>
-            <G>11</G>
-            <B>195</B>
+            <R>95</R>
+            <G>20</G>
+            <B>212</B>
             <Style>0</Style>
             <Width>2</Width>
         </second>
