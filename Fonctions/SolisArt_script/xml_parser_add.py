@@ -9,22 +9,24 @@
 
     Some useful solutions to print a pretty xml file :
     ---> Hack used to print pretty xml (to_beautiful_xml)
-    ---> The lxml module which is a externe library can be used
 
     ---> Tail can be used too : Provide a way to add all type of object
          except application-specific object after the element’s end tag and
-         before the next tag.
+         before the next tag. (indent)
 
 
 """
-
+"""
+    ---> The lxml module which is a externe library can be used
+"""
 ########################################
 #### Classes and Methods imported : ####
 ########################################
 
 import xml.etree.ElementTree as ET
-from random import randint
 
+from random import randint
+from sys import exit as sys_exit
 from functools import wraps
 
 #####################
@@ -99,6 +101,7 @@ def add_item(tree, new_fields, template, title="Yes"):
         # Base of current tree
         root = ET.SubElement(tree, template[0])
         # Keep trace of when this tag was added by using an attribute
+        # Idiot SolisArt parsing
         # root.set('updated', title)
         # Add text inside template[1] tag
         ET.SubElement(root, tree.find(template[1]).tag).text = str(elem)
@@ -133,7 +136,8 @@ def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
     head, tree = clean_xml(xml_in)
     length = add_item(tree, new_fields, template, title)
     if length == 0:
-        print("Nothing to change, script now ended")
+        print("Nothing to change, script ended")
+        sys_exit()  # Kill script
     else:
         print("{} new element[s] to add, now continue".format(length))
         indent(tree)
@@ -144,7 +148,9 @@ def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
 
 
 def indent(elem, level=0):
-    """Recursive prettyprint formatter"""
+    """
+        Recursive prettyprint formatter
+    """
     indentation = "\n" + level*"    "  # End line + indentation
     if len(elem):
         # Used to indent after element with subelement

@@ -15,7 +15,7 @@ Choix 1 : Obtenir une librairie pour un autre fichier python
     Etape 3 : Compiler la librairie
         ----> obtention *.so
         gcc hello.c -o hello.so -shared -pthread -fPIC -fwrapv -O4 -Wall -fno-strict-aliasing $(pkg-config python3 --cflags)
-
+        gcc -shared -pthread -fPIC -fwrapv -O2 -Wall -fno-strict-aliasing -I/usr/include/python3.3 -o hello.so hello.c
 
 
 
