@@ -1,1 +1,0 @@
-Ensemble de fonction Python plus ou moins utiles !!!!!!!!!
