@@ -50,8 +50,8 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "Solar_tank.port_a1.m_flow": "Flow_ExchTank_bot",
                    "Solar_tank.port_a2.m_flow": "Flow_ExchTank_top",
                    "Storage_tank.port_a1.m_flow": "Flow_ExchStorTank",
-                   "mFlow_boiler.m_flow": "Flow_boiler",
-                   "boi.m_flow": "Flow_boiler",
+                   "mFlow_boiler.m_flow": "Flow_Boiler",
+                   "boi.m_flow": "Flow_Boiler",
                    "weaBus.HDifHor": "HDifHor",
                    "weaBus.HDirNor": "HDirNor",
                    "solarPanel_ISO.HDifTilIso.H": "HDifTil_collector",
@@ -60,11 +60,10 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "integrator_boiler.Energy": "Boiler_Energy",
                    "integrator_radiator.Energy": "Radiator_Energy",
                    "integrator_drawingUp.Energy": "DrawingUp_Energy",
-                   "TRooAir.T": "T12_air_house", "TRooHou1.y": "T12_hour",
-                   "roo.heaPorRad.T": "T12_rad_house", "TRooDay.y": "T12_day",
-                   "roo.radTem.TRad": "T12_rad_house", "PHea.y": "House_Power",
-                   "product.y": "Flow_Extraction", "EHea.y": "House_Energy",
-                   "miniAverage.TminOfDay": "T9_mini",
+                   "TRooHou1.y": "T12_hour", "roo.heaPorRad.T": "T12_rad_house",
+                   "TRooDay.y": "T12_day", "roo.radTem.TRad": "T12_rad_house",
+                   "PHea.y": "House_Power", "product.y": "Flow_Extraction",
+                   "EHea.y": "House_Energy", "miniAverage.TminOfDay": "T9_mini",
                    "miniAverage.TmoyOfDay": "T9_moy",
                    "weaDat.weaBus.TDryBul": "T9_ext"
                    }
@@ -271,9 +270,9 @@ if __name__ == '__main__':
     head = title + "\t\t" + units + "\n"
 
     unit_converter = {"celsius": (re.compile("\AT\d+"), to_celsius),
+                      "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
                       "l_min": (re.compile("\Z\AS\d+" "|\AFlow_[A-Z]+"), to_l_min),
-                      "mult_100": (re.compile("\S+_state"), to_100),
-                      "kWh": (re.compile("\Z[a-z]_Energy"), to_kwh)}
+                      "mult_100": (re.compile("(\S+),_state"), to_100)}
 
     fields = process_actions(csv_in, csv_out, start, nrows=20, head=head,
                              convert_dicts=(field_converter, unit_converter))

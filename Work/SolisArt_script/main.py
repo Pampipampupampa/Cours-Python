@@ -22,10 +22,10 @@ from xml_parser_add import *
 #### Parmeters : ####
 #####################
 
-csv_in = "C:\\Users\\bois\\Documents\\Dymola\\Data\\raw\\" + \
-         "olivier_house.csv"
-csv_out = "C:\\Users\\bois\\Documents\\Dymola\\Data\\clean\\" + \
-          "olivier_house.csv"
+csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
+         "SolisConfort_rad.csv"
+csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
+          "SolisConfort_rad.csv"
 xml_in = "C:\\Users\\bois\\Documents\\SolisGraph\\SolisGraphDrawingStyles.xml"
 xml_out = "C:\\Users\\bois\\Documents\\SolisGraph\\SolisGraphDrawingStyles.xml"
 
@@ -41,9 +41,10 @@ head = title + "\t\t" + units + "\n"
 date = "{:%B\t%d\t%Y at %H:%M}".format(datetime.datetime.today())
 
 unit_converter = {"celsius": (re.compile("\AT\d+"), to_celsius),
-                  "kWh": (re.compile("[A-Z]([a-z])*_Energy"), to_kwh),
+                  "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
                   "l_min": (re.compile("\Z\AS\d+" "|\AFlow_[A-Z]+"), to_l_min),
-                  "mult_100": (re.compile("(\S+),_state"), to_100)}
+                  "mult_100": (re.compile("(\S+)_state"), to_100)}
+
 # Data Template for xml
 TEMPLATE = ("item", "item/first", "item/second")
 
