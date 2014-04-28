@@ -1,3 +1,11 @@
+    print("\n### Csv parameters ###")
+    print("Meteo file start at", start)
+    print("Input file is : {}".format(csv_in))
+    print("Output file is : {}".format(csv_out))
+    print("\n### Xml parameters ###")
+    print("Input file is : {}".format(xml_in))
+    print("Output file is : {}\n\n{}".format(xml_out, "-"*50))
+    flag = input("Press <Yes> to continue ... : ")
 #! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
@@ -23,9 +31,9 @@ from xml_parser_add import *
 #####################
 
 csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-         "SolisConfort_rad.csv"
+         "olivier_house.csv"
 csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-          "SolisConfort_rad.csv"
+          "olivier_house_read.csv"
 xml_in = "C:\\Users\\bois\\Documents\\SolisGraph\\SolisGraphDrawingStyles.xml"
 xml_out = "C:\\Users\\bois\\Documents\\SolisGraph\\SolisGraphDrawingStyles.xml"
 
@@ -55,24 +63,15 @@ TEMPLATE = ("item", "item/first", "item/second")
 
 def parse_and_store(csv_in, csv_out, xml_in, xml_out, template):
     """Format csv file and update xml file with csv fields"""
-    print("\n### Csv parameters ###")
-    print("Meteo file start at", start)
-    print("Input file is : {}".format(csv_in))
-    print("Output file is : {}".format(csv_out))
-    print("\n### Xml parameters ###")
-    print("Input file is : {}".format(xml_in))
-    print("Output file is : {}\n\n{}".format(xml_out, "-"*50))
-    flag = input("Press <Yes> to continue ... : ")
     print("-"*50)
     if flag in ("Yes", "Y", "y", "yes", "YES"):
         # Parse and clean CSV file
         print("\n### Start to build {} ###".format(csv_out))
         # Cast to set because update_xml_linestyle accept only set
-        fields = set(process_actions(csv_in, csv_out, start, debug=True,
-                                     nrows=None, head=head,
+        fields = set(process_actions(csv_in, csv_out, start, debug=False,
+                                     D_type="real", nrows=None, head=head,
                                      convert_dicts=(field_converter,
                                                     unit_converter)))
-        print("Fields are", fields)
         print("\n" + "-"*25 + "\nFields are :\n")
         for field in fields:
             print(field)

@@ -9,6 +9,7 @@
 
 """
 
+
 ########################################
 #### Classes and Methods imported : ####
 ########################################
@@ -97,6 +98,14 @@ def convert_to_datetimestring(step, start):
         yield datetime.datetime.strftime(start +
                                          datetime.timedelta(seconds=int(el)),
                                          "%d/%m/%Y %H:%M")
+
+
+def convert_to_datetime(step, start):
+    """
+      This parser convert to a real datetime format
+    """
+    for el in step:
+        yield start + datetime.timedelta(seconds=int(el))
 
 
 def to_celsius(struct, column):
@@ -199,7 +208,7 @@ def remove_duplicate(struct):
 
 
 @benchmark
-def process_actions(in_file, out_file, start_time, seps=(",", ";"),
+def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
                     csv_index="Time", skiprows=None, nrows=None,
                     convert_dicts=({}, {}), head=None, index_name="Date",
                     float_format="%.2f", debug=False):
@@ -208,7 +217,9 @@ def process_actions(in_file, out_file, start_time, seps=(",", ";"),
         Return all fields except the index one.
           - in_file is the input csv file
           - out_file is the output csv file
-          - seps is a tuple or list of in and out file
+          - start_time used to compute time step conversions
+          - D_type allows two date format, real or SolisArt format
+          - seps is a tuple or list of in and out file columns separators
           - csv_index is the column name to convert into index column
           - skiprows allows to start read the in_file after <x> rows
           - nrows allows to read the in_file during <x> rows
@@ -233,8 +244,16 @@ def process_actions(in_file, out_file, start_time, seps=(",", ";"),
 
     # Procceed to conversions
     cast_columns(new_csv, convert_dico=convert_dicts[1], debug=debug)
-    new_csv.index = [ind for ind in convert_to_datetimestring(new_csv.index,
-                                                              start_time)]
+
+    # Date conversion according to D_type parameter
+    if D_type in ("SolisArt", "solisart", "Solisart"):
+        print("SolisArt date format used")
+        new_csv.index = [ind for ind in convert_to_datetimestring(new_csv.index,
+                                                                  start_time)]
+    else:
+        print("Real date format used")
+        new_csv.index = [ind for ind in convert_to_datetime(new_csv.index,
+                                                            start_time)]
     new_csv.index.name = index_name
 
     # Write new_csv to out_file
