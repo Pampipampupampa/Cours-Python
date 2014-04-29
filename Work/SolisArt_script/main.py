@@ -1,11 +1,3 @@
-    print("\n### Csv parameters ###")
-    print("Meteo file start at", start)
-    print("Input file is : {}".format(csv_in))
-    print("Output file is : {}".format(csv_out))
-    print("\n### Xml parameters ###")
-    print("Input file is : {}".format(xml_in))
-    print("Output file is : {}\n\n{}".format(xml_out, "-"*50))
-    flag = input("Press <Yes> to continue ... : ")
 #! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
@@ -23,7 +15,7 @@
 ########################################
 
 from csv_formatter import *
-from xml_parser_add import *
+from xml_parser import *
 # import profile
 
 #####################
@@ -62,7 +54,18 @@ TEMPLATE = ("item", "item/first", "item/second")
 #######################################
 
 def parse_and_store(csv_in, csv_out, xml_in, xml_out, template):
-    """Format csv file and update xml file with csv fields"""
+    """
+        Format csv file and update xml file with csv fields
+    """
+
+    print("\n### Csv parameters ###")
+    print("Meteo file start at", start)
+    print("Input file is : {}".format(csv_in))
+    print("Output file is : {}".format(csv_out))
+    print("\n### Xml parameters ###")
+    print("Input file is : {}".format(xml_in))
+    print("Output file is : {}\n\n{}".format(xml_out, "-"*50))
+    flag = input("Press <Yes> to continue ... : ")
     print("-"*50)
     if flag in ("Yes", "Y", "y", "yes", "YES"):
         # Parse and clean CSV file
