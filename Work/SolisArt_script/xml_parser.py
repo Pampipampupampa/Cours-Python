@@ -11,14 +11,12 @@
     ---> Hack used to print pretty xml (to_beautiful_xml)
 
     ---> Tail can be used too : Provide a way to add all type of object
-         except application-specific object after the element’s end tag and
+         except application-specific object after elements ending tag and
          before the next tag. (indent)
 
-
-"""
-"""
     ---> The lxml module which is a externe library can be used
 """
+
 ########################################
 #### Classes and Methods imported : ####
 ########################################

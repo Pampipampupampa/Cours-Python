@@ -92,7 +92,7 @@ def benchmark(func):
 
 def convert_to_datetimestring(step, start):
     """
-        This parser convert into a solisart software format
+        This parser convert into a SolisArt software format
     """
     for el in step:
         yield datetime.datetime.strftime(start +
