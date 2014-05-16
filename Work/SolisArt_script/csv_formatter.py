@@ -49,8 +49,11 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "boi.y": "Backup_state",
                    "solarPanel_ISO.m_flow": "Flow_Collector",
                    "Solar_tank.port_a1.m_flow": "Flow_ExchTank_bot",
+                   "Solar_tank.portHex_a1.m_flow": "Flow_ExchTank_bot",
                    "Solar_tank.port_a2.m_flow": "Flow_ExchTank_top",
+                   "Solar_tank.portHex_a2.m_flow": "Flow_ExchTank_top",
                    "Storage_tank.port_a1.m_flow": "Flow_ExchStorTank",
+                   "Storage_tank.portHex_a.m_flow": "Flow_ExchStorTank",
                    "mFlow_boiler.m_flow": "Flow_Boiler",
                    "boi.m_flow": "Flow_Boiler",
                    "weaBus.HDifHor": "HDifHor",
@@ -250,10 +253,13 @@ def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
         print("SolisArt date format used")
         new_csv.index = [ind for ind in convert_to_datetimestring(new_csv.index,
                                                                   start_time)]
-    else:
+    elif D_type in ("Date", "RealDate", "real_date", "date", "Real_date"):
         print("Real date format used")
         new_csv.index = [ind for ind in convert_to_datetime(new_csv.index,
                                                             start_time)]
+    else:
+        print("Nothing change in index format")
+
     new_csv.index.name = index_name
 
     # Write new_csv to out_file

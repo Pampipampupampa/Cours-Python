@@ -72,7 +72,7 @@ def parse_and_store(csv_in, csv_out, xml_in, xml_out, template):
         print("\n### Start to build {} ###".format(csv_out))
         # Cast to set because update_xml_linestyle accept only set
         fields = set(process_actions(csv_in, csv_out, start, debug=False,
-                                     D_type="real", nrows=None, head=head,
+                                     D_type="", nrows=None, head=head,
                                      convert_dicts=(field_converter,
                                                     unit_converter)))
         print("\n" + "-"*25 + "\nFields are :\n")
