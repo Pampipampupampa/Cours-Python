@@ -26,7 +26,7 @@ from functools import wraps  # Keep trace of decorated functions arguments
 #### Parameters : ####
 ######################
 
-# Fields converters
+# Fields converters for house and general simulation
 field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "T2.T": "T2", "T3.T": "T3", "pump_algo.T3": "T3",
                    "T4.T": "T4", "pump_algo.T4": "T4",
@@ -71,6 +71,27 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "miniAverage.TmoyOfDay": "T9_moy",
                    "weaDat.weaBus.TDryBul": "T9_ext"
                    }
+
+# Fields converters for m_flow algorithm
+algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
+                        "flow_out.splitter.out_value[2]": "Flow_Heating",
+                        "flow_out.out_value[1]": "Flow_S6_out",
+                        "flow_out.out_value[2]": "Flow_S5_out",
+                        "flow_out.out_value[3]": "Flow_S4_out",
+                        "flow_out.out_value[4]": "Flow_S1_out",
+                        "flow_out.out_value[5]": "Flow_S2_out",
+                        "flow_out.out_value[6]": "Flow_S3_out",
+                        "flow_out.in_value_other[1]": "Flow_S6_in",
+                        "flow_out.in_value_other[2]": "Flow_S5_in",
+                        "flow_out.in_value_other[3]": "Flow_S4_in",
+                        "flow_out.in_value[1]": "Flow_S1_in",
+                        "flow_out.in_value[2]": "Flow_S2_in",
+                        "flow_out.in_value[3]": "Flow_S3_in",
+                        "flow_out.V3V_extra": "Vextra_state",
+                        "flow_out.splitter.in_value[1]": "Pump_nb_solar",
+                        "flow_out.splitter.in_value[2]": "Pump_nb_heating"
+                        }
+
 
 #######################################
 #### Classes, Methods, Functions : ####
@@ -137,6 +158,15 @@ def to_100(struct, column):
           - column is a panda dataFrame column name
     """
     struct[column] *= 100
+
+
+def to_10(struct, column):
+    """
+        Multiply per 10 values inside struct[column].
+          - struct is a panda dataFrame
+          - column is a panda dataFrame column name
+    """
+    struct[column] *= 10
 
 
 def to_kwh(struct, column):
@@ -280,13 +310,42 @@ def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
 
 if __name__ == '__main__':
 
-    csv_in = "bad.csv"
+    # TESTING #
+    # csv_in = "bad.csv"
 
-    csv_out = "clean.csv"
+    # csv_out = "clean.csv"
+
+    # # Start time for timestep
+    # start = datetime.datetime(year=2014, month=1, day=1)
+    # start
+
+    # # Add a description in the csv file (First row)
+    # title = "Created on {:%B\t%d/%m/%Y %H:%M}".format(datetime.datetime.now())
+    # units = "Temperature [°C] -- Flow [l/min]" +\
+    #         " -- Radiation [W/m2] -- Drawing_up [l] -- State [0 or 100]"
+    # head = title + "\t\t" + units + "\n"
+
+    # unit_converter = {"celsius": (re.compile("\AT\d+"), to_celsius),
+    #                   "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
+    #                   "l_min": (re.compile("\Z\AS\d+" "|\AFlow_[A-Z]+"), to_l_min),
+    #                   "mult_100": (re.compile("(\S+),_state"), to_100)}
+
+    # fields = process_actions(csv_in, csv_out, start, nrows=20, head=head,
+    #                          convert_dicts=(field_converter, unit_converter))
+
+    # print(fields)
+
+
+    ############################################################################
+
+    # Input and output
+    csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\Algo_flow\\" + \
+             "algo_flow_mod_01.csv"
+    csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\Algo_flow\\" + \
+              "algo_flow_mod_01_clean.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
-    start
 
     # Add a description in the csv file (First row)
     title = "Created on {:%B\t%d/%m/%Y %H:%M}".format(datetime.datetime.now())
@@ -294,12 +353,29 @@ if __name__ == '__main__':
             " -- Radiation [W/m2] -- Drawing_up [l] -- State [0 or 100]"
     head = title + "\t\t" + units + "\n"
 
+    date = "{:%B\t%d\t%Y at %H:%M}".format(datetime.datetime.today())
+
     unit_converter = {"celsius": (re.compile("\AT\d+"), to_celsius),
                       "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
                       "l_min": (re.compile("\Z\AS\d+" "|\AFlow_[A-Z]+"), to_l_min),
-                      "mult_100": (re.compile("(\S+),_state"), to_100)}
+                      "mult_100": (re.compile("(\S+)_state"), to_100)}
 
-    fields = process_actions(csv_in, csv_out, start, nrows=20, head=head,
-                             convert_dicts=(field_converter, unit_converter))
-
-    print(fields)
+    print("\n### Csv parameters ###")
+    print("Meteo file start at", start)
+    print("Input file is : {}".format(csv_in))
+    print("Output file is : {}".format(csv_out))
+    flag = input("Press <Yes> to continue ... : ")
+    print("-"*50)
+    if flag in ("Yes", "Y", "y", "yes", "YES"):
+        # Parse and clean CSV file
+        print("\n### Start to build {} ###".format(csv_out))
+        # Cast to set because update_xml_linestyle accept only set
+        fields = set(process_actions(csv_in, csv_out, start, debug=True,
+                                     D_type="", nrows=None, head=head,
+                                     convert_dicts=(algo_field_converter,
+                                                    unit_converter)))
+        print("\n" + "-"*25 + "\nFields are :\n")
+        for field in fields:
+            print(field)
+        print("-"*25, "\n")
+        print(" ----> File {} \n was generated without errors".format(csv_out))
