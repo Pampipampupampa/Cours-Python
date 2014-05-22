@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Ellipse
 # Used as tick label formatter
 from matplotlib.dates import DateFormatter
+from matplotlib.dates import MinuteLocator, SecondLocator
 
 
 #######################################
@@ -352,6 +353,9 @@ def algo_flow(csv_file, convert=True, sampling=None):
     ax22.legend(loc='best', ncol=2)
 
     # Datetime ticks
+    seconds_loc = SecondLocator(10)
+    ax11.xaxis.set_minor_locator(seconds_loc)
+    ax21.xaxis.set_minor_locator(seconds_loc)
     minutes_formatter = DateFormatter("%M:%S")
     ax11.xaxis.set_major_formatter(minutes_formatter)
     ax21.xaxis.set_major_formatter(minutes_formatter)
