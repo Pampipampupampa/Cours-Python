@@ -90,18 +90,21 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "flow_out.V3V_extra": "Vextra_state",
                         "flow_out.splitter.in_value[1]": "Pump_nb_solar",
                         "flow_out.splitter.in_value[2]": "Pump_nb_heating",
+
                         "solarTank_mod1.conditions.u[1]": "DeltaT_1-3_state",
                         "solarTank_mod1.conditions.u[2]": "T3_state",
                         "solarTank_mod1.conditions.u[3]": "Vsolar_state",
                         "solarTank_mod1.conditions.y": "S5_state",
                         "solarTank_mod1.delta_T.y": "DeltaT_1-3",
                         "solarTank_mod1.T3": "T3",
+
                         "storageTank_mod1.conditions.u[1]": "DeltaT_1-5_state",
                         "storageTank_mod1.conditions.u[2]": "T5_state",
                         "storageTank_mod1.conditions.u[3]": "T3_state",
                         "storageTank_mod1.conditions.y": "S6_state",
                         "storageTank_mod1.T5": "T5", "storageTank_mod1.T3": "T3",
                         "storageTank_mod1.delta_T.y": "DeltaT_1-5",
+
                         "extraTank_mod1.off1_conditions1.u1": "T3_off_state",
                         "extraTank_mod1.off1_conditions1.u2": "T4_off56_state",
                         "extraTank_mod1.off1_conditions1.y": "Off1_state",
@@ -118,8 +121,42 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "extraTank_mod1.T1": "T1", "extraTank_mod1.T3": "T3",
                         "extraTank_mod1.T4": "T4",
                         "extraTank_mod1.flow_S4": "Flow_S4",
-                        "extraTank_mod1.delta_T.y": "DeltaT_1-4"}
+                        "extraTank_mod1.delta_T.y": "DeltaT_1-4",
 
+                        "T1_mod.y": "T1", "T3_mod.y": "T3", "T4_mod.y": "T4",
+                        "T5_mod.y": "T5", "V3Vsolar_mod1.compare1.y": "compare1",
+                        "V3Vsolar_mod1.compare2.y": "compare2",
+                        "V3Vsolar_mod1.T1_greater_test.y": "compare1_state",
+                        "V3Vsolar_mod1.T3_greaterEqual_test.y": "compare2_state",
+                        "V3Vsolar_mod1.pre_conditions.y": "On2_state",
+                        "V3Vsolar_mod1.T1_greaterEqual_test.y": "On1_state",
+                        "V3Vsolar_mod1.V3V_solar": "Vsolar_state",
+
+                        "backup_mod1.T8": "T8", "backup_mod1.ECS": "ECS_state",
+                        "backup_mod1.CHAUFF": "CHAUFF_state",
+                        "backup_mod1.V3V_extra": "Vextra_state",
+                        "backup_mod1.inter_conditions.u1": "T8_state",
+                        "backup_mod1.inter_conditions.y": "cumul1_state",
+                        "backup_mod1.alternatives.y": "Or_state",
+                        "backup_mod1.BackupHeater": "Backup_state",
+
+                        "variables_state.T1": "T1",
+                        "variables_state.T7": "T7",
+                        "variables_state.Text": "T9",
+                        "variables_state.DTeco_switch.u2": "T1_state",
+                        "variables_state.DTeco": "DTeco",
+                        "variables_state.TsolarInstruction[1]": "Tsolaire",
+
+                        "chauff_state.DTeco": "DTeco",
+                        "chauff_state.Tambiant[1]": "T12_1",
+                        "chauff_state.Tambiant[2]": "T12_2",
+                        "chauff_state.ECS": "ECS_state",
+                        "chauff_state.compare[1].y": "compare1_state",
+                        "chauff_state.compare[1].y": "compare2_state",
+                        "chauff_state.lessEqualThreshold1[1].y": "T12_1_state",
+                        "chauff_state.lessEqualThreshold1[2].y": "T12_2_state",
+                        "chauff_state.Chauff[1]": "CHAUFF_1_state",
+                        "chauff_state.Chauff[2]": "CHAUFF_2_state"}
 
 #######################################
 #### Classes, Methods, Functions : ####
@@ -226,20 +263,22 @@ def change_fields(struct, convert_dico):
             yield field
 
 
-def cast_columns(struct, convert_dico, debug=False):
+def cast_columns(struct, convert_dico, verbose=False):
     """
         Cast all values inside each columns according to a converter
         and a regular expression.
           - struct is a panda dataFrame
           - convert_dico must be a dict
-          - debug add a convert_dico key printer
+          - verbose add a convert_dico key printer
     """
+    print("Begin columns conversions :\n")
     for column in struct.columns:
         for key in convert_dico.keys():
             if re.match(convert_dico[key][0], column):
                 convert_dico[key][1](struct, column)
-                if debug:
-                    print(key)
+                if verbose:
+                    print("{0:{fill}{align}30}{1}".format(column, key,
+                                                          fill=" ", align="<"))
                 # Cut loop to avoid wasting time with other match testing
                 break
 
@@ -272,14 +311,17 @@ def remove_duplicate(struct):
 def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
                     csv_index="Time", skiprows=None, nrows=None,
                     convert_dicts=({}, {}), head=None, index_name="Date",
-                    float_format="%.2f", debug=False):
+                    float_format="%.2f", verbose=False):
     """
         Load and format the csv file.
         Return all fields except the index one.
           - in_file is the input csv file
           - out_file is the output csv file
           - start_time used to compute time step conversions
-          - D_type allows two date format, real or SolisArt format
+          - D_type allows three date format :
+                Real or datetime
+                SolisArt format
+                None
           - seps is a tuple or list of in and out file columns separators
           - csv_index is the column name to convert into index column
           - skiprows allows to start read the in_file after <x> rows
@@ -290,7 +332,7 @@ def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
           - head used to add some text before structure inside out_file
           - index_name is the new name of out_file index column
           - float_format is the float format of outputs
-          - debug add a convert_dico key printer
+          - verbose add a convert_dico key printer
     """
     # Open csv
     new_csv = pd.read_csv(in_file, nrows=nrows, delimiter=seps[0],
@@ -304,19 +346,19 @@ def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
     new_csv = remove_duplicate(new_csv)
 
     # Procceed to conversions
-    cast_columns(new_csv, convert_dico=convert_dicts[1], debug=debug)
+    cast_columns(new_csv, convert_dico=convert_dicts[1], verbose=verbose)
 
     # Date conversion according to D_type parameter
     if D_type in ("SolisArt", "solisart", "Solisart"):
-        print("SolisArt date format used")
+        print("\nSolisArt date format used")
         new_csv.index = [ind for ind in convert_to_datetimestring(new_csv.index,
                                                                   start_time)]
     elif D_type in ("Date", "RealDate", "real_date", "date", "Real_date"):
-        print("Real date format used")
+        print("\nReal date format used")
         new_csv.index = [ind for ind in convert_to_datetime(new_csv.index,
                                                             start_time)]
     else:
-        print("Nothing change in index format")
+        print("\nNothing change in index format")
 
     new_csv.index.name = index_name
 
@@ -332,45 +374,37 @@ def process_actions(in_file, out_file, start_time, D_type="", seps=(",", ";"),
 
 
 ########################
+### Regex matching : ###
+########################
+
+# Be careful with regex matching
+unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+)|(\AT\d+)"),
+                              to_celsius),
+                  "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
+                  "l_min": (re.compile("\AS\d+\Z" "|\AFlow_[A-Z]+"), to_l_min),
+                  "mult_100": (re.compile("(\S+)_state\Z"), to_100)}
+
+algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
+                                              "|(\ATsolaire\Z)" +
+                                              "|(\AT\d+[_]\d+\Z)" +
+                                              "|(\AT\d+\Z)|(\Acompare\d+\Z)"),
+                                   to_celsius),
+                       "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
+                       "l_min": (re.compile("\AS\d+\Z" "|\AFlow_[A-Z]+"), to_l_min),
+                       "mult_100": (re.compile("(\S+)_state\Z"), to_100)}
+
+
+########################
 #### Main Program : ####
 ########################
 
-
 if __name__ == '__main__':
-
-    # TESTING #
-    # csv_in = "bad.csv"
-
-    # csv_out = "clean.csv"
-
-    # # Start time for timestep
-    # start = datetime.datetime(year=2014, month=1, day=1)
-    # start
-
-    # # Add a description in the csv file (First row)
-    # title = "Created on {:%B\t%d/%m/%Y %H:%M}".format(datetime.datetime.now())
-    # units = "Temperature [°C] -- Flow [l/min]" +\
-    #         " -- Radiation [W/m2] -- Drawing_up [l] -- State [0 or 100]"
-    # head = title + "\t\t" + units + "\n"
-
-    # unit_converter = {"celsius": (re.compile("\AT\d+"), to_celsius),
-    #                   "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
-    #                   "l_min": (re.compile("\Z\AS\d+" "|\AFlow_[A-Z]+"), to_l_min),
-    #                   "mult_100": (re.compile("(\S+),_state"), to_100)}
-
-    # fields = process_actions(csv_in, csv_out, start, nrows=20, head=head,
-    #                          convert_dicts=(field_converter, unit_converter))
-
-    # print(fields)
-
-
-    ############################################################################
 
     # Input and output
     csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-             "Algo\\S4_algo_ECS.csv"
+             "Algo\\variables_algo.csv"
     csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-              "Algo\\S4_algo_ECS_clean.csv"
+              "Algo\\variables_algo_clean.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -380,13 +414,6 @@ if __name__ == '__main__':
     units = "Temperature [°C] -- Flow [l/min]" +\
             " -- Radiation [W/m2] -- Drawing_up [l] -- State [0 or 100]"
     head = title + "\t\t" + units + "\n"
-
-    date = "{:%B\t%d\t%Y at %H:%M}".format(datetime.datetime.today())
-
-    unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+)|(\AT\d+\Z)"), to_celsius),
-                      "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
-                      "l_min": (re.compile("\AS\d+\Z" "|\AFlow_[A-Z]+"), to_l_min),
-                      "mult_100": (re.compile("(\S+)_state"), to_100)}
 
     print("\n### Csv parameters ###")
     print("Meteo file start at", start)
@@ -398,11 +425,11 @@ if __name__ == '__main__':
         # Parse and clean CSV file
         print("\n### Start to build {} ###".format(csv_out))
         # Cast to set because update_xml_linestyle accept only set
-        fields = set(process_actions(csv_in, csv_out, start, debug=True,
+        fields = set(process_actions(csv_in, csv_out, start, verbose=True,
                                      D_type="", nrows=None, head=head,
                                      convert_dicts=(algo_field_converter,
-                                                    unit_converter)))
-        print("\n" + "-"*25 + "\nFields are :\n")
+                                                    algo_unit_converter)))
+        print("-"*25 + "\nFields are :")
         for field in fields:
             print(field)
         print("-"*25, "\n")
