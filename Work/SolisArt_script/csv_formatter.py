@@ -89,23 +89,23 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "flow_out.in_value[3]": "Flow_S3_in",
                         "flow_out.V3V_extra": "Vextra_state",
                         "flow_out.splitter.in_value[1]": "Pump_nb_solar",
-<<<<<<< HEAD
-                        "flow_out.splitter.in_value[2]": "Pump_nb_heating"
-                        }
-=======
                         "flow_out.splitter.in_value[2]": "Pump_nb_heating",
+                        "flow_out.splitter.in_value[2]": "Pump_nb_heating",
+
                         "solarTank_mod1.conditions.u[1]": "DeltaT_1-3_state",
                         "solarTank_mod1.conditions.u[2]": "T3_state",
                         "solarTank_mod1.conditions.u[3]": "Vsolar_state",
                         "solarTank_mod1.conditions.y": "S5_state",
                         "solarTank_mod1.delta_T.y": "DeltaT_1-3",
                         "solarTank_mod1.T3": "T3",
+
                         "storageTank_mod1.conditions.u[1]": "DeltaT_1-5_state",
                         "storageTank_mod1.conditions.u[2]": "T5_state",
                         "storageTank_mod1.conditions.u[3]": "T3_state",
                         "storageTank_mod1.conditions.y": "S6_state",
                         "storageTank_mod1.T5": "T5", "storageTank_mod1.T3": "T3",
                         "storageTank_mod1.delta_T.y": "DeltaT_1-5",
+
                         "extraTank_mod1.off1_conditions1.u1": "T3_off_state",
                         "extraTank_mod1.off1_conditions1.u2": "T4_off56_state",
                         "extraTank_mod1.off1_conditions1.y": "Off1_state",
@@ -123,7 +123,6 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "extraTank_mod1.T4": "T4",
                         "extraTank_mod1.flow_S4": "Flow_S4",
                         "extraTank_mod1.delta_T.y": "DeltaT_1-4"}
->>>>>>> parent of 1264a87... Fresh install
 
 
 #######################################
@@ -372,17 +371,14 @@ if __name__ == '__main__':
     ############################################################################
 
     # Input and output
-<<<<<<< HEAD
     csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\Algo_flow\\" + \
              "algo_flow_mod_01.csv"
     csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\Algo_flow\\" + \
               "algo_flow_mod_01_clean.csv"
-=======
     csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
              "Algo\\S4_algo_ECS.csv"
     csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
               "Algo\\S4_algo_ECS_clean.csv"
->>>>>>> parent of 1264a87... Fresh install
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -395,15 +391,9 @@ if __name__ == '__main__':
 
     date = "{:%B\t%d\t%Y at %H:%M}".format(datetime.datetime.today())
 
-<<<<<<< HEAD
-    unit_converter = {"celsius": (re.compile("\AT\d+"), to_celsius),
-                      "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
-                      "l_min": (re.compile("\Z\AS\d+" "|\AFlow_[A-Z]+"), to_l_min),
-=======
     unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+)|(\AT\d+\Z)"), to_celsius),
                       "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
                       "l_min": (re.compile("\AS\d+\Z" "|\AFlow_[A-Z]+"), to_l_min),
->>>>>>> parent of 1264a87... Fresh install
                       "mult_100": (re.compile("(\S+)_state"), to_100)}
 
     print("\n### Csv parameters ###")
