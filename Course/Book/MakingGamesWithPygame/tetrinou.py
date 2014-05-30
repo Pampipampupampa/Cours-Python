@@ -208,6 +208,7 @@ class Shape(object):
             clean_file = f.read().strip().replace(delimiter, '')
             # Get only file name
             name = f.name.split('.')[0][len(self.path):]
+            print(name)
             # Return name and shape templates
             return name, [row.split('\n') for row in clean_file.split('\n#\n')]
 

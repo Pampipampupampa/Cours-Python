@@ -49,7 +49,7 @@ class MainWindow(pyglet.window.Window):
 
         # Add sounds and music
         # pyglet.media.load
-        # Pyglet.resource.media
+        # pyglet.resource.media
         try:
             self.music = pyglet.resource.media('guitar.ogg')
             self.music.play()
