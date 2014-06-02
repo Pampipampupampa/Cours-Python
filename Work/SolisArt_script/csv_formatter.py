@@ -28,6 +28,7 @@ from functools import wraps  # Keep trace of decorated functions arguments
 
 # Fields converters for house and general simulation
 field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
+                   "solarPanel_ISO.temSen[40].T": "T1",
                    "T2.T": "T2", "T3.T": "T3", "pump_algo.T3": "T3",
                    "T4.T": "T4", "pump_algo.T4": "T4",
                    "T5.T": "T5", "pump_algo.T5": "T5",
@@ -195,6 +196,18 @@ def convert_to_datetime(step, start):
     """
     for el in step:
         yield start + datetime.timedelta(seconds=int(el))
+
+
+def convert_solis_to_datetime(solis_date):
+    """
+        This parseur convert SolisArt software format to a real datetime format
+        input : 'day/month/year hour:minute'
+        output : 'year-month-day hour:minute:second'
+    """
+    solis_date, hour = solis_date.split(" ")
+    year, month, day = map(int, reversed(solis_date.split("/")))
+    hour, minute = map(int, hour.split(":"))
+    yield datetime.datetime(year, month, day, hour, minute)
 
 
 def to_celsius(struct, column):
@@ -401,10 +414,10 @@ algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
 if __name__ == '__main__':
 
     # Input and output
-    csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-             "Algo\\variables_algo.csv"
-    csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-              "Algo\\variables_algo_clean.csv"
+    csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
+             "Tank_validation\\simulations\\SeptOct_30_120.csv"
+    csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
+              "Tank_validation\\simulations\\SeptOct_30_120_clean.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -427,8 +440,8 @@ if __name__ == '__main__':
         # Cast to set because update_xml_linestyle accept only set
         fields = set(process_actions(csv_in, csv_out, start, verbose=True,
                                      D_type="", nrows=None, head=head,
-                                     convert_dicts=(algo_field_converter,
-                                                    algo_unit_converter)))
+                                     convert_dicts=(field_converter,
+                                                    unit_converter)))
         print("-"*25 + "\nFields are :")
         for field in fields:
             print(field)
