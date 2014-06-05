@@ -29,6 +29,7 @@ from functools import wraps  # Keep trace of decorated functions arguments
 # Fields converters for house and general simulation
 field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "solarPanel_ISO.temSen[40].T": "T1",
+                   "solarPanel_ISO.Tinside[40]": "T1",
                    "T2.T": "T2", "T3.T": "T3", "pump_algo.T3": "T3",
                    "T4.T": "T4", "pump_algo.T4": "T4",
                    "T5.T": "T5", "pump_algo.T5": "T5",
@@ -153,7 +154,7 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "chauff_state.Tambiant[2]": "T12_2",
                         "chauff_state.ECS": "ECS_state",
                         "chauff_state.compare[1].y": "compare1_state",
-                        "chauff_state.compare[1].y": "compare2_state",
+                        "chauff_state.compare[2].y": "compare2_state",
                         "chauff_state.lessEqualThreshold1[1].y": "T12_1_state",
                         "chauff_state.lessEqualThreshold1[2].y": "T12_2_state",
                         "chauff_state.Chauff[1]": "CHAUFF_1_state",
@@ -415,9 +416,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-             "Tank_validation\\simulations\\SeptOct_30_120.csv"
+             "Algo\\variables_algo.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-              "Tank_validation\\simulations\\SeptOct_30_120_clean.csv"
+              "Algo\\variables_algo_clean.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -440,8 +441,8 @@ if __name__ == '__main__':
         # Cast to set because update_xml_linestyle accept only set
         fields = set(process_actions(csv_in, csv_out, start, verbose=True,
                                      D_type="", nrows=None, head=head,
-                                     convert_dicts=(field_converter,
-                                                    unit_converter)))
+                                     convert_dicts=(algo_field_converter,
+                                                    algo_unit_converter)))
         print("-"*25 + "\nFields are :")
         for field in fields:
             print(field)
