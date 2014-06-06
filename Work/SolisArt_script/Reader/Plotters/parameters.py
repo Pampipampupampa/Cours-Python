@@ -2,7 +2,7 @@
 # -*- coding:Utf8 -*-
 
 
-"""Draw matplotlib representation of main variables"""
+"""Reader for csv files from Dymola or solisArt"""
 
 
 ########################################
@@ -11,11 +11,9 @@
 
 
 import pandas as pd
-import numpy as np
 import datetime
 import matplotlib
 
-import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Ellipse  # Used to draw shapes inside plots
@@ -26,40 +24,98 @@ from matplotlib.dates import MinuteLocator, DateFormatter, SecondLocator
 #### Constants : ####
 #####################
 
+FOLDER = "D:\\GitHub\\SolarSystem\\Outputs\\"
 
-# Change font properties
-font_base = {'family' : 'serif',
-             'size'   : 13}
-font_title = {'size'   : 18,
-              'family':'Anonymous Pro'}
+# Create font properties
+font_base = {'family': 'serif',
+             'size': 13}
+font_title = {'size': 18,
+              'family': 'Anonymous Pro'}
 font_mainTitle = {'color': '#002b36',
                   'weight': 'bold',
                   'size': '25',
                   'family': 'Anonymous Pro'}
 
-# Change default label settings
+# Change matplotlib default settings
+matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
 matplotlib.rc('xtick', labelsize=10)
 matplotlib.rc('ytick', labelsize=10)
 matplotlib.rc('legend', fontsize=10)
 matplotlib.rc('legend', labelspacing=0.2)
 
-# font = matplotlib.font_manager.FontProperties(family='Tahoma', size=12)
-# matplotlib.rc('annotate', fontproperties=font)
-
-# Adding artist element
+# Artist shape used by annotations
 el = Ellipse((2, -1), 0.5, 0.5)
 
-# Formatter
+# Formatter to change x values ticks
 minutes = MinuteLocator(interval=4)
 minutes_formatter = DateFormatter("%M:%S")
 
 secondes = SecondLocator(interval=10)
 secondes_formatter = DateFormatter("%M:%S")
 
+
 #######################################
 #### Classes, Methods, Functions : ####
 #######################################
+
+class Plotter:
+
+    """
+        Base class for plotting on matplotlib
+            - fig_init used to create figure
+            - plotting_shape used to group axes and figure structure
+            - plotting used to group all data plots
+            - artist used to group annotations and other artist stuff
+    """
+
+    def __init__(self, frame, title="Title"):
+        self.frame = frame
+        self.title = title
+
+    def fig_init(self, figsize=(20, 10), facecolor=(0.84, 0.89, 0.9),
+                 ha='center'):
+        """
+            Create figure instance and add title to it
+        """
+        self.fig = plt.figure(figsize=figsize, facecolor=facecolor)
+        self.fig.canvas.manager.set_window_title(self.title)
+        plt.figtext(0.5, 0.95, self.title, ha=ha, fontdict=font_mainTitle)
+
+    def plotting_shape(self):
+        """
+            Main plotting structure
+        """
+        pass
+
+    def plotting(self):
+        """
+            Adding plots to plotting structure
+        """
+        pass
+
+    def formatting(self):
+        """
+            Adding formatters
+        """
+
+    def artist(self):
+        """
+            Adding annotations or text to plots
+        """
+        pass
+
+    def draw(self):
+        """
+            Proceed to all Methods
+        """
+        self.fig_init()
+        self.plotting_shape()
+        self.plotting()
+        self.formatting()
+        self.artist()
+        self.fig.autofmt_xdate()
+        plt.show()
 
 
 def convert_to_datetime(step, start=datetime.datetime(2014, 1, 1)):
@@ -137,15 +193,3 @@ def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
         # Add frame to dictionnary
         S_frame[csv.split("\\")[-1].split(".")[0]] = frame
     return S_frame
-
-
-
-
-
-
-
-########################
-#### Main Program : ####
-########################
-
-csv = "olivier_house_read.csv"

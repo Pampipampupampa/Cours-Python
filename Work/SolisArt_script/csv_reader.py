@@ -374,8 +374,8 @@ def algo_flow(csv_file, convert=True, sampling=None):
 
 
 # Files location
-folder_issue = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\Issues"
-folder_clean = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\clean"
+folder_issue = "D:\\GitHub\\SolarSystem\\Outputs\\Issues"
+folder_clean = "D:\\GitHub\\SolarSystem\\Outputs\\clean"
 pump_csv = folder_issue + "\\Algo_flow\\algo_flow_mod_01_clean.csv"
 house_csv = folder_clean + "\\olivier_house_read.csv"
 
