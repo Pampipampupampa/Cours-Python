@@ -2,14 +2,16 @@
 # -*- coding:Utf8 -*-
 
 
-"""Problème avec le partage d'axe pour l'axe 21"""
-
 ########################################
 #### Classes and Methods imported : ####
 ########################################
 
 
-from parameters import *
+try:
+    from .parameters import *
+except SystemError as e:
+    print("Local import")
+    from parameters import *
 
 
 #######################################
@@ -31,7 +33,7 @@ class S4Plotter(Plotter):
         self.ax12 = self.fig.add_subplot(3, 2, 3, sharex=self.ax11)
         self.ax13 = self.fig.add_subplot(3, 2, 5, sharex=self.ax11)
 
-        self.ax21 = self.fig.add_subplot(3, 2, 2)
+        self.ax21 = self.fig.add_subplot(3, 2, 2, sharex=self.ax11)
         self.ax22 = self.fig.add_subplot(3, 2, 4, sharex=self.ax11)
         self.ax23 = self.fig.add_subplot(3, 2, 6, sharex=self.ax11)
 
@@ -44,7 +46,8 @@ class S4Plotter(Plotter):
     def plotting(self):
         # First column
         self.frame[['T1', 'T3', 'T4']].plot(ax=self.ax11,
-                                            color=('#cb4b16', '#859900', '#268bd2'),
+                                            color=('#cb4b16', '#859900',
+                                                   '#268bd2'),
                                             ylim=(-1, 140), linewidth=3)
         self.ax11.legend(loc='upper left')
         self.frame[['Off1_state', 'Off2_state']].plot(ax=self.ax12,
@@ -74,54 +77,66 @@ class S4Plotter(Plotter):
                                                   colormap='Accent',
                                                   ylim=(-1, 120), linewidth=3)
 
-        def formatting(self):
-            # Color match between yaxis and lines
-            for ytics in self.ax21_bis.get_yticklabels():
-                ytics.set_color(self.ax21_bis.lines[0].get_color())
+    def formatting(self):
+        # Color match between yaxis and lines
+        for ytics in self.ax21.get_yticklabels():
+            ytics.set_color(self.ax21.lines[0].get_color())
+        for ytics in self.ax21_bis.get_yticklabels():
+            ytics.set_color(self.ax21_bis.lines[0].get_color())
+        # Formatting
+        self.ax11.xaxis.set_major_formatter(minutes_formatter)
+        self.ax21.xaxis.set_major_formatter(minutes_formatter)
+        # Adding y axes labels with colors
+        self.ax11.set_ylabel('°C')
+        self.ax21.set_ylabel('litre/min',
+                             color=self.ax21.lines[0].get_color())
+        self.ax21_bis.set_ylabel('°C',
+                                 color=self.ax21_bis.lines[0].get_color())
 
-            # Formatting
-            self.ax11.xaxis.set_major_formatter(minutes_formatter)
-            self.ax21.xaxis.set_major_formatter(minutes_formatter)
+    def artist(self):
+        self.ax23.annotate("S4 active \ncar demande en ECS",
+                           xy=('2014-01-01 00:02:00',
+                               self.frame["S4_state"]['2014-01-01 00:03:00']),
+                           xycoords='data', xytext=(50, -30),
+                           textcoords='offset points',
+                           size=10, va="center", ha="center",
+                           bbox=dict(boxstyle="round", fc=(0.84, 0.89, 0.9),
+                                     ec="none"),
+                           arrowprops=dict(arrowstyle="wedge,tail_width=1.",
+                                           fc=(0.84, 0.89, 0.9), ec="none",
+                                           patchA=el,
+                                           relpos=(0.2, 0.5),
+                                           )
+                           )
+        # Active if on conditions and no off conditions
+        self.ax23.annotate("S4 actif si conditions d'activations\n" +
+                           "et aucunes conditions de mise à l'arrêt",
+                           xy=('2014-01-01 00:011:30',
+                               self.frame["S4_state"]['2014-01-01 00:11:30']),
+                           xycoords='data', xytext=(20, -30),
+                           textcoords='offset points',
+                           size=10, va="center", ha="center",
+                           bbox=dict(boxstyle="round", fc=(0.84, 0.89, 0.9),
+                                     ec="none"),
+                           horizontalalignment='right',
+                           verticalalignment='bottom',
+                           arrowprops=dict(arrowstyle="wedge,tail_width=1.",
+                                           fc=(0.84, 0.89, 0.9), ec="none",
+                                           patchA=el,
+                                           relpos=(0.2, 0.5),
+                                           )
+                           )
 
-            # Adding y axes labels with colors
-            self.ax11.set_ylabel('°C')
-            self.ax21.set_ylabel('litre/min')
-            self.ax21_bis.set_ylabel('°C',
-                                     color=self.ax21_bis.lines[0].get_color())
-
-        def artist(self):
-            self.ax23.annotate("S4 reste active\nsans conditions d'arrêt",
-                               xy=('2014-01-01 00:02:00',
-                                   self.frame["S4_state"]['2014-01-01 00:03:00']),
-                               xycoords='data', xytext=(50, -30),
-                               textcoords='offset points',
-                               size=10, va="center", ha="center",
-                               bbox=dict(boxstyle="round", fc=(0.84, 0.89, 0.9),
-                                         ec="none"),
-                               arrowprops=dict(arrowstyle="wedge,tail_width=1.",
-                                               fc=(0.84, 0.89, 0.9), ec="none",
-                                               patchA=el,
-                                               relpos=(0.2, 0.5),
-                                               )
-                               )
-            # Active if on conditions and no off conditions
-            self.ax23.annotate("S4 actif si conditions d'activations\n" +
-                               "et aucunes conditions de mise à l'arrêt",
-                               xy=('2014-01-01 00:011:30',
-                                   self.frame["S4_state"]['2014-01-01 00:11:30']),
-                               xycoords='data', xytext=(20, -30),
-                               textcoords='offset points',
-                               size=10, va="center", ha="center",
-                               bbox=dict(boxstyle="round", fc=(0.84, 0.89, 0.9),
-                                         ec="none"),
-                               horizontalalignment='right',
-                               verticalalignment='bottom',
-                               arrowprops=dict(arrowstyle="wedge,tail_width=1.",
-                                               fc=(0.84, 0.89, 0.9), ec="none",
-                                               patchA=el,
-                                               relpos=(0.2, 0.5),
-                                               )
-                               )
+    def text(self):
+        # Add ylabel legend
+        text = ("Off1_state = T3 >= 50 and T4 > 56",
+                "Off2_state = Off1_state ou T4 >= 60",
+                "Other_off_state = T4 <= 55 + 5*ECS_state and T3 <= 54 + 2*ECS_state)",
+                "Opposite_off_state = not(Off2_state + ECS_state)",
+                "ECS_state = Other_off_state and Opposite_off_state")
+        plt.text(0.1, -0.5, text[0]+"\n"+text[1]+"\n"+text[2]+"\n"+text[3]+"\n"+text[4],
+                 horizontalalignment='left', verticalalignment='center',
+                 transform=self.ax13.transAxes)
 
 ########################
 #### Main Program : ####

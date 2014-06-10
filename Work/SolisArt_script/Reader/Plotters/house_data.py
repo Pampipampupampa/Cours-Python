@@ -8,7 +8,11 @@
 
 import matplotlib.gridspec as gridspec
 
-from parameters import *
+try:
+    from .parameters import *
+except SystemError as e:
+    print("Local import")
+    from parameters import *
 
 #######################################
 #### Classes, Methods, Functions : ####

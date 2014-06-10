@@ -7,7 +7,11 @@
 ########################################
 
 
-from parameters import *
+try:
+    from .parameters import *
+except SystemError as e:
+    print("Local import")
+    from parameters import *
 
 
 #######################################
@@ -28,6 +32,7 @@ class S6S5Plotter(Plotter):
         # Drawing graphs
         self.ax11 = self.fig.add_subplot(3, 2, 1)
         self.ax12 = self.fig.add_subplot(3, 2, 3, sharex=self.ax11)
+        self.ax13 = self.fig.add_subplot(3, 2, 5, sharex=self.ax11)
         self.ax21 = self.fig.add_subplot(3, 2, 2)
         self.ax22 = self.fig.add_subplot(3, 2, 4, sharex=self.ax21)
         self.ax23 = self.fig.add_subplot(3, 2, 6, sharex=self.ax21)
@@ -60,6 +65,7 @@ class S6S5Plotter(Plotter):
                                                      colormap='Accent',
                                                      ylim=(-1, 120),
                                                      linewidth=3)
+        self.ax13.legend(loc='best')
 
         # Second column
         self.frame["S5_algo_clean"]['T3'].plot(ax=self.ax21, color='#cb4b16',
@@ -80,6 +86,7 @@ class S6S5Plotter(Plotter):
                                                      colormap='Accent',
                                                      ylim=(-1, 120),
                                                      linewidth=3)
+        self.ax23.legend(loc='best')
 
     def formatting(self):
         # Color match between yaxis and lines

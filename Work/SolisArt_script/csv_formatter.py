@@ -153,8 +153,8 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "chauff_state.Tambiant[1]": "T12_1",
                         "chauff_state.Tambiant[2]": "T12_2",
                         "chauff_state.ECS": "ECS_state",
-                        "chauff_state.compare[1].y": "compare1_state",
-                        "chauff_state.compare[2].y": "compare2_state",
+                        "chauff_state.compare[1].y": "compare1",
+                        "chauff_state.compare[2].y": "compare2",
                         "chauff_state.lessEqualThreshold1[1].y": "T12_1_state",
                         "chauff_state.lessEqualThreshold1[2].y": "T12_2_state",
                         "chauff_state.Chauff[1]": "CHAUFF_1_state",
@@ -416,9 +416,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-             "Algo\\variables_algo.csv"
+             "Algo\\Chauff_algo.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-              "Algo\\variables_algo_clean.csv"
+              "Algo\\Chauff_algo_clean.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

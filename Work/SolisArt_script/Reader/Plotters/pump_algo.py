@@ -8,7 +8,11 @@
 
 import numpy as np
 
-from parameters import *
+try:
+    from .parameters import *
+except SystemError as e:
+    print("Local import")
+    from parameters import *
 
 
 #######################################
@@ -108,7 +112,13 @@ class PumpAlgoPlot(Plotter):
         self.ax11.xaxis.set_major_formatter(minutes_formatter)
         self.ax21.xaxis.set_major_formatter(minutes_formatter)
 
+        # Adding y axes labels with colors
+        self.ax11.set_ylabel('litre/min',
+                             color=self.ax11.lines[0].get_color())
+        self.ax21.set_ylabel('litre/min',
+                             color=self.ax21.lines[0].get_color())
         self.ax13.set_ylabel('litre/min')
+        self.ax23.set_ylabel('litre/min')
 
     def artist(self):
       # Max flow and nb_pumps

@@ -105,6 +105,12 @@ class Plotter:
         """
         pass
 
+    def text(self):
+        """
+            Adding text inside figure
+        """
+        pass
+
     def draw(self):
         """
             Proceed to all Methods
@@ -114,6 +120,7 @@ class Plotter:
         self.plotting()
         self.formatting()
         self.artist()
+        self.text()
         self.fig.autofmt_xdate()
         plt.show()
 
@@ -144,7 +151,7 @@ def convert_solis_to_datetime(solis_date):
 
 def printer_all(S_frame, csv_list):
     """
-        Print field for each frame
+        Print field for each dataframe inside a list
     """
     for ind, data in enumerate(S_frame):
         print("\nData from {} dataframe".format(csv_list[ind]))
@@ -154,10 +161,11 @@ def printer_all(S_frame, csv_list):
 
 def printer_spe(frame):
     """
-        Print fields for a specific frame
+        Print fields for each dataframe inside a dictionnary
     """
-    for i, col in enumerate(frame.columns):
-        print("column {} \t\t{}".format(i, col))
+    for val in frame.values():
+        for i, col in enumerate(val.columns):
+            print("column {} \t\t{}".format(i, col))
 
 
 def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
