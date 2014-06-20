@@ -158,7 +158,24 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "chauff_state.lessEqualThreshold1[1].y": "T12_1_state",
                         "chauff_state.lessEqualThreshold1[2].y": "T12_2_state",
                         "chauff_state.Chauff[1]": "CHAUFF_1_state",
-                        "chauff_state.Chauff[2]": "CHAUFF_2_state"}
+                        "chauff_state.Chauff[2]": "CHAUFF_2_state",
+
+                        "V3Vextra_mod1.T1": "T1",
+                        "V3Vextra_mod1.T4": "T4",
+                        "V3Vextra_mod1.T7": "T7",
+                        "V3Vextra_mod1.ECS": "ECS_state",
+                        "V3Vextra_mod1.CHAUFF[1]": "CHAUFF_state",
+                        "V3Vextra_mod1.Tambiant[1]": "T12_house",
+                        "V3Vextra_mod1.on_conditions1.y": "On1_state",
+                        "V3Vextra_mod1.on_conditions2.u[1]": "T1_state",
+                        "V3Vextra_mod1.on_conditions2.u[2]": "T4_state",
+                        "V3Vextra_mod1.on_conditions2.y": "On2_state",
+                        "V3Vextra_mod1.open_chauff_cond1[1].u1": "T12_state",
+                        "V3Vextra_mod1.open_chauff_cond2[1].u1": "T7_state",
+                        "V3Vextra_mod1.on_conditions3.y": "On3_state",
+                        "V3Vextra_mod1.V3V_extra": "Vextra_state",
+                        "V3Vextra_mod1.ECS_out": "ECS_out_state",
+                        "V3Vextra_mod1.CHAUFF_out[1]": "CHAUFF_out_state"}
 
 #######################################
 #### Classes, Methods, Functions : ####
@@ -401,7 +418,8 @@ unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+)|(\AT\d+)"),
 algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
                                               "|(\ATsolaire\Z)" +
                                               "|(\AT\d+[_]\d+\Z)" +
-                                              "|(\AT\d+\Z)|(\Acompare\d+\Z)"),
+                                              "|(\AT\d+\Z)|(\Acompare\d+\Z)" +
+                                              "|(\AT\d+_house\Z)"),
                                    to_celsius),
                        "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
                        "l_min": (re.compile("\AS\d+\Z" "|\AFlow_[A-Z]+"), to_l_min),
@@ -416,9 +434,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-             "Algo\\Chauff_algo.csv"
+             "Algo\\V3Vextra_algo.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-              "Algo\\Chauff_algo_clean.csv"
+              "Algo\\V3Vextra_algo_clean.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

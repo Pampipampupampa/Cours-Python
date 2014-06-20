@@ -27,6 +27,7 @@ class HousePlotter(Plotter):
 
     def __init__(self, frame, title):
         super().__init__(frame=frame, title=title)
+        self.frame_plt = self.frame["olivier_house_read"]
 
     def plotting_shape(self):
         self.G = gridspec.GridSpec(2, 2)
@@ -45,33 +46,37 @@ class HousePlotter(Plotter):
                             fontdict=font_title)
 
     def plotting(self):
-        self.frame['House_Energy'].plot(ax=self.ax13, colormap="Accent",
-                                        linewidth=5, linestyle="-")
-        self.frame['House_Power'].plot(ax=self.ax12, colormap="Accent",
-                                       linewidth=2, linestyle="-",
-                                       ylim=(-1, 5000))
-        self.frame[['T12_house', 'T12_rad_house',
-                    'T9_ext']].plot(ax=self.ax11, colormap="Accent",
-                                    linewidth=2, linestyle="-")
+        self.frame_plt['House_Energy'].plot(ax=self.ax13, colormap="Accent",
+                                            linewidth=5, linestyle="-")
+        self.frame_plt['House_Power'].plot(ax=self.ax12, colormap="Accent",
+                                           linewidth=self.width, linestyle="-",
+                                           ylim=(-1, 5000))
+        self.frame_plt[['T12_house', 'T12_rad_house',
+                        'T9_ext']].plot(ax=self.ax11, colormap="Accent",
+                                        linewidth=self.width, linestyle="-")
 
     def formatting(self):
         self.ax11.set_ylabel('°C')
         self.ax12.set_ylabel('W')
         self.ax13.set_ylabel('KWh')
 
+    def forcing(self):
+        # Force xticks display on ax13
+        [label.set_visible(True) for label in self.ax13.get_xticklabels()]
+
     def artist(self):
         ax13_text1 = "Energie consommée : " + \
-                     "{1:.0f} kWh \n{0:%Y-%m-%d}".format(self.frame.idxmax(axis=0)["House_Energy"],
-                                                         self.frame.max(axis=0)["House_Energy"])
+                     "{1:.0f} kWh \n{0:%Y-%m-%d}".format(self.frame_plt.idxmax(axis=0)["House_Energy"],
+                                                         self.frame_plt.max(axis=0)["House_Energy"])
         ax13_text2 = "Energie consommée : " + \
                      "{1:.0f} kWh \n{0}".format("2014-05-19",
-                                                self.frame["House_Energy"]["2014-05-19 9:00:00"])
+                                                self.frame_plt["House_Energy"]["2014-05-19 9:00:00"])
         ax13_text3 = "Energie consommée : " + \
                      "{1:.0f} kWh \n{0}".format("2014-10-01",
-                                                self.frame["House_Energy"]["2014-10-01 9:00:00"])
+                                                self.frame_plt["House_Energy"]["2014-10-01 9:00:00"])
         self.ax13.annotate(ax13_text1,
-                           xy=(self.frame.idxmax(axis=0)["House_Energy"],
-                               self.frame.max(axis=0)["House_Energy"]),
+                           xy=(self.frame_plt.idxmax(axis=0)["House_Energy"],
+                               self.frame_plt.max(axis=0)["House_Energy"]),
                            xycoords='data', xytext=(-150, 50), ha="center",
                            textcoords='offset points', size=10, va="center",
                            bbox=dict(boxstyle="round", fc=(0.84, 0.89, 0.9),
@@ -84,7 +89,7 @@ class HousePlotter(Plotter):
                            )
         self.ax13.annotate(ax13_text2,
                            xy=("2014-05-19 9:00:00",
-                               self.frame["House_Energy"]["2014-05-19 9:00:00"]),
+                               self.frame_plt["House_Energy"]["2014-05-19 9:00:00"]),
                            xycoords='data', xytext=(-50, 50), ha="center",
                            textcoords='offset points', size=10, va="center",
                            bbox=dict(boxstyle="round", fc=(0.84, 0.89, 0.9),
@@ -97,7 +102,7 @@ class HousePlotter(Plotter):
                            )
         self.ax13.annotate(ax13_text3,
                            xy=("2014-10-01 9:00:00",
-                               self.frame["House_Energy"]["2014-10-01 9:00:00"]),
+                               self.frame_plt["House_Energy"]["2014-10-01 9:00:00"]),
                            xycoords='data', xytext=(-50, -50),
                            textcoords='offset points', ha="center",
                            size=10, va="center",
@@ -121,4 +126,4 @@ if __name__ == '__main__':
     title = "Evolution des principaux paramètres caractéristiques du bâtiment"
     frames = read_csv((house,), convert_index=(convert_to_datetime,))
     frames["olivier_house_read"] = frames["olivier_house_read"][:].resample('60min')
-    HousePlotter(frames["olivier_house_read"], title=title).draw()
+    HousePlotter(frames, title=title).draw()

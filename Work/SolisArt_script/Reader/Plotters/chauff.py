@@ -27,6 +27,7 @@ class ChauffPlotter(Plotter):
 
     def __init__(self, frame, title):
         super().__init__(frame=frame, title=title)
+        self.frame_plt = self.frame["Chauff_algo_clean"]
 
     def plotting_shape(self):
         # Create Axes instance to plot in
@@ -44,48 +45,50 @@ class ChauffPlotter(Plotter):
 
     def plotting(self):
         # First column
-        self.frame[['T12_1', 'compare1']].plot(ax=self.ax11, colormap='Accent',
-                                               ylim=(-10, 120), linewidth=3)
+        self.frame_plt[['T12_1', 'compare1']].plot(ax=self.ax11, colormap='Accent',
+                                                   ylim=(-10, 120), linewidth=self.width)
         self.ax11.legend(loc='upper left')
         self.ax11_bis = self.ax11.twinx()
-        self.frame['DTeco'].plot(ax=self.ax11_bis, color='#cb4b16',
-                                 ylim=(-0.1, 0.5), linewidth=3)
+        self.frame_plt['DTeco'].plot(ax=self.ax11_bis, color='#cb4b16',
+                                     ylim=(-0.1, 0.5), linewidth=self.width)
         self.ax11_bis.legend(loc='upper right', ncol=1)
-        self.frame['T12_1_state'].plot(ax=self.ax12,
-                                       colormap='Accent',
-                                       ylim=(-10, 120),
-                                       linewidth=3)
+        self.frame_plt['T12_1_state'].plot(ax=self.ax12,
+                                           colormap='Accent',
+                                           ylim=(-10, 120),
+                                           linewidth=self.width)
         self.ax12.legend(loc='upper left')
         self.ax12_bis = self.ax12.twinx()
-        self.frame['ECS_state'].plot(ax=self.ax12_bis, color='#cb4b16',
-                                     ylim=(-10, 120), linewidth=3)
+        self.frame_plt['ECS_state'].plot(ax=self.ax12_bis, color='#cb4b16',
+                                         ylim=(-10, 120), linewidth=self.width)
         self.ax12_bis.legend(loc='upper right', ncol=1)
 
-        self.frame['CHAUFF_1_state'].plot(ax=self.ax13, colormap='Accent',
-                                          ylim=(-10, 120), linewidth=3)
-        self.ax13.legend(loc='best')
+        self.frame_plt[['CHAUFF_1_state']].plot(ax=self.ax13, colormap='Accent',
+                                                ylim=(-10, 120),
+                                                linewidth=self.width)
 
         # Second column
-        self.frame[['T12_2', 'compare2']].plot(ax=self.ax21, colormap='Accent',
-                                               ylim=(-10, 120), linewidth=3)
+        self.frame_plt[['T12_2', 'compare2']].plot(ax=self.ax21,
+                                                   colormap='Accent',
+                                                   ylim=(-10, 120),
+                                                   linewidth=self.width)
         self.ax21.legend(loc='upper left')
         self.ax21_bis = self.ax21.twinx()
-        self.frame['DTeco'].plot(ax=self.ax21_bis, color='#cb4b16',
-                                 ylim=(-0.1, 0.5), linewidth=3)
+        self.frame_plt['DTeco'].plot(ax=self.ax21_bis, color='#cb4b16',
+                                     ylim=(-0.1, 0.5), linewidth=self.width)
         self.ax21_bis.legend(loc='upper right', ncol=1)
-        self.frame['T12_2_state'].plot(ax=self.ax22,
-                                       colormap='Accent',
-                                       ylim=(-10, 120),
-                                       linewidth=3)
+        self.frame_plt['T12_2_state'].plot(ax=self.ax22,
+                                           colormap='Accent',
+                                           ylim=(-10, 120),
+                                           linewidth=self.width)
         self.ax22.legend(loc='upper left')
         self.ax22_bis = self.ax22.twinx()
-        self.frame['ECS_state'].plot(ax=self.ax22_bis, color='#cb4b16',
-                                     ylim=(-10, 120), linewidth=3)
+        self.frame_plt['ECS_state'].plot(ax=self.ax22_bis, color='#cb4b16',
+                                         ylim=(-10, 120), linewidth=self.width)
         self.ax22_bis.legend(loc='upper right', ncol=1)
 
-        self.frame['CHAUFF_2_state'].plot(ax=self.ax23, colormap='Accent',
-                                          ylim=(-10, 120), linewidth=3)
-        self.ax23.legend(loc='best')
+        self.frame_plt[['CHAUFF_2_state']].plot(ax=self.ax23, colormap='Accent',
+                                                ylim=(-10, 120),
+                                                linewidth=self.width)
 
     def formatting(self):
         # Color match between yaxis and lines
@@ -128,4 +131,4 @@ if __name__ == '__main__':
     chauff = FOLDER + "Issues\\Algo\\Chauff_algo_clean.csv"
     title = "Algorithme de controle de la variable Chauff"
     frames = read_csv((chauff,), convert_index=(convert_to_datetime,))
-    ChauffPlotter(frames["Chauff_algo_clean"], title=title).draw()
+    ChauffPlotter(frames, title=title).draw()

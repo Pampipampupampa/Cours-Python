@@ -59,6 +59,7 @@ secondes_formatter = DateFormatter("%M:%S")
 #### Classes, Methods, Functions : ####
 #######################################
 
+
 class Plotter:
 
     """
@@ -69,11 +70,18 @@ class Plotter:
             - artist used to group annotations and other artist stuff
     """
 
+    # Line width
+    width = 2
+    # Color set
+    colormap = "Accent"
+    # background_color
+    background_color = (1, 0.98, 0.98)  # old = (0.84, 0.89, 0.9)
+
     def __init__(self, frame, title="Title"):
         self.frame = frame
         self.title = title
 
-    def fig_init(self, figsize=(20, 10), facecolor=(0.84, 0.89, 0.9),
+    def fig_init(self, figsize=(20, 10), facecolor=background_color,
                  ha='center'):
         """
             Create figure instance and add title to it
@@ -111,6 +119,12 @@ class Plotter:
         """
         pass
 
+    def forcing(self):
+        """
+            Adding some element to overwrite self.fig.autofmt_xdate()
+        """
+        pass
+
     def draw(self):
         """
             Proceed to all Methods
@@ -122,6 +136,7 @@ class Plotter:
         self.artist()
         self.text()
         self.fig.autofmt_xdate()
+        self.forcing()
         plt.show()
 
 
@@ -163,7 +178,8 @@ def printer_spe(frame):
     """
         Print fields for each dataframe inside a dictionnary
     """
-    for val in frame.values():
+    for key, val in frame.items():
+        print("\n----> " + key)
         for i, col in enumerate(val.columns):
             print("column {} \t\t{}".format(i, col))
 

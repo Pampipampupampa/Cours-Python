@@ -2,7 +2,20 @@
 # -*- coding:Utf8 -*-
 
 
-"""Main script to plot an view all reader"""
+"""
+    Main script to plot and view readers
+
+    1) You have to had new path, title and plotter class
+       inside PATHS, TITLES and DICTCLASS.
+
+    2) Add new plotter inside Plotters.__init__.py
+
+    3) Add a description inside the menu variable to provide help for users
+
+    4) Specifics treatments must be locate inside a :
+         - elif choice == number:
+             process actions ...
+"""
 
 
 ########################################
@@ -16,86 +29,99 @@ from Plotters import *
 from Plotters.parameters import *
 
 
-########################
-#### Main Program : ####
-########################
+#####################
+#### Constants : ####
+#####################
 
 
-paths = ((FOLDER + "clean\\olivier_house_read.csv",),
+# Files path
+PATHS = ((FOLDER + "clean\\olivier_house_read.csv",),
          (FOLDER + "Issues\\Algo_flow\\algo_flow_mod_01_clean.csv",),
          (FOLDER + "Issues\\Algo\\S5_algo_clean.csv",
           FOLDER + "Issues\\Algo\\S6_algo_clean.csv",),
          (FOLDER + "Issues\\Algo\\S4_algo_ECS_clean.csv",),
          (FOLDER + "Issues\\Algo\\variables_algo_clean.csv",
           FOLDER + "Issues\\Algo\\backup_algo_clean.csv",),
-         (FOLDER + "Issues\\Algo\\Chauff_algo_clean.csv",))
+         (FOLDER + "Issues\\Algo\\Chauff_algo_clean.csv",),
+         (FOLDER + "Issues\\Algo\\V3Vextra_algo_clean.csv",))
 
-titles = ("Evolution des principaux paramètres caractéristiques du bâtiment",
+# Plots title
+TITLES = ("Evolution des principaux paramètres caractéristiques du bâtiment",
           "Fonctionnement de l'algorithme de controle du débit des pompes",
           "Algorithme de controle des pompes S6 et S5",
           "Algorithme de controle de la pompe S4",
           "Algorithme déterminant la consigne solaire et le besoin en appoint",
-          "Algorithme de controle de la variable Chauff")
+          "Algorithme de controle de la variable Chauff",
+          "Contrôle de la vanne d'appoint")
 
-# Used as a reader selector
-menu = "\nSelect dataframe : \n" + \
-       "1 : House data \n" + \
-       "2 : Débits algo \n" + \
-       "3 : S6_S5 algo\n" + \
-       "4 : S4 algo\n" + \
-       "5 : variables_backup algo\n" + \
-       "6 : Chauff algo \n\n" + \
-       "0 : Close application \n"
+# Dictionnary of dataframes plotter
+DICTCLASS = {1: house_data.HousePlotter,
+             2: pump_algo.PumpAlgoPlotter,
+             3: S6_S5.S6S5Plotter,
+             4: S4.S4Plotter,
+             5: variable_backup.VarBackPlotter,
+             6: chauff.ChauffPlotter,
+             7: extra_valve.ExtraValvePlotter}
+
+# MENU to choose dataframe (number - 1 = index inside PATHS and TITLES)
+MENU = "\n{}\n".format("-"*40) + \
+       "Select dataframe : \n" + \
+       "1 : Recalage maison olivier \n" + \
+       "2 : Contrôle des débits \n" + \
+       "3 : Contrôle de S6 et S5\n" + \
+       "4 : Contrôle de S4 et d'ECS\n" + \
+       "5 : Contrôle DTeco, Températures de consigne et Appoint\n" + \
+       "6 : Contrôle de CHAUFF \n" + \
+       "7 : Contrôle de la vanne d'appoint \n" + \
+       "\n0 : Close application \n"
+
+
+########################
+#### Main Program : ####
+########################
+
+
+assert (len(PATHS) == len(TITLES) == len(DICTCLASS)), "Constants length mismatch" + \
+                                                      "\t---->Aborting"
+valid_inputs = "".join(str(i) for i in range(1, len(PATHS)+1))
 
 while True:
-    print(menu)
+    print(MENU)
+
+    # Intercept wrong inputs
     try:
-        choice = int(input("Action : "))
+        choice = int(input("Choice : "))
     except ValueError:
-        print("Please enter a number inside the list")
+        print("Please check Menu : {} is not allowed".format(choice))
         continue
+
+    # Close program
     if choice == 0:
         print("Programme now closing")
         break
-    elif choice == 1:
-        frames = read_csv(paths[choice-1], convert_index=(convert_to_datetime,))
-        frames["olivier_house_read"] = frames["olivier_house_read"][:].resample('60min')
+
+    # Process actions
+    elif str(choice) in valid_inputs:
+        # len(PATHS[choice-1]) used to size function arguments
+        frames = read_csv(PATHS[choice-1],
+                          convert_index=(convert_to_datetime,)*len(PATHS[choice-1]),
+                          delimiter=(";",)*len(PATHS[choice-1]),
+                          index_col=("Date",)*len(PATHS[choice-1]),
+                          in_conv_index=(None,)*len(PATHS[choice-1]),
+                          skiprows=(1,)*len(PATHS[choice-1]))
         print(printer_spe(frames))
-        house_data.HousePlotter(frames["olivier_house_read"],
-                                title=titles[choice-1]).draw()
-    elif choice == 2:
-        frames = read_csv(paths[choice-1], convert_index=(convert_to_datetime,))
-        print(printer_spe(frames))
-        pump_algo.PumpAlgoPlot(frames["algo_flow_mod_01_clean"],
-                               title=titles[choice-1]).draw()
-    elif choice == 3:
-        frames = read_csv(paths[choice-1], convert_index=(convert_to_datetime,
-                                                          convert_to_datetime),
-                          delimiter=(";", ";"), index_col=("Date", "Date"),
-                          in_conv_index=(None, None), skiprows=(1, 1))
-        print(printer_spe(frames))
-        S6_S5.S6S5Plotter(frames,
-                          title=titles[choice-1]).draw()
-    elif choice == 4:
-        frames = read_csv(paths[choice-1], convert_index=(convert_to_datetime,))
-        print(printer_spe(frames))
-        S4.S4Plotter(frames["S4_algo_ECS_clean"],
-                     title=titles[choice-1]).draw()
-    elif choice == 5:
-        frames = read_csv(paths[choice-1], convert_index=(convert_to_datetime,
-                                                          convert_to_datetime),
-                          delimiter=(";", ";"), index_col=("Date", "Date"),
-                          in_conv_index=(None, None), skiprows=(1, 1))
-        # bug issue : bad date formatting and length mismatch
-        frames["variables_algo_clean"] = frames["variables_algo_clean"].ix[:-1, :][:]
-        frames["backup_algo_clean"].index = frames["variables_algo_clean"].index
-        print(printer_spe(frames))
-        variable_backup.VarBackPlotter(frames,
-                                       title=titles[choice-1]).draw()
-    elif choice == 6:
-        frames = read_csv(paths[choice-1], convert_index=(convert_to_datetime,))
-        print(printer_spe(frames))
-        chauff.ChauffPlotter(frames["Chauff_algo_clean"],
-                             title=titles[choice-1]).draw()
+        if choice == 1:
+            # Data reduce to speed up plotter
+            frames["olivier_house_read"] = frames["olivier_house_read"][:].resample('60min')
+        elif choice == 5:
+            # Bug issue : bad date formatting and length mismatch
+            frames["variables_algo_clean"] = frames["variables_algo_clean"].ix[:-1, :][:]
+            frames["backup_algo_clean"].index = frames["variables_algo_clean"].index
+
+        # Plot frame
+        DICTCLASS[choice](frames, title=TITLES[choice-1]).draw()
+
+    # Intercept input outside valid_inputs range
     else:
-        print("Please check menu")
+        print("Please check Menu : {} is not allowed".format(choice))
+        continue

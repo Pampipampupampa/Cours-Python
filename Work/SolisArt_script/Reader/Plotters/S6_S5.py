@@ -27,6 +27,8 @@ class S6S5Plotter(Plotter):
 
     def __init__(self, frames, title):
         super().__init__(frame=frames, title=title)
+        self.frame_S6 = self.frame["S6_algo_clean"]
+        self.frame_S5 = self.frame["S5_algo_clean"]
 
     def plotting_shape(self):
         # Drawing graphs
@@ -45,48 +47,46 @@ class S6S5Plotter(Plotter):
 
     def plotting(self):
         # First column
-        self.frame["S6_algo_clean"][['T3', 'T5']].plot(ax=self.ax11,
-                                                       color=('#cb4b16', '#859900'),
-                                                       ylim=(0, 140),
-                                                       linewidth=3)
+        self.frame_S6[['T3', 'T5']].plot(ax=self.ax11,
+                                         color=('#cb4b16', '#859900'),
+                                         ylim=(0, 140),
+                                         linewidth=self.width)
         self.ax11.legend(loc='upper left')
         self.ax11_bis = self.ax11.twinx()
-        self.frame["S6_algo_clean"]['DeltaT_1-5'].plot(ax=self.ax11_bis,
-                                                       color='#268bd2',
-                                                       ylim=(-20, 30),
-                                                       linewidth=3)
+        self.frame_S6['DeltaT_1-5'].plot(ax=self.ax11_bis,
+                                         color='#268bd2',
+                                         ylim=(-20, 30),
+                                         linewidth=self.width)
         self.ax11_bis.legend(loc='upper right')
-        self.frame["S6_algo_clean"][['T3_state', 'T5_state',
-                                     'DeltaT_1-5_state']].plot(ax=self.ax12,
-                                                               colormap='Accent',
-                                                               ylim=(-1, 120),
-                                                               linewidth=3)
-        self.frame["S6_algo_clean"]['S6_state'].plot(ax=self.ax13,
-                                                     colormap='Accent',
-                                                     ylim=(-1, 120),
-                                                     linewidth=3)
-        self.ax13.legend(loc='best')
+        self.frame_S6[['T3_state', 'T5_state',
+                       'DeltaT_1-5_state']].plot(ax=self.ax12,
+                                                 colormap='Accent',
+                                                 ylim=(-1, 120),
+                                                 linewidth=self.width)
+        self.frame_S6[['S6_state']].plot(ax=self.ax13,
+                                         colormap='Accent',
+                                         ylim=(-1, 120),
+                                         linewidth=self.width)
 
         # Second column
-        self.frame["S5_algo_clean"]['T3'].plot(ax=self.ax21, color='#cb4b16',
-                                               ylim=(-1, 140), linewidth=3)
+        self.frame_S5['T3'].plot(ax=self.ax21, color='#cb4b16',
+                                 ylim=(-1, 140), linewidth=self.width)
         self.ax21.legend(loc='upper left')
         self.ax21_bis = self.ax21.twinx()
-        self.frame["S5_algo_clean"]['DeltaT_1-3'].plot(ax=self.ax21_bis,
-                                                       color='#268bd2',
-                                                       ylim=(-20, 30),
-                                                       linewidth=3)
+        self.frame_S5['DeltaT_1-3'].plot(ax=self.ax21_bis,
+                                         color='#268bd2',
+                                         ylim=(-20, 30),
+                                         linewidth=self.width)
         self.ax21_bis.legend(loc='upper right')
-        self.frame["S5_algo_clean"][['T3_state', 'DeltaT_1-3_state',
-                                     'Vsolar_state']].plot(ax=self.ax22,
-                                                           colormap='Accent',
-                                                           ylim=(-1, 120),
-                                                           linewidth=3)
-        self.frame["S5_algo_clean"]['S5_state'].plot(ax=self.ax23,
-                                                     colormap='Accent',
-                                                     ylim=(-1, 120),
-                                                     linewidth=3)
-        self.ax23.legend(loc='best')
+        self.frame_S5[['T3_state', 'DeltaT_1-3_state',
+                       'Vsolar_state']].plot(ax=self.ax22,
+                                             colormap='Accent',
+                                             ylim=(-1, 120),
+                                             linewidth=self.width)
+        self.frame_S5[['S5_state']].plot(ax=self.ax23,
+                                         colormap='Accent',
+                                         ylim=(-1, 120),
+                                         linewidth=self.width)
 
     def formatting(self):
         # Color match between yaxis and lines

@@ -28,6 +28,8 @@ class VarBackPlotter(Plotter):
 
     def __init__(self, frames, title):
         super().__init__(frame=frames, title=title)
+        self.frame_var = self.frame["variables_algo_clean"]
+        self.frame_backup = self.frame["backup_algo_clean"]
 
     def plotting_shape(self):
         self.ax11 = self.fig.add_subplot(3, 2, 1)
@@ -44,54 +46,52 @@ class VarBackPlotter(Plotter):
 
     def plotting(self):
         # First column
-        self.frame["variables_algo_clean"][['T1', 'T7',
-                                            'T9']].plot(ax=self.ax11,
-                                                        color=('#cb4b16',
-                                                               '#859900',
-                                                               '#268bd2'),
-                                                        ylim=(-10, 120),
-                                                        linewidth=3)
+        self.frame_var[['T1', 'T7',
+                        'T9']].plot(ax=self.ax11,
+                                    color=('#cb4b16',
+                                           '#859900',
+                                           '#268bd2'),
+                                    ylim=(-10, 120),
+                                    linewidth=self.width)
         self.ax11.legend(loc='best', ncol=3)
-        self.frame["variables_algo_clean"]['T1_state'].plot(ax=self.ax12,
-                                                            colormap='Accent',
-                                                            ylim=(-1, 120),
-                                                            linewidth=3)
-        self.ax12.legend(loc='best')
-        self.frame["variables_algo_clean"]['Tsolaire'].plot(ax=self.ax13,
-                                                            color='#cb4b16',
-                                                            ylim=(20, 25),
-                                                            linewidth=3)
+        self.frame_var[['T1_state']].plot(ax=self.ax12,
+                                          colormap='Accent',
+                                          ylim=(-1, 120),
+                                          linewidth=self.width)
+        self.frame_var['Tsolaire'].plot(ax=self.ax13,
+                                        color='#cb4b16',
+                                        ylim=(20, 25),
+                                        linewidth=self.width)
         self.ax13.legend(loc='upper left')
         self.ax13_bis = self.ax13.twinx()
-        self.frame["variables_algo_clean"]['DTeco'].plot(ax=self.ax13_bis,
-                                                         color='#859900',
-                                                         ylim=(-0.1, 0.5),
-                                                         linewidth=3)
+        self.frame_var['DTeco'].plot(ax=self.ax13_bis,
+                                     color='#859900',
+                                     ylim=(-0.1, 0.5),
+                                     linewidth=self.width)
         self.ax13_bis.legend(loc='upper right')
 
         # Second column
-        self.frame["backup_algo_clean"]['T8'].plot(ax=self.ax21, color='#cb4b16',
-                                                   ylim=(10, 50), linewidth=3)
+        self.frame_backup['T8'].plot(ax=self.ax21, color='#cb4b16',
+                                     ylim=(10, 50), linewidth=self.width)
         self.ax21_bis = self.ax21.twinx()
-        self.frame["backup_algo_clean"].ix[:,
-                                           'CHAUFF_state':
-                                           'Vextra_state'].plot(ax=self.ax21_bis,
-                                                                colormap='Accent',
-                                                                ylim=(-1, 120),
-                                                                linewidth=3)
+        self.frame_backup.ix[:, 'CHAUFF_state':
+                                'Vextra_state'].plot(ax=self.ax21_bis,
+                                                     colormap='Accent',
+                                                     ylim=(-1, 120),
+                                                     linewidth=self.width)
         self.ax21.legend(loc='upper left')
         self.ax21_bis.legend(loc='upper right', ncol=3)
 
-        self.frame["backup_algo_clean"][['T8_state',
-                                         'Or_state']].plot(ax=self.ax22,
-                                                           colormap='Accent',
-                                                           ylim=(-1, 120),
-                                                           linewidth=3)
+        self.frame_backup[['T8_state',
+                           'Or_state']].plot(ax=self.ax22,
+                                             colormap='Accent',
+                                             ylim=(-1, 120),
+                                             linewidth=self.width)
 
-        self.frame["backup_algo_clean"][['Backup_state']].plot(ax=self.ax23,
-                                                               colormap='Accent',
-                                                               ylim=(-1, 120),
-                                                               linewidth=3)
+        self.frame_backup[['Backup_state']].plot(ax=self.ax23,
+                                                 colormap='Accent',
+                                                 ylim=(-1, 120),
+                                                 linewidth=self.width)
 
     def formatting(self):
         # Color match between yaxis and lines
@@ -120,10 +120,10 @@ class VarBackPlotter(Plotter):
 
     def text(self):
         # Add ylabel legend
-        text = ("T1_state =  T1_state >= T7 + 5 - 15*DTeco",
+        text = ("T1_state =  T1 >= T7 + 5 - 15*DTeco",
                 "Tsolaire = Tconsigne + 3 - (Text_mini+Text)/18",
-                "DTeco = 0.3 if T1_state else 0",
-                "T8_state =  <= 30",
+                "DTeco = Si T1_state alors 0.3 sinon 0",
+                "T8_state =  T8 <= 30",
                 "Or_state = (T8_state and CHAUFF_state) or ECS_state",
                 "Backup_state = Or_state and Vextra_state")
         plt.text(0.1, -0.5, text[0]+"\n"+text[1]+"\n"+text[2],

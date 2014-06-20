@@ -25,7 +25,7 @@ from xml_parser import *
 csv_in = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
          "olivier_house.csv"
 csv_out = "C:\\Users\\bois\\Documents\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-          "olivier_house_read.csv"
+          "olivier_house.csv"
 xml_in = "C:\\Users\\bois\\Documents\\SolisGraph\\SolisGraphDrawingStyles.xml"
 xml_out = "C:\\Users\\bois\\Documents\\SolisGraph\\SolisGraphDrawingStyles.xml"
 
@@ -71,7 +71,7 @@ def parse_and_store(csv_in, csv_out, xml_in, xml_out, template):
         # Parse and clean CSV file
         print("\n### Start to build {} ###".format(csv_out))
         # Cast to set because update_xml_linestyle accept only set
-        fields = set(process_actions(csv_in, csv_out, start, debug=False,
+        fields = set(process_actions(csv_in, csv_out, start, verbose=True,
                                      D_type="", nrows=None, head=head,
                                      convert_dicts=(field_converter,
                                                     unit_converter)))
