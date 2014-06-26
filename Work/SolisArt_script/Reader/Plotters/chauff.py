@@ -45,15 +45,17 @@ class ChauffPlotter(Plotter):
 
     def plotting(self):
         # First column
-        self.frame_plt[['T12_1', 'compare1']].plot(ax=self.ax11, colormap='Accent',
-                                                   ylim=(-10, 120), linewidth=self.width)
+        self.frame_plt[['T12_1', 'compare1']].plot(ax=self.ax11,
+                                                   colormap=self.colormap,
+                                                   ylim=(-10, 120),
+                                                   linewidth=self.width)
         self.ax11.legend(loc='upper left')
         self.ax11_bis = self.ax11.twinx()
         self.frame_plt['DTeco'].plot(ax=self.ax11_bis, color='#cb4b16',
                                      ylim=(-0.1, 0.5), linewidth=self.width)
         self.ax11_bis.legend(loc='upper right', ncol=1)
         self.frame_plt['T12_1_state'].plot(ax=self.ax12,
-                                           colormap='Accent',
+                                           colormap=self.colormap,
                                            ylim=(-10, 120),
                                            linewidth=self.width)
         self.ax12.legend(loc='upper left')
@@ -62,13 +64,14 @@ class ChauffPlotter(Plotter):
                                          ylim=(-10, 120), linewidth=self.width)
         self.ax12_bis.legend(loc='upper right', ncol=1)
 
-        self.frame_plt[['CHAUFF_1_state']].plot(ax=self.ax13, colormap='Accent',
+        self.frame_plt[['CHAUFF_1_state']].plot(ax=self.ax13,
+                                                colormap=self.colormap,
                                                 ylim=(-10, 120),
                                                 linewidth=self.width)
 
         # Second column
         self.frame_plt[['T12_2', 'compare2']].plot(ax=self.ax21,
-                                                   colormap='Accent',
+                                                   colormap=self.colormap,
                                                    ylim=(-10, 120),
                                                    linewidth=self.width)
         self.ax21.legend(loc='upper left')
@@ -77,7 +80,7 @@ class ChauffPlotter(Plotter):
                                      ylim=(-0.1, 0.5), linewidth=self.width)
         self.ax21_bis.legend(loc='upper right', ncol=1)
         self.frame_plt['T12_2_state'].plot(ax=self.ax22,
-                                           colormap='Accent',
+                                           colormap=self.colormap,
                                            ylim=(-10, 120),
                                            linewidth=self.width)
         self.ax22.legend(loc='upper left')
@@ -86,7 +89,8 @@ class ChauffPlotter(Plotter):
                                          ylim=(-10, 120), linewidth=self.width)
         self.ax22_bis.legend(loc='upper right', ncol=1)
 
-        self.frame_plt[['CHAUFF_2_state']].plot(ax=self.ax23, colormap='Accent',
+        self.frame_plt[['CHAUFF_2_state']].plot(ax=self.ax23,
+                                                colormap=self.colormap,
                                                 ylim=(-10, 120),
                                                 linewidth=self.width)
 
@@ -115,8 +119,8 @@ class ChauffPlotter(Plotter):
 
     def text(self):
         # Add ylabel legend
-        text = ("compare1 = T12_1 < Tconsigne1(=20°C) - DTeco + CHAUFF_1_state/4",
-                "compare2 = T12_2 < Tconsigne2(=20°C) - DTeco + CHAUFF_2_state/4")
+        text = ("compare1 = Tconsigne1(=20°C) - DTeco + CHAUFF_1_state/4",
+                "compare2 = Tconsigne2(=20°C) - DTeco + CHAUFF_2_state/4")
         plt.text(0.5, -0.5, text[0], horizontalalignment='center',
                  verticalalignment='center', transform=self.ax13.transAxes)
         plt.text(0.5, -0.5, text[1], horizontalalignment='center',

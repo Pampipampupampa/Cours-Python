@@ -49,35 +49,35 @@ class ExtraValvePlotter(Plotter):
         # First column
         self.frame_plt[['T1', 'T4', 'T7',
                         'T12_house']].plot(ax=self.ax11,
-                                           colormap='Accent',
+                                           colormap=self.colormap,
                                            ylim=(0, 130),
                                            style=self.style,
                                            linewidth=self.width)
         self.frame_plt[['T1_state', 'T4_state', 'T7_state',
                         'T12_state']].plot(ax=self.ax12,
-                                           colormap='Accent',
+                                           colormap=self.colormap,
                                            style=self.style,
                                            ylim=(-1, 120), linewidth=self.width)
         self.frame_plt[['Vextra_state']].plot(ax=self.ax13,
-                                              colormap='Accent',
+                                              colormap=self.colormap,
                                               style=self.style,
                                               ylim=(-1, 120),
                                               linewidth=self.width)
 
         # Second column
         self.frame_plt.ix[:, 'ECS_state':'CHAUFF_state'].plot(ax=self.ax21,
-                                                              colormap='Accent',
+                                                              colormap=self.colormap,
                                                               ylim=(0, 130),
                                                               linewidth=self.width)
         self.frame_plt[['On1_state', 'On2_state',
                         'On3_state']].plot(ax=self.ax22,
-                                           colormap='Accent',
+                                           colormap=self.colormap,
                                            style=self.style,
                                            ylim=(-1, 120),
                                            linewidth=self.width)
         self.frame_plt[['ECS_out_state',
                         'CHAUFF_out_state']].plot(ax=self.ax23,
-                                                  colormap='Accent',
+                                                  colormap=self.colormap,
                                                   style=self.style,
                                                   ylim=(-1, 120),
                                                   linewidth=self.width)

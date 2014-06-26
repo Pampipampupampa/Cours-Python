@@ -70,12 +70,9 @@ class Plotter:
             - artist used to group annotations and other artist stuff
     """
 
-    # Line width
-    width = 2
-    # Color set
-    colormap = "Accent"
-    # background_color
-    background_color = (1, 0.98, 0.98)  # old = (0.84, 0.89, 0.9)
+    width = 2  # Line width
+    colormap = "Accent"  # Color set
+    background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
 
     def __init__(self, frame, title="Title"):
         self.frame = frame

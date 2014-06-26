@@ -26,6 +26,7 @@ from functools import wraps  # Keep trace of decorated functions arguments
 #### Parameters : ####
 ######################
 
+
 # Fields converters for house and general simulation
 field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "solarPanel_ISO.temSen[40].T": "T1",
@@ -125,11 +126,13 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "extraTank_mod1.flow_S4": "Flow_S4",
                         "extraTank_mod1.delta_T.y": "DeltaT_1-4",
 
-                        "T1_mod.y": "T1", "T3_mod.y": "T3", "T4_mod.y": "T4",
-                        "T5_mod.y": "T5", "V3Vsolar_mod1.compare1.y": "compare1",
+                        "V3Vsolar_mod1.T1": "T1", "V3Vsolar_mod1.T3": "T3",
+                        "V3Vsolar_mod1.T4": "T4", "V3Vsolar_mod1.T5": "T5",
+                        "V3Vsolar_mod1.compare1.y": "compare1",
                         "V3Vsolar_mod1.compare2.y": "compare2",
-                        "V3Vsolar_mod1.T1_greater_test.y": "compare1_state",
-                        "V3Vsolar_mod1.T3_greaterEqual_test.y": "compare2_state",
+                        "V3Vsolar_mod1.compare3.y": "compare3",
+                        "V3Vsolar_mod1.T1_greater_test.y": "compare2_state",
+                        "V3Vsolar_mod1.T3_greaterEqual_test.y": "compare3_state",
                         "V3Vsolar_mod1.pre_conditions.y": "On2_state",
                         "V3Vsolar_mod1.T1_greaterEqual_test.y": "On1_state",
                         "V3Vsolar_mod1.V3V_solar": "Vsolar_state",
@@ -176,6 +179,7 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "V3Vextra_mod1.V3V_extra": "Vextra_state",
                         "V3Vextra_mod1.ECS_out": "ECS_out_state",
                         "V3Vextra_mod1.CHAUFF_out[1]": "CHAUFF_out_state"}
+
 
 #######################################
 #### Classes, Methods, Functions : ####
@@ -401,7 +405,6 @@ def process_actions(in_file, out_file, start_time, D_type=None, seps=(",", ";"),
 
     # Return all fields names except first one
     return new_csv.columns
-    # return new_csv
 
 
 ########################
@@ -433,10 +436,16 @@ algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
 if __name__ == '__main__':
 
     # Input and output
-    csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-             "Algo\\V3Vextra_algo.csv"
-    csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-              "Algo\\V3Vextra_algo_clean.csv"
+    # csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
+    #          "Algo\\V3Vsolar_algo.csv"
+    # csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
+    #           "Algo\\V3Vsolar_algo_clean.csv"
+
+    # Input and output
+    csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
+             "chambery_26062014.csv"
+    csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
+              "chambery_26062014.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -459,8 +468,8 @@ if __name__ == '__main__':
         # Cast to set because update_xml_linestyle accept only set
         fields = set(process_actions(csv_in, csv_out, start, verbose=True,
                                      D_type="", nrows=None, head=head,
-                                     convert_dicts=(algo_field_converter,
-                                                    algo_unit_converter)))
+                                     convert_dicts=(field_converter,
+                                                    unit_converter)))
         print("-"*25 + "\nFields are :")
         for field in fields:
             print(field)

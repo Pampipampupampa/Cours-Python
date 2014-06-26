@@ -55,7 +55,7 @@ class VarBackPlotter(Plotter):
                                     linewidth=self.width)
         self.ax11.legend(loc='best', ncol=3)
         self.frame_var[['T1_state']].plot(ax=self.ax12,
-                                          colormap='Accent',
+                                          colormap=self.colormap,
                                           ylim=(-1, 120),
                                           linewidth=self.width)
         self.frame_var['Tsolaire'].plot(ax=self.ax13,
@@ -76,7 +76,7 @@ class VarBackPlotter(Plotter):
         self.ax21_bis = self.ax21.twinx()
         self.frame_backup.ix[:, 'CHAUFF_state':
                                 'Vextra_state'].plot(ax=self.ax21_bis,
-                                                     colormap='Accent',
+                                                     colormap=self.colormap,
                                                      ylim=(-1, 120),
                                                      linewidth=self.width)
         self.ax21.legend(loc='upper left')
@@ -84,12 +84,12 @@ class VarBackPlotter(Plotter):
 
         self.frame_backup[['T8_state',
                            'Or_state']].plot(ax=self.ax22,
-                                             colormap='Accent',
+                                             colormap=self.colormap,
                                              ylim=(-1, 120),
                                              linewidth=self.width)
 
         self.frame_backup[['Backup_state']].plot(ax=self.ax23,
-                                                 colormap='Accent',
+                                                 colormap=self.colormap,
                                                  ylim=(-1, 120),
                                                  linewidth=self.width)
 

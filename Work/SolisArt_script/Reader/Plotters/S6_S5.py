@@ -60,11 +60,11 @@ class S6S5Plotter(Plotter):
         self.ax11_bis.legend(loc='upper right')
         self.frame_S6[['T3_state', 'T5_state',
                        'DeltaT_1-5_state']].plot(ax=self.ax12,
-                                                 colormap='Accent',
+                                                 colormap=self.colormap,
                                                  ylim=(-1, 120),
                                                  linewidth=self.width)
         self.frame_S6[['S6_state']].plot(ax=self.ax13,
-                                         colormap='Accent',
+                                         colormap=self.colormap,
                                          ylim=(-1, 120),
                                          linewidth=self.width)
 
@@ -80,11 +80,11 @@ class S6S5Plotter(Plotter):
         self.ax21_bis.legend(loc='upper right')
         self.frame_S5[['T3_state', 'DeltaT_1-3_state',
                        'Vsolar_state']].plot(ax=self.ax22,
-                                             colormap='Accent',
+                                             colormap=self.colormap,
                                              ylim=(-1, 120),
                                              linewidth=self.width)
         self.frame_S5[['S5_state']].plot(ax=self.ax23,
-                                         colormap='Accent',
+                                         colormap=self.colormap,
                                          ylim=(-1, 120),
                                          linewidth=self.width)
 

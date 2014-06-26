@@ -72,12 +72,12 @@ class PumpAlgoPlotter(Plotter):
                                              linewidth=self.width)
         self.ax11_bis.legend(loc='upper right')
         self.frame_plt.ix[:, 'S6_state':'S5_state'].plot(ax=self.ax12,
-                                                         colormap='Accent',
+                                                         colormap=self.colormap,
                                                          style=self.style,
                                                          ylim=(0, 130),
                                                          linewidth=self.width)
         self.frame_plt.ix[:, 'Flow_S6_out':'Flow_S5_out'].plot(ax=self.ax13,
-                                                               colormap='Accent',
+                                                               colormap=self.colormap,
                                                                style=self.style,
                                                                ylim=(0, 80),
                                                                linewidth=self.width)
@@ -92,12 +92,12 @@ class PumpAlgoPlotter(Plotter):
                                                ylim=(0, 6), linewidth=self.width)
         self.ax21_bis.legend(loc='upper right')
         self.frame_plt.ix[:, 'S4_state':'S3_state'].plot(ax=self.ax22,
-                                                         colormap='Accent',
+                                                         colormap=self.colormap,
                                                          style=self.style,
                                                          ylim=(0, 130),
                                                          linewidth=self.width)
         self.frame_plt.ix[:, 'Flow_S4_out':'Flow_S3_out'].plot(ax=self.ax23,
-                                                               colormap='Accent',
+                                                               colormap=self.colormap,
                                                                style=self.style,
                                                                ylim=(0, 100),
                                                                linewidth=self.width)

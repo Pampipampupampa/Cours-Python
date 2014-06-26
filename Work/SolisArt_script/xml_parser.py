@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
+
 """
 
 
@@ -17,9 +18,11 @@
     ---> The lxml module which is a externe library can be used
 """
 
+
 ########################################
 #### Classes and Methods imported : ####
 ########################################
+
 
 import xml.etree.ElementTree as ET
 
@@ -27,13 +30,16 @@ from random import randint
 from sys import exit as sys_exit
 from functools import wraps
 
+
 #####################
 #### Constants : ####
 #####################
 
+
 # Fields with specific value, else "str(randint(0, 255)" will be used
 field_dict = {"Style": str(0),
               "Width": str(2)}
+
 
 #######################################
 #### Classes, Methods, Functions : ####
@@ -113,25 +119,6 @@ def add_item(tree, new_fields, template, title="Yes"):
     return len(elements)
 
 
-@benchmark
-def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
-    """
-        Open xml file and update it with new fields
-    """
-    head, tree = clean_xml(xml_in)
-    length = add_item(tree, new_fields, template, title)
-    if length == 0:
-        print("Nothing to change, script ended")
-        sys_exit()  # Kill script
-    else:
-        print("{} new element[s] to add, now continue".format(length))
-        indent(tree)
-        pretty_xml = ET.tostring(tree, encoding="unicode")
-        with open(xml_out, "w") as f:
-            f.write(head)
-            f.write(pretty_xml)
-
-
 def to_beautiful_xml(bad_xml):
     """
         Return a pretty xml. Deprecated, use indent function instead
@@ -165,9 +152,29 @@ def indent(elem, level=0):
             elem.tail = indentation
 
 
+@benchmark
+def update_xml_linestyle(xml_in, xml_out, template, new_fields, title="Yes"):
+    """
+        Open xml file and update it with new fields
+    """
+    head, tree = clean_xml(xml_in)
+    length = add_item(tree, new_fields, template, title)
+    if length == 0:
+        print("Nothing to change, script ended")
+        sys_exit()  # Kill script
+    else:
+        print("{} new element[s] to add, now continue".format(length))
+        indent(tree)
+        pretty_xml = ET.tostring(tree, encoding="unicode")
+        with open(xml_out, "w") as f:
+            f.write(head)
+            f.write(pretty_xml)
+
+
 ########################
 #### Main Program : ####
 ########################
+
 
 if __name__ == '__main__':
     file_in = "SolisGraphDrawingStyles.xml"

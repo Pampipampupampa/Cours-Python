@@ -46,13 +46,13 @@ class HousePlotter(Plotter):
                             fontdict=font_title)
 
     def plotting(self):
-        self.frame_plt['House_Energy'].plot(ax=self.ax13, colormap="Accent",
+        self.frame_plt['House_Energy'].plot(ax=self.ax13, colormap=self.colormap,
                                             linewidth=5, linestyle="-")
-        self.frame_plt['House_Power'].plot(ax=self.ax12, colormap="Accent",
+        self.frame_plt['House_Power'].plot(ax=self.ax12, colormap=self.colormap,
                                            linewidth=self.width, linestyle="-",
                                            ylim=(-1, 5000))
         self.frame_plt[['T12_house', 'T12_rad_house',
-                        'T9_ext']].plot(ax=self.ax11, colormap="Accent",
+                        'T9_ext']].plot(ax=self.ax11, colormap=self.colormap,
                                         linewidth=self.width, linestyle="-")
 
     def formatting(self):

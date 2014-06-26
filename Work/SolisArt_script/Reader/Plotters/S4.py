@@ -53,11 +53,11 @@ class S4Plotter(Plotter):
                                                 linewidth=self.width)
         self.ax11.legend(loc='upper left')
         self.frame_plt[['Off1_state', 'Off2_state']].plot(ax=self.ax12,
-                                                          colormap='Accent',
+                                                          colormap=self.colormap,
                                                           ylim=(-1, 120),
                                                           linewidth=self.width)
         self.frame_plt.ix[:, 'Other_off_state':'ECS_state'].plot(ax=self.ax13,
-                                                                 colormap='Accent',
+                                                                 colormap=self.colormap,
                                                                  ylim=(-1, 120),
                                                                  linewidth=self.width)
 
@@ -71,12 +71,12 @@ class S4Plotter(Plotter):
         self.ax21_bis.legend(loc='upper right')
 
         self.frame_plt.ix[:, 'S4_flow_state':'Vextra_state'].plot(ax=self.ax22,
-                                                                  colormap='Accent',
+                                                                  colormap=self.colormap,
                                                                   ylim=(-1, 120),
                                                                   linewidth=self.width)
 
         self.frame_plt[['On_state', 'S4_state']].plot(ax=self.ax23,
-                                                      colormap='Accent',
+                                                      colormap=self.colormap,
                                                       ylim=(-1, 120),
                                                       linewidth=self.width)
 

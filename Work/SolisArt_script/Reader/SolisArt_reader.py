@@ -43,7 +43,8 @@ PATHS = ((FOLDER + "clean\\olivier_house_read.csv",),
          (FOLDER + "Issues\\Algo\\variables_algo_clean.csv",
           FOLDER + "Issues\\Algo\\backup_algo_clean.csv",),
          (FOLDER + "Issues\\Algo\\Chauff_algo_clean.csv",),
-         (FOLDER + "Issues\\Algo\\V3Vextra_algo_clean.csv",))
+         (FOLDER + "Issues\\Algo\\V3Vextra_algo_clean.csv",),
+         (FOLDER + "Issues\\Algo\\V3Vsolar_algo_clean.csv",))
 
 # Plots title
 TITLES = ("Evolution des principaux paramètres caractéristiques du bâtiment",
@@ -52,7 +53,8 @@ TITLES = ("Evolution des principaux paramètres caractéristiques du bâtiment",
           "Algorithme de controle de la pompe S4",
           "Algorithme déterminant la consigne solaire et le besoin en appoint",
           "Algorithme de controle de la variable Chauff",
-          "Contrôle de la vanne d'appoint")
+          "Contrôle de la vanne d'appoint",
+          "Contrôle de la vanne solaire")
 
 # Dictionnary of dataframes plotter
 DICTCLASS = {1: house_data.HousePlotter,
@@ -61,7 +63,8 @@ DICTCLASS = {1: house_data.HousePlotter,
              4: S4.S4Plotter,
              5: variable_backup.VarBackPlotter,
              6: chauff.ChauffPlotter,
-             7: extra_valve.ExtraValvePlotter}
+             7: extra_valve.ExtraValvePlotter,
+             8: solar_valve.SolarValvePlotter}
 
 # MENU to choose dataframe (number - 1 = index inside PATHS and TITLES)
 MENU = "\n{}\n".format("-"*40) + \
@@ -73,6 +76,7 @@ MENU = "\n{}\n".format("-"*40) + \
        "5 : Contrôle DTeco, Températures de consigne et Appoint\n" + \
        "6 : Contrôle de CHAUFF \n" + \
        "7 : Contrôle de la vanne d'appoint \n" + \
+       "8 : Contrôle de la vanne solaire \n" + \
        "\n0 : Close application \n"
 
 
