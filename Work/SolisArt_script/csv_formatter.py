@@ -10,21 +10,11 @@
 """
 
 
-########################################
-#### Classes and Methods imported : ####
-########################################
-
-
 import pandas as pd
 import re        # Regex
 import datetime  # Datetime parser
 
 from functools import wraps  # Keep trace of decorated functions arguments
-
-
-######################
-#### Parameters : ####
-######################
 
 
 # Fields converters for house and general simulation
