@@ -19,21 +19,11 @@
 """
 
 
-########################################
-#### Classes and Methods imported : ####
-########################################
-
-
 import xml.etree.ElementTree as ET
 
 from random import randint
 from sys import exit as sys_exit
 from functools import wraps
-
-
-#####################
-#### Constants : ####
-#####################
 
 
 # Fields with specific value, else "str(randint(0, 255)" will be used
@@ -105,7 +95,7 @@ def add_item(tree, new_fields, template, title="Yes"):
         # Base of current tree
         root = ET.SubElement(tree, template[0])
         # Keep trace of when this tag was added by using an attribute
-        # Idiot SolisArt parsing
+        # SolisArt parsing raise error with new attribute
         # root.set('updated', title)
         # Add text inside template[1] tag
         ET.SubElement(root, tree.find(template[1]).tag).text = str(elem)
