@@ -34,17 +34,17 @@ from Plotters.parameters import *
 #####################
 
 
-# Files path
-PATHS = ((FOLDER + "clean\\olivier_house_read.csv",),
-         (FOLDER + "Issues\\Algo_flow\\algo_flow_mod_01_clean.csv",),
-         (FOLDER + "Issues\\Algo\\S5_algo_clean.csv",
-          FOLDER + "Issues\\Algo\\S6_algo_clean.csv",),
-         (FOLDER + "Issues\\Algo\\S4_algo_ECS_clean.csv",),
-         (FOLDER + "Issues\\Algo\\variables_algo_clean.csv",
-          FOLDER + "Issues\\Algo\\backup_algo_clean.csv",),
-         (FOLDER + "Issues\\Algo\\Chauff_algo_clean.csv",),
-         (FOLDER + "Issues\\Algo\\V3Vextra_algo_clean.csv",),
-         (FOLDER + "Issues\\Algo\\V3Vsolar_algo_clean.csv",))
+# Files path with path.py module syntax ("/")
+PATHS = ((FOLDER / "clean/olivier_house_read.csv",),
+         (FOLDER / "Issues/Algo_flow/algo_flow_mod_01_clean.csv",),
+         (FOLDER / "Issues/Algo/S5_algo_clean.csv",
+          FOLDER / "Issues/Algo/S6_algo_clean.csv",),
+         (FOLDER / "Issues/Algo/S4_algo_ECS_clean.csv",),
+         (FOLDER / "Issues/Algo/variables_algo_clean.csv",
+          FOLDER / "Issues/Algo/backup_algo_clean.csv",),
+         (FOLDER / "Issues/Algo/Chauff_algo_clean.csv",),
+         (FOLDER / "Issues/Algo/V3Vextra_algo_clean.csv",),
+         (FOLDER / "Issues/Algo/V3Vsolar_algo_clean.csv",))
 
 # Plots title
 TITLES = ("Evolution des principaux paramètres caractéristiques du bâtiment",
@@ -112,7 +112,8 @@ while True:
                           delimiter=(";",)*len(PATHS[choice-1]),
                           index_col=("Date",)*len(PATHS[choice-1]),
                           in_conv_index=(None,)*len(PATHS[choice-1]),
-                          skiprows=(1,)*len(PATHS[choice-1]))
+                          skiprows=(1,)*len(PATHS[choice-1]),
+                          splitters=(".",)*len(PATHS[choice-1]))
         print(printer_spe(frames))
         if choice == 1:
             # Data reduce to speed up plotter

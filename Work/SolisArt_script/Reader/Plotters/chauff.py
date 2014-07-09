@@ -9,9 +9,11 @@
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
@@ -19,27 +21,27 @@ except SystemError as e:
 #######################################
 
 
-class ChauffPlotter(Plotter):
+class ChauffPlotter(plotter.Plotter):
 
     """
         Chauff state plotter
     """
 
-    def __init__(self, frame, title):
-        super().__init__(frame=frame, title=title)
-        self.frame_plt = self.frame["Chauff_algo_clean"]
+    def __init__(self, frames, title):
+        super().__init__(frames=frames, title=title)
+        self.frame_plt = self.frames["Chauff_algo_clean"]
 
     def plotting_shape(self):
         # Create Axes instance to plot in
         self.ax11 = self.fig.add_subplot(3, 2, 1)
         self.ax11.set_title(label="Control en zone 1",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax12 = self.fig.add_subplot(3, 2, 3, sharex=self.ax11)  # sharex allow to share x axis for all actions
         self.ax13 = self.fig.add_subplot(3, 2, 5, sharex=self.ax11)
 
         self.ax21 = self.fig.add_subplot(3, 2, 2)
         self.ax21.set_title(label="Control en zone 2",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax22 = self.fig.add_subplot(3, 2, 4, sharex=self.ax21)
         self.ax23 = self.fig.add_subplot(3, 2, 6, sharex=self.ax21)
 
@@ -132,7 +134,7 @@ class ChauffPlotter(Plotter):
 ########################
 
 if __name__ == '__main__':
-    chauff = FOLDER + "Issues\\Algo\\Chauff_algo_clean.csv"
+    chauff = FOLDER / "Issues/Algo/Chauff_algo_clean.csv"
     title = "Algorithme de controle de la variable Chauff"
     frames = read_csv((chauff,), convert_index=(convert_to_datetime,))
     ChauffPlotter(frames, title=title).draw()

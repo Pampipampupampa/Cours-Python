@@ -6,13 +6,14 @@
 #### Classes and Methods imported : ####
 ########################################
 
-import numpy as np
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
@@ -20,15 +21,15 @@ except SystemError as e:
 #######################################
 
 
-class SolarValvePlotter(Plotter):
+class SolarValvePlotter(plotter.Plotter):
 
     """
         Pump algo plotter
     """
 
-    def __init__(self, frame, title):
-        super().__init__(frame=frame, title=title)
-        self.frame_plt = self.frame["V3Vsolar_algo_clean"]
+    def __init__(self, frames, title):
+        super().__init__(frames=frames, title=title)
+        self.frame_plt = self.frames["V3Vsolar_algo_clean"]
 
     def plotting_shape(self):
         # Drawing graphs
@@ -101,7 +102,7 @@ class SolarValvePlotter(Plotter):
 
 
 if __name__ == '__main__':
-    solar_valve = FOLDER + "Issues\\Algo\\V3Vsolar_algo_clean.csv"
+    solar_valve = FOLDER / "Issues/Algo/V3Vsolar_algo_clean.csv"
     title = "Contrôle de la vanne solaire"
     frames = read_csv((solar_valve,), convert_index=(convert_to_datetime,))
     SolarValvePlotter(frames, title=title).draw()

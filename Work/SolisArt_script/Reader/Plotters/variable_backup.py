@@ -9,16 +9,18 @@
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
 #### Classes, Methods, Functions : ####
 #######################################
 
-class VarBackPlotter(Plotter):
+class VarBackPlotter(plotter.Plotter):
 
     """
         Variables and backup plotter
@@ -27,9 +29,9 @@ class VarBackPlotter(Plotter):
     style = {'Vextra_state': '--', 'ECS_state': '-', 'CHAUFF_state': '-'}
 
     def __init__(self, frames, title):
-        super().__init__(frame=frames, title=title)
-        self.frame_var = self.frame["variables_algo_clean"]
-        self.frame_backup = self.frame["backup_algo_clean"]
+        super().__init__(frames=frames, title=title)
+        self.frame_var = self.frames["variables_algo_clean"]
+        self.frame_backup = self.frames["backup_algo_clean"]
 
     def plotting_shape(self):
         self.ax11 = self.fig.add_subplot(3, 2, 1)
@@ -40,9 +42,9 @@ class VarBackPlotter(Plotter):
         self.ax22 = self.fig.add_subplot(3, 2, 4, sharex=self.ax21)
         self.ax23 = self.fig.add_subplot(3, 2, 6, sharex=self.ax21)
         self.ax11.set_title(label="Algorithme de controle de DTeco et Tconsigne solaire",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax21.set_title(label="Algorithme de controle de la mise en route de l'appoint",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
 
     def plotting(self):
         # First column
@@ -139,8 +141,8 @@ class VarBackPlotter(Plotter):
 
 
 if __name__ == '__main__':
-    variable = FOLDER + "Issues\\Algo\\variables_algo_clean.csv"
-    backup = FOLDER + "Issues\\Algo\\backup_algo_clean.csv"
+    variable = FOLDER / "Issues/Algo/variables_algo_clean.csv"
+    backup = FOLDER / "Issues/Algo/backup_algo_clean.csv"
     title = "Algorithme déterminant la consigne solaire et le besoin en appoint"
     frames = read_csv((variable, backup), convert_index=(convert_to_datetime,
                                                          convert_to_datetime),
