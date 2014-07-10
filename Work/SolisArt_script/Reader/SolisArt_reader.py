@@ -88,6 +88,7 @@ MENU = "\n{}\n".format("-"*40) + \
 assert (len(PATHS) == len(TITLES) == len(DICTCLASS)), "Constants length mismatch" + \
                                                       "\t---->Aborting"
 valid_inputs = "".join(str(i) for i in range(1, len(PATHS)+1))
+length = 10
 
 while True:
     print(MENU)
@@ -108,12 +109,12 @@ while True:
     elif str(choice) in valid_inputs:
         # len(PATHS[choice-1]) used to size function arguments
         frames = read_csv(PATHS[choice-1],
-                          convert_index=(convert_to_datetime,)*len(PATHS[choice-1]),
-                          delimiter=(";",)*len(PATHS[choice-1]),
-                          index_col=("Date",)*len(PATHS[choice-1]),
-                          in_conv_index=(None,)*len(PATHS[choice-1]),
-                          skiprows=(1,)*len(PATHS[choice-1]),
-                          splitters=(".",)*len(PATHS[choice-1]))
+                          convert_index=(convert_to_datetime,)*length,
+                          delimiter=(";",)*length,
+                          index_col=("Date",)*length,
+                          in_conv_index=(None,)*length,
+                          skiprows=(1,)*length,
+                          splitters=(".",)*length)
         print(printer_spe(frames))
         if choice == 1:
             # Data reduce to speed up plotter

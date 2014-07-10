@@ -58,6 +58,9 @@ class EnergyPlotter(plotter.CombiPlotter):
             self.frames_plt.setdefault(frame, temp)
 
     def plotting_shape(self):
+        """
+            Store all dataframes names and its fields
+        """
         self.data_names = [el for el in self.frames_plt]
         self.columns = self.frames_plt[self.data_names[0]][0].columns
 
@@ -67,25 +70,18 @@ class EnergyPlotter(plotter.CombiPlotter):
             Each plot title get inside self.data_names
             Each plot column name get inside self.columns
             Each plot color tuple get inside self.colors
-                - loc used to place title text
-                - fontdict used to format title text
-                - widths used to set boxes width
-                - whis used as a multiplicator for get more or less values
-                  inside whiskers
-
-            Any argument you pass after `whis` will be passed to `self.set_boxes`.
         """
         if len(self.frames) >= 4:
-            self.plot_boxes_col(loc=loc)
+            self.plot_col(loc=loc)
         else:
-            self.plot_boxes_row(loc=loc)
+            self.plot_row(loc=loc)
 
-    def plot_boxes_col(self, loc):
+    def plot_col(self, loc):
         """Used only if more than 4 dataframe inside self.frames."""
         # Print data informations
         print(self.data_names, self.columns)
 
-    def plot_boxes_row(self, loc):
+    def plot_row(self, loc):
         """Used only if less than 4 dataframe inside self.frames."""
         # Print data informations
         print(self.data_names, self.columns)
@@ -127,9 +123,12 @@ class EnergyDiagPlotter(EnergyPlotter):
         # For each sample of dataframe
         for key, frame in self.frames_plt.items():
                 temp = pd.concat([el for el in frame])
+                # Cumul all months values to get a fully year for each columns
                 temp = pd.DataFrame(temp.sum(), columns=['Full year'])
+                # Update solar cover to real value
                 temp[-1:] = (temp["Collector_Energy":"Collector_Energy"].values /
                              temp["Consommations":"Consommations"].values)
+                # Add dataframe to frames dict
                 self.frames_plt[key] = [temp]
         print(self.frames_plt['marseille'])  # Test
 
@@ -146,13 +145,13 @@ class EnergyHistPlotter(EnergyPlotter):
                 'month' lead to : self.steps = [el*48 for el in self.sample]
             - length used to limit iteration
             - sharex set to True to share xaxis with all plots
-            - diurne flag used when we need only diurnal values
     """
 
     def __init__(self, frames, title, blocs, colors, steps='months',
                  length=12, sharex=True):
         super().__init__(frames=frames, title=title, blocs=blocs, colors=colors,
                          steps=steps, length=length, sharex=sharex)
+        # Field to redraw. Each top bar will be redraw to upgrade it vision
         self.emph = "Boiler_Energy"
         # For each sample of dataframe
         for key, frame in self.frames_plt.items():
@@ -163,11 +162,18 @@ class EnergyHistPlotter(EnergyPlotter):
         print(self.frames_plt['chambery'])  # Test
 
     def plotting_shape(self):
+        """
+            Store all dataframes names and its fields.
+            Overload from inherit class
+        """
         self.data_names = [el for el in self.frames_plt]
         self.columns = self.frames_plt[self.data_names[0]].columns
 
-    def plot_boxes_col(self, loc):
-        """Used only if more than 4 dataframe inside self.frames."""
+    def plot_col(self, loc):
+        """
+            Used only if more than 4 dataframe inside self.frames.
+            Draw all bars
+        """
         # Print data informations
         print(self.data_names, self.columns)
         # Plot all plots
@@ -196,7 +202,7 @@ class EnergyHistPlotter(EnergyPlotter):
             self.axes[ind1 // 2][ind1 % 2].set_xticklabels(self.names)
             print(temp)
 
-    def plot_boxes_row(self, loc):
+    def plot_row(self, loc):
         """Used only if less than 4 dataframe inside self.frames."""
         # Print data informations
         print(self.data_names, self.columns)
@@ -205,7 +211,8 @@ class EnergyHistPlotter(EnergyPlotter):
             self.axes[ind1].set_title(label=name,
                                       fontdict=self.font_title,
                                       loc=loc)
-            # Draw all bar and stock them inside a dict
+            # Draw all bar and stock them inside a dict to access right data
+            #
             temp = {col: self.axes[ind1].bar(self.frames_plt[name].index.values,
                                              self.frames_plt[name][col].values,
                                              color=self.colors[col],

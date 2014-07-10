@@ -32,7 +32,7 @@ from os import name  # Get os name
 if name == 'nt':
     FOLDER = path("D:/GitHub/SolarSystem/Outputs")
 elif name == 'posix':
-    FOLDER = path("Home/Pampi/Documents/Git/SolarSystem/Outputs")
+    FOLDER = path('~').expanduser() / "Documents/Git/solarsystem/Outputs"
 
 # Create font properties
 font_base = {'family': 'serif',
