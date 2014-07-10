@@ -6,13 +6,16 @@
 #### Classes and Methods imported : ####
 ########################################
 
+
 import numpy as np
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
@@ -20,7 +23,7 @@ except SystemError as e:
 #######################################
 
 
-class ExtraValvePlotter(Plotter):
+class ExtraValvePlotter(plotter.Plotter):
 
     """
         Pump algo plotter
@@ -29,9 +32,9 @@ class ExtraValvePlotter(Plotter):
     style = {'T7': "--", 'T7_state': "--",
              'T4': "--", 'T4_state': "--"}
 
-    def __init__(self, frame, title):
-        super().__init__(frame=frame, title=title)
-        self.frame_plt = self.frame["V3Vextra_algo_clean"]
+    def __init__(self, frames, title):
+        super().__init__(frames=frames, title=title)
+        self.frame_plt = self.frames["V3Vextra_algo_clean"]
         self.conds = {'on1': np.where(self.frame_plt['On1_state'] > 50)[0][0],
                       'on2': np.where(self.frame_plt['On2_state'] > 50)[0][0],
                       'on3': np.where(self.frame_plt['On3_state'] > 50)[0][0]}
@@ -198,7 +201,7 @@ class ExtraValvePlotter(Plotter):
 
 
 if __name__ == '__main__':
-    extra_valve = FOLDER + "Issues\\Algo\\V3Vextra_algo_clean.csv"
+    extra_valve = FOLDER / "Issues/Algo/V3Vextra_algo_clean.csv"
     title = "Contrôle de la vanne d'appoint"
     frames = read_csv((extra_valve,), convert_index=(convert_to_datetime,))
     ExtraValvePlotter(frames, title=title).draw()

@@ -9,9 +9,11 @@
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
@@ -19,16 +21,16 @@ except SystemError as e:
 #######################################
 
 
-class S6S5Plotter(Plotter):
+class S6S5Plotter(plotter.Plotter):
 
     """
         Pumps S6 and S5 Plotter
     """
 
     def __init__(self, frames, title):
-        super().__init__(frame=frames, title=title)
-        self.frame_S6 = self.frame["S6_algo_clean"]
-        self.frame_S5 = self.frame["S5_algo_clean"]
+        super().__init__(frames=frames, title=title)
+        self.frame_S6 = self.frames["S6_algo_clean"]
+        self.frame_S5 = self.frames["S5_algo_clean"]
 
     def plotting_shape(self):
         # Drawing graphs
@@ -41,9 +43,9 @@ class S6S5Plotter(Plotter):
 
         # Change title parameters
         self.ax11.set_title(label="Algorithme de controle de S6",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax21.set_title(label="Algorithme de controle de S5",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
 
     def plotting(self):
         # First column
@@ -109,8 +111,8 @@ class S6S5Plotter(Plotter):
 ########################
 
 if __name__ == '__main__':
-    S5 = FOLDER + "Issues\\Algo\\S5_algo_clean.csv"
-    S6 = FOLDER + "Issues\\Algo\\S6_algo_clean.csv"
+    S5 = FOLDER / "Issues/Algo/S5_algo_clean.csv"
+    S6 = FOLDER / "Issues/Algo/S6_algo_clean.csv"
     title = "Algorithme de controle des pompes S6 et S5"
     frames = read_csv((S5, S6), convert_index=(convert_to_datetime,
                                                convert_to_datetime),

@@ -6,28 +6,32 @@
 #### Classes and Methods imported : ####
 ########################################
 
+
 import matplotlib.gridspec as gridspec
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
+
 
 #######################################
 #### Classes, Methods, Functions : ####
 #######################################
 
 
-class HousePlotter(Plotter):
+class HousePlotter(plotter.Plotter):
 
     """
         House plotter
     """
 
-    def __init__(self, frame, title):
-        super().__init__(frame=frame, title=title)
-        self.frame_plt = self.frame["olivier_house_read"]
+    def __init__(self, frames, title):
+        super().__init__(frames=frames, title=title)
+        self.frame_plt = self.frames["olivier_house_read"]
 
     def plotting_shape(self):
         self.G = gridspec.GridSpec(2, 2)
@@ -39,11 +43,11 @@ class HousePlotter(Plotter):
 
         # Change title parameters
         self.ax12.set_title(label="Evolution de la demande en chauffage au cours de l'année",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax11.set_title(label="Evolution des températures au cours de l'année",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax13.set_title(label="Evolution de l'énergie au cours de l'année",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
 
     def plotting(self):
         self.frame_plt['House_Energy'].plot(ax=self.ax13, colormap=self.colormap,
@@ -122,7 +126,7 @@ class HousePlotter(Plotter):
 
 
 if __name__ == '__main__':
-    house = FOLDER + "clean\\olivier_house_read.csv"
+    house = FOLDER / "clean/olivier_house_read.csv"
     title = "Evolution des principaux paramètres caractéristiques du bâtiment"
     frames = read_csv((house,), convert_index=(convert_to_datetime,))
     frames["olivier_house_read"] = frames["olivier_house_read"][:].resample('60min')

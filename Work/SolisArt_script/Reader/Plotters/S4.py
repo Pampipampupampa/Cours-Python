@@ -9,24 +9,26 @@
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
 #### Classes, Methods, Functions : ####
 #######################################
 
-class S4Plotter(Plotter):
+class S4Plotter(plotter.Plotter):
 
     """
         Pump S4 plotter
     """
 
-    def __init__(self, frame, title):
-        super().__init__(frame=frame, title=title)
-        self.frame_plt = self.frame["S4_algo_ECS_clean"]
+    def __init__(self, frames, title):
+        super().__init__(frames=frames, title=title)
+        self.frame_plt = self.frames["S4_algo_ECS_clean"]
 
     def plotting_shape(self):
         # Drawing graphs
@@ -40,9 +42,9 @@ class S4Plotter(Plotter):
 
         # Change title parameters
         self.ax11.set_title(label="Algorithme de controle de S4 : Circuit Off",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax21.set_title(label="Algorithme de controle de S4 : Circuit On",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
 
     def plotting(self):
         # First column
@@ -147,7 +149,7 @@ class S4Plotter(Plotter):
 
 
 if __name__ == '__main__':
-    S4 = FOLDER + "Issues\\Algo\\S4_algo_ECS_clean.csv"
+    S4 = FOLDER / "Issues/Algo/S4_algo_ECS_clean.csv"
     title = "Algorithme de controle de la pompe S4"
     frames = read_csv((S4,), convert_index=(convert_to_datetime,))
     S4Plotter(frames, title=title).draw()

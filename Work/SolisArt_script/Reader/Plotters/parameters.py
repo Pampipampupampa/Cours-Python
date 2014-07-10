@@ -2,7 +2,7 @@
 # -*- coding:Utf8 -*-
 
 
-"""Reader for csv files from Dymola or solisArt"""
+"""Parameters and constants for all plotters class"""
 
 
 ########################################
@@ -10,35 +10,38 @@
 ########################################
 
 
-import pandas as pd
 import datetime
 import matplotlib
 
+import pandas as pd
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Ellipse  # Used to draw shapes inside plots
 from matplotlib.dates import MinuteLocator, DateFormatter, SecondLocator
+
+from path import path  # Nice object oriented path API
+from os import name  # Get os name
 
 
 #####################
 #### Constants : ####
 #####################
 
-FOLDER = "D:\\GitHub\\SolarSystem\\Outputs\\"
+
+# Specific folder in linux or windows
+if name == 'nt':
+    FOLDER = path("D:/GitHub/SolarSystem/Outputs")
+elif name == 'posix':
+    FOLDER = path("Home/Pampi/Documents/Git/SolarSystem/Outputs")
 
 # Create font properties
 font_base = {'family': 'serif',
              'size': 13}
-font_title = {'size': 18,
-              'family': 'Anonymous Pro'}
-font_mainTitle = {'color': '#002b36',
-                  'weight': 'bold',
-                  'size': '25',
-                  'family': 'Anonymous Pro'}
 
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
+# matplotlib.rc('title', **font_base)
 matplotlib.rc('xtick', labelsize=10)
 matplotlib.rc('ytick', labelsize=10)
 matplotlib.rc('legend', fontsize=10)
@@ -58,83 +61,6 @@ secondes_formatter = DateFormatter("%M:%S")
 #######################################
 #### Classes, Methods, Functions : ####
 #######################################
-
-
-class Plotter:
-
-    """
-        Base class for plotting on matplotlib
-            - fig_init used to create figure
-            - plotting_shape used to group axes and figure structure
-            - plotting used to group all data plots
-            - artist used to group annotations and other artist stuff
-    """
-
-    width = 2  # Line width
-    colormap = "Accent"  # Color set
-    background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
-
-    def __init__(self, frame, title="Title"):
-        self.frame = frame
-        self.title = title
-
-    def fig_init(self, figsize=(20, 10), facecolor=background_color,
-                 ha='center'):
-        """
-            Create figure instance and add title to it
-        """
-        self.fig = plt.figure(figsize=figsize, facecolor=facecolor)
-        self.fig.canvas.manager.set_window_title(self.title)
-        plt.figtext(0.5, 0.95, self.title, ha=ha, fontdict=font_mainTitle)
-
-    def plotting_shape(self):
-        """
-            Main plotting structure
-        """
-        pass
-
-    def plotting(self):
-        """
-            Adding plots to plotting structure
-        """
-        pass
-
-    def formatting(self):
-        """
-            Adding formatters
-        """
-
-    def artist(self):
-        """
-            Adding annotations or text to plots
-        """
-        pass
-
-    def text(self):
-        """
-            Adding text inside figure
-        """
-        pass
-
-    def forcing(self):
-        """
-            Adding some element to overwrite self.fig.autofmt_xdate()
-        """
-        pass
-
-    def draw(self):
-        """
-            Proceed to all Methods
-        """
-        self.fig_init()
-        self.plotting_shape()
-        self.plotting()
-        self.formatting()
-        self.artist()
-        self.text()
-        self.fig.autofmt_xdate()
-        self.forcing()
-        plt.show()
 
 
 def convert_to_datetime(step, start=datetime.datetime(2014, 1, 1)):
@@ -161,6 +87,27 @@ def convert_solis_to_datetime(solis_date):
         return None
 
 
+def step_iterator(dataframe, start=0, steps=[], interval=None):
+    """
+        Create an iterator to treat a dataframe by parts
+
+        example :
+            start=0 (start at beginning)
+            steps=[el*48 for el in (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)]
+                ---> Length of months
+                With 48 as number of steps (inside dataframe) between iterations
+                ---> A dataframe step size of 30min ---> 48 steps per day
+            interval=12 (12 month inside one year)
+        --> Month dataframe iterator
+    """
+    end = start + steps[0]
+    yield dataframe[start:end]
+    for el in range(interval-1):
+        start = end
+        end += steps[el+1]
+        yield dataframe[start:end]
+
+
 def printer_all(S_frame, csv_list):
     """
         Print field for each dataframe inside a list
@@ -182,7 +129,7 @@ def printer_spe(frame):
 
 
 def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
-             convert_index=(None,), in_conv_index=(None,)):
+             convert_index=(None,), in_conv_index=(None,), splitters=(".",)):
     """
         Read all csv files and clean/format datas
             - csv_list is a list which contains path of csv_files
@@ -195,11 +142,18 @@ def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
             - in_conv_index is an inplace converter to convert when loading file
                 - None to do nothing
                 - convert_solis_to_datetime ---> SolisArt datetime to real datetime
+            - splitters used to datas keys names to something more readable
+                Keep only left side of split according to splitter value
+                ---> (".",) get only file name without extension
     """
     S_frame = {}
-    for csv, row, sep, ind, conv, in_conv in zip(csv_list, skiprows, delimiter,
-                                                 index_col, convert_index,
-                                                 in_conv_index):
+    for csv, row, sep, ind, conv, in_conv, splitter in zip(csv_list,
+                                                           skiprows,
+                                                           delimiter,
+                                                           index_col,
+                                                           convert_index,
+                                                           in_conv_index,
+                                                           splitters):
         if in_conv:
             frame = pd.read_csv(csv, skiprows=row, delimiter=sep, index_col=ind,
                                 converters={"Date": convert_solis_to_datetime})
@@ -208,9 +162,8 @@ def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
             # Process to conversions
             if conv is not None:
                 frame.index = [ind for ind in conv(frame.index)]
-
         # Reduce data structure and remove duplicated values
         frame.groupby(frame.index).last()
         # Add frame to dictionnary
-        S_frame[csv.split("\\")[-1].split(".")[0]] = frame
+        S_frame[path(csv).name.split(splitter)[0]] = frame
     return S_frame

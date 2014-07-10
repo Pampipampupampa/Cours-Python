@@ -10,9 +10,11 @@ import numpy as np
 
 try:
     from .parameters import *
+    from . import plotter
 except SystemError as e:
     print("Local import")
     from parameters import *
+    import plotter
 
 
 #######################################
@@ -20,7 +22,7 @@ except SystemError as e:
 #######################################
 
 
-class PumpAlgoPlotter(Plotter):
+class PumpAlgoPlotter(plotter.Plotter):
 
     """
         Pump algo plotter
@@ -36,9 +38,9 @@ class PumpAlgoPlotter(Plotter):
              'S2_state': "-", 'S3_state': "--",
              }
 
-    def __init__(self, frame, title):
-        super().__init__(frame=frame, title=title)
-        self.frame_plt = self.frame["algo_flow_mod_01_clean"]
+    def __init__(self, frames, title):
+        super().__init__(frames=frames, title=title)
+        self.frame_plt = self.frames["algo_flow_mod_01_clean"]
         self.conds = {'Vextra': np.where(self.frame_plt['Vextra_state'] > 1),
                       'mod_S5': np.where(self.frame_plt['Flow_S5_out'] == 45/2),
                       'mod_S6': np.where(self.frame_plt['Flow_S6_out'] == 30),
@@ -55,9 +57,9 @@ class PumpAlgoPlotter(Plotter):
 
         # Change title parameters
         self.ax11.set_title(label="Evolution du débit des pompes solaires",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
         self.ax21.set_title(label="Evolution du débit des pompes de chauffage",
-                            fontdict=font_title)
+                            fontdict=self.font_title)
 
     def plotting(self):
         # First column
@@ -249,7 +251,7 @@ class PumpAlgoPlotter(Plotter):
 
 
 if __name__ == '__main__':
-    algo_pump = FOLDER + "Issues\\Algo_flow\\algo_flow_mod_01_clean.csv"
+    algo_pump = FOLDER / "Issues/Algo_flow/algo_flow_mod_01_clean.csv"
     title = "Fonctionnement de l'algorithme de controle du débit des pompes"
     frames = read_csv((algo_pump,), convert_index=(convert_to_datetime,))
     PumpAlgoPlotter(frames, title=title).draw()
