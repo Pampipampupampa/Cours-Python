@@ -11,7 +11,6 @@ import random
 import math
 from functools import wraps
 
-# Why why ????
 from game import image_resources
 
 #####################

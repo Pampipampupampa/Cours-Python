@@ -32,7 +32,7 @@ def center_image(image):
 #### Main Program : ####
 ########################
 
-# Set path from main program
+# Set path of ressources folder
 pyglet.resource.path = ['../resources']
 pyglet.resource.reindex()
 
