@@ -127,17 +127,19 @@ class CombiPlotter(Plotter):
               from each dataframes
             - steps used to sample data step by step
                 'month' lead to : self.steps = [el*48 for el in self.sample]
+                    ---> month values with a 30min data sample (48*30min = 24h)
             - length used to limit iteration
             - sharex set to True to share xaxis with all plots
     """
 
     sample = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-    def __init__(self, frames, title='Title',
+    def __init__(self, frames, title='Title', plane=4,
                  steps='months', length=12, sharex=True):
         super().__init__(frames=frames, title=title)
         self.frames = frames
         self.title = title
+        self.plane = plane
         if steps == 'months':
             self.steps = [el*48 for el in self.sample]
         else:
@@ -147,10 +149,16 @@ class CombiPlotter(Plotter):
 
     def fig_init(self, figsize=(20, 10), facecolor='class_color',
                  ha='center'):
+        """
+            - self.plane is a limit to force plane plot (row by row)
+                if self.plane = 2 :
+                    self.plane <= 2 ---> 2 rows
+                    self.plane > 2 ---> 2 columns, 1 row
+        """
         if facecolor == 'class_color':
             facecolor = self.background_color
         # Drawing graphs according to number of dataframes
-        if len(self.frames) >= 4:
+        if len(self.frames) >= self.plane:
             # int(len(self.frames)/2+0.5) is a trick to have
             # 3 rows for 5 and 6 and 2 rows for 4
             self.fig, self.axes = plt.subplots(nrows=int(len(self.frames)/2+0.5),
@@ -163,6 +171,9 @@ class CombiPlotter(Plotter):
                                                figsize=figsize,
                                                sharex=self.sharex,
                                                facecolor=facecolor)
+        self.figure_title(ha=ha)
+
+    def figure_title(self, ha):
         self.fig.canvas.manager.set_window_title(self.title)
         plt.figtext(0.5, 0.95, self.title, ha=ha, fontdict=self.font_mainTitle)
 
