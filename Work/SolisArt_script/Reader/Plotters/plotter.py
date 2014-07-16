@@ -190,12 +190,12 @@ class CombiPlotter(Plotter):
                 - steps used to size chunks
                     None ---> steps = [el*48 for el in self.sample]
                 - interval used to limit iteration
+                    None ---> interval = 12
 
         """
-        if steps is None:
-            steps = self.steps
-        if interval is None:
-            interval = self.length
+        # Get new or initial values
+        steps = steps or self.steps
+        interval = interval or self.length
         return format(el for el in step_iterator(dataframe[fields],
                                                  steps=steps,
                                                  interval=interval))

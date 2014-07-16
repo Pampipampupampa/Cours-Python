@@ -3,12 +3,12 @@
 
 
 """
-    Main script to plot and view readers
+    Main script to plot and view strutured dataframes
 
     1) You have to had new path, title and plotter class
        inside PATHS, TITLES and DICTCLASS.
 
-    2) Add new plotter inside Plotters.__init__.py
+    2) Add new plotter inside Plotters.__init__.py or with manual import
 
     3) Add a description inside the menu variable to provide help for users
 
@@ -35,6 +35,7 @@ from Plotters.parameters import *
 
 
 # Files path with path.py module syntax ("/")
+# Always inside a tuple
 PATHS = ((FOLDER / "clean/olivier_house_read.csv",),
          (FOLDER / "Issues/Algo_flow/algo_flow_mod_01_clean.csv",),
          (FOLDER / "Issues/Algo/S5_algo_clean.csv",
@@ -46,7 +47,7 @@ PATHS = ((FOLDER / "clean/olivier_house_read.csv",),
          (FOLDER / "Issues/Algo/V3Vextra_algo_clean.csv",),
          (FOLDER / "Issues/Algo/V3Vsolar_algo_clean.csv",))
 
-# Plots title
+# Plots title. Must match PATHS file order
 TITLES = ("Evolution des principaux paramètres caractéristiques du bâtiment",
           "Fonctionnement de l'algorithme de controle du débit des pompes",
           "Algorithme de controle des pompes S6 et S5",
@@ -56,7 +57,7 @@ TITLES = ("Evolution des principaux paramètres caractéristiques du bâtiment",
           "Contrôle de la vanne d'appoint",
           "Contrôle de la vanne solaire")
 
-# Dictionnary of dataframes plotter
+# Dictionnary of dataframes plotter. Must match PATHS file order
 DICTCLASS = {1: house_data.HousePlotter,
              2: pump_algo.PumpAlgoPlotter,
              3: S6_S5.S6S5Plotter,
@@ -89,6 +90,7 @@ assert (len(PATHS) == len(TITLES) == len(DICTCLASS)), "Constants length mismatch
                                                       "\t---->Aborting"
 valid_inputs = "".join(str(i) for i in range(1, len(PATHS)+1))
 length = 10
+old_choice = 0
 
 while True:
     print(MENU)
@@ -107,23 +109,25 @@ while True:
 
     # Process actions
     elif str(choice) in valid_inputs:
-        # len(PATHS[choice-1]) used to size function arguments
-        frames = read_csv(PATHS[choice-1],
-                          convert_index=(convert_to_datetime,)*length,
-                          delimiter=(";",)*length,
-                          index_col=("Date",)*length,
-                          in_conv_index=(None,)*length,
-                          skiprows=(1,)*length,
-                          splitters=(".",)*length)
-        print(printer_spe(frames))
-        if choice == 1:
-            # Data reduce to speed up plotter
-            frames["olivier_house_read"] = frames["olivier_house_read"][:].resample('60min')
-        elif choice == 5:
-            # Bug issue : bad date formatting and length mismatch
-            frames["variables_algo_clean"] = frames["variables_algo_clean"].ix[:-1, :][:]
-            frames["backup_algo_clean"].index = frames["variables_algo_clean"].index
-
+        # Avoid reload dataframe from csv if always inside frames variable
+        if choice != old_choice:
+            # len(PATHS[choice-1]) used to size function arguments
+            frames = read_csv(PATHS[choice-1],
+                              convert_index=(convert_to_datetime,)*length,
+                              delimiter=(";",)*length,
+                              index_col=("Date",)*length,
+                              in_conv_index=(None,)*length,
+                              skiprows=(1,)*length,
+                              splitters=(".",)*length)
+            print(printer_spe(frames))
+            if choice == 1:
+                # Data reduce to speed up plotter
+                frames["olivier_house_read"] = frames["olivier_house_read"][:].resample('60min')
+            elif choice == 5:
+                # Bug issue : bad date formatting and length mismatch
+                frames["variables_algo_clean"] = frames["variables_algo_clean"].ix[:-1, :][:]
+                frames["backup_algo_clean"].index = frames["variables_algo_clean"].index
+        old_choice = choice
         # Plot frame
         DICTCLASS[choice](frames, title=TITLES[choice-1]).draw()
 

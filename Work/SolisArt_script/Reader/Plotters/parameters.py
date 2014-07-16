@@ -14,6 +14,7 @@ import datetime
 import matplotlib
 
 import pandas as pd
+# Used by all script which import this module
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Ellipse  # Used to draw shapes inside plots
@@ -23,9 +24,9 @@ from path import path  # Nice object oriented path API
 from os import name  # Get os name
 
 
-#####################
-#### Constants : ####
-#####################
+######################
+#### Parameters : ####
+######################
 
 
 # Specific folder in linux or windows

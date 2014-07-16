@@ -121,6 +121,9 @@ class BoxPlotter(plotter.CombiPlotter):
         """Used only if less than 4 dataframe inside self.frames."""
         # Print data informations
         print(self.data_names, self.columns)
+        # Make axes iterable if not
+        if len(self.data_names) == 1:
+            self.axes = (self.axes,)
         # Plot all plots
         for ind1, name in enumerate(self.data_names):
             self.axes[ind1].set_title(label=name,

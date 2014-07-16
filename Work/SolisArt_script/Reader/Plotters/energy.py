@@ -136,6 +136,7 @@ class EnergyDiagPlotter(EnergyPlotter):
         # For each sample of dataframe
         for key, frame in self.frames_plt.items():
                 temp = pd.concat([el for el in frame])
+                print(temp)
                 # Cumul all months values to get a fully year for each columns
                 temp = pd.DataFrame(temp.sum(), columns=['Full year'])
                 # Update solar cover to real value
@@ -177,6 +178,8 @@ class EnergyDiagPlotter(EnergyPlotter):
         """Used only if less than 4 dataframe inside self.frames."""
         # Print data informations
         print(self.data_names, self.columns)
+        if len(self.data_names) == 1:
+            self.axes = (self.axes,)
         # Plot all plots
         for ind1, name in enumerate(self.data_names):
             print('\n---' + name + '---' + '\n', self.frames_plt[name])
@@ -270,6 +273,8 @@ class EnergyHistPlotter(EnergyPlotter):
         """Used only if less than 4 dataframe inside self.frames."""
         # Print data informations
         print(self.data_names, self.columns)
+        if len(self.data_names) == 1:
+            self.axes = (self.axes,)
         # Plot all plots
         for ind1, name in enumerate(self.data_names):
             print('\n---' + name + '---' + '\n', self.frames_plt[name])
@@ -312,7 +317,7 @@ if __name__ == '__main__':
     chambery = FOLDER / "clean/chambery_30062014.csv"
     marseille = FOLDER / "clean/marseille_30062014.csv"
     strasbourg = FOLDER / "clean/strasbourg_07072014.csv"
-    lyon = FOLDER / "clean/chambery_26062014.csv"
+    # lyon = FOLDER / "clean/chambery_26062014.csv"
 
     title = ["Evolution mensuel des apports et consommations d'énergie (en KWh)",
              "Diagrammes d'énergie"]
@@ -327,7 +332,7 @@ if __name__ == '__main__':
     names = {"Radiator_Energy", "DrawingUp_Energy", "Pertes"}
 
     # Read all csv and store values as a dict
-    frames = read_csv((chambery, marseille, strasbourg, lyon),
+    frames = read_csv((chambery,),
                       convert_index=(convert_to_datetime,)*10,
                       delimiter=(";",)*10,
                       index_col=("Date",)*10,
@@ -342,6 +347,6 @@ if __name__ == '__main__':
 
     DiagEnergy = EnergyDiagPlotter(frames, title[1], blocs=fields,
                                    radius=0.5, explode=(0.1, 0, 0),
-                                   colors=colors2, plane=4).draw()
+                                   colors=colors2, plane=3).draw()
     HistEnergy = EnergyHistPlotter(frames, title[0], blocs=fields,
                                    colors=colors1, width=0.5).draw()
