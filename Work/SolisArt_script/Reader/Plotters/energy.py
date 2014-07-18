@@ -2,6 +2,10 @@
 # -*- coding:Utf8 -*-
 
 
+"""
+    Depreceated use classes inside evaluation.py instead
+"""
+
 from numpy import arange
 
 
@@ -136,7 +140,6 @@ class EnergyDiagPlotter(EnergyPlotter):
         # For each sample of dataframe
         for key, frame in self.frames_plt.items():
                 temp = pd.concat([el for el in frame])
-                print(temp)
                 # Cumul all months values to get a fully year for each columns
                 temp = pd.DataFrame(temp.sum(), columns=['Full year'])
                 # Update solar cover to real value

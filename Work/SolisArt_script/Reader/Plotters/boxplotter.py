@@ -2,6 +2,11 @@
 # -*- coding:Utf8 -*-
 
 
+"""
+    Depreceated use classes inside evaluation.py instead
+"""
+
+
 try:
     from .parameters import *
     from . import plotter
