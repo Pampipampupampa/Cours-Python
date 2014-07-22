@@ -9,7 +9,7 @@ except SystemError as e:
     from parameters import *
 
 from collections import OrderedDict as OrdD
-from numpy import arange, zeros_like
+from numpy import arange, zeros_like, average
 
 
 #######################################
@@ -24,6 +24,7 @@ class EvalData(object):
             - diag
             - box
             - ...
+        Some tools to abstact some actions and make them more friendly.
     """
     # Length of each samples
     sample = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
@@ -48,7 +49,6 @@ class EvalData(object):
                     None ---> steps = [el*self.per_sample for el in self.sample]
                 - interval used to limit iteration
                     None ---> interval = 12
-
         """
         # Get new or initial values
         steps = steps or self.steps
@@ -61,11 +61,11 @@ class EvalData(object):
     def keep_arange(frame, range_=(9, 18)):
         """
             Keep only values between a specific range
-            frame must be a dataframe
-            Be careful range match hours
+            frame must be a dataframe.
+            Be careful range match hours :
                 ---> dataframe index must be a datetime or timestep friendly
                 ---> ``range_[1]`` is the highter hours value not higther limit
-                        columns with ``8h 30 min`` will be kept
+                        columns with ``8h 30 min`` will be kept.
         """
         frame = frame.loc[frame.index.hour <= range_[1]]
         frame = frame.loc[frame.index.hour >= range_[0]]
@@ -73,6 +73,9 @@ class EvalData(object):
 
     @staticmethod
     def resample(frame, sample='30min', interpolate=True):
+        """
+            Reduce dataframe with a datetime index.
+        """
         if interpolate is True:
             return frame.resample(sample).interpolate()
         else:
@@ -80,7 +83,7 @@ class EvalData(object):
 
     def add_column(self, frame, used_cols, operator='+'):
         """
-            Return a new dataframe column with current columns
+            Return a new dataframe column with current columns.
         """
         operations = {'+': frame[used_cols[0]] + frame[used_cols[1]],
                       '-': frame[used_cols[0]] - frame[used_cols[1]],
@@ -89,26 +92,29 @@ class EvalData(object):
         return operations[operator]
 
     @staticmethod
-    def change_col_name(old, new, columns):
+    def change_names(conv_dict={}, columns=None):
         """
-            Change a specific column name. Return a list of columns.
-            Use example : frame.columns = change_col_name("old", "new",
-                                                          frame.columns)
+            Change a specific list name. Return a list of news columns.
+            Example : frame.columns = change_names({"old": "new"},
+                                                      frame.columns)
         """
-        columns = list, columns or EvalData.frame.columns
-        print(columns)
-        columns[columns.index(old)] = new
+        columns = list(columns)
+        for before, after in conv_dict.items():
+            try:
+                columns[columns.index(before)] = after
+            except ValueError as e:
+                print(e, " of columns")
         return columns
 
     def hist_energy_actions(self, frame, fields=None, new_fields=()):
         """
-            Proceed all treatments to extract structure to plot energy histogram
+            Proceed all treatments to extract structure to plot energy Bar
             new_fields index must be strutured as below:
                 0 : new column name
-                1 : first column
-                2 : second column
+                1 : first column of values
+                2 : second column of values
                 3 : operator between 1 and 2 (can be '+', '-', '*', '/')
-                    ---> frame[0] = frame[1] 3 frame[2]
+                    ---> frame[0] = frame[1] operator[3] frame[2]
         """
         fields = fields or self.fields
         # Reduce dataframe
@@ -123,7 +129,7 @@ class EvalData(object):
         frame = pd.concat([el for el in frame])
         # Create indices
         indices = ["{:%B}".format(frame.index[i]) for i in range(self.length)]
-        # Numerical index for each histogram
+        # Numerical index for each Bar
         frame.index = [el for el in range(1, self.length+1)]
         if new_fields:
             # For each new columns
@@ -161,9 +167,7 @@ class EvalData(object):
         return frame
 
     def box_actions(self, frame, fields=None, diurnal=True):
-        """
-            Proceed all actions to prepare data for box plotting
-        """
+        """ Proceed all actions to prepare data for box plotting """
         fields = fields or self.fields
         # Reduce dataframe
         frame = self.resample(frame)
@@ -219,6 +223,7 @@ class MultiPlotter(object):
 
     def fig_init(self, figsize=(20, 10), facecolor=None, sharex=None,
                  ha='center'):
+        """ Create all needed axes """
         # Default parameters
         sharex = sharex or self.sharex
         facecolor = facecolor or self.background_color
@@ -231,26 +236,23 @@ class MultiPlotter(object):
         self.figure_title(ha=ha)
 
     def figure_title(self, ha='center', fontdict={}):
+        """ Set title text inside canvas and figure """
         self.fig.canvas.manager.set_window_title(self.title)
         plt.figtext(0.5, 0.95, self.title, ha=ha,
                     fontdict=fontdict or self.font_mainTitle)
 
     def adjust_plots(self, top=None,  bottom=None,  left=None,  right=None,
                      hspace=None, wspace=None):
-        """
-            Force figure padding.
-            None lead to default rc parameters
-        """
+        """ Force figure padding.  None lead to default rc parameters """
         self.fig.subplots_adjust(top=top, bottom=bottom, left=left, right=right,
                                  hspace=hspace, wspace=wspace)
 
     def show(self):
-        """
-            Show plot
-        """
+        """ Show plot  """
         plt.show()
 
     def fig_names(self):
+        """ Return name of each dataframes inside self.frames """
         return [el for el in self.frames]
 
     def optimize_xticks_pos(self, list_frame, start):
@@ -264,9 +266,7 @@ class MultiPlotter(object):
                                    len(list_frame[0].columns)+self.pad)]
 
     def catch_axes(self, nb_row, nb_col):
-        """
-            Return always right subscription of self.axes
-        """
+        """ Return always right subscription of self.axes """
         if hasattr(self.axes, '__getitem__'):
             if self.nb_cols <= 1 or self.nb_rows <= 1:
                 return self.axes[nb_row]
@@ -276,37 +276,68 @@ class MultiPlotter(object):
             return self.axes
 
     def auto_format(self):
+        """ Quick access to date auto formatter """
         self.fig.autofmt_xdate()
 
     def set_xtiks_labels(self, pos, names, rotation=30):
-            self.catch_axes(*pos).set_xticklabels(names, rotation=rotation)
+        """ Quick access to set xticks labels """
+        self.catch_axes(*pos).set_xticklabels(names, rotation=rotation)
 
-    def set_boxes(self, box, linewidth=(1.5, 1, 1, 0.5, 1), marker=1,
-                  colors=('#268bd2', '#002b36', '#268bd2',
-                          '#268bd2', '#dc322f')):
+    def set_boxes(self, box, marker=('', '', '', '1', ''), kw={}):
             """
                 Change boxplot color structure
-                current display colors are :
-                    - ('blue', 'black', 'blue', 'blue', 'red')
+                Boxes parts list order for each values :
+                    - boxes, caps, whiskers, fliers, medians
+                - marker used to set marker specifications
+                    - marker[0] must exist but not used
+                - kw will be passed to each plt.setp() :
+                     - each kw parameters must be a list or tuple of 5 values.
+                       to match box parts.
             """
-            plt.setp(box['boxes'], color=colors[0], linewidth=linewidth[0])
-            plt.setp(box['caps'], color=colors[1], linewidth=linewidth[1])
-            plt.setp(box['whiskers'], color=colors[2], linewidth=linewidth[2])
-            plt.setp(box['fliers'], color=colors[3], linewidth=linewidth[3],
-                     marker=marker)
-            plt.setp(box['medians'], color=colors[4], linewidth=linewidth[4])
+            # Default kw
+            kw = kw or {'linewidth': (1.5, 1, 1, 0.5, 10),
+                        'alpha': (0.6, 1, 1, 1, 0.2),
+                        'color': ('#268bd2', '#002b36', '#268bd2',
+                                  '#268bd2', '#dc322f')}
+            # Unpack kw inside all parts
+            plt.setp(box['boxes'],
+                     **{key: val[0] for key, val in kw.items()})
+            plt.setp(box['caps'], marker=marker[1],
+                     **{key: val[1] for key, val in kw.items()})
+            plt.setp(box['whiskers'], marker=marker[2],
+                     **{key: val[2] for key, val in kw.items()})
+            plt.setp(box['fliers'], marker=marker[3],
+                     **{key: val[3] for key, val in kw.items()})
+            plt.setp(box['medians'], marker=marker[4],
+                     **{key: val[4] for key, val in kw.items()})
 
-    def boxes_mult_plot(self, list_frame, colors=(), loc='left', widths=0.6,
-                        whis=1000, pos=(0, 0), title='Box me !', **kwargs):
+    def boxes_mult_plot(self, list_frame, colors=(None,)*5,  title='Box me !',
+                        loc='left', pos=(0, 0), widths=0.6, whis=1000,
+                        mean=True, mean_par={}, box_par={}, **kwargs):
         """
             Draw a boxplot for each columns inside each dataframe of
-            the list_frame. Each dataframe of the list set a group of boxes.
-            Each groups have a space between them.
+            the list_frame. Each groups have space between them.
             - list_frame must be a list of dataframes
-            - colors is a tuple of fiths' length tuples
-            - loc used to set title position
-            -
+            - colors is a tuple of tuple :
+                - one tuple of five colors for each column of data
+            - title used as column name and text value for title
+            - loc used to place title
+            - pos used to set specific axe (always a tuple even if only one axe)
+            - widths used to set boxes width
+            - whis used as a factor for
+            - mean can be True or False :
+                - True  ---> box['medians'] = average of each box
+                - False ---> box['medians'] = median of each box
+            - mean_par used as a Dict of parameters passed to axe.plot()
+            - box_par used as a Dict of parameters passed to self.set_boxes()
+                - None leads to default value
+            - **kwargs will be passed to axe.boxplot()
         """
+        # Defaults
+        mean_par = mean_par or {'color': '#fdf6e3', 'marker': '*',
+                                'markeredgecolor': '#002b36', 'alpha': 0.5}
+        box_par = box_par or {'linewidth': (1.5, 1, 1, 0.5, 2),
+                              'alpha': (0.6, 1, 1, 1, 0.2)}
         # Print data informations
         columns = list_frame[0].columns
         # Plot all plots
@@ -318,19 +349,34 @@ class MultiPlotter(object):
         for ind, col in enumerate(columns):
             # Get list of all values for each col
             vals = [el[col] for el in list_frame]
+            # Switch between default and user value according to mean boolean
+            average_dict = {True: [average(el[col]) for el in list_frame],
+                            False: None}
             xticks = self.optimize_xticks_pos(list_frame, start=ind)
             temp = self.catch_axes(*pos).boxplot(vals,
                                                  positions=xticks,
                                                  widths=widths,
-                                                 whis=whis, **kwargs)
-            self.set_boxes(temp, colors=colors or self.colors[ind])
-        start = int(len(list_frame[0].columns)/2+0.5) - 1  # Get group center
+                                                 whis=whis,
+                                                 usermedians=average_dict[mean],
+                                                 **kwargs)
+            # Draw average or medians markers value for each box
+            for i in range(len(vals)):
+                # Get x and y values of each box and keep average value
+                med_x = average(temp['medians'][i].get_xdata())
+                med_y = average(temp['medians'][i].get_ydata())
+                self.catch_axes(*pos).plot(med_x, med_y, **mean_par)
+            # Add or change color tuple inside box_par dict
+            box_par['color'] = colors[ind] or self.colors[ind]
+            # Set boxes parameters
+            self.set_boxes(temp, kw=box_par)
+        # Get group center
+        start = int(len(list_frame[0].columns)/2+0.5) - 1
         # Set legend and xticks positions
         self.format_boxticks(list_frame, pos, start)
 
     def diag_plot(self, frame, to_diag, title='Diag me',
                   loc='left', pos=(1, 0), explode=(0.1, 0, 0), radius=0.8,
-                  colors=None, **kwargs):
+                  colors=None, legend=False, **kwargs):
         """
             Used to plot diagrams with a dataframe prepared with EvalData class.
             - to_diag is a list of columns names to plot
@@ -340,6 +386,7 @@ class MultiPlotter(object):
             - explode used to add specific emphaze (must match to_diag length)
             - radius used to change diagram size
             - colors are colors of parts. If None self.colors used
+            - **kwargs will be passed to axe.pie()
         """
         # Print data informations
         columns = frame.columns
@@ -358,15 +405,31 @@ class MultiPlotter(object):
                                   explode=explode, radius=radius, **kwargs)
         # Set axe parameters
         self.catch_axes(*pos).legend(prop=self.font_title)
+        self.catch_axes(*pos).legend().set_visible(legend)
 
     def bar_sup_plot(self, frame, fields, colors={}, loc='left', pos=(1, 1), names=[],
                      title='Hist me', l_width=3, h_width=0.9, ylabel="Kwh",
                      emphs=None, **kwargs):
+        """
+            Plot a superimposed bar plot of each fields inside the frame and
+            for each row.
+                - frame is a dataframe
+                - fields is a list of dataframe columns names to plot
+                - pos to get specific axe
+                - colors is a dict of color (must have one color per field)
+                - loc used to place title's text
+                - names is a list of new xticks labels (empty list for defaults)
+                - title is text to write as axe title
+                - h_width is the bar width
+                - emphs list of column name  used to draw a bar top line,
+                  each emph of emphs must be a frame column name
+                - **kwargs will be passed to axe.bar()
+        """
         # Print data informations
         columns = frame[fields+emphs].columns
         # Get names
         names = names or self.names
-        print('\n---' + 'Plotting Histogram' + '---' + '\n', columns)
+        print('\n---' + 'Plotting Bar' + '---' + '\n', columns)
         # Plot all plots
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
@@ -425,7 +488,7 @@ class MultiPlotter(object):
         names = names or self.names
         # Get fields
         fields = fields or columns
-        print('\n---' + 'Plotting Histogram' + '---' + '\n', columns)
+        print('\n---' + 'Plotting Bar' + '---' + '\n', columns)
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
                                         loc=loc)
@@ -461,7 +524,7 @@ class MultiPlotter(object):
                                                 1))
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
-        # # Add auto legend
+        # Add auto legend
         self.catch_axes(*pos).legend([temp[col] for col in columns],
                                      list(columns),
                                      loc="best", prop=self.font_base)
@@ -543,7 +606,7 @@ class MultiPlotter(object):
         #                                           frame[col].values,
         #                                           color=self.colors[col],
         #                                           width=h_width)
-        # Draw a line at the top of each "Boiler_Energy" barplots
+        # Draw a line at the top of each "Appoint" barplots
         # tops = ([(el.get_x(), el.get_x()+temp[emph][0].get_width()),
         #          (el.get_height(),)*2] for el in temp[emph])
         # # Add lines to see emphase on all samples
@@ -559,95 +622,119 @@ class MultiPlotter(object):
 
 
 if __name__ == '__main__':
-    chambery = FOLDER / "clean/chambery_30062014.csv"
-    # Read all csv and store values as a dict
-    frames = read_csv((chambery, ),
+    fold = FOLDER / "clean"
+    # Dynamic selection
+    welcome = "Please choose csv file name inside this folder or default " + \
+              "(press enter) :\n{} : ".format(fold)
+    NAME = input(welcome)
+    if NAME == "":
+        NAME = "strasbourg_07072014.csv"  # Only lower cases with _daymonthyear.csv
+    dataframe = fold / NAME
+    NAME = NAME.split("_")[0]
+
+    # Read csv and store values as a dict
+    frames = read_csv((dataframe, ),
                       convert_index=(convert_to_datetime,)*10,
                       delimiter=(";",)*10,
                       index_col=("Date",)*10,
                       in_conv_index=(None,)*10,
                       skiprows=(1,)*10,
                       splitters=("_",)*10)
-    # New fields
-    new_fields = (("Besoins", "DrawingUp_Energy", "Radiator_Energy", "+"),
-                  ("Consommations", "Collector_Energy", "Boiler_Energy", "+"),
-                  ("Pertes", "Consommations", "Besoins", "-"),
-                  ("Taux", "Collector_Energy", "Consommations", "/"))
 
-    ##################  TESTING  EvalData class##################
-    chamb = EvalData(frames["chambery"])
+    #
+    ################## EvalData class : Prepare datas ##################
+    #
+
+    data = EvalData(frames[NAME])
     names = tuple(key for key in frames)
 
-    # HISTOGRAM
-    chamb.hist = chamb.hist_energy_actions(chamb.frame, new_fields=new_fields,
-                                           fields=["Collector_Energy", "Boiler_Energy",
-                                                   "Radiator_Energy", "DrawingUp_Energy"])
+    # Change data columns names
+    conv_dict = {"DrawingUp_Energy": "ECS", "Radiator_Energy": "Chauffage",
+                 "Collector_Energy": "Energie solaire",
+                 "Boiler_Energy": "Appoint",
+                 "HDifTil_collector": "Diffus", "HDirTil_collector": "Direct"}
+
+    print("\n---Csv columns names after treatments---")
+    data.frame.columns = EvalData.change_names(conv_dict, data.frame.columns)
+    print(data.frame.columns)
+
+    # New fields
+    new_fields = (("Besoins", "ECS", "Chauffage", "+"),
+                  ("Consommations", "Energie solaire", "Appoint", "+"),
+                  ("Pertes", "Consommations", "Besoins", "-"),
+                  ("Taux de couverture", "Energie solaire", "Consommations", "/"))
+
+    # Prepare all plots
+    # BAR
+    data.hist = data.hist_energy_actions(data.frame, new_fields=new_fields,
+                                         fields=["Energie solaire", "Appoint",
+                                                 "Chauffage", "ECS"])
 
     # DIAGRAM
-    chamb.diag = chamb.diag_energy_actions(chamb.frame,
-                                           fields=["Collector_Energy", "Boiler_Energy",
-                                                   "Radiator_Energy", "DrawingUp_Energy"],
-                                           new_fields=new_fields)
+    data.diag = data.diag_energy_actions(data.frame,
+                                         fields=["Energie solaire", "Appoint",
+                                                 "Chauffage", "ECS"],
+                                         new_fields=new_fields)
 
     # BOXPLOT
-    chamb.box_T = chamb.box_actions(chamb.frame, fields=['T3', 'T4', 'T5'])
-    chamb.box_H = chamb.box_actions(chamb.frame, fields=['HDifTil_collector',
-                                                         'HDirTil_collector'])
+    data.box_T = data.box_actions(data.frame, fields=['T3', 'T4', 'T5'])
+    data.box_H = data.box_actions(data.frame, fields=['Diffus',
+                                                      'Direct'])
 
-    ##################  TESTING  MultiPlotter class##################
-    # Prepare boxplots as first added data to plot class
-    frames_ = {'Temps': chamb.box_T, 'Irradiations': chamb.box_H}
+    #
+    ################## MultiPlotter class : Plot datas ##################
+    #
+
+    # Prepare boxplots as first added data to MultiPlotter class
+    frames_ = {'Temps': data.box_T, 'Irradiations': data.box_H}
     # Color tuple for each box parameter
-    colors = (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#dc322f'),
-              ('#586e75', '#002b36', '#586e75', '#586e75', '#dc322f'),
-              ('#859900', '#002b36', '#859900', '#859900', '#dc322f'))
-    title = "Bilan de la simulation de {}".format(names[0])
+    colors = (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
+              ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
+              ('#859900', '#002b36', '#859900', '#859900', '#268bd2'))
+    title = "Bilan de la simulation de " + NAME[0].upper() + NAME[1:]
 
-    # Create plot class
+    # Create plotter class
     Plot = MultiPlotter(frames_, nb_cols=2, nb_rows=2, colors=colors,
                         title=title)
     Plot.fig_init()
     Plot.figure_title()
+
+    # Add boxplots
     title = "Evolution mensuel de la variation des températures des ballons"
     Plot.boxes_mult_plot(Plot.frames['Temps'], pos=(0, 0),
-                         title=title)
+                         title=title, patch_artist=True)
     title = "Evolution mensuel de la variation de la puissance captable"
     Plot.boxes_mult_plot(Plot.frames['Irradiations'], pos=(1, 0),
-                         title=title)
+                         title=title, patch_artist=True)
 
     # Add diagram
-    Plot.frames['Diagplot'] = chamb.diag  # Keep only dataframe
+    Plot.frames['Diagplot'] = data.diag  # Keep only dataframe
     Plot.colors = ["#fdf6e3", "#268bd2", '#cb4b16']
     Plot.diag_plot(Plot.frames['Diagplot'], pos=(0, 1), loc='center',
-                   to_diag=['Radiator_Energy', 'DrawingUp_Energy', 'Pertes'],
-                   title='Taux')
+                   to_diag=['Chauffage', 'ECS', 'Pertes'],
+                   title='Taux de couverture', legend=False)
 
     # Add bar plot
-    Plot.frames['Barplot'] = chamb.hist[0]  # Keep only dataframe
+    Plot.frames['Barplot'] = data.hist[0]  # Keep only dataframe
     # Change colors tuple to color dict
-    Plot.colors = {"Boiler_Energy": "#dc322f", "Radiator_Energy": "#fdf6e3",
-                   "DrawingUp_Energy": "#268bd2", "Collector_Energy": "orange",
+    Plot.colors = {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
+                   "ECS": "#268bd2", "Energie solaire": "orange",
                    "Pertes": "#cb4b16"}
-    title = "Evolution mensuel des apports et consommations d'énergie (en KWh)"
-    Plot.bar_cum_plot(Plot.frames['Barplot'], emphs=['Collector_Energy'],
+    title = "Evolution mensuel des apports et consommations d'énergie"
+    Plot.bar_cum_plot(Plot.frames['Barplot'], emphs=['Energie solaire'],
                       pos=(1, 1), title=title,
-                      fields=["DrawingUp_Energy",
-                              "Radiator_Energy",
+                      fields=["ECS",
+                              "Chauffage",
                               "Pertes"])
-    # Prepare Taux (list of formatted data)
+    # Prepare Taux de couverture (list of formatted data)
     short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                    'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
                    'Nov', 'Dec']
-    percents = ['{:.1%}'.format(i) for i in Plot.frames['Barplot']['Taux'].values]
+    # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
+    percents = ['{:.1%}'.format(i) for i in Plot.frames['Barplot']['Taux de couverture'].values]
     Plot.change_xticks_labels([short_names, [' : ']*12,
                                percents])
 
     # Adjust plot format
     Plot.adjust_plots(hspace=0.3, top=0.85, left=0.05)
     Plot.show()
-
-    print(Plot.frames['Diagplot'].columns)
-    Plot.frames['Diagplot'].columns = EvalData.change_col_name('Pertes',
-                                                               'gain',
-                                                               Plot.frames['Diagplot'].columns)
-    print(Plot.frames['Diagplot'].columns)

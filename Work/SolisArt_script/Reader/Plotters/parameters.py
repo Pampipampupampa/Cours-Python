@@ -42,7 +42,6 @@ font_base = {'family': 'serif',
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
-# matplotlib.rc('title', **font_base)
 matplotlib.rc('xtick', labelsize=10)
 matplotlib.rc('ytick', labelsize=10)
 matplotlib.rc('legend', fontsize=10)
@@ -76,7 +75,7 @@ def convert_solis_to_datetime(solis_date):
     """
         This parseur convert SolisArt software format to a real datetime format
         input : 'day/month/year hour:minute'
-        output : 'year-month-day hour:minute:second'
+        output : datetime(year-month-day hour:minute:second)
     """
     try:
         solis_date, hour = solis_date.split(" ")
