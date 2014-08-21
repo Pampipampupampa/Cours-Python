@@ -91,14 +91,16 @@ class EvalData(object):
                       '*': frame[used_cols[0]] * frame[used_cols[1]]}
         return operations[operator]
 
-    @staticmethod
-    def change_names(conv_dict={}, columns=None):
+    def change_names(self, conv_dict={}, columns=None):
         """
             Change a specific list name. Return a list of news columns.
             Example : frame.columns = change_names({"old": "new"},
                                                       frame.columns)
         """
-        columns = list(columns)
+        if columns is None:
+            columns = list(self.frame.columns)
+        else:
+            columns = list(columns)
         for before, after in conv_dict.items():
             try:
                 columns[columns.index(before)] = after
@@ -106,7 +108,7 @@ class EvalData(object):
                 print(e, " of columns")
         return columns
 
-    def hist_energy_actions(self, frame, fields=None, new_fields=()):
+    def bar_energy_actions(self, frame, fields=None, new_fields=()):
         """
             Proceed all treatments to extract structure to plot energy Bar
             new_fields index must be strutured as below:
@@ -341,7 +343,7 @@ class MultiPlotter(object):
         # Print data informations
         columns = list_frame[0].columns
         # Plot all plots
-        print('\n---' + 'Plotting Boxplot' + '---' + '\n', columns)
+        print('\n---' + 'Plotting Boxes' + '---' + '\n', columns)
         # Plot boxplots of dataframe
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
@@ -393,7 +395,7 @@ class MultiPlotter(object):
         # Plot all plots
         # Keep only needed values (return a new dataframe)
         temp = pd.concat([frame[frame.index == el] for el in to_diag])
-        print('\n---' + 'Plotting diagram' + '---' + '\n', temp)
+        print('\n---' + 'Plotting Diagrams' + '---' + '\n', temp)
         text = "{1} : {0:.2%}".format(frame.get_value(title, columns[0]),
                                       title)
         self.catch_axes(*pos).set_title(label=text,
@@ -407,9 +409,9 @@ class MultiPlotter(object):
         self.catch_axes(*pos).legend(prop=self.font_title)
         self.catch_axes(*pos).legend().set_visible(legend)
 
-    def bar_sup_plot(self, frame, fields, colors={}, loc='left', pos=(1, 1), names=[],
-                     title='Hist me', l_width=3, h_width=0.9, ylabel="Kwh",
-                     emphs=None, **kwargs):
+    def bar_sup_plot(self, frame, fields, colors={}, loc='left', pos=(1, 1),
+                     names=[], title='Hist me', h_width=0.9,
+                     ylabel="Kwh", emphs=None, **kwargs):
         """
             Plot a superimposed bar plot of each fields inside the frame and
             for each row.
@@ -429,7 +431,7 @@ class MultiPlotter(object):
         columns = frame[fields+emphs].columns
         # Get names
         names = names or self.names
-        print('\n---' + 'Plotting Bar' + '---' + '\n', columns)
+        print('\n---' + 'Plotting superimposed Bars' + '---' + '\n', columns)
         # Plot all plots
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
@@ -488,7 +490,7 @@ class MultiPlotter(object):
         names = names or self.names
         # Get fields
         fields = fields or columns
-        print('\n---' + 'Plotting Bar' + '---' + '\n', columns)
+        print('\n---' + 'Plotting cumulated Bars' + '---' + '\n', columns)
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
                                         loc=loc)
@@ -583,13 +585,16 @@ class MultiPlotter(object):
                                               fontdict=fontdict,
                                               minor=minor, **kwargs)
 
-    @property
-    def clean_axes(self):
+    def clean_axes(self, number=None):
         """
-            Delete useless axe
+            Delete useless axe according to number
+            default to None : number = len(self.frames)
         """
         flat = [x for i in self.axes for x in i]
-        if len(self.frames) < len(flat):
+        # If number is None (default)
+        if not number:
+            number = len(self.frames)
+        if number < len(flat):
             row = len(self.axes) - 1
             col = len(self.axes[0]) - 1
             self.axes[row][col].set_visible(False)
@@ -646,7 +651,7 @@ if __name__ == '__main__':
     #
 
     data = EvalData(frames[NAME])
-    names = tuple(key for key in frames)
+    # names = tuple(key for key in frames)
 
     # Change data columns names
     conv_dict = {"DrawingUp_Energy": "ECS", "Radiator_Energy": "Chauffage",
@@ -655,7 +660,7 @@ if __name__ == '__main__':
                  "HDifTil_collector": "Diffus", "HDirTil_collector": "Direct"}
 
     print("\n---Csv columns names after treatments---")
-    data.frame.columns = EvalData.change_names(conv_dict, data.frame.columns)
+    data.frame.columns = data.change_names(conv_dict, data.frame.columns)
     print(data.frame.columns)
 
     # New fields
@@ -666,7 +671,7 @@ if __name__ == '__main__':
 
     # Prepare all plots
     # BAR
-    data.hist = data.hist_energy_actions(data.frame, new_fields=new_fields,
+    data.hist = data.bar_energy_actions(data.frame, new_fields=new_fields,
                                          fields=["Energie solaire", "Appoint",
                                                  "Chauffage", "ECS"])
 
@@ -678,8 +683,7 @@ if __name__ == '__main__':
 
     # BOXPLOT
     data.box_T = data.box_actions(data.frame, fields=['T3', 'T4', 'T5'])
-    data.box_H = data.box_actions(data.frame, fields=['Diffus',
-                                                      'Direct'])
+    data.box_H = data.box_actions(data.frame, fields=['Diffus', 'Direct'])
 
     #
     ################## MultiPlotter class : Plot datas ##################
@@ -687,14 +691,19 @@ if __name__ == '__main__':
 
     # Prepare boxplots as first added data to MultiPlotter class
     frames_ = {'Temps': data.box_T, 'Irradiations': data.box_H}
-    # Color tuple for each box parameter
-    colors = (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
-              ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
-              ('#859900', '#002b36', '#859900', '#859900', '#268bd2'))
-    title = "Bilan de la simulation de " + NAME[0].upper() + NAME[1:]
 
+    # Colors
+    col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
+                        ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
+                        ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
+                'diag': ['#fdf6e3', '#268bd2', '#cb4b16'],
+                'bar': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
+                        "ECS": "#268bd2", "Energie solaire": "orange",
+                        "Pertes": "#cb4b16"}}
+    # Plotter main title
+    title = "Bilan de la simulation de " + NAME[0].upper() + NAME[1:]
     # Create plotter class
-    Plot = MultiPlotter(frames_, nb_cols=2, nb_rows=2, colors=colors,
+    Plot = MultiPlotter(frames_, nb_cols=2, nb_rows=2, colors=col_dict["box"],
                         title=title)
     Plot.fig_init()
     Plot.figure_title()
@@ -709,7 +718,7 @@ if __name__ == '__main__':
 
     # Add diagram
     Plot.frames['Diagplot'] = data.diag  # Keep only dataframe
-    Plot.colors = ["#fdf6e3", "#268bd2", '#cb4b16']
+    Plot.colors = col_dict["diag"]
     Plot.diag_plot(Plot.frames['Diagplot'], pos=(0, 1), loc='center',
                    to_diag=['Chauffage', 'ECS', 'Pertes'],
                    title='Taux de couverture', legend=False)
@@ -717,15 +726,11 @@ if __name__ == '__main__':
     # Add bar plot
     Plot.frames['Barplot'] = data.hist[0]  # Keep only dataframe
     # Change colors tuple to color dict
-    Plot.colors = {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
-                   "ECS": "#268bd2", "Energie solaire": "orange",
-                   "Pertes": "#cb4b16"}
+    Plot.colors = col_dict["bar"]
     title = "Evolution mensuel des apports et consommations d'énergie"
     Plot.bar_cum_plot(Plot.frames['Barplot'], emphs=['Energie solaire'],
                       pos=(1, 1), title=title,
-                      fields=["ECS",
-                              "Chauffage",
-                              "Pertes"])
+                      fields=["ECS", "Chauffage", "Pertes"])
     # Prepare Taux de couverture (list of formatted data)
     short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                    'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
@@ -737,4 +742,7 @@ if __name__ == '__main__':
 
     # Adjust plot format
     Plot.adjust_plots(hspace=0.3, top=0.85, left=0.05)
+    # Removes empty axes (only last one for now)
+    Plot.clean_axes()
     Plot.show()
+
