@@ -8,9 +8,10 @@
 
     Terminal interface used to print specific plots :
         - positions
-        - axe sharing
+        - axes sharing
         - type of plot
-        - number of dataframes
+        - number of dataframes useds names
+        - how to cut file (used after as dict keys)
 """
 
 # Import objects from evaluation script
@@ -40,7 +41,7 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
             'diag': ['#fdf6e3', '#268bd2', '#cb4b16'],
             'bar_cum': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
                         "ECS": "#268bd2", "Energie solaire": "orange",
-                    "Pertes": "#cb4b16"},
+                        "Pertes": "#cb4b16"},
             'bar_sup': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
                         "ECS": "#268bd2", "Energie solaire": "orange",
                         "Pertes": "#cb4b16"}}
@@ -73,6 +74,11 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # Test
 # _ chambery_30062014.csv marseille_30062014.csv strasbourg_07072014.csv
 # row bar_cum bar_cum bar_cum,bar_sup
+# _ chambery3p_02082014.csv chambery_30062014.csv chambery9p_21082014.csv chambery12p_02082014.csv
+# all box_T box_T box_T box_T
+# all box_H box_H box_H box_H
+# none bar_cum bar_cum bar_cum bar_cum
+# none diag diag diag diag
 
 if __name__ == '__main__':
     # Dynamic selection of multiple csv with specific separator
@@ -91,8 +97,10 @@ if __name__ == '__main__':
     sep = names.pop(0)  # Recup separator value
 
     # Define how and what to plot
+    field_print = " ".join(field_ for field_ in fields.keys())
     welcome = "\nPlease choose kind of plot for each dataframes or default " + \
               "(press enter) :\n" + \
+              "({})\n".format(field_print) + \
               "    -" + " space pass to next dataframe\n" + \
               "    -" + " comma to asign multiple plot to one dataframe\n" + \
               "    -" + " first element used to select correct x axis share\n" + \
@@ -101,7 +109,7 @@ if __name__ == '__main__':
 
     # Default instructions
     if plots == [""]:
-        plots = ['none', "box_T,diag,box_H,bar_cum,bar_sup"]
+        plots = ['none', "box_T,diag,box_H,bar_cum"]
         print("---> Defaults will be used : \n{}".format(plots))
 
     share_x = plots.pop(0)  # Recup sharex flag
@@ -142,22 +150,22 @@ if __name__ == '__main__':
         for el in structs[name]:
             if "bar" in el:
                 structs[name][el] = (datas[name].bar_energy_actions(datas[name].frame,
-                                                                     new_fields=new_fields,
-                                                                     fields=fields[el][0]))
+                                                                    new_fields=new_fields,
+                                                                    fields=fields[el][0]))
             elif "box" in el:
                 structs[name][el] = (datas[name].box_actions(datas[name].frame,
                                                              fields=fields[el]))
             elif "diag" in el:
-                structs[name][el]= (datas[name].diag_energy_actions(datas[name].frame,
-                                                                    new_fields=new_fields,
-                                                                    fields=fields[el][0]))
+                structs[name][el] = (datas[name].diag_energy_actions(datas[name].frame,
+                                                                     new_fields=new_fields,
+                                                                     fields=fields[el][0]))
     # Only display to have a pretty interface
     print("\n|\n|\n|--> Class creation now finish, plotting datas\n")
 
     #
     ################## MultiPlotter class : Plot datas ##################
     #
-    add = " et ".join(data for data in datas)
+    add = " -- ".join(data for data in datas)
     title = titles['title'] + " pour les données de\n" + add
 
     # Checks axes number and print map position
@@ -176,7 +184,16 @@ if __name__ == '__main__':
     Plot.fig_init()
     Plot.figure_title()
 
+    # Flag on ---> add dataframe name, flag off ---> add nothing
+    if len(set(names)) > 1:
+        flag = True
+    else:
+        # Add nothing
+        flag = False
+        name_cap = ""
     for name in names:
+        if flag:
+            name_cap = name.capitalize()
         for plot in structs[name]:
             value = "{} datas.\n{}\n{} plot position: ".format(name.capitalize(),
                                                                "-"*30,
@@ -186,31 +203,41 @@ if __name__ == '__main__':
             if "bar_cum" in plot:
                 Plot.colors = col_dict["bar_cum"]
                 Plot.bar_cum_plot(structs[name][plot][0], emphs=['Energie solaire'],
-                                  pos=pos, title=titles['bar_cum'],
-                                  fields=fields[plot][1])
+                                  pos=pos, fields=fields[plot][1], loc='center',
+                                  title=titles['bar_cum']+"\n{}".format(name_cap))
                 # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
                 percents = ['{:.1%}'.format(i) for i in structs[name][plot][0]['Taux de couverture'].values]
-                Plot.change_xticks_labels([short_names, [' : ']*12, percents])
+                Plot.change_xticks_labels([short_names, [' : ']*12, percents],
+                                          pos=pos)
+
+                # # Uncomment to set a y limit for each bar_cum plot
+                # Plot.catch_axes(*pos).set_ylim(0, 2500)
+
             elif "bar_sup" in plot:
                 Plot.colors = col_dict["bar_sup"]
                 Plot.bar_sup_plot(structs[name][plot][0], emphs=['Energie solaire'],
-                                  pos=pos, title=titles['bar_sup'],
-                                  fields=fields[plot][1])
+                                  pos=pos, fields=fields[plot][1], loc='center',
+                                  title=titles['bar_sup']+"\n{}".format(name_cap))
+
                 # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
                 percents = ['{:.1%}'.format(i) for i in structs[name][plot][0]['Taux de couverture'].values]
-                Plot.change_xticks_labels([short_names, [' : ']*12, percents])
+                Plot.change_xticks_labels([short_names, [' : ']*12, percents],
+                                          pos=pos)
             elif "box" in plot:
                 Plot.colors = col_dict["box"]
                 Plot.boxes_mult_plot(structs[name][plot], pos=pos,
-                                 title=titles[plot], patch_artist=True)
+                                     patch_artist=True, loc='center',
+                                     title=titles[plot]+"\n{}".format(name_cap))
             elif "diag" in plot:
                 Plot.colors = col_dict["diag"]
                 Plot.diag_plot(structs[name][plot], pos=pos, loc='center',
-                               to_diag=fields[plot][1],
-                               title=titles['diag'], legend=False)
+                               to_diag=fields[plot][1], legend=False,
+                               title=titles['diag'])
+                label = Plot.catch_axes(*pos).get_title()+"\n{}".format(name_cap)
+                Plot.catch_axes(*pos).set_title(label=label,
+                                                fontdict=Plot.font_title)
             else:
                 print("Nothing will be show for {}".format(plot))
-
 
     # Adjust plot format
     Plot.adjust_plots(hspace=0.3, top=0.85, left=0.05)
