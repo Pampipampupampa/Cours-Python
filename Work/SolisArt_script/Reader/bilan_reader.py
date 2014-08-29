@@ -33,7 +33,9 @@ fields = {'box_T': ['T3', 'T4', 'T5'],
           'bar_cum': [["Energie solaire", "Appoint", "Chauffage", "ECS"],
                       ["ECS", "Chauffage", "Pertes"]],
           'bar_sup': [["Energie solaire", "Appoint", "Chauffage", "ECS"],
-                      ["ECS", "Chauffage", "Pertes"]]}
+                      ["ECS", "Chauffage", "Pertes"]],
+          'E_area': ["ECS", "Energie solaire", "Chauffage"],
+          'E_line': ["ECS", "Energie solaire", "Appoint", "Chauffage"]}
 # Colors
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
@@ -44,14 +46,18 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                         "Pertes": "#cb4b16"},
             'bar_sup': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
                         "ECS": "#268bd2", "Energie solaire": "orange",
-                        "Pertes": "#cb4b16"}}
+                        "Pertes": "#cb4b16"},
+            'E_area': "Accent",
+            'E_line': "Accent"}
 # Titles
 titles = {'title': "Bilan de la simulation",
           'box_T': "Evolution mensuel de la variation des températures des ballons",
           'box_H': "Evolution mensuel de la variation de la puissance captable",
           'diag': "Taux de couverture",
           'bar_cum': "Evolution mensuel des apports et consommations d'énergie",
-          'bar_sup': "Evolution mensuel des apports et consommations d'énergie"}
+          'bar_sup': "Evolution mensuel des apports et consommations d'énergie",
+          'E_area': "Evolution annuelle de la consommation en énergie",
+          'E_line': "Evolution annuelle de la consommation en énergie"}
 
 
 # Change data columns names
@@ -74,11 +80,12 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # Test
 # _ chambery_30062014.csv marseille_30062014.csv strasbourg_07072014.csv
 # row bar_cum bar_cum bar_cum,bar_sup
-# _ chambery3p_02082014.csv chambery_30062014.csv chambery9p_21082014.csv chambery12p_02082014.csv
-# all box_T box_T box_T box_T
-# all box_H box_H box_H box_H
-# none bar_cum bar_cum bar_cum bar_cum
-# none diag diag diag diag
+# _ chambery3p_02082014.csv chambery_25082014.csv chambery9p_21082014.csv chambery12p_02082014.csv
+# all all box_T box_T box_T box_T
+# all all box_H box_H box_H box_H
+# none none bar_cum bar_cum bar_cum bar_cum
+# none none diag diag diag diag
+# all all E_area E_area E_area E_area
 
 if __name__ == '__main__':
     # Dynamic selection of multiple csv with specific separator
@@ -103,16 +110,16 @@ if __name__ == '__main__':
               "({})\n".format(field_print) + \
               "    -" + " space pass to next dataframe\n" + \
               "    -" + " comma to asign multiple plot to one dataframe\n" + \
-              "    -" + " first element used to select correct x axis share\n" + \
+              "    -" + " first/second element used to select correct x/y axis share\n" + \
               "      ('all', 'row', 'col' or 'none')\n"
     plots = input(welcome).split(" ")
 
     # Default instructions
     if plots == [""]:
-        plots = ['none', "box_T,diag,box_H,bar_cum"]
+        plots = ['none', 'none', "box_T,diag,box_H,bar_cum"]
         print("---> Defaults will be used : \n{}".format(plots))
-
     share_x = plots.pop(0)  # Recup sharex flag
+    share_y = plots.pop(0)  # Recup sharey flag
     for plot in range(len(plots)):
         plots[plot] = plots[plot].split(",")
 
@@ -139,7 +146,11 @@ if __name__ == '__main__':
     #
     ################## EvalData class : Prepare datas ##################
     #
-    datas = {name: EvalData(frames[names[ind]]) for ind, name in enumerate(frames)}
+
+    # Memo
+    # Check here if wrong data order (mix between dicts : frames and structs)
+    datas = {name: EvalData(frames[name]) for name in frames}
+
     print("\n---Csv columns names after treatments---"),
     for name in datas:
         # Change columns names
@@ -159,6 +170,9 @@ if __name__ == '__main__':
                 structs[name][el] = (datas[name].diag_energy_actions(datas[name].frame,
                                                                      new_fields=new_fields,
                                                                      fields=fields[el][0]))
+            elif any(c in el for c in ("area", "line")):
+                structs[name][el] = EvalData.resample(frame=datas[name].frame,
+                                                      sample='6h')
     # Only display to have a pretty interface
     print("\n|\n|\n|--> Class creation now finish, plotting datas\n")
 
@@ -170,8 +184,10 @@ if __name__ == '__main__':
 
     # Checks axes number and print map position
     somme = len([x for i in plots for x in i])
-    rows = somme // 2
-    cols = somme - rows
+    cols = somme // 2
+    rows = somme - cols
+    if cols in (1, 0):
+        cols += 1
     print("-"*30, "Mapping of positions coordinates:", "-"*30, sep="\n")
     for row in range(rows):
         print("\n")
@@ -180,7 +196,7 @@ if __name__ == '__main__':
     print("\n")
 
     Plot = MultiPlotter({}, nb_cols=cols, nb_rows=rows, colors=None,
-                        title=title, sharex=share_x)
+                        title=title, sharex=share_x, sharey=share_y)
     Plot.fig_init()
     Plot.figure_title()
 
@@ -199,12 +215,15 @@ if __name__ == '__main__':
                                                                "-"*30,
                                                                plot.capitalize())
             print("\n" + "-"*30)
+            # Careful no input check
             pos = tuple(el for el in map(int, input(value).split(" ")))
             if "bar_cum" in plot:
                 Plot.colors = col_dict["bar_cum"]
+                print(structs[name][plot][0])
                 Plot.bar_cum_plot(structs[name][plot][0], emphs=['Energie solaire'],
                                   pos=pos, fields=fields[plot][1], loc='center',
-                                  title=titles['bar_cum']+"\n{}".format(name_cap))
+                                  names=structs[name][plot][1],
+                                  title=titles[plot]+"\n{}".format(name_cap))
                 # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
                 percents = ['{:.1%}'.format(i) for i in structs[name][plot][0]['Taux de couverture'].values]
                 Plot.change_xticks_labels([short_names, [' : ']*12, percents],
@@ -215,9 +234,11 @@ if __name__ == '__main__':
 
             elif "bar_sup" in plot:
                 Plot.colors = col_dict["bar_sup"]
+                print(structs[name][plot][0])
                 Plot.bar_sup_plot(structs[name][plot][0], emphs=['Energie solaire'],
                                   pos=pos, fields=fields[plot][1], loc='center',
-                                  title=titles['bar_sup']+"\n{}".format(name_cap))
+                                  names=structs[name][plot][1],
+                                  title=titles[plot]+"\n{}".format(name_cap))
 
                 # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
                 percents = ['{:.1%}'.format(i) for i in structs[name][plot][0]['Taux de couverture'].values]
@@ -230,12 +251,20 @@ if __name__ == '__main__':
                                      title=titles[plot]+"\n{}".format(name_cap))
             elif "diag" in plot:
                 Plot.colors = col_dict["diag"]
+                a = fields[plot][1]
+                b = (" ({:.0f}KWh)".format(structs[name][plot].ix[el, :1].values[0]) for el in a)
+                # Create a list of string composed of a and b
+                parts = ["".join(str(i) for i in el) for el in zip(a, b)]
                 Plot.diag_plot(structs[name][plot], pos=pos, loc='center',
                                to_diag=fields[plot][1], legend=False,
-                               title=titles['diag'])
+                               title=titles[plot], labels=parts)
                 label = Plot.catch_axes(*pos).get_title()+"\n{}".format(name_cap)
                 Plot.catch_axes(*pos).set_title(label=label,
                                                 fontdict=Plot.font_title)
+            elif any(c in plot for c in ("area", "line")):
+                Plot.frame_plot(structs[name][plot], fields=fields[plot],
+                                title=titles[plot], pos=pos, loc='center',
+                                linewidth=2, kind=plot.split("_")[1])
             else:
                 print("Nothing will be show for {}".format(plot))
 

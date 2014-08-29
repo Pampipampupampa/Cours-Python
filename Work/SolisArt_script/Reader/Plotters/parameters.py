@@ -163,7 +163,7 @@ def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
             if conv is not None:
                 frame.index = [ind for ind in conv(frame.index)]
         # Reduce data structure and remove duplicated values
-        frame.groupby(frame.index).last()
+        frame = frame.groupby(frame.index).last()
         # Add frame to dictionnary
         S_frame[path(csv).name.split(splitter)[0]] = frame
     return S_frame

@@ -11,10 +11,28 @@ except SystemError as e:
 from collections import OrderedDict as OrdD
 from numpy import arange, zeros_like, average
 
+from functools import wraps  # Keep trace of decorated functions arguments
 
 #######################################
 #### Classes, Methods, Functions : ####
 #######################################
+
+
+def benchmark(func):
+    """
+        Time function
+    """
+    import time
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        t = time.process_time()
+        res = func(*args, **kwargs)
+        print("{} has spent {} sec to finish".format(func.__name__,
+                                                     time.process_time()-t))
+        return res
+    return wrapper
+
 
 class EvalData(object):
 
@@ -23,6 +41,8 @@ class EvalData(object):
             - cumul hist
             - diag
             - box
+            - line
+            - area
             - ...
         Some tools to abstact some actions and make them more friendly.
     """
@@ -108,6 +128,61 @@ class EvalData(object):
                 print(e, " of columns")
         return columns
 
+    def col_sum_map(self, frame, cols_map, match_map, used_col="index",
+                    start_sum=0, debug=False):
+        """
+            Return a sum used_col values for all cols_map which
+            respect match_map structure and a dict of each timestep of match.
+                - frame : DataFrame
+                - cols_map : list of columns to test
+                - match_map : sequence of corresponding cols_map value
+                              (wanted value for each col of cols_map)
+                - used_col : column used for operations of summation
+                - summation : start value for frame summation
+                - debug : print(summation, dict of step summation)
+        """
+        # Init
+        frame = frame[:]  # Create explicit copy to avoid warning message
+        summation = start_sum
+        step_list, flag = [], False
+        # Avoid duplicate operations
+        all_ind, last_ind = frame.index, frame[len(frame)-1:].index
+        # Check parameters
+        assert len(cols_map) == len(match_map), "Must have same lengths"
+        # Add `Test` column
+        frame["Test"] = 1
+        # Change `Test` column values (0 if not match, else not change)
+        for el in range(len(cols_map)):
+            frame.loc[(frame[cols_map[el]] != match_map[el]), "Test"] = 0
+        for ind in all_ind:
+            pass_test = True
+            if not frame["Test"][ind] == 1:
+                pass_test = False
+            if pass_test and not flag:
+                if used_col == "index":
+                    prev_val = ind
+                else:
+                    prev_val = col_op[ind]
+                prev_ind = ind
+                flag = 1
+            # Sum rows (first matching failed after a successful one)
+            elif (not pass_test or ind == last_ind) and flag:
+                if used_col == "index":
+                    summ = ind - prev_val
+                else:
+                    summ = col_op[ind] - prev_val
+                summation += summ
+                step_list.append({"sum": summ,
+                                  "start": prev_ind,
+                                  "end": ind})
+                flag = 0
+        summation = summation - start_sum
+        if debug:
+            print("Summation : {}\n{}\n{}\n".format(summation,
+                                                    step_list,
+                                                    frame))
+        return summation, step_list
+
     def bar_energy_actions(self, frame, fields=None, new_fields=()):
         """
             Proceed all treatments to extract structure to plot energy Bar
@@ -190,6 +265,7 @@ class MultiPlotter(object):
             - colors is a tuple of fiths' length tuples
             - title the figure title
             - sharex set to True to share xaxis with all plots
+            - sharey set to True to share yaxis with all plots
     """
     # Text formatters
     font_title = {'size': 18,
@@ -210,7 +286,7 @@ class MultiPlotter(object):
              'November', 'December']
 
     def __init__(self, frames, colors, title='Title', nb_rows=2, nb_cols=2,
-                 sharex=False):
+                 sharex=False, sharey=False):
         self.title = title
         self.frames = frames
         self.colors = colors
@@ -218,22 +294,25 @@ class MultiPlotter(object):
         self.nb_rows = nb_rows
         self.nb_cols = nb_cols
         self.sharex = sharex
+        self.sharey = sharey
         # Get all dataframes names
         self.data_names = self.fig_names()
         # Space between boxplot groups
         self.pad = 1
 
-    def fig_init(self, figsize=(20, 10), facecolor=None, sharex=None,
-                 ha='center'):
+    def fig_init(self, figsize=(20, 10), facecolor=None,
+                 ha='center', sharex=None, sharey=None):
         """ Create all needed axes """
         # Default parameters
         sharex = sharex or self.sharex
+        sharey = sharey or self.sharey
         facecolor = facecolor or self.background_color
         # Drawing graphs according to number of dataframes
         self.fig, self.axes = plt.subplots(nrows=self.nb_rows,
                                            ncols=self.nb_cols,
                                            figsize=figsize,
                                            sharex=self.sharex,
+                                           sharey=self.sharey,
                                            facecolor=facecolor)
         self.figure_title(ha=ha)
 
@@ -268,7 +347,10 @@ class MultiPlotter(object):
                                    len(list_frame[0].columns)+self.pad)]
 
     def catch_axes(self, nb_row, nb_col):
-        """ Return always right subscription of self.axes """
+        """
+            Return always right subscription of self.axes.
+            Used when squeeze=True inside plt.subplots.
+        """
         if hasattr(self.axes, '__getitem__'):
             if self.nb_cols <= 1 or self.nb_rows <= 1:
                 return self.axes[nb_row]
@@ -312,6 +394,34 @@ class MultiPlotter(object):
                      **{key: val[3] for key, val in kw.items()})
             plt.setp(box['medians'], marker=marker[4],
                      **{key: val[4] for key, val in kw.items()})
+
+    def frame_plot(self, frame, fields="all", title='Line me', loc='left',
+                   kind="area", pos=(1, 0), colormap="Accent", colors=None,
+                   legend=True, **kwargs):
+        """
+            Used to plot dataframes.
+            - title used as text value for title
+            - loc used to place title
+            - pos used to set specific axe (always a tuple even if only one axe)
+            - colors are colors of parts. If None self.colors used
+            - **kwargs will be passed to axe.pie()
+        """
+        if fields == "all":
+            columns = frame.columns
+        else:
+            columns = fields
+        print('\n---' + 'Plotting Line2D' + '---' + '\n', columns, "\n")
+
+        # Plot all plots
+        self.catch_axes(*pos).set_title(label=title,
+                                        fontdict=self.font_title,
+                                        loc=loc)
+        if colormap:
+            frame[columns].plot(ax=self.catch_axes(*pos), kind=kind,
+                                colormap=colormap, **kwargs)
+        else:
+            frame[columns].plot(ax=self.catch_axes(*pos), kind=kind,
+                                colors=colors, **kwargs)
 
     def boxes_mult_plot(self, list_frame, colors=(None,)*5,  title='Box me !',
                         loc='left', pos=(0, 0), widths=0.6, whis=1000,
@@ -376,7 +486,7 @@ class MultiPlotter(object):
         # Set legend and xticks positions
         self.format_boxticks(list_frame, pos, start)
 
-    def diag_plot(self, frame, to_diag, title='Diag me',
+    def diag_plot(self, frame, to_diag, title='Diag me', labels=None,
                   loc='left', pos=(1, 0), explode=(0.1, 0, 0), radius=0.8,
                   colors=None, legend=False, **kwargs):
         """
@@ -388,6 +498,7 @@ class MultiPlotter(object):
             - explode used to add specific emphaze (must match to_diag length)
             - radius used to change diagram size
             - colors are colors of parts. If None self.colors used
+            - labels used to change pie part names
             - **kwargs will be passed to axe.pie()
         """
         # Print data informations
@@ -402,7 +513,7 @@ class MultiPlotter(object):
                                         fontdict=self.font_title,
                                         loc=loc)
         self.catch_axes(*pos).pie(temp, colors=colors or self.colors,
-                                  labels=to_diag, shadow=True,
+                                  labels=labels or to_diag, shadow=True,
                                   autopct='%1.1f%%', startangle=90,
                                   explode=explode, radius=radius, **kwargs)
         # Set axe parameters
@@ -590,7 +701,12 @@ class MultiPlotter(object):
             Delete useless axe according to number
             default to None : number = len(self.frames)
         """
-        flat = [x for i in self.axes for x in i]
+        try:
+            flat = [x for i in self.axes for x in i]
+        # Catch error when only one plot
+        except TypeError:
+            print("Only one axe, so nothing deleted")
+            flat = [None]
         # If number is None (default)
         if not number:
             number = len(self.frames)
@@ -631,11 +747,11 @@ if __name__ == '__main__':
     # Dynamic selection
     welcome = "Please choose csv file name inside this folder or default " + \
               "(press enter) :\n{} : ".format(fold)
-    NAME = input(welcome)
-    if NAME == "":
-        NAME = "strasbourg_07072014.csv"  # Only lower cases with _daymonthyear.csv
-    dataframe = fold / NAME
-    NAME = NAME.split("_")[0]
+    name = input(welcome)
+    if name == "":
+        name = "chambery_25082014.csv"  # Only lower cases with _daymonthyear.csv
+    dataframe = fold / name
+    name = name.split("_")[0]
 
     # Read csv and store values as a dict
     frames = read_csv((dataframe, ),
@@ -650,8 +766,7 @@ if __name__ == '__main__':
     ################## EvalData class : Prepare datas ##################
     #
 
-    data = EvalData(frames[NAME])
-    # names = tuple(key for key in frames)
+    data = EvalData(frames[name])
 
     # Change data columns names
     conv_dict = {"DrawingUp_Energy": "ECS", "Radiator_Energy": "Chauffage",
@@ -663,34 +778,37 @@ if __name__ == '__main__':
     data.frame.columns = data.change_names(conv_dict, data.frame.columns)
     print(data.frame.columns)
 
-    # New fields
-    new_fields = (("Besoins", "ECS", "Chauffage", "+"),
-                  ("Consommations", "Energie solaire", "Appoint", "+"),
-                  ("Pertes", "Consommations", "Besoins", "-"),
-                  ("Taux de couverture", "Energie solaire", "Consommations", "/"))
+    # # New fields
+    # new_fields = (("Besoins", "ECS", "Chauffage", "+"),
+    #               ("Consommations", "Energie solaire", "Appoint", "+"),
+    #               ("Pertes", "Consommations", "Besoins", "-"),
+    #               ("Taux de couverture", "Energie solaire", "Consommations", "/"))
 
-    # Prepare all plots
-    # BAR
-    data.hist = data.bar_energy_actions(data.frame, new_fields=new_fields,
-                                         fields=["Energie solaire", "Appoint",
-                                                 "Chauffage", "ECS"])
+    # # Prepare all plots
+    # # BAR
+    # data.hist = data.bar_energy_actions(data.frame, new_fields=new_fields,
+    #                                     fields=["Energie solaire", "Appoint",
+    #                                             "Chauffage", "ECS"])
 
-    # DIAGRAM
-    data.diag = data.diag_energy_actions(data.frame,
-                                         fields=["Energie solaire", "Appoint",
-                                                 "Chauffage", "ECS"],
-                                         new_fields=new_fields)
+    # # DIAGRAM
+    # data.diag = data.diag_energy_actions(data.frame,
+    #                                      fields=["Energie solaire", "Appoint",
+    #                                              "Chauffage", "ECS"],
+    #                                      new_fields=new_fields)
 
-    # BOXPLOT
-    data.box_T = data.box_actions(data.frame, fields=['T3', 'T4', 'T5'])
-    data.box_H = data.box_actions(data.frame, fields=['Diffus', 'Direct'])
+    # # BOXPLOT
+    # data.box_T = data.box_actions(data.frame, fields=['T3', 'T4', 'T5'])
+    # data.box_H = data.box_actions(data.frame, fields=['Diffus', 'Direct'])
 
-    #
-    ################## MultiPlotter class : Plot datas ##################
-    #
+    # LINE2D
+    data.line = data.resample(frame=data.frame, sample='12h')
 
-    # Prepare boxplots as first added data to MultiPlotter class
-    frames_ = {'Temps': data.box_T, 'Irradiations': data.box_H}
+    # #
+    # ################## MultiPlotter class : Plot datas ##################
+    # #
+
+    # # Prepare boxplots as first added data to MultiPlotter class
+    # frames_ = {'Temps': data.box_T, 'Irradiations': data.box_H}
 
     # Colors
     col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
@@ -700,45 +818,50 @@ if __name__ == '__main__':
                 'bar': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
                         "ECS": "#268bd2", "Energie solaire": "orange",
                         "Pertes": "#cb4b16"}}
-    # Plotter main title
-    title = "Bilan de la simulation de " + NAME[0].upper() + NAME[1:]
+    # # Plotter main title
+    title = "Bilan de la simulation de " + name[0].upper() + name[1:]
     # Create plotter class
-    Plot = MultiPlotter(frames_, nb_cols=2, nb_rows=2, colors=col_dict["box"],
+    # Plot = MultiPlotter(frames_, nb_cols=2, nb_rows=2, colors=col_dict["box"],
+    #                     title=title)
+    Plot = MultiPlotter(data.line, nb_cols=2, nb_rows=2, colors=col_dict["box"],
                         title=title)
     Plot.fig_init()
     Plot.figure_title()
 
-    # Add boxplots
-    title = "Evolution mensuel de la variation des températures des ballons"
-    Plot.boxes_mult_plot(Plot.frames['Temps'], pos=(0, 0),
-                         title=title, patch_artist=True)
-    title = "Evolution mensuel de la variation de la puissance captable"
-    Plot.boxes_mult_plot(Plot.frames['Irradiations'], pos=(1, 0),
-                         title=title, patch_artist=True)
+    # LINE2D
+    Plot.frame_plot(data.line, fields=['Energie solaire', 'Appoint'], linewidth=2)
 
-    # Add diagram
-    Plot.frames['Diagplot'] = data.diag  # Keep only dataframe
-    Plot.colors = col_dict["diag"]
-    Plot.diag_plot(Plot.frames['Diagplot'], pos=(0, 1), loc='center',
-                   to_diag=['Chauffage', 'ECS', 'Pertes'],
-                   title='Taux de couverture', legend=False)
+    # # Add boxplots
+    # title = "Evolution mensuel de la variation des températures des ballons"
+    # Plot.boxes_mult_plot(Plot.frames['Temps'], pos=(0, 0),
+    #                      title=title, patch_artist=True)
+    # title = "Evolution mensuel de la variation de la puissance captable"
+    # Plot.boxes_mult_plot(Plot.frames['Irradiations'], pos=(1, 0),
+    #                      title=title, patch_artist=True)
 
-    # Add bar plot
-    Plot.frames['Barplot'] = data.hist[0]  # Keep only dataframe
-    # Change colors tuple to color dict
-    Plot.colors = col_dict["bar"]
-    title = "Evolution mensuel des apports et consommations d'énergie"
-    Plot.bar_cum_plot(Plot.frames['Barplot'], emphs=['Energie solaire'],
-                      pos=(1, 1), title=title,
-                      fields=["ECS", "Chauffage", "Pertes"])
-    # Prepare Taux de couverture (list of formatted data)
-    short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-                   'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
-                   'Nov', 'Dec']
-    # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
-    percents = ['{:.1%}'.format(i) for i in Plot.frames['Barplot']['Taux de couverture'].values]
-    Plot.change_xticks_labels([short_names, [' : ']*12,
-                               percents])
+    # # Add diagram
+    # Plot.frames['Diagplot'] = data.diag  # Keep only dataframe
+    # Plot.colors = col_dict["diag"]
+    # Plot.diag_plot(Plot.frames['Diagplot'], pos=(0, 1), loc='center',
+    #                to_diag=['Chauffage', 'ECS', 'Pertes'],
+    #                title='Taux de couverture', legend=False)
+
+    # # Add bar plot
+    # Plot.frames['Barplot'] = data.hist[0]  # Keep only dataframe
+    # # Change colors tuple to color dict
+    # Plot.colors = col_dict["bar"]
+    # title = "Evolution mensuel des apports et consommations d'énergie"
+    # Plot.bar_cum_plot(Plot.frames['Barplot'], emphs=['Energie solaire'],
+    #                   pos=(1, 1), title=title,
+    #                   fields=["ECS", "Chauffage", "Pertes"])
+    # # Prepare Taux de couverture (list of formatted data)
+    # short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
+    #                'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
+    #                'Nov', 'Dec']
+    # # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
+    # percents = ['{:.1%}'.format(i) for i in Plot.frames['Barplot']['Taux de couverture'].values]
+    # Plot.change_xticks_labels([short_names, [' : ']*12,
+    #                            percents])
 
     # Adjust plot format
     Plot.adjust_plots(hspace=0.3, top=0.85, left=0.05)
@@ -746,3 +869,24 @@ if __name__ == '__main__':
     Plot.clean_axes()
     Plot.show()
 
+    somme, steps = data.col_sum_map(data.frame[["S2_state",
+                                                "Vsolar_state",
+                                                "Vextra_state"]], debug=False,
+                                    cols_map=["S2_state",
+                                              "Vsolar_state",
+                                              "Vextra_state"],
+                                    match_map=(100, 100, 100),
+                                    start_sum=datetime.datetime(year=2014,
+                                                                month=1,
+                                                                day=1))
+    print("Durée du chauffage solaire annuel pour {} : {}".format(name, somme))
+    somme, steps = data.col_sum_map(data.frame[["S2_state",
+                                                "Vsolar_state",
+                                                "Vextra_state"]], debug=False,
+                                    cols_map=["S2_state",
+                                              "Vextra_state"],
+                                    match_map=(100, 0),
+                                    start_sum=datetime.datetime(year=2014,
+                                                                month=1,
+                                                                day=1))
+    print("Durée du chauffage par l'appoint annuel pour {} : {}".format(name, somme))
