@@ -18,6 +18,23 @@
 from Plotters.evaluation import *
 
 
+def test_index(name, plot):
+    """
+        Recursive loop to check index value user input.
+        Does not yet raise Value
+    """
+    flag = False
+    while not flag:
+        try:
+            index = tuple(el for el in map(int, input(value).split(" ")))
+            if len(index) != 2:
+                raise IndexError
+            Plot.catch_axes(*index)
+            flag = True
+        except (IndexError, ValueError) as e:
+            print(e)
+    return index
+
 ########################
 #### Main Program : ####
 ########################
@@ -34,8 +51,8 @@ fields = {'box_T': ['T3', 'T4', 'T5'],
                       ["ECS", "Chauffage", "Pertes"]],
           'bar_sup': [["Energie solaire", "Appoint", "Chauffage", "ECS"],
                       ["ECS", "Chauffage", "Pertes"]],
-          'E_area': ["ECS", "Energie solaire", "Chauffage"],
-          'E_line': ["ECS", "Energie solaire", "Appoint", "Chauffage"]}
+          'area_E': ["ECS", "Energie solaire", "Chauffage"],
+          'line_E': ["ECS", "Energie solaire", "Appoint", "Chauffage"]}
 # Colors
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
@@ -47,8 +64,8 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
             'bar_sup': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
                         "ECS": "#268bd2", "Energie solaire": "orange",
                         "Pertes": "#cb4b16"},
-            'E_area': "Accent",
-            'E_line': "Accent"}
+            'area_E': "Accent",
+            'line_E': "Accent"}
 # Titles
 titles = {'title': "Bilan de la simulation",
           'box_T': "Evolution mensuel de la variation des températures des ballons",
@@ -56,8 +73,8 @@ titles = {'title': "Bilan de la simulation",
           'diag': "Taux de couverture",
           'bar_cum': "Evolution mensuel des apports et consommations d'énergie",
           'bar_sup': "Evolution mensuel des apports et consommations d'énergie",
-          'E_area': "Evolution annuelle de la consommation en énergie",
-          'E_line': "Evolution annuelle de la consommation en énergie"}
+          'area_E': "Evolution annuelle de la consommation en énergie",
+          'line_E': "Evolution annuelle de la consommation en énergie"}
 
 
 # Change data columns names
@@ -85,7 +102,8 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # all all box_H box_H box_H box_H
 # none none bar_cum bar_cum bar_cum bar_cum
 # none none diag diag diag diag
-# all all E_area E_area E_area E_area
+# all all area_E area_E area_E area_E
+# none none box_T,box_H,bar_cum,area_E,line_E,diag
 
 if __name__ == '__main__':
     # Dynamic selection of multiple csv with specific separator
@@ -183,11 +201,10 @@ if __name__ == '__main__':
     title = titles['title'] + " pour les données de\n" + add
 
     # Checks axes number and print map position
-    somme = len([x for i in plots for x in i])
-    cols = somme // 2
-    rows = somme - cols
-    if cols in (1, 0):
-        cols += 1
+    sum_ = len([x for i in plots for x in i])
+    print("Number of plots : {}".format(sum_))
+    rows, cols = to_table(sum_)
+    print("columns : {}\t rows : {}".format(cols, rows))
     print("-"*30, "Mapping of positions coordinates:", "-"*30, sep="\n")
     for row in range(rows):
         print("\n")
@@ -211,12 +228,11 @@ if __name__ == '__main__':
         if flag:
             name_cap = name.capitalize()
         for plot in structs[name]:
-            value = "{} datas.\n{}\n{} plot position: ".format(name.capitalize(),
-                                                               "-"*30,
-                                                               plot.capitalize())
             print("\n" + "-"*30)
-            # Careful no input check
-            pos = tuple(el for el in map(int, input(value).split(" ")))
+            print("{} datas.\n{}".format(name.capitalize(), "-"*30))
+            value = "{} plot position: ".format(plot.capitalize())
+            pos = test_index(name, plot)
+            print(pos)
             if "bar_cum" in plot:
                 Plot.colors = col_dict["bar_cum"]
                 print(structs[name][plot][0])
@@ -264,13 +280,13 @@ if __name__ == '__main__':
             elif any(c in plot for c in ("area", "line")):
                 Plot.frame_plot(structs[name][plot], fields=fields[plot],
                                 title=titles[plot], pos=pos, loc='center',
-                                linewidth=2, kind=plot.split("_")[1])
+                                linewidth=2, kind=plot.split("_")[0])
             else:
                 print("Nothing will be show for {}".format(plot))
 
     # Adjust plot format
     Plot.adjust_plots(hspace=0.3, top=0.85, left=0.05)
     # Removes empty axes (only last one for now)
-    Plot.clean_axes(somme)
+    Plot.clean_axes(sum_)
     # Display plots
     Plot.show()

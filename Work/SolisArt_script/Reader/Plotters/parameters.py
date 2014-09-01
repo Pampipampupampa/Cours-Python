@@ -22,6 +22,7 @@ from matplotlib.dates import MinuteLocator, DateFormatter, SecondLocator
 
 from path import path  # Nice object oriented path API
 from os import name  # Get os name
+from math import ceil
 
 
 ######################
@@ -126,6 +127,18 @@ def printer_spe(frame):
         print("\n----> " + key)
         for i, col in enumerate(val.columns):
             print("column {} \t\t{}".format(i, col))
+
+
+def to_table(nb_vals):
+    """
+        Return an optimize number of row and columns
+    """
+    assert nb_vals != 0, "nb_vals must be greater than 0"
+    n_row = None
+    for nb_col in range(1, nb_vals+1):
+        n_row = ceil(nb_vals / nb_col)
+        if 0 <= n_row - nb_col <= 1:
+            return n_row, nb_col
 
 
 def read_csv(csv_list, skiprows=(1,), delimiter=(";",), index_col=("Date",),
