@@ -84,12 +84,28 @@ class EvalData(object):
             frame must be a dataframe.
             Be careful range match hours :
                 ---> dataframe index must be a datetime or timestep friendly
-                ---> ``range_[1]`` is the highter hours value not higther limit
-                        columns with ``8h 30 min`` will be kept.
+                ---> `range_[1]` is the highter hours value not highter limit
+                     so if range_[1]==8 columns with ``8h 30 min`` will be kept.
         """
         frame = frame.loc[frame.index.hour <= range_[1]]
         frame = frame.loc[frame.index.hour >= range_[0]]
         return frame
+
+    @staticmethod
+    def keep_month(frame, month=2014):
+        """
+            Return frame without rows where year not match.
+            Index must be datetime friendly.
+        """
+        return frame.loc[frame.index.month == month]
+
+    @staticmethod
+    def keep_year(frame, year=2014):
+        """
+            Return frame without rows where year not match.
+            Index must be datetime friendly.
+        """
+        return frame.loc[frame.index.year == year]
 
     @staticmethod
     def resample(frame, sample='30min', interpolate=True):
@@ -268,7 +284,7 @@ class MultiPlotter(object):
             - sharey set to True to share yaxis with all plots
     """
     # Text formatters
-    font_title = {'size': 18,
+    font_title = {'size': 16,
                   'family': 'Anonymous Pro'}
     font_mainTitle = {'color': '#002b36',
                       'weight': 'bold',
@@ -276,6 +292,8 @@ class MultiPlotter(object):
                       'family': 'Anonymous Pro'}
     font_base = {'family': 'serif',
                  'size': 13}
+    font_legend = {'size': 13,
+                   'family': 'Anonymous Pro'}
     width = 2  # Line width
     colormap = "Accent"  # Color set
     background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
@@ -315,6 +333,48 @@ class MultiPlotter(object):
                                            sharey=self.sharey,
                                            facecolor=facecolor)
         self.figure_title(ha=ha)
+        self._zoomed = False
+        # Add event on click (see zoom, unzoom and on_key_m)
+        self.fig.canvas.mpl_connect('key_press_event', self.on_key_m)
+        # Tollbar instance
+        self.toolbar = self.fig.canvas.toolbar
+
+    def zoom(self, selected_ax):
+        """
+            Additional option to zoom to full screen current selected_ax
+        """
+        # Set visible to false for all figures
+        for ax in self.axes.flat:
+            ax.set_visible(False)
+        # Get selected_ax current position and change to full screen
+        self._original_size = selected_ax.get_position()
+        selected_ax.set_position([0.125, 0.1, 0.775, 0.8])
+        selected_ax.set_visible(True)
+        # Change flag to change effect on next click
+        self._zoomed = True
+
+    def unzoom(self, selected_ax):
+        """
+            Additional option to unzoom current selected_ax
+        """
+        selected_ax.set_position(self._original_size)
+        for ax in self.axes.flat:
+            ax.set_visible(True)
+        # Change flag to change effect on next click
+        self._zoomed = False
+
+    def on_key_m(self, event):
+        """
+            Event to run zoom or unzoom function
+        """
+        # If no axes under mouse
+        if event.inaxes is None or event.key != "m":
+            return
+        if self._zoomed:
+            self.unzoom(event.inaxes)  # Axe instance
+        else:
+            self.zoom(event.inaxes)  # Axe instance
+        self.fig.canvas.draw()
 
     def figure_title(self, ha='center', fontdict={}):
         """ Set title text inside canvas and figure """
@@ -517,7 +577,7 @@ class MultiPlotter(object):
                                   autopct='%1.1f%%', startangle=90,
                                   explode=explode, radius=radius, **kwargs)
         # Set axe parameters
-        self.catch_axes(*pos).legend(prop=self.font_title)
+        self.catch_axes(*pos).legend(prop=self.font_legend)
         self.catch_axes(*pos).legend().set_visible(legend)
 
     def bar_sup_plot(self, frame, fields, colors={}, loc='left', pos=(1, 1),
@@ -575,7 +635,7 @@ class MultiPlotter(object):
         # Add auto legend
         self.catch_axes(*pos).legend([temp[col] for col in columns],
                                      list(columns),
-                                     loc="best", prop=self.font_title)
+                                     loc="best", prop=self.font_legend)
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
                      names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
@@ -640,7 +700,7 @@ class MultiPlotter(object):
         # Add auto legend
         self.catch_axes(*pos).legend([temp[col] for col in columns],
                                      list(columns),
-                                     loc="best", prop=self.font_base)
+                                     loc="best", prop=self.font_legend)
 
     def format_boxticks(self, list_frame, pos=(0, 0), start=0, names=[],
                         **kwargs):
@@ -667,7 +727,7 @@ class MultiPlotter(object):
                                             linewidth=self.width)
             curves.append(h)  # Add Line2D object inside a list
         self.catch_axes(*pos).legend(curves, list(cols),
-                                     prop=self.font_title, **kwargs)
+                                     prop=self.font_legend, **kwargs)
         for plot in curves:
             plot.set_visible(False)
 

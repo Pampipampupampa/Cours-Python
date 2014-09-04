@@ -52,7 +52,12 @@ fields = {'box_T': ['T3', 'T4', 'T5'],
           'bar_sup': [["Energie solaire", "Appoint", "Chauffage", "ECS"],
                       ["ECS", "Chauffage", "Pertes"]],
           'area_E': ["ECS", "Energie solaire", "Chauffage"],
-          'line_E': ["ECS", "Energie solaire", "Appoint", "Chauffage"]}
+          'line_E': ["ECS", "Energie solaire", "Appoint", "Chauffage"],
+          'line_T': ["T1", "T3", "T4", "T5"],
+          'line_H': ['Diffus', 'Direct'],
+          'line_debA': ["Flow_S6", "Flow_S5", "Flow_S4", "Flow_S2"],
+          'line_debS': ["Flow_S6", "Flow_S5"],
+          'line_debC': ["Flow_S4", "Flow_S2"]}
 # Colors
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
@@ -65,16 +70,25 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                         "ECS": "#268bd2", "Energie solaire": "orange",
                         "Pertes": "#cb4b16"},
             'area_E': "Accent",
-            'line_E': "Accent"}
+            'line_E': "Accent", 'line_T': "Accent", 'line_H': "Accent",
+            'line_debA': "Accent", 'line_debS': "Accent", 'line_debC': "Accent"}
 # Titles
 titles = {'title': "Bilan de la simulation",
-          'box_T': "Evolution mensuel de la variation des températures des ballons",
-          'box_H': "Evolution mensuel de la variation de la puissance captable",
+          'box_T': "Evolution mensuel de la variation \n" +
+                   "des températures des ballons",
+          'box_H': "Evolution mensuel de la variation \n" +
+                   "de la puissance captée",
           'diag': "Taux de couverture",
           'bar_cum': "Evolution mensuel des apports et consommations d'énergie",
           'bar_sup': "Evolution mensuel des apports et consommations d'énergie",
           'area_E': "Evolution annuelle de la consommation en énergie",
-          'line_E': "Evolution annuelle de la consommation en énergie"}
+          'line_E': "Evolution annuelle de la consommation en énergie",
+          'line_T': "Evolution annuelle des tempéatures dans les ballons" +
+                    "\n et de la température en sortie des panneaux solaires",
+          'line_H': "Evolution annuelle de la puissance captée",
+          'line_debA': "Evolution des débits solaires et de chauffage",
+          'line_debS': "Evolution des débits solaires",
+          'line_debC': "Evolution des débits de chauffage"}
 
 
 # Change data columns names
@@ -104,6 +118,7 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # none none diag diag diag diag
 # all all area_E area_E area_E area_E
 # none none box_T,box_H,bar_cum,area_E,line_E,diag
+# all none line_debS,line_debC,line_H,line_T
 
 if __name__ == '__main__':
     # Dynamic selection of multiple csv with specific separator
@@ -116,7 +131,7 @@ if __name__ == '__main__':
 
     # Default instructions
     if names == [""]:
-        names = ["_", "strasbourg_07072014.csv"]
+        names = ["_", "chambery_25082014.csv"]
         print("---> Defaults will be used : \n{}".format(names))
 
     sep = names.pop(0)  # Recup separator value
@@ -130,6 +145,14 @@ if __name__ == '__main__':
               "    -" + " comma to asign multiple plot to one dataframe\n" + \
               "    -" + " first/second element used to select correct x/y axis share\n" + \
               "      ('all', 'row', 'col' or 'none')\n"
+    # Print plots informations and user input choice
+    print("\n", "-"*30, "All plots available :", "-"*30, sep="\n")
+    nb_fill = 10
+    for plot_disp in fields.keys():
+        definition = titles[plot_disp].replace("\n", "\n" + " "*(nb_fill+3))
+        print("{0:{fill}{align}{nb_fill}} : {1}\n".format(plot_disp, definition,
+                                                          fill=" ", align="<",
+                                                          nb_fill=nb_fill))
     plots = input(welcome).split(" ")
 
     # Default instructions
@@ -165,9 +188,8 @@ if __name__ == '__main__':
     ################## EvalData class : Prepare datas ##################
     #
 
-    # Memo
-    # Check here if wrong data order (mix between dicts : frames and structs)
-    datas = {name: EvalData(frames[name]) for name in frames}
+    # Keep only 2014 datas into the dict
+    datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
 
     print("\n---Csv columns names after treatments---"),
     for name in datas:
@@ -190,7 +212,7 @@ if __name__ == '__main__':
                                                                      fields=fields[el][0]))
             elif any(c in el for c in ("area", "line")):
                 structs[name][el] = EvalData.resample(frame=datas[name].frame,
-                                                      sample='6h')
+                                                      sample='30min')
     # Only display to have a pretty interface
     print("\n|\n|\n|--> Class creation now finish, plotting datas\n")
 
@@ -230,7 +252,7 @@ if __name__ == '__main__':
         for plot in structs[name]:
             print("\n" + "-"*30)
             print("{} datas.\n{}".format(name.capitalize(), "-"*30))
-            value = "{} plot position: ".format(plot.capitalize())
+            value = "{} plot position: ".format(plot)
             pos = test_index(name, plot)
             print(pos)
             if "bar_cum" in plot:
@@ -268,7 +290,7 @@ if __name__ == '__main__':
             elif "diag" in plot:
                 Plot.colors = col_dict["diag"]
                 a = fields[plot][1]
-                b = (" ({:.0f}KWh)".format(structs[name][plot].ix[el, :1].values[0]) for el in a)
+                b = (" ({:.0f} KWh)".format(structs[name][plot].ix[el, :1].values[0]) for el in a)
                 # Create a list of string composed of a and b
                 parts = ["".join(str(i) for i in el) for el in zip(a, b)]
                 Plot.diag_plot(structs[name][plot], pos=pos, loc='center',

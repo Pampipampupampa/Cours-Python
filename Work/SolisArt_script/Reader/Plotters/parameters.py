@@ -45,7 +45,7 @@ matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
 matplotlib.rc('xtick', labelsize=10)
 matplotlib.rc('ytick', labelsize=10)
-matplotlib.rc('legend', fontsize=10)
+matplotlib.rc('legend', fontsize=12)
 matplotlib.rc('legend', labelspacing=0.2)
 
 # Artist shape used by annotations
