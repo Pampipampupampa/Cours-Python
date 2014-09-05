@@ -470,7 +470,8 @@ class MultiPlotter(object):
             columns = frame.columns
         else:
             columns = fields
-        print('\n---' + 'Plotting Line2D' + '---' + '\n', columns, "\n")
+        print('\n---' + 'Plotting {}2D'.format(kind.capitalize()) +
+              '---' + '\n', columns, "\n")
 
         # Plot all plots
         self.catch_axes(*pos).set_title(label=title,

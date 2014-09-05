@@ -56,8 +56,12 @@ fields = {'box_T': ['T3', 'T4', 'T5'],
           'line_T': ["T1", "T3", "T4", "T5"],
           'line_H': ['Diffus', 'Direct'],
           'line_debA': ["Flow_S6", "Flow_S5", "Flow_S4", "Flow_S2"],
-          'line_debS': ["Flow_S6", "Flow_S5"],
-          'line_debC': ["Flow_S4", "Flow_S2"]}
+          'line_debS1': ["Flow_S6", "Flow_S5"],
+          'line_debC1': ["Flow_S4", "Flow_S2"],
+          'line_debS2': ["Flow_Collector", "Flow_ExchTank_bot",
+                         "Flow_ExchStorTank"],
+          'line_debC2': ["Flow_ExchTank_top", "Flow_Boiler"]}
+
 # Colors
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
@@ -69,9 +73,11 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
             'bar_sup': {"Appoint": "#dc322f", "Chauffage": "#fdf6e3",
                         "ECS": "#268bd2", "Energie solaire": "orange",
                         "Pertes": "#cb4b16"},
-            'area_E': "Accent",
-            'line_E': "Accent", 'line_T': "Accent", 'line_H': "Accent",
-            'line_debA': "Accent", 'line_debS': "Accent", 'line_debC': "Accent"}
+            'area_E': "Accent", 'line_E': "Accent", 'line_T': "Accent",
+            'line_H': "Accent", 'line_debA': "Accent", 'line_debS1': "Accent",
+            'line_debC1': "Accent", 'line_debS2': "Accent",
+            'line_debC2': "Accent"}
+
 # Titles
 titles = {'title': "Bilan de la simulation",
           'box_T': "Evolution mensuel de la variation \n" +
@@ -83,12 +89,14 @@ titles = {'title': "Bilan de la simulation",
           'bar_sup': "Evolution mensuel des apports et consommations d'énergie",
           'area_E': "Evolution annuelle de la consommation en énergie",
           'line_E': "Evolution annuelle de la consommation en énergie",
-          'line_T': "Evolution annuelle des tempéatures dans les ballons" +
-                    "\n et de la température en sortie des panneaux solaires",
+          'line_T': "Evolution annuelle des tempéatures dans les ballons " +
+                    "\net de la température en sortie des panneaux solaires",
           'line_H': "Evolution annuelle de la puissance captée",
           'line_debA': "Evolution des débits solaires et de chauffage",
-          'line_debS': "Evolution des débits solaires",
-          'line_debC': "Evolution des débits de chauffage"}
+          'line_debS1': "Evolution des débits solaires",
+          'line_debC1': "Evolution des débits de chauffage",
+          'line_debS2': "Evolution des débits des équipements solaire",
+          'line_debC2': "Evolution des débits des équipements de chauffage"}
 
 
 # Change data columns names
@@ -109,9 +117,9 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                'Nov', 'Dec']
 
 # Test
-# _ chambery_30062014.csv marseille_30062014.csv strasbourg_07072014.csv
+# _ chambery_20140630.csv marseille_20140630.csv strasbourg_20140707.csv
 # row bar_cum bar_cum bar_cum,bar_sup
-# _ chambery3p_02082014.csv chambery_25082014.csv chambery9p_21082014.csv chambery12p_02082014.csv
+# _ chambery3p_20140802.csv chambery_20140825.csv chambery9p_20140821.csv chambery12p_20140802.csv
 # all all box_T box_T box_T box_T
 # all all box_H box_H box_H box_H
 # none none bar_cum bar_cum bar_cum bar_cum
@@ -119,6 +127,7 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # all all area_E area_E area_E area_E
 # none none box_T,box_H,bar_cum,area_E,line_E,diag
 # all none line_debS,line_debC,line_H,line_T
+# all none line_debS1,line_debS2,line_debC1,line_debC2
 
 if __name__ == '__main__':
     # Dynamic selection of multiple csv with specific separator
@@ -131,7 +140,7 @@ if __name__ == '__main__':
 
     # Default instructions
     if names == [""]:
-        names = ["_", "chambery_25082014.csv"]
+        names = ["_", "chambery_20140825.csv"]
         print("---> Defaults will be used : \n{}".format(names))
 
     sep = names.pop(0)  # Recup separator value
@@ -141,14 +150,14 @@ if __name__ == '__main__':
     welcome = "\nPlease choose kind of plot for each dataframes or default " + \
               "(press enter) :\n" + \
               "({})\n".format(field_print) + \
-              "    -" + " space pass to next dataframe\n" + \
+              "    -" + " space to select next dataframe\n" + \
               "    -" + " comma to asign multiple plot to one dataframe\n" + \
               "    -" + " first/second element used to select correct x/y axis share\n" + \
               "      ('all', 'row', 'col' or 'none')\n"
     # Print plots informations and user input choice
     print("\n", "-"*30, "All plots available :", "-"*30, sep="\n")
     nb_fill = 10
-    for plot_disp in fields.keys():
+    for plot_disp in sorted(fields.keys()):
         definition = titles[plot_disp].replace("\n", "\n" + " "*(nb_fill+3))
         print("{0:{fill}{align}{nb_fill}} : {1}\n".format(plot_disp, definition,
                                                           fill=" ", align="<",
@@ -301,7 +310,8 @@ if __name__ == '__main__':
                                                 fontdict=Plot.font_title)
             elif any(c in plot for c in ("area", "line")):
                 Plot.frame_plot(structs[name][plot], fields=fields[plot],
-                                title=titles[plot], pos=pos, loc='center',
+                                title=titles[plot]+"\n{}".format(name_cap),
+                                pos=pos, loc='center',
                                 linewidth=2, kind=plot.split("_")[0])
             else:
                 print("Nothing will be show for {}".format(plot))
