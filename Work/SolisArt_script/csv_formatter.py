@@ -45,6 +45,7 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "Solar_tank.portHex_a1.m_flow": "Flow_ExchTank_bot",
                    "Solar_tank.port_a2.m_flow": "Flow_ExchTank_top",
                    "Solar_tank.portHex_a2.m_flow": "Flow_ExchTank_top",
+                   "Storage_tank1.portHex_a.m_flow": "Flow_ExchTank_top",
                    "Storage_tank.port_a1.m_flow": "Flow_ExchStorTank",
                    "Storage_tank.portHex_a.m_flow": "Flow_ExchStorTank",
                    "mFlow_boiler.m_flow": "Flow_Boiler",
@@ -433,9 +434,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "chambery15KWh_20140905.csv"
+             "chambery15KWhNosun_20140911.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "chambery15KWh_20140905.csv"
+              "chambery15KWhNosun_20140911.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
