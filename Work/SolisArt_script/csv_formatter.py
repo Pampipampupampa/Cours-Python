@@ -24,6 +24,8 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "T2.T": "T2", "T3.T": "T3", "pump_algo.T3": "T3",
                    "T4.T": "T4", "pump_algo.T4": "T4",
                    "T5.T": "T5", "pump_algo.T5": "T5",
+                   "algo.heating_mod.TsolarInstruction[1]": "T10_solarInstruction",
+                   "Drawing_up1.Tdrawing_up.T": "T11_Drawing_up",
                    "pump_algo.T7": "T7", "pump_algo.T8": "T8",
                    "algo.Text": "T9_ext", "TRooAir.T": "T12_house",
                    "pump_algo.pumps_state[1]": "S6_state",
@@ -50,6 +52,7 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "Storage_tank.portHex_a.m_flow": "Flow_ExchStorTank",
                    "mFlow_boiler.m_flow": "Flow_Boiler",
                    "boi.m_flow": "Flow_Boiler",
+                   "rad.m_flow": "Flow_Radiator",
                    "weaBus.HDifHor": "HDifHor",
                    "weaBus.HDirNor": "HDirNor",
                    "solarPanel_ISO.HDifTilIso.H": "HDifTil_collector",
@@ -434,9 +437,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "chambery15KWhNosun_20140911.csv"
+             "chambery_20140825.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "chambery15KWhNosun_20140911.csv"
+              "chambery_20140825.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

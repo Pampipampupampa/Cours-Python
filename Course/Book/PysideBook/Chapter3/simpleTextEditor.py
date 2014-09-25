@@ -107,7 +107,7 @@ class MainWindow(QMainWindow):
         """Avancement de la barre de progression"""
         while self.progressBar.value() < self.progressBar.maximum():
             self.progressBar.setValue(self.progressBar.value() + 10)
-            time.sleep(1/10)
+            time.sleep(1 / 10)
         # self.statusBar.showMessage('Ready', 2000)
         self.statusLabel.setText('Ready !!')
 
@@ -196,8 +196,8 @@ class MainWindow(QMainWindow):
             self.fileName, self.filterName = QFileDialog.getSaveFileName(self,
                                                          filter=self.filters)
         if self.fileName != '':
-            with open(self.fileName, 'w') as file:
-                file.write(self.textEdit.toPlainText())
+            with open(self.fileName, 'w') as file_:
+                file_.write(self.textEdit.toPlainText())
                 self.statusBar.showMessage('Fichier Sauvegardé', 3000)
 
     def fontChange(self):

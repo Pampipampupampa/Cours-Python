@@ -108,7 +108,7 @@ class EvalData(object):
         return frame
 
     @staticmethod
-    def keep_month(frame, month=2014):
+    def keep_month(frame, month):
         """
             Return frame without rows where year not match.
             Index must be datetime friendly.
@@ -124,14 +124,16 @@ class EvalData(object):
         return frame.loc[frame.index.year == year]
 
     @staticmethod
-    def resample(frame, sample='30min', interpolate=True):
+    def resample(frame, sample='30min', interpolate=True, **kwargs):
         """
             Reduce dataframe with a datetime index.
+            **kwargs can be fill_method, limit, label, loffset, axis, kind, ...
+                ---> See DataFrame.resample or Series.resample
         """
         if interpolate is True:
-            return frame.resample(sample).interpolate()
+            return frame.resample(sample, **kwargs).interpolate()
         else:
-            return frame.resample(sample)
+            return frame.resample(sample, **kwargs)
 
     def add_column(self, frame, used_cols, operator='+'):
         """
@@ -216,8 +218,8 @@ class EvalData(object):
                                                     frame))
         return summation, step_list
 
-    def bar_energy_actions(self, frame, fields=None, new_fields=(),
-                           interval=None):
+    def bar_energy(self, frame, fields=None, new_fields=(),
+                   interval=None):
         """
             Proceed all treatments to extract structure to plot energy Bar
             new_fields index must be strutured as below:
@@ -252,8 +254,8 @@ class EvalData(object):
                                                 operator=new[3])
         return frame, indices
 
-    def diag_energy_actions(self, frame, fields=None, month=12,
-                            new_fields=()):
+    def diag_energy(self, frame, fields=None, month=12,
+                    new_fields=()):
         """
             Proceed all treatments to extract structure to plot energy diagram
             new_fields index must be strutured as below:
@@ -337,7 +339,7 @@ class MultiPlotter(object):
         # Space between boxplot groups
         self.pad = 1
 
-    def fig_init(self, figsize=(20, 10), facecolor=None,
+    def fig_init(self, figsize=(20, 10), title_pos=(0.5, 0.93), facecolor=None,
                  ha='center', sharex=None, sharey=None):
         """ Create all needed axes """
         # Default parameters
@@ -351,7 +353,7 @@ class MultiPlotter(object):
                                            sharex=self.sharex,
                                            sharey=self.sharey,
                                            facecolor=facecolor)
-        self.figure_title(ha=ha)
+        self.figure_title(ha=ha, pos=title_pos)
         self._zoomed = False
         # Add event on click (see zoom, unzoom and on_key_m)
         self.fig.canvas.mpl_connect('key_press_event', self.on_key)
@@ -405,15 +407,15 @@ class MultiPlotter(object):
             self.display_axis(event.inaxes)
         self.fig.canvas.draw()
 
-    def figure_title(self, ha='center', fontdict={}):
+    def figure_title(self, pos=(0.5, 0.95), ha='center', fontdict={}):
         """ Set title text inside canvas and figure """
         self.fig.canvas.manager.set_window_title(self.title)
-        plt.figtext(0.5, 0.95, self.title, ha=ha,
+        plt.figtext(pos[0], pos[1], self.title, ha=ha,
                     fontdict=fontdict or self.font_mainTitle)
 
     def adjust_plots(self, top=None,  bottom=None,  left=None,  right=None,
                      hspace=None, wspace=None):
-        """ Force figure padding.  None lead to default rc parameters """
+        """ Force figure padding.  None lead to default rc parameters. """
         self.fig.subplots_adjust(top=top, bottom=bottom, left=left, right=right,
                                  hspace=hspace, wspace=wspace)
 
@@ -564,7 +566,7 @@ class MultiPlotter(object):
             self.axes[row][col].set_visible(False)
 
     def frame_plot(self, frame, fields="all", title='Line me', loc='left',
-                   kind="area", pos=(1, 0), colormap="default", colors=None,
+                   kind="area", pos=(0, 0), colormap="default", colors=None,
                    legend=True, **kwargs):
         """
             Used to plot dataframes.
@@ -859,12 +861,12 @@ if __name__ == '__main__':
 
     # Prepare all plots
     # BAR
-    data.hist = data.bar_energy_actions(data.frame, new_fields=new_fields,
+    data.hist = data.bar_energy(data.frame, new_fields=new_fields,
                                         fields=["Energie solaire", "Appoint",
                                                 "Chauffage", "ECS"])
 
     # DIAGRAM
-    data.diag = data.diag_energy_actions(data.frame,
+    data.diag = data.diag_energy(data.frame,
                                          fields=["Energie solaire", "Appoint",
                                                  "Chauffage", "ECS"],
                                          new_fields=new_fields)
@@ -940,14 +942,16 @@ if __name__ == '__main__':
     Plot.clean_axes()
     Plot.show()
 
-    somme, steps = data.col_sum_map(data.frame[["S2_state",
-                                                "Vsolar_state",
-                                                "Vextra_state"]], debug=False,
-                                    cols_map=["S2_state",
-                                              "Vsolar_state",
-                                              "Vextra_state"],
-                                    match_map=(100, 100, 100),
-                                    start_sum=datetime.datetime(year=2014,
-                                                                month=1,
-                                                                day=1))
-    print("Durée du chauffage solaire annuel pour {} : {}".format(name, somme))
+    @benchmark
+    def test():
+        somme, steps = data.col_sum_map(data.frame, debug=False,
+                                        cols_map=["S2_state",
+                                                  "Vsolar_state",
+                                                  "Vextra_state"],
+                                        match_map=(100, 100, 100),
+                                        start_sum=datetime.datetime(year=2014,
+                                                                    month=1,
+                                                                    day=1))
+        print("Durée du chauffage solaire annuel pour {} : {}".format(name, somme))
+
+    test()

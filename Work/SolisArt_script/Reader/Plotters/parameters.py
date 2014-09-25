@@ -24,6 +24,8 @@ from path import path  # Nice object oriented path API
 from os import name  # Get os name
 from math import ceil
 
+from itertools import chain, islice
+from collections import deque
 
 ######################
 #### Parameters : ####
@@ -107,6 +109,28 @@ def step_iterator(dataframe, start=0, steps=[], interval=None):
         start = end
         end += steps[el+1]
         yield dataframe[start:end]
+
+
+def chunks(seq, chunksize, process=tuple):
+    """
+        Yields items from an iterator in iterable chunks.
+    """
+    it = iter(seq)
+    while True:
+        yield process(chain([next(it)], islice(it, chunksize - 1)))
+
+
+def window(iterable, size=2):
+    """
+        Yields iterms by bunch of a given size, but rolling only one item
+        in and out at a time when iterating.
+    """
+    iterable = iter(iterable)
+    d = deque(islice(iterable, size), size)
+    yield d
+    for x in iterable:
+        d.append(x)
+        yield d
 
 
 def printer_all(S_frame, csv_list):
