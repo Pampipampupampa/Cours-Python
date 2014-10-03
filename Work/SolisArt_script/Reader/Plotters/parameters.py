@@ -39,8 +39,17 @@ elif name == 'posix':
     FOLDER = path('~').expanduser() / "Documents/Git/solarsystem/Outputs"
 
 # Create font properties
-font_base = {'family': 'serif',
-             'size': 13}
+# Can be use to plot for publication
+font_base = {'size': 18,
+             'family': 'STIXGeneral'}
+
+             # 'mathtext.fontset': 'stix'
+             # 'text.usetex': True}  # Used to force latex inside figures
+
+# # Restore
+# matplotlib.rcParams.update({'font.size': 12,
+#                             'font.family': 'sans',
+#                             'text.usetex': False})
 
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
@@ -59,7 +68,6 @@ minutes_formatter = DateFormatter("%M:%S")
 
 secondes = SecondLocator(interval=10)
 secondes_formatter = DateFormatter("%M:%S")
-
 
 #######################################
 #### Classes, Methods, Functions : ####

@@ -237,7 +237,9 @@ class EvalData(object):
         # Get only last values for each chunks
         frame = [frame[i][-1:] for i in range(len(frame))]
         # Set each values difference to keep only energy evolution per sample
-        frame = (frame[0],) + tuple(frame[ind+1] - frame[ind].values for ind in range(len(frame)-1))
+        frame = ((frame[0],) +
+                 tuple(frame[ind+1] -
+                       frame[ind].values for ind in range(len(frame)-1)))
         # Group all data together
         frame = pd.concat([el for el in frame])
         lab_interval = interval or self.length
@@ -307,10 +309,6 @@ class MultiPlotter(object):
     # Text formatters
     font_title = {'size': 16,
                   'family': 'Anonymous Pro'}
-    font_mainTitle = {'color': '#002b36',
-                      'weight': 'bold',
-                      'size': '25',
-                      'family': 'Anonymous Pro'}
     font_base = {'family': 'serif',
                  'size': 13}
     font_legend = {'size': 13,
@@ -329,7 +327,6 @@ class MultiPlotter(object):
         self.title = title
         self.frames = frames
         self.colors = colors
-        self.title = title
         self.nb_rows = nb_rows
         self.nb_cols = nb_cols
         self.sharex = sharex
@@ -353,12 +350,12 @@ class MultiPlotter(object):
                                            sharex=self.sharex,
                                            sharey=self.sharey,
                                            facecolor=facecolor)
-        self.figure_title(ha=ha, pos=title_pos)
         self._zoomed = False
         # Add event on click (see zoom, unzoom and on_key_m)
         self.fig.canvas.mpl_connect('key_press_event', self.on_key)
         # Tollbar instance
         self.toolbar = self.fig.canvas.toolbar
+        self.figure_title()
 
     def zoom(self, selected_ax):
         """
@@ -378,6 +375,7 @@ class MultiPlotter(object):
         """
             Additional option to unzoom current selected_ax.
         """
+        # Cancel actions
         selected_ax.set_position(self._original_size)
         for ax in self.axes.flat:
             ax.set_visible(True)
@@ -407,11 +405,9 @@ class MultiPlotter(object):
             self.display_axis(event.inaxes)
         self.fig.canvas.draw()
 
-    def figure_title(self, pos=(0.5, 0.95), ha='center', fontdict={}):
+    def figure_title(self):
         """ Set title text inside canvas and figure """
         self.fig.canvas.manager.set_window_title(self.title)
-        plt.figtext(pos[0], pos[1], self.title, ha=ha,
-                    fontdict=fontdict or self.font_mainTitle)
 
     def adjust_plots(self, top=None,  bottom=None,  left=None,  right=None,
                      hspace=None, wspace=None):
@@ -433,8 +429,9 @@ class MultiPlotter(object):
             len(frame) gives number of ticks
             len(frame.columns) gives number of plot per ticks
         """
+        cols = list_frame[0].columns
         return [el for el in range(start,
-                                   len(list_frame)*(len(list_frame[0].columns)+self.pad),
+                                   len(list_frame)*(len(cols)+self.pad),
                                    len(list_frame[0].columns)+self.pad)]
 
     def catch_axes(self, nb_row, nb_col):
@@ -450,9 +447,30 @@ class MultiPlotter(object):
         else:
             return self.axes
 
-    def auto_format(self):
+    def autofmt_xdate(self):
         """ Quick access to date auto formatter. """
         self.fig.autofmt_xdate()
+
+    def tight_layout(self, **kwargs):
+        """
+            Quick access to fig.tight_layout().
+
+            Adjust subplot parameters to give specified padding.
+
+            Parameters:
+
+              *pad* : float
+                padding between the figure edge and the edges of subplots,
+                as a fraction of the font-size.
+              *h_pad*, *w_pad* : float
+                padding (height/width) between edges of adjacent subplots.
+                Defaults to `pad_inches`.
+              *rect* : if rect is given, it is interpreted as a rectangle
+                (left, bottom, right, top) in the normalized figure
+                coordinate that the whole subplots area (including
+                labels) will fit into. Default is (0, 0, 1, 1).
+        """
+        self.fig.tight_layout(**kwargs)
 
     def set_xtiks_labels(self, pos, names, rotation=30):
         """ Quick access to set xticks labels. """
@@ -862,14 +880,14 @@ if __name__ == '__main__':
     # Prepare all plots
     # BAR
     data.hist = data.bar_energy(data.frame, new_fields=new_fields,
-                                        fields=["Energie solaire", "Appoint",
-                                                "Chauffage", "ECS"])
+                                fields=["Energie solaire", "Appoint",
+                                        "Chauffage", "ECS"])
 
     # DIAGRAM
     data.diag = data.diag_energy(data.frame,
-                                         fields=["Energie solaire", "Appoint",
-                                                 "Chauffage", "ECS"],
-                                         new_fields=new_fields)
+                                 fields=["Energie solaire", "Appoint",
+                                         "Chauffage", "ECS"],
+                                 new_fields=new_fields)
 
     # BOXPLOT
     data.box_T = data.box_actions(data.frame, fields=['T3', 'T4', 'T5'])
@@ -932,7 +950,8 @@ if __name__ == '__main__':
                    'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
                    'Nov', 'Dec']
     # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
-    percents = ['{:.1%}'.format(i) for i in Plot.frames['Barplot']['Taux de couverture'].values]
+    percents = ['{:.1%}'.format(i)
+                for i in Plot.frames['Barplot']['Taux de couverture'].values]
     Plot.change_xticks_labels([short_names, [' : ']*12,
                                percents])
 
