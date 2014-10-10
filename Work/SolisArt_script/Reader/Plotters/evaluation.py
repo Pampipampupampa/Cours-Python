@@ -110,16 +110,21 @@ class EvalData(object):
     @staticmethod
     def keep_month(frame, month):
         """
-            Return frame without rows where year not match.
-            Index must be datetime friendly.
+            Return frame without rows where month not match.
         """
         return frame.loc[frame.index.month == month]
+
+    @classmethod
+    def only_month(cls, frame, month):
+        """
+            Return a new instance of EvalData for a specific month
+        """
+        return cls(frame.loc[frame.index.month == month])
 
     @staticmethod
     def keep_year(frame, year=2014):
         """
             Return frame without rows where year not match.
-            Index must be datetime friendly.
         """
         return frame.loc[frame.index.year == year]
 
@@ -311,7 +316,7 @@ class MultiPlotter(object):
                   'family': 'Anonymous Pro'}
     font_base = {'family': 'serif',
                  'size': 13}
-    font_legend = {'size': 13,
+    font_legend = {'size': 10,
                    'family': 'Anonymous Pro'}
     width = 2  # Line width
     colormap = "Accent"  # Color set

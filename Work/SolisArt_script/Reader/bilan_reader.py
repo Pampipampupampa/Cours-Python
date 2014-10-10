@@ -21,6 +21,9 @@ from Plotters.evaluation import *
 from datetime import datetime as dt
 import os
 
+import csv
+import json
+
 
 def test_index(name, plot):
     """
@@ -81,6 +84,19 @@ def time_info(frame, time_dict, display=True):
         for key, item in time_dict.items():
             print('\n---> {} : {}'.format(key, item))
 
+
+def prepare_export(dico):
+    """
+        Change format to prepare export to csv and json.
+    """
+    to_seconds = ['heating_time', 'extra_heating', 'solar_heating',
+                  'Difference']
+    dico[name][m_]['start_sim'] = str(dico[name][m_]['start_sim'])
+    dico[name][m_]['end_sim'] = str(dico[name][m_]['end_sim'])
+    for conv in to_seconds:
+        dico[name][m_][conv] = dico[name][m_][conv].total_seconds()
+
+
 ########################
 #### Main Program : ####
 ########################
@@ -97,6 +113,7 @@ emphs_dict = {'bar_cumA': ['Pertes'],
 fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_Tint': ['T9_ext', 'T1', 'T12_house'],
           'box_H': ['Diffus', 'Direct'],
+          'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
           'diag_B': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
                      ['Chauffage', 'ECS', 'Pertes']],
           'diag_C': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
@@ -150,6 +167,7 @@ titles = {'title': 'Bilan de la simulation',
                       'des températures capteurs, extérieure et intérieure',
           'box_H': 'Evolution mensuel de la variation \n' +
                    'de la puissance captée',
+          'box_P': 'Evolution de l’état des pompes appoint et solaire',
           'diag_B': 'Taux de couverture',
           'diag_C': 'Répartition des consommations',
           'bar_cumA': 'Evolution mensuel des apports',
@@ -189,12 +207,15 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                'Nov', 'Dec']
 
 # Test
-# _ chambery_20140825.csv chambery3p_20140802.csv chambery9p_20140821.csv
-# chambery12p_20140802.csv chamberyNosun_20140908.csv lyon_20140920.csv
+# _ chambery3p_20140802.csv chambery_20140825.csv chambery9p_20140821.csv
+# chambery12p_20140802.csv lyon_20140920.csv
 # marseille_20140630.csv strasbourg_20140707.csv bordeaux_20140715.csv
 # chambery15KWh_20140910.csv chambery15KWh200plus_20140905.csv
-# chambery15KWhNosun_20140911.csv chambery100moins_20140811.csv
-# chambery100plus_20140808.csv
+# chamberyNosun_20140908.csv chambery15KWhNosun_20140911.csv
+# marseilleNosun_20141009.csv
+# chambery100plus_20140808.csv chambery100moins_20140811.csv
+# chambery3padapt_20140929.csv chambery9padapt_20141001.csv
+# chambery12padapt_20141006.csv
 # _
 # none none
 
@@ -213,7 +234,6 @@ if __name__ == '__main__':
         print('---> Defaults will be used : \n{}'.format(names))
 
     sep = names.pop(0)  # Recup separator value
-
     # Testing
     # field_print = ' '.join(field_ for field_ in fields.keys())
               # '({})\n'.format(field_print) + \
@@ -240,7 +260,7 @@ if __name__ == '__main__':
     # Default instructions
     if plots == ['']:
         plots = ['none', 'none',
-                 'box_T,diag_B,box_H,bar_cumC,bar_cumA,diag_C,area_E']
+                 'diag_C,diag_B,bar_cumA,bar_cumC']
         print('---> Defaults will be used : \n{}'.format(plots))
     share_x = plots.pop(0)  # Recup sharex flag
     share_y = plots.pop(0)  # Recup sharey flag
@@ -273,8 +293,25 @@ if __name__ == '__main__':
     #
     # Keep only 2014 datas into the dict
     datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
-    # All time informations go inside this dict
-    time_dict = {name: OrdD() for name in frames}
+
+    # Time per month
+    months = ('January', 'February', 'March', 'April', 'May', 'June',
+              'July', 'August', 'September', 'October', 'November',
+              'December', 'Annual')
+
+    # --------------------------------------------------------------------------
+    # OrderedDict used as input for month field inside time_info
+    all_months = OrdD(zip(months[:-1], (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
+    # Comprehension used to avoid reference errors because a list is mutable
+    OrdD_list = [OrdD() for i in range(len(months))]
+    # Create OrderedDict in comprehension
+    time_json = {name: OrdD(zip(months, OrdD_list)) for name in frames}
+    # Initialize csv structure and add file head
+    time_csv = []
+    time_csv.append(["Data", "Month", "start_sim", "end_sim", "heating_time",
+                     "solar_heating", "extra_heating", "Difference", "ratio"])
+    # --------------------------------------------------------------------------
+
     for name in datas:
         # Change columns names
         datas[name].frame.columns = datas[name].change_names(conv_dict)
@@ -282,9 +319,21 @@ if __name__ == '__main__':
         # Display columns names
         print('\n---> Csv columns names after treatments')
         print(datas[name].frame.columns)
-        # Display time informations
-        # time_info(frame=datas[name], time_dict=time_dict[name])
-
+    # --------------------------------------------------------------------------
+        # Display annual time informations
+        time_info(frame=datas[name], time_dict=time_json[name]['Annual'])
+        for m_ in months:
+            if m_ != 'Annual':
+                print("\n", m_)
+                time_info(frame=EvalData.only_month(frame=datas[name].frame,
+                                                    month=all_months[m_]),
+                          time_dict=time_json[name][m_])
+            # Prepare time data to export
+            prepare_export(dico=time_json)
+            # Create csv structure
+            time_csv.append([name, m_] +
+                            [el for el in time_json[name][m_].values()])
+    # --------------------------------------------------------------------------
         # Add all plot for each set of datas
         for el in structs[name]:
             if 'bar' in el:
@@ -308,6 +357,17 @@ if __name__ == '__main__':
                                                           interpolate=True)
                 else:
                     structs[name][el] = datas[name].frame
+    # --------------------------------------------------------------------------
+    # Write to a json file all time informations
+    with open('Simlation_timedata.json', 'w', encoding='utf-8') as f:
+        json.dump(time_json, f, indent=4)
+    # Write to a csv file all time informations
+    with open('Simlation_timedata.csv', 'w', newline='',
+              encoding='utf-8') as csvfile:
+            spamwriter = csv.writer(csvfile, delimiter=';')
+            for row in time_csv:
+                spamwriter.writerow(row)
+    # --------------------------------------------------------------------------
 
     # Only display to have a pretty interface
     print('\n|\n|\n|--> Class creation now finish, plotting datas\n')
@@ -449,21 +509,32 @@ if __name__ == '__main__':
 
     # Check and create a folder per month
     FOLDER = "D:\Github\solarsystem\Outputs\Plots_stock"
-    destination = FOLDER + '\\' + dt.strftime(now, "%Y_%m")
-    if not os.path.exists(destination):
-        os.makedirs(destination)
+    destination = {"base": FOLDER + '\\' + dt.strftime(now, "%Y_%m"),
+                   "pdf": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\pdf",
+                   "png": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\png",
+                   "svg": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\svg"}
+    if not os.path.exists(destination["base"]):
+        os.makedirs(destination["base"])
+        os.makedirs(destination["pdf"])
+        os.makedirs(destination["png"])
+        os.makedirs(destination["svg"])
 
-    unique = dt.strftime(now, "_%Y%m%d-%Hh%Mm%Ss")  # Unique indentity
+    if len(names) == 1:
+        simulation = names[0]
+    else:
+        simulation = "Simulation"
+
+    unique = dt.strftime(now, "%Y%m%d-%Hh%Mm%Ss")  # Unique indentity
     # Save as pdf
-    name = '{}\Simulation{}.pdf'.format(destination, unique)
+    name = '{0}\{2}{1}.pdf'.format(destination["pdf"], simulation, unique)
     Plot.fig.savefig(name, dpi=150, transparent=False,
                      facecolor=Plot.background_color)
     # Save as png
-    name = '{}\Simulation{}.png'.format(destination, unique)
+    name = '{0}\{2}{1}.png'.format(destination["png"], simulation, unique)
     Plot.fig.savefig(name, dpi=150, transparent=False,
                      facecolor=Plot.background_color)
     # Save as svg
-    name = '{}\Simulation{}.svg'.format(destination, unique)
+    name = '{0}\{2}{1}.svg'.format(destination["svg"], simulation, unique)
     Plot.fig.savefig(name, dpi=150, transparent=False,
                      facecolor=Plot.background_color)
 
