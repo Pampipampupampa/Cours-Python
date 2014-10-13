@@ -481,6 +481,14 @@ class MultiPlotter(object):
         """ Quick access to set xticks labels. """
         self.catch_axes(*pos).set_xticklabels(names, rotation=rotation)
 
+    def set_axes_label(self, label, pos=(0, 0), axe='y'):
+        if axe == 'y':
+            self.catch_axes(*pos).set_ylabel(label)
+        elif axe == 'x':
+            self.catch_axes(*pos).set_xlabel(label)
+        else:
+            print("Nothing added to axes, wrong axe value")
+
     def change_title(self, pos, title, font, loc='center'):
         """ Quick access to axis title. """
         self.catch_axes(*pos).set_title(label=title,
@@ -590,7 +598,7 @@ class MultiPlotter(object):
 
     def frame_plot(self, frame, fields="all", title='Line me', loc='left',
                    kind="area", pos=(0, 0), colormap="default", colors=None,
-                   legend=True, **kwargs):
+                   **kwargs):
         """
             Used to plot dataframes.
             - title used as text value for title

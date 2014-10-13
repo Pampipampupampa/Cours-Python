@@ -43,12 +43,12 @@ def test_index(name, plot):
     return index
 
 
-def time_info(frame, time_dict, display=True):
+def time_info(frame, display=True):
     """
         Print time informations about the frame simulation result.
         frame must be an instance of EvalData class.
-        time_dict a dict like instance.
     """
+    time_dict = OrdD()
     # Recup solar heating time
     chauff_sol, _ = frame.col_sum_map(frame.frame,
                                       debug=False,
@@ -83,14 +83,15 @@ def time_info(frame, time_dict, display=True):
     if display is True:
         for key, item in time_dict.items():
             print('\n---> {} : {}'.format(key, item))
+    return time_dict
 
 
-def prepare_export(dico):
+def prepare_export(dico, name):
     """
         Change format to prepare export to csv and json.
     """
-    to_seconds = ['heating_time', 'extra_heating', 'solar_heating',
-                  'Difference']
+    to_seconds = ('heating_time', 'extra_heating', 'solar_heating',
+                  'Difference')
     dico[name][m_]['start_sim'] = str(dico[name][m_]['start_sim'])
     dico[name][m_]['end_sim'] = str(dico[name][m_]['end_sim'])
     for conv in to_seconds:
@@ -321,15 +322,15 @@ if __name__ == '__main__':
         print(datas[name].frame.columns)
     # --------------------------------------------------------------------------
         # Display annual time informations
-        time_info(frame=datas[name], time_dict=time_json[name]['Annual'])
+        time_json[name]['Annual'] = time_info(frame=datas[name])
         for m_ in months:
             if m_ != 'Annual':
                 print("\n", m_)
-                time_info(frame=EvalData.only_month(frame=datas[name].frame,
-                                                    month=all_months[m_]),
-                          time_dict=time_json[name][m_])
+                chunk = EvalData.only_month(frame=datas[name].frame,
+                                            month=all_months[m_])
+                time_json[name][m_] = time_info(frame=chunk)
             # Prepare time data to export
-            prepare_export(dico=time_json)
+            prepare_export(dico=time_json, name=name)
             # Create csv structure
             time_csv.append([name, m_] +
                             [el for el in time_json[name][m_].values()])
@@ -359,10 +360,10 @@ if __name__ == '__main__':
                     structs[name][el] = datas[name].frame
     # --------------------------------------------------------------------------
     # Write to a json file all time informations
-    with open('Simlation_timedata.json', 'w', encoding='utf-8') as f:
+    with open('Simulation_timedata.json', 'w', encoding='utf-8') as f:
         json.dump(time_json, f, indent=4)
     # Write to a csv file all time informations
-    with open('Simlation_timedata.csv', 'w', newline='',
+    with open('Simulation_timedata.csv', 'w', newline='',
               encoding='utf-8') as csvfile:
             spamwriter = csv.writer(csvfile, delimiter=';')
             for row in time_csv:
