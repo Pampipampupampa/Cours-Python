@@ -61,6 +61,9 @@ field_converter = {"T0.T": "T1_statique[°C]", "pump_algo.T1": "T1",
                    "integrator_boiler.Energy": "Boiler_Energy",
                    "integrator_radiator.Energy": "Radiator_Energy",
                    "integrator_drawingUp.Energy": "DrawingUp_Energy",
+                   "Cold_water.T_in": "T11_Drawing_in",
+                   "integrator_drawingUp.Tout": "T11_Drawing_up",
+                   "integrator_drawingUp.m_flow": "Flow_Drawing",
                    "TRooHou1.y": "T12_hour", "roo.heaPorRad.T": "T12_rad_house",
                    "TRooDay.y": "T12_day", "roo.radTem.TRad": "T12_rad_house",
                    "PHea.y": "House_Power", "product.y": "Flow_Extraction",
@@ -430,16 +433,16 @@ algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
 if __name__ == '__main__':
 
     # Input and output
-    # csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
+    # csv_iyen = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
     #          "Algo\\V3Vsolar_algo.csv"
     # csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
     #           "Algo\\V3Vsolar_algo_clean.csv"
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "marseille15KWh_20141013.csv"
+             "chambery3padapt_20140929.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "marseille15KWh_20141013.csv"
+              "chambery3padapt_20140929.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

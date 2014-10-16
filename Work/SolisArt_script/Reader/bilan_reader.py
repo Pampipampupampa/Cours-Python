@@ -128,8 +128,8 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'area_E': ['ECS', 'Energie solaire', 'Chauffage'],
           'line_E': ['ECS', 'Energie solaire', 'Appoint', 'Chauffage'],
           'line_TE': ['T3', 'T4', 'T5'],
-          'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext',
-                     'T11_Drawing_up'],
+          'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
+          'line_D': ['Test'],
           'line_H': ['Diffus', 'Direct'],
           'line_debA': ['Flow_S6', 'Flow_S5', 'Flow_S4', 'Flow_S2'],
           'line_debS': ['Flow_S6', 'Flow_S5'],
@@ -156,7 +156,7 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                         'Pertes': '#cb4b16'},
             'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
             'line_T': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
-            'line_debS': 'Accent', 'line_debC': 'Accent',
+            'line_D': 'Accent', 'line_debS': 'Accent', 'line_debC': 'Accent',
             'line_debSE': 'Accent', 'line_debCE': 'Accent',
             'line_debSCE': 'Accent', 'line_V3V': 'Accent'}
 
@@ -180,6 +180,7 @@ titles = {'title': 'Bilan de la simulation',
                     '\net de la température en sortie des panneaux solaires',
           'line_T': 'Evolution annuelle de la température intérieure ' +
                     '\net extérieure',
+          'line_D': 'Evolution de la température de puisage entrée et sortie',
           'line_H': 'Evolution annuelle de la puissance captée',
           'line_debA': 'Evolution des débits solaires et de chauffage',
           'line_debS': 'Evolution des débits solaires',
@@ -301,17 +302,19 @@ if __name__ == '__main__':
               'December', 'Annual')
 
     # --------------------------------------------------------------------------
-    # OrderedDict used as input for month field inside time_info
-    all_months = OrdD(zip(months[:-1], (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
-    # Comprehension used to avoid reference errors because a list is mutable
-    OrdD_list = [OrdD() for i in range(len(months))]
-    # Create OrderedDict in comprehension
-    time_json = {name: OrdD(zip(months, OrdD_list)) for name in frames}
-    # Initialize csv structure and add file head
-    time_csv = []
-    time_csv.append(["Data", "Month", "start_sim", "end_sim", "heating_time",
-                     "solar_heating", "extra_heating", "Difference", "ratio"])
+    # # OrderedDict used as input for month field inside time_info
+    # all_months = OrdD(zip(months[:-1], (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
+    # # Comprehension used to avoid reference errors because a list is mutable
+    # OrdD_list = [OrdD() for i in range(len(months))]
+    # # Create OrderedDict in comprehension
+    # time_json = {name: OrdD(zip(months, OrdD_list)) for name in frames}
+    # # Initialize csv structure and add file head
+    # time_csv = []
+    # time_csv.append(["Data", "Month", "start_sim", "end_sim", "heating_time",
+    #                  "solar_heating", "extra_heating", "Difference", "ratio"])
     # --------------------------------------------------------------------------
+    # Initialize a simple dictionnary
+    dico_energy = {}
 
     for name in datas:
         # Change columns names
@@ -321,19 +324,19 @@ if __name__ == '__main__':
         print('\n---> Csv columns names after treatments')
         print(datas[name].frame.columns)
     # --------------------------------------------------------------------------
-        # Display annual time informations
-        time_json[name]['Annual'] = time_info(frame=datas[name])
-        for m_ in months:
-            if m_ != 'Annual':
-                print("\n", m_)
-                chunk = EvalData.only_month(frame=datas[name].frame,
-                                            month=all_months[m_])
-                time_json[name][m_] = time_info(frame=chunk)
-            # Prepare time data to export
-            prepare_export(dico=time_json, name=name)
-            # Create csv structure
-            time_csv.append([name, m_] +
-                            [el for el in time_json[name][m_].values()])
+        # # Display annual time informations
+        # time_json[name]['Annual'] = time_info(frame=datas[name])
+        # for m_ in months:
+        #     if m_ != 'Annual':
+        #         print("\n", m_)
+        #         chunk = EvalData.only_month(frame=datas[name].frame,
+        #                                     month=all_months[m_])
+        #         time_json[name][m_] = time_info(frame=chunk)
+        #     # Prepare time data to export
+        #     prepare_export(dico=time_json, name=name)
+        #     # Create csv structure
+        #     time_csv.append([name, m_] +
+        #                     [el for el in time_json[name][m_].values()])
     # --------------------------------------------------------------------------
         # Add all plot for each set of datas
         for el in structs[name]:
@@ -341,6 +344,17 @@ if __name__ == '__main__':
                 structs[name][el] = (datas[name].bar_energy(datas[name].frame,
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
+                if 'C' in el:
+                    tmp = structs[name][el][0]
+                    tmp.index = structs[name][el][1]
+                    tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
+                    temp = OrdD()
+                    for mth in tmp.index:
+                        temp[mth] = {para: tmp[para][mth]
+                                     for para in tmp.columns}
+
+                    dico_energy[name] = temp
+
             elif 'box' in el:
                 structs[name][el] = (datas[name].box_actions(datas[name].frame,
                                                              fields=fields[el]))
@@ -352,22 +366,34 @@ if __name__ == '__main__':
                 # BUG
                     # Area plot bug if no resampling done ...
                 # BUG
-                if any(c in el for c in ('_H', '_T', '_E')):
+
+                # Just to see Température of drawing up variation
+                flag = 'Flow_Drawing'
+                datas[name].frame['RealT'] = datas[name].frame['T11_Drawing_up']
+                datas[name].frame['RealT'].where(datas[name].frame[flag] > 0.12,
+                                                 40, inplace=True)
+                print('TdrawingUp = ', datas[name].frame['RealT'].mean())
+
+                if any(c in el for c in ('_H', '_E', '_T')):
                     structs[name][el] = EvalData.resample(frame=datas[name].frame,
                                                           sample='30min',
                                                           interpolate=True)
                 else:
                     structs[name][el] = datas[name].frame
-    # --------------------------------------------------------------------------
+
     # Write to a json file all time informations
-    with open('Simulation_timedata.json', 'w', encoding='utf-8') as f:
-        json.dump(time_json, f, indent=4)
-    # Write to a csv file all time informations
-    with open('Simulation_timedata.csv', 'w', newline='',
-              encoding='utf-8') as csvfile:
-            spamwriter = csv.writer(csvfile, delimiter=';')
-            for row in time_csv:
-                spamwriter.writerow(row)
+    with open('dico_energy.json', 'w', encoding='utf-8') as f:
+        json.dump(dico_energy, f, indent=4)
+    # --------------------------------------------------------------------------
+    # # Write to a json file all time informations
+    # with open('Simulation_timedata.json', 'w', encoding='utf-8') as f:
+    #     json.dump(time_json, f, indent=4)
+    # # Write to a csv file all time informations
+    # with open('Simulation_timedata.csv', 'w', newline='',
+    #           encoding='utf-8') as csvfile:
+    #         spamwriter = csv.writer(csvfile, delimiter=';')
+    #         for row in time_csv:
+    #             spamwriter.writerow(row)
     # --------------------------------------------------------------------------
 
     # Only display to have a pretty interface

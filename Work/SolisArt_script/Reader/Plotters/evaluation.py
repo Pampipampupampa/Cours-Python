@@ -51,9 +51,10 @@ class EvalData(object):
         """
             Parameters informations below :
                 - frame must be a dataframe like
-            Default steps create an iterator which chunks a full year of data
-            into a list of data per month (48 rows per day * nb_day_of_month)
-            See _sample and _per_sample.
+            Default steps used as an iterator which chunks a full year
+            of data into a list of data per month (48 rows per day * nb_day_of_month)
+            Create with _sample and _per_sample which can be change with the
+            change_steps function.
         """
         self.frame = frame
         # Length of each samples
@@ -110,7 +111,7 @@ class EvalData(object):
     @staticmethod
     def keep_month(frame, month):
         """
-            Return frame without rows where month not match.
+            Return the frame where the month parameter match.
         """
         return frame.loc[frame.index.month == month]
 
@@ -124,14 +125,14 @@ class EvalData(object):
     @staticmethod
     def keep_year(frame, year=2014):
         """
-            Return frame without rows where year not match.
+            Return frame where the year parameter match.
         """
         return frame.loc[frame.index.year == year]
 
     @staticmethod
     def resample(frame, sample='30min', interpolate=True, **kwargs):
         """
-            Reduce dataframe with a datetime index.
+            Reduce dataframe (the frame must have a datetime index.
             **kwargs can be fill_method, limit, label, loffset, axis, kind, ...
                 ---> See DataFrame.resample or Series.resample
         """
@@ -259,6 +260,7 @@ class EvalData(object):
                 frame[new[0]] = self.add_column(frame,
                                                 used_cols=(new[1], new[2]),
                                                 operator=new[3])
+        print(frame)
         return frame, indices
 
     def diag_energy(self, frame, fields=None, month=12,
