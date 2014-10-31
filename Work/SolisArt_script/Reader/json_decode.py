@@ -7,7 +7,7 @@
 #######################################
 
 
-def extract_nested_json1(datas, parameter, rows, cols):
+def extract_nested_json(datas, parameter, rows, cols):
     """
         Extract a third level nested json dict according to the parameter value.
             datas : dict
@@ -46,7 +46,7 @@ def extract_nested_json1(datas, parameter, rows, cols):
     return {col: [datas[col][row][parameter] for row in rows] for col in cols}
 
 
-def extract_nested_json2(datas, parameters, rows, cols):
+def iter_nested_json(datas, parameters, rows, cols):
     """
         Extract a third level nested json dict according to the parameter value.
             datas : dict

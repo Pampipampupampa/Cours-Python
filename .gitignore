@@ -60,3 +60,5 @@ docs/_build/
 *.mid
 *.mp3
 
+# Other
+*.json

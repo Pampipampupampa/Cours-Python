@@ -34,6 +34,52 @@ def benchmark(func):
     return wrapper
 
 
+def sav_plot(folder, base_name, plotter, dpi=150, transparent=False, **kwargs):
+    """
+        This function allows to write a auto-sav of the plots.
+        It use a datetime to create a unique file name for each save.
+        folder : string
+                 represent the location of the folder for saving fields
+        base_name : string
+                    represent the base name of the files
+        plot : Plotter class instance
+               Plotter used to plot dataframes
+        dpi : integer (default 150)
+              Dot per inch for the plot
+        transparent : boolean (default False)
+                      transparent background or not
+    """
+    # Keep trace of all plots with time
+    from datetime import datetime as dt
+
+    import os
+
+    # Recup current time
+    now = dt.now()
+
+    # Check and create a folder per month
+    destination = {"base": folder + '\\' + dt.strftime(now, "%Y_%m"),
+                   "pdf": folder + '\\' + dt.strftime(now, "%Y_%m") + "\\pdf",
+                   "png": folder + '\\' + dt.strftime(now, "%Y_%m") + "\\png",
+                   "svg": folder + '\\' + dt.strftime(now, "%Y_%m") + "\\svg"}
+    if not os.path.exists(destination["base"]):
+        os.makedirs(destination["base"])
+        os.makedirs(destination["pdf"])
+        os.makedirs(destination["png"])
+        os.makedirs(destination["svg"])
+
+    unique = dt.strftime(now, "%Y%m%d-%Hh%Mm%Ss")  # Unique identity
+    # Save as pdf
+    name = '{0}\{2}{1}.pdf'.format(destination["pdf"], base_name, unique)
+    plotter.fig.savefig(name, dpi=dpi, transparent=transparent, **kwargs)
+    # Save as png
+    name = '{0}\{2}{1}.png'.format(destination["png"], base_name, unique)
+    plotter.fig.savefig(name, dpi=dpi, transparent=transparent, **kwargs)
+    # Save as svg
+    name = '{0}\{2}{1}.svg'.format(destination["svg"], base_name, unique)
+    plotter.fig.savefig(name, dpi=dpi, transparent=transparent, **kwargs)
+
+
 class EvalData(object):
 
     """
@@ -260,7 +306,6 @@ class EvalData(object):
                 frame[new[0]] = self.add_column(frame,
                                                 used_cols=(new[1], new[2]),
                                                 operator=new[3])
-        print(frame)
         return frame, indices
 
     def diag_energy(self, frame, fields=None, month=12,
@@ -781,7 +826,7 @@ class MultiPlotter(object):
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
                      names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
-                     emphs=None, **kwargs):
+                     emphs=None, line_dict={}, **kwargs):
         """
             Plot a cumulated bar plot of each fields inside the frame and
             for each row.
@@ -829,8 +874,7 @@ class MultiPlotter(object):
                                                        ec=self.colors[emph],
                                                        fill=False,
                                                        width=h_width,
-                                                       linewidth=4,
-                                                       **kwargs)
+                                                       **line_dict)
         # Set axe parameters
         self.catch_axes(*pos).set_ylabel(ylabel=ylabel, labelpad=20)
         self.catch_axes(*pos).set_xlim(h_width, len(names)+1)

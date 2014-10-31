@@ -14,15 +14,11 @@
         - how to cut file (used after as dict keys)
 """
 
-# Import objects from evaluation script
-from Plotters.evaluation import *
-
-# Keep trace of all plots with time
-from datetime import datetime as dt
-import os
-
-import csv
+# import csv
 import json
+
+# Import internal lib
+from Plotters.evaluation import *
 
 
 def test_index(name, plot):
@@ -45,8 +41,10 @@ def test_index(name, plot):
 
 def time_info(frame, display=True):
     """
-        Print time informations about the frame simulation result.
         frame must be an instance of EvalData class.
+        if display is True :
+          ---> print time informations about the frame simulation result.
+        Return a dict of all time informations.
     """
     time_dict = OrdD()
     # Recup solar heating time
@@ -88,7 +86,7 @@ def time_info(frame, display=True):
 
 def prepare_export(dico, name):
     """
-        Change format to prepare export to csv and json.
+        Change format to prepare export to csv or json.
     """
     to_seconds = ('heating_time', 'extra_heating', 'solar_heating',
                   'Difference')
@@ -114,6 +112,7 @@ emphs_dict = {'bar_cumA': ['Pertes'],
 fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_Tint': ['T9_ext', 'T1', 'T12_house'],
           'box_H': ['Diffus', 'Direct'],
+          'box_HDir': ['HDirNor', 'Direct'],
           'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
           'diag_B': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
                      ['Chauffage', 'ECS', 'Pertes']],
@@ -126,21 +125,26 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'bar_sup': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
                       ['ECS', 'Chauffage', 'Pertes']],
           'area_E': ['ECS', 'Energie solaire', 'Chauffage'],
+          'area_EB': ['ECS', 'Chauffage', 'Pertes'],
           'line_E': ['ECS', 'Energie solaire', 'Appoint', 'Chauffage'],
-          'line_TE': ['T3', 'T4', 'T5'],
+          'line_ES': ['Energie solaire'],
+          'line_TE': ['T3', 'T4', 'T5', 'T12_house'],
           'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
-          'line_D': ['Test'],
           'line_H': ['Diffus', 'Direct'],
           'line_debA': ['Flow_S6', 'Flow_S5', 'Flow_S4', 'Flow_S2'],
           'line_debS': ['Flow_S6', 'Flow_S5'],
           'line_debC': ['Flow_S4', 'Flow_S2'],
           'line_debSE': ['Flow_Collector', 'Flow_ExchTank_bot',
                          'Flow_ExchStorTank'],
-          'line_debCE': ['Flow_ExchTank_top', 'Flow_Boiler', 'Flow_Radiator'],
+          'line_debCE': ['Flow_ExchTank_top', 'Flow_Boiler'],
+          'line_debSCEbuffer': ['Flow_ExchStorTank', 'Flow_Boiler'],
           'line_debSCE': ['Flow_Collector', 'Flow_Radiator'],
+          'line_Drawing': ['Flow_Drawing'],
+          'line_Backup': ['Backup_state', 'ECS_state'],
           'line_V3V': ['Vsolar_state', 'Vextra_state']}
 
-# Colors
+# Colors (if we want to plot line_ES you first need to force the use of color
+#         instead of colormap)
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
                     ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
@@ -155,40 +159,48 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                         'ECS': '#268bd2', 'Energie solaire': 'orange',
                         'Pertes': '#cb4b16'},
             'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
-            'line_T': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
-            'line_D': 'Accent', 'line_debS': 'Accent', 'line_debC': 'Accent',
-            'line_debSE': 'Accent', 'line_debCE': 'Accent',
-            'line_debSCE': 'Accent', 'line_V3V': 'Accent'}
+            'line_ES': 'orange', 'line_H': 'Accent', 'line_debA': 'Accent',
+            'line_debS': 'Accent', 'line_debC': 'Accent', 'line_T': 'Accent',
+            'line_debSE': 'Accent', 'line_debCE': 'Accent', 'area_EB': 'Accent',
+            'line_debSCE': 'Accent', 'line_V3V': 'Accent',
+            'line_Drawing': 'Accent', 'line_Backup': 'Accent',
+            'line_debSCEbuffer': 'Accent'}
 
 # Titles
 titles = {'title': 'Bilan de la simulation',
-          'box_Tbal': 'Evolution mensuel de la variation \n' +
+          'box_Tbal': 'Evolution mensuelle de la variation \n' +
                       'des températures des ballons',
-          'box_Tint': 'Evolution mensuel de la variation \n' +
+          'box_Tint': 'Evolution mensuelle de la variation \n' +
                       'des températures capteurs, extérieure et intérieure',
-          'box_H': 'Evolution mensuel de la variation \n' +
-                   'de la puissance captée',
+          'box_H': 'Evolution mensuelle de la variation \n' +
+                   'de l’irradiation sur les panneaux',
+          'box_HDir': 'Evolution mensuelle de la variation \n' +
+                      'du potentiel de l’irradiation directe sur les panneaux',
           'box_P': 'Evolution de l’état des pompes appoint et solaire',
           'diag_B': 'Taux de couverture',
           'diag_C': 'Répartition des consommations',
-          'bar_cumA': 'Evolution mensuel des apports',
-          'bar_cumC': "Evolution mensuel des consommations d'énergie",
-          'bar_sup': "Evolution mensuel des apports et consommations d'énergie",
+          'bar_cumA': 'Evolution mensuelle des apports',
+          'bar_cumC': "Evolution mensuelle des consommations d'énergie",
+          'bar_sup': "Evolution mensuelle des apports et consommations d'énergie",
           'area_E': 'Evolution annuelle de la consommation en énergie',
+          'area_EB': 'Evolution annuelle des besoins',
           'line_E': 'Evolution annuelle de la consommation en énergie',
-          'line_TE': 'Evolution annuelle des températures dans les ballons ' +
-                    '\net de la température en sortie des panneaux solaires',
+          'line_ES': 'Evolution annuelle de la production solaire',
+          'line_TE': 'Evolution annuelle des températures dans les ballons',
           'line_T': 'Evolution annuelle de la température intérieure ' +
                     '\net extérieure',
-          'line_D': 'Evolution de la température de puisage entrée et sortie',
           'line_H': 'Evolution annuelle de la puissance captée',
           'line_debA': 'Evolution des débits solaires et de chauffage',
           'line_debS': 'Evolution des débits solaires',
           'line_debC': 'Evolution des débits de chauffage',
           'line_debSE': 'Evolution des débits des équipements solaire',
           'line_debCE': 'Evolution des débits des équipements de chauffage',
-          'line_debSCE': 'Evolution des débits dans le Collecteur et radiateur',
-          'line_V3V': 'Etat des vannes de régulation'}
+          'line_debSCE': 'Evolution des débits dans le collecteur et radiateur',
+          'line_debSCEbuffer': 'Evolution des débits dans la chaudière \n ' +
+                               'et le tampon',
+          'line_V3V': 'Etat des vannes de régulation',
+          'line_Drawing': 'Evolution du débit de puisage',
+          'line_Backup': 'Evolution de l’état de l’appoint et de ECS'}
 
 
 # Change data columns names
@@ -212,13 +224,13 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # _ chambery3p_20140802.csv chambery_20140825.csv chambery9p_20140821.csv
 # chambery12p_20140802.csv lyon_20140920.csv
 # marseille_20140630.csv strasbourg_20140707.csv bordeaux_20140715.csv
-# chambery15KWh_20140910.csv chambery15KWh200plus_20140905.csv
-# chamberyNosun_20140908.csv chambery15KWhNosun_20140911.csv
+# chambery17KWh_20140910.csv chambery17KWh200plus_20140905.csv
+# chamberyNosun_20140908.csv chambery17KWhNosun_20140911.csv
 # marseilleNosun_20141009.csv
 # chambery100plus_20140808.csv chambery100moins_20140811.csv
-# chambery3padapt_20140929.csv chambery9padapt_20141001.csv
+# chambery3padapt_20141020.csv chambery9padapt_20141001.csv
 # chambery12padapt_20141006.csv
-# _
+# marseille5KWh_20141013.csv
 # none none
 
 if __name__ == '__main__':
@@ -249,10 +261,10 @@ if __name__ == '__main__':
               ' x/y axis share\n' + \
               '      ("all", "row", "col" or "none")\n'
     # Print plots informations and user input choice
-    print('\n', '-'*30, 'All plots available :', '-'*30, sep='\n')
+    print('\n', '-' * 30, 'All plots available :', '-' * 30, sep='\n')
     nb_fill = 10
     for plot_disp in sorted(fields.keys()):
-        definition = titles[plot_disp].replace('\n', '\n' + ' '*(nb_fill+3))
+        definition = titles[plot_disp].replace('\n', '\n' + ' ' * (nb_fill + 3))
         print('{0:{fill}{align}{nb_fill}} : {1}\n'.format(plot_disp, definition,
                                                           fill=' ', align='<',
                                                           nb_fill=nb_fill))
@@ -276,19 +288,19 @@ if __name__ == '__main__':
     structs = dict(zip(names, plots))
     # Split plot for each dataframes
     for el in structs:
-        structs[el] = dict(zip(structs[el], [None]*len(structs[el])))
+        structs[el] = dict(zip(structs[el], [None] * len(structs[el])))
     # Dict of dict used to setup graphs
     print('\n---> Template : ')
     print(structs)
 
     # Read csvs and store values as a dict
     frames = read_csv(dataframes,
-                      convert_index=(convert_to_datetime,)*nb_name,
-                      delimiter=(';',)*nb_name,
-                      index_col=('Date',)*nb_name,
-                      in_conv_index=(None,)*nb_name,
-                      skiprows=(1,)*nb_name,
-                      splitters=(sep,)*nb_name)
+                      convert_index=(convert_to_datetime,) * nb_name,
+                      delimiter=(';',) * nb_name,
+                      index_col=('Date',) * nb_name,
+                      in_conv_index=(None,) * nb_name,
+                      skiprows=(1,) * nb_name,
+                      splitters=(sep,) * nb_name)
 
     #
     ################## EvalData class : Prepare datas ##################
@@ -296,33 +308,40 @@ if __name__ == '__main__':
     # Keep only 2014 datas into the dict
     datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
 
+    # Prepare structure for time_json (later populate with time heating infos)
     # Time per month
     months = ('January', 'February', 'March', 'April', 'May', 'June',
               'July', 'August', 'September', 'October', 'November',
               'December', 'Annual')
+    # OrderedDict used as input for month field inside time_info
+    all_months = OrdD(zip(months[:-1], (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
+    # Comprehension used to avoid reference errors because a list is mutable
+    OrdD_list = [OrdD() for i in range(len(months))]
+    # Create OrderedDict in comprehension
+    time_json = {name: OrdD(zip(months, OrdD_list)) for name in frames}
 
-    # --------------------------------------------------------------------------
-    # # OrderedDict used as input for month field inside time_info
-    # all_months = OrdD(zip(months[:-1], (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
-    # # Comprehension used to avoid reference errors because a list is mutable
-    # OrdD_list = [OrdD() for i in range(len(months))]
-    # # Create OrderedDict in comprehension
-    # time_json = {name: OrdD(zip(months, OrdD_list)) for name in frames}
-    # # Initialize csv structure and add file head
+    # Initialize a simple dictionnary to put inside energy informations
+    energy_json = {}
+
+    # Initialize csv structure and add file head
     # time_csv = []
     # time_csv.append(["Data", "Month", "start_sim", "end_sim", "heating_time",
     #                  "solar_heating", "extra_heating", "Difference", "ratio"])
-    # --------------------------------------------------------------------------
-    # Initialize a simple dictionnary
-    dico_energy = {}
 
     for name in datas:
         # Change columns names
         datas[name].frame.columns = datas[name].change_names(conv_dict)
-        print('\n\n', '\t'*7, '*** {} ***'.format(name.upper()))
+        print('\n\n', '\t' * 7, '*** {} ***'.format(name.upper()))
         # Display columns names
         print('\n---> Csv columns names after treatments')
         print(datas[name].frame.columns)
+        # Add new fields to each datas
+        for new in new_fields:
+            # Create new columns
+            datas[name].frame[new[0]] = datas[name].add_column(datas[name].frame,
+                                                               used_cols=(new[1],
+                                                                          new[2]),
+                                                               operator=new[3])
     # --------------------------------------------------------------------------
         # # Display annual time informations
         # time_json[name]['Annual'] = time_info(frame=datas[name])
@@ -332,7 +351,7 @@ if __name__ == '__main__':
         #         chunk = EvalData.only_month(frame=datas[name].frame,
         #                                     month=all_months[m_])
         #         time_json[name][m_] = time_info(frame=chunk)
-        #     # Prepare time data to export
+        # # Prepare time data to export
         #     prepare_export(dico=time_json, name=name)
         #     # Create csv structure
         #     time_csv.append([name, m_] +
@@ -344,57 +363,60 @@ if __name__ == '__main__':
                 structs[name][el] = (datas[name].bar_energy(datas[name].frame,
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
+                # Here we populate the energy_json
                 if 'C' in el:
-                    tmp = structs[name][el][0]
+                    # Explicit copy
+                    tmp = structs[name][el][0].copy()
                     tmp.index = structs[name][el][1]
                     tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
+                    # Temporary ordered dict to keep months in the right order
                     temp = OrdD()
                     for mth in tmp.index:
                         temp[mth] = {para: tmp[para][mth]
                                      for para in tmp.columns}
-
-                    dico_energy[name] = temp
+                    # Populate dict with temp ordered dict
+                    energy_json[name] = temp
 
             elif 'box' in el:
+                # structs[name][el] = (datas[name].box_actions(datas[name].frame,
+                #                                              fields=fields[el],
+                #                                              diurnal=False))
                 structs[name][el] = (datas[name].box_actions(datas[name].frame,
-                                                             fields=fields[el]))
+                                                             fields=fields[el],
+                                                             diurnal=True))
             elif 'diag' in el:
                 structs[name][el] = (datas[name].diag_energy(datas[name].frame,
                                                              new_fields=new_fields,
                                                              fields=fields[el][0]))
             elif any(c in el for c in ('area', 'line')):
-                # BUG
-                    # Area plot bug if no resampling done ...
-                # BUG
 
-                # Just to see Température of drawing up variation
-                flag = 'Flow_Drawing'
-                datas[name].frame['RealT'] = datas[name].frame['T11_Drawing_up']
-                datas[name].frame['RealT'].where(datas[name].frame[flag] > 0.12,
-                                                 40, inplace=True)
-                print('TdrawingUp = ', datas[name].frame['RealT'].mean())
+                # Just to see Temperature of drawing up variation
+                # chunk = datas[name].frame.copy()
+                # flag = 'Flow_Drawing'
+                # chunk['RealT'] = chunk['T11_Drawing_up']
+                # chunk['RealT'].where(chunk[flag] > 0.12,  -1, inplace=True)
+                # print('TdrawingUp = ',
+                #       chunk[chunk["RealT"] != -1]['RealT'].mean())
 
-                if any(c in el for c in ('_H', '_E', '_T')):
-                    structs[name][el] = EvalData.resample(frame=datas[name].frame,
-                                                          sample='30min',
-                                                          interpolate=True)
-                else:
-                    structs[name][el] = datas[name].frame
+                # Data which can be reduce to a 30min step size
+                # structs[name][el] = EvalData.resample(frame=datas[name].frame,
+                #                                           sample='30min',
+                #                                           interpolate=True)
+                structs[name][el] = datas[name].frame
 
-    # Write to a json file all time informations
-    with open('dico_energy.json', 'w', encoding='utf-8') as f:
-        json.dump(dico_energy, f, indent=4)
-    # --------------------------------------------------------------------------
-    # # Write to a json file all time informations
-    # with open('Simulation_timedata.json', 'w', encoding='utf-8') as f:
+    # # Write to a json file all energy informations
+    # with open('energy.json', 'w', encoding='utf-8') as f:
+    #     json.dump(energy_json, f, indent=4)
+    # # Write to a json file all heating time informations
+    # with open('heating_time.json', 'w', encoding='utf-8') as f:
     #     json.dump(time_json, f, indent=4)
-    # # Write to a csv file all time informations
+
+    # Write to a csv file all time informations
     # with open('Simulation_timedata.csv', 'w', newline='',
     #           encoding='utf-8') as csvfile:
-    #         spamwriter = csv.writer(csvfile, delimiter=';')
-    #         for row in time_csv:
-    #             spamwriter.writerow(row)
-    # --------------------------------------------------------------------------
+    #     spamwriter = csv.writer(csvfile, delimiter=';')
+    #     for row in time_csv:
+    #         spamwriter.writerow(row)
 
     # Only display to have a pretty interface
     print('\n|\n|\n|--> Class creation now finish, plotting datas\n')
@@ -409,8 +431,10 @@ if __name__ == '__main__':
     sum_ = len([x for i in plots for x in i])
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
+    # If we want a specific size for the axes map
+    # rows, cols = 2, 2
     print('columns : {}\t rows : {}'.format(cols, rows))
-    print('-'*30, 'Mapping of positions coordinates:', '-'*30, sep='\n')
+    print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
         print('\n')
         for col in range(cols):
@@ -432,8 +456,8 @@ if __name__ == '__main__':
         if flag:
             name_cap = name.capitalize()
         for plot in structs[name]:
-            print('\n' + '-'*30)
-            print('{} datas.\n{}'.format(name.capitalize(), '-'*30))
+            print('\n' + '-' * 30)
+            print('{} datas.\n{}'.format(name.capitalize(), '-' * 30))
             value = '{} plot position: '.format(plot)
             pos = test_index(name, plot)
             print(pos)
@@ -444,9 +468,9 @@ if __name__ == '__main__':
                     Plot.bar_cum_plot(structs[name][plot][0],
                                       emphs=emphs_dict[plot],
                                       pos=pos, fields=fields[plot][1],
-                                      loc='center',
+                                      loc='center', line_dict={"linewidth": 4},
                                       names=structs[name][plot][1],
-                                      title=titles[plot]+'\n{}'.format(name_cap))
+                                      title=titles[plot] + '\n{}'.format(name_cap))
                 elif 'sup' in plot:
                     Plot.colors = col_dict[plot]
                     print(structs[name][plot][0])
@@ -455,21 +479,21 @@ if __name__ == '__main__':
                                       pos=pos, fields=fields[plot][1],
                                       loc='center',
                                       names=structs[name][plot][1],
-                                      title=titles[plot]+'\n{}'.format(name_cap))
+                                      title=titles[plot] + '\n{}'.format(name_cap))
                 # Each xticks = short month name +
-                # Taux de couverture de couverture solaire mensuelle
+                # Taux de couverture de couverture solaire mensuel
                 percents = ['{:.1%}'.format(i)
                             for i in
                             structs[name][plot][0]['Taux de couverture'].values]
-                Plot.change_xticks_labels([short_names, [' : ']*12, percents],
+                Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
                                           pos=pos)
                 # Uncomment to set a y limit for each bar_cum plot
                 # Plot.catch_axes(*pos).set_ylim(0, 2500)
             elif 'box' in plot:
                 Plot.colors = col_dict['box']
-                Plot.boxes_mult_plot(structs[name][plot], pos=pos,
+                Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False,
                                      patch_artist=True, loc='center',
-                                     title=titles[plot]+'\n{}'.format(name_cap))
+                                     title=titles[plot] + '\n{}'.format(name_cap))
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
                 explode = [0.1]  # Initial value for explode
@@ -495,30 +519,57 @@ if __name__ == '__main__':
                                to_diag=fields[plot][1], legend=False,
                                title=p_title, labels=parts,
                                explode=explode)
-                label = Plot.catch_axes(*pos).get_title()+'\n{}'.format(name_cap)
+                label = Plot.catch_axes(*pos).get_title() + '\n{}'.format(name_cap)
                 Plot.catch_axes(*pos).set_title(label=label,
                                                 fontdict=Plot.font_title)
             elif any(c in plot for c in ('area', 'line')):
                 if 'V3V' in plot:
-                    Plot.frame_plot(EvalData.keep_month(structs[name][plot],
-                                                        month=5),
+                    # All datas
+                    Plot.frame_plot(structs[name][plot],
                                     fields=fields[plot],
-                                    title=titles[plot]+'\n{}'.format(name_cap),
+                                    title=titles[plot] + '\n{}'.format(name_cap),
                                     pos=pos, loc='center',
+                                    colormap=col_dict[plot],
                                     linewidth=2, kind=plot.split('_')[0],
                                     ylim=[-10, 110])
-                else:
-                    # All datas
-                    Plot.frame_plot(structs[name][plot], fields=fields[plot],
-                                    title=titles[plot]+'\n{}'.format(name_cap),
-                                    pos=pos, loc='center',
-                                    linewidth=2, kind=plot.split('_')[0])
-                    # # Specific month
+                    # Specific month
                     # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
                     #                                     month=5),
                     #                 fields=fields[plot],
                     #                 title=titles[plot]+'\n{}'.format(name_cap),
                     #                 pos=pos, loc='center',
+                    #                 color=col_dict[plot],
+                    #                 linewidth=2, kind=plot.split('_')[0],
+                    #                 ylim=[-10, 110])
+                elif 'area' in plot:
+                    # All datas
+                    Plot.frame_plot(structs[name][plot], fields=fields[plot],
+                                    title=titles[plot] + '\n{}'.format(name_cap),
+                                    pos=pos, loc='center', stacked=True,
+                                    colormap=col_dict[plot],
+                                    linewidth=2, kind=plot.split('_')[0])
+                    # Specific month
+                    # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
+                    #                                     month=5),
+                    #                 fields=fields[plot],
+                    #                 title=titles[plot]+'\n{}'.format(name_cap),
+                    #                 pos=pos, loc='center',
+                    #                 color=col_dict[plot],
+                    #                 linewidth=2, kind=plot.split('_')[0])
+                else:
+                    # All datas
+                    Plot.frame_plot(structs[name][plot], fields=fields[plot],
+                                    title=titles[plot] + '\n{}'.format(name_cap),
+                                    pos=pos, loc='center',
+                                    colormap=col_dict[plot],
+                                    linewidth=2, kind=plot.split('_')[0])
+                    # Specific month
+                    # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
+                    #                                     month=5),
+                    #                 fields=fields[plot],
+                    #                 title=titles[plot]+'\n{}'.format(name_cap),
+                    #                 pos=pos, loc='center',
+                    #                 color=col_dict[plot],
                     #                 linewidth=2, kind=plot.split('_')[0])
             else:
                 print('Nothing will be show for {}'.format(plot))
@@ -530,40 +581,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-
-    # Recup current time
-    now = dt.now()
-
-    # Check and create a folder per month
-    FOLDER = "D:\Github\solarsystem\Outputs\Plots_stock"
-    destination = {"base": FOLDER + '\\' + dt.strftime(now, "%Y_%m"),
-                   "pdf": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\pdf",
-                   "png": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\png",
-                   "svg": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\svg"}
-    if not os.path.exists(destination["base"]):
-        os.makedirs(destination["base"])
-        os.makedirs(destination["pdf"])
-        os.makedirs(destination["png"])
-        os.makedirs(destination["svg"])
-
-    if len(names) == 1:
-        simulation = names[0]
-    else:
-        simulation = "Simulation"
-
-    unique = dt.strftime(now, "%Y%m%d-%Hh%Mm%Ss")  # Unique indentity
-    # Save as pdf
-    name = '{0}\{2}{1}.pdf'.format(destination["pdf"], simulation, unique)
-    Plot.fig.savefig(name, dpi=150, transparent=False,
-                     facecolor=Plot.background_color)
-    # Save as png
-    name = '{0}\{2}{1}.png'.format(destination["png"], simulation, unique)
-    Plot.fig.savefig(name, dpi=150, transparent=False,
-                     facecolor=Plot.background_color)
-    # Save as svg
-    name = '{0}\{2}{1}.svg'.format(destination["svg"], simulation, unique)
-    Plot.fig.savefig(name, dpi=150, transparent=False,
-                     facecolor=Plot.background_color)
+    # Save plots
+    base_name = "Simulation"
+    if len(datas) == 1:
+        base_name = name
+    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+             base_name=base_name, plotter=Plot, facecolor="white")
 
     # Display plots
     Plot.show()

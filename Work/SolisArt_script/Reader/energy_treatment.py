@@ -1,17 +1,12 @@
 #! /usr/bin/env python
 # -*- coding:Utf8 -*-
 
-
-# Import objects from evaluation script
-from Plotters.evaluation import *
-
-# Keep trace of all plots with time
-from datetime import datetime as dt
-
-import os
 import json
 
-from json_decode import extract_nested_json2
+# Import internal lib
+from Plotters.evaluation import *
+from json_decode import iter_nested_json
+
 
 ########################
 #### Main Program : ####
@@ -34,8 +29,8 @@ title = "Energy informations"
 parameters = ("Appoint", "Besoins", "Pertes", "ECS", "Taux de couverture",
               "Consommations", "Energie solaire", "Chauffage")
 cols = tuple(el for el in datas)
-structs = {ind: el for ind, el in extract_nested_json2(datas, parameters,
-                                                       rows, cols)}
+structs = {ind: el for ind, el in iter_nested_json(datas, parameters,
+                                                   rows, cols)}
 
 # Create all dataframes
 frames = {}
@@ -75,6 +70,14 @@ couverture = Plot.frame_plot(frames["Taux de couverture"].ix[-1:, :], fields="al
                              legend=False,
                              title='Couverture', ylim=(-10, 110),
                              loc='left', kind="bar", pos=(0, 1))
+# besoins = Plot.frame_plot(frames["Besoins"].ix[-1:, :], fields="all",
+#                           legend=False,
+#                           title='Besoins',
+#                           loc='left', kind="bar", pos=(1, 0))
+# pertes = Plot.frame_plot(frames["Pertes"].ix[-1:, :], fields="all",
+#                          legend=False,
+#                          title='Pertes',
+#                          loc='left', kind="bar", pos=(1, 1))
 solaire = Plot.frame_plot(frames["Energie solaire"].ix[-1:, :], fields="all",
                           legend=False,
                           title='Energie solaire',
@@ -90,7 +93,7 @@ Plot.set_axes_label('%', pos=(0, 1), axe='y')
 Plot.set_axes_label('KWh', pos=(1, 0), axe='y')
 Plot.set_axes_label('KWh', pos=(1, 1), axe='y')
 # Change legend alignement
-Plot.catch_axes(*(1, 0)).legend(ncol=3)
+Plot.catch_axes(*(1, 0)).legend(ncol=1)
 
 # Adjust plot format (avoid overlaps)
 Plot.adjust_plots(hspace=0.6, wspace=0.15,
@@ -98,36 +101,9 @@ Plot.adjust_plots(hspace=0.6, wspace=0.15,
                   left=0.05, right=0.96)
 Plot.tight_layout()
 
-# Recup current time
-now = dt.now()
 
-# Check and create a folder per month
-FOLDER = "D:\Github\solarsystem\Outputs\Plots_stock"
-destination = {"base": FOLDER + '\\' + dt.strftime(now, "%Y_%m"),
-               "pdf": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\pdf",
-               "png": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\png",
-               "svg": FOLDER + '\\' + dt.strftime(now, "%Y_%m") + "\\svg"}
-if not os.path.exists(destination["base"]):
-    os.makedirs(destination["base"])
-    os.makedirs(destination["pdf"])
-    os.makedirs(destination["png"])
-    os.makedirs(destination["svg"])
-
-simulation = "Simulation_energy"
-
-unique = dt.strftime(now, "%Y%m%d-%Hh%Mm%Ss")  # Unique indentity
-# Save as pdf
-name = '{0}\{2}{1}.pdf'.format(destination["pdf"], simulation, unique)
-Plot.fig.savefig(name, dpi=150, transparent=False,
-                 facecolor=Plot.background_color)
-# Save as png
-name = '{0}\{2}{1}.png'.format(destination["png"], simulation, unique)
-Plot.fig.savefig(name, dpi=150, transparent=False,
-                 facecolor=Plot.background_color)
-# Save as svg
-name = '{0}\{2}{1}.svg'.format(destination["svg"], simulation, unique)
-Plot.fig.savefig(name, dpi=150, transparent=False,
-                 facecolor=Plot.background_color)
+sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+         base_name="Simulation_energy", plotter=Plot, facecolor="white")
 
 # Display plots
 Plot.show()

@@ -73,7 +73,7 @@ def format_csv(csv_in, csv_out, start, title, delimiter=(",", ";")):
     """
         Read csv_in and write to csv_out with new time format
         Clean duplicate time step and rename field of first row to Date
-        Change time step format to date like : 3600  --->  01/01/2014 01:00
+        Change time step to datetime instance : 3600  --->  01/01/2014 01:00
         Return fields except first field ("Date")
     """
 
