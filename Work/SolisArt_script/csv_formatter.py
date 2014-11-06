@@ -217,6 +217,15 @@ def convert_to_datetime(step, start):
         yield start + datetime.timedelta(seconds=int(el))
 
 
+def to_datetime(date_col, form="%d/%m/%Y %H:%M:%S"):
+    """
+      This parser convert to a real datetime format a string according to
+
+    """
+    for date in date_col:
+        yield datetime.datetime.strptime(date, form)
+
+
 def convert_solis_to_datetime(solis_date):
     """
         This parseur convert SolisArt software format to a real datetime format
