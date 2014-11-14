@@ -37,7 +37,7 @@ def benchmark(func):
 def sav_plot(folder, base_name, plotter, dpi=150, transparent=False, **kwargs):
     """
         This function allows to write a auto-sav of the plots.
-        It use a datetime to create a unique file name for each save.
+        It use actual datetime to create a unique file name for each save.
         folder : string
                  represent the location of the folder for saving fields
         base_name : string
@@ -90,7 +90,7 @@ class EvalData(object):
             - line
             - area
             - ...
-        Some tools to abstact some actions and make them more friendly.
+        Some tools to abstact actions and make them more friendly.
     """
 
     def __init__(self, frame):
@@ -187,6 +187,50 @@ class EvalData(object):
         else:
             return frame.resample(sample, **kwargs)
 
+    @staticmethod
+    def integrate_simpson(frame, column):
+        """
+            Return the integrate of specific column using index as
+            integration range.
+            Simpson's Rule Formula is used.
+        """
+        # Create explicite copy
+        frame = frame.copy()
+        # Create new column to check row number
+        frame["number"] = np.arange(0, len(frame))
+        ind = frame.index[:]
+        first = (ind[-1] - ind[0]) / ((len(frame)-1) * 3)
+        boundaries = frame[column][ind[0]] + frame[column][ind[-1]]
+        # Modulo and `frame["number"]` used to sort odd and even rows number
+        inside = (4 * np.sum(frame[column][1:-1][frame["number"] % 2 != 0]) +
+                  2 * np.sum(frame[column][1:-1][frame["number"] % 2 == 0]))
+        return first * (boundaries + inside)
+
+    @staticmethod
+    def integrate_trapezoidal(frame, column):
+        result = 0
+        ind = frame.index[:]
+        for i in range(0, len(ind)-1):
+            result = result + ((frame[column][ind[i+1]] +
+                                frame[column][ind[i]]) * (ind[i+1] - ind[i]) / 2)
+        return result
+
+    @staticmethod
+    def to_timestep(dates, base_time=datetime.datetime(2014, 1, 1)):
+        """
+            Convert datetime or timestamp objects to timesteps (seconds).
+        """
+        for date in dates:
+            yield int((date - base_time).total_seconds())
+
+    @staticmethod
+    def convert_to_datetime(steps, base_time=datetime.datetime(2014, 1, 1)):
+        """
+            Convert timesteps to datetime objects.
+        """
+        for step in steps:
+            yield base_time + datetime.timedelta(seconds=int(step))
+
     def add_column(self, frame, used_cols, operator='+'):
         """
             Return a new dataframe column with current columns.
@@ -240,6 +284,59 @@ class EvalData(object):
         # Change `Test` column values (0 if not match, else not change)
         for el in range(len(cols_map)):
             frame.loc[(frame[cols_map[el]] != match_map[el]), "Test"] = 0
+        # Start iteration over dataframe index
+        for ind in all_ind:
+            pass_test = True
+            if not frame["Test"][ind] == 1:
+                pass_test = False
+            if pass_test and not flag:
+                if used_col == "index":
+                    prev_val = ind
+                else:
+                    prev_val = col_op[ind]
+                prev_ind = ind
+                flag = 1
+            # Sum rows
+            elif (not pass_test or ind == last_ind) and flag:
+                if used_col == "index":
+                    summ = ind - prev_val
+                else:
+                    summ = col_op[ind] - prev_val
+                summation += summ
+                step_list.append({"sum": summ,
+                                  "start": prev_ind,
+                                  "end": ind})
+                flag = 0
+        summation = summation - start_sum
+        if debug:
+            print("Summation : {}\n{}\n{}\n".format(summation,
+                                                    step_list,
+                                                    frame))
+        return summation, step_list
+
+    def col_sum_map_test(self, frame, cols_map, used_col="index",
+                         start_sum=0, debug=False):
+        """
+            Return sum of used_col values for all cols_map which
+            respect match_map structure and a dict of each timestep of match.
+                - frame : DataFrame
+                - cols_map : list of columns to test
+                - match_map : sequence of corresponding cols_map value
+                              (wanted value for each col of cols_map)
+                - used_col : column used for operations of summation
+                - summation : start value for frame summation
+                - debug : print(summation, dict of step summation)
+        """
+        # Init
+        frame = frame[:]  # Create explicit copy to avoid warning message
+        summation = start_sum
+        step_list, flag = [], False
+        # Avoid duplicate operations
+        all_ind, last_ind = frame.index, frame[len(frame)-1:].index
+        # Add `Test` column
+        frame["Test"] = 0
+        frame.loc[(frame[cols_map[0]] >= 0.001), "Test"] = 1
+        frame.loc[(frame[cols_map[1]] != 100), "Test"] = 0
         # Start iteration over dataframe index
         for ind in all_ind:
             pass_test = True

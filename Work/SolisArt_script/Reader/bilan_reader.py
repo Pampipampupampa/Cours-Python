@@ -55,6 +55,17 @@ def time_info(frame, display=True):
                                                 'Vextra_state'],
                                       match_map=(100, 100, 100),
                                       start_sum=frame.frame.index[0])
+    # ##########################################################################
+    # ##########################################################################
+    # Recup solar time TEST
+    # chauff_sol, _ = frame.col_sum_map_test(frame.frame,
+    #                                        debug=False,
+    #                                        cols_map=["Flow_Collector",
+    #                                                  "Vsolar_state"],
+    #                                        start_sum=frame.frame.index[0])
+    # ##########################################################################
+    # ##########################################################################
+
     # Recup extra heating time
     chauff_app, _ = frame.col_sum_map(frame.frame,
                                       debug=False,
@@ -248,9 +259,6 @@ if __name__ == '__main__':
         print('---> Defaults will be used : \n{}'.format(names))
 
     sep = names.pop(0)  # Recup separator value
-    # Testing
-    # field_print = ' '.join(field_ for field_ in fields.keys())
-              # '({})\n'.format(field_print) + \
 
     # Define how and what to plot
     welcome = '\nPlease choose kind of plot for each dataframes or default ' + \
@@ -323,7 +331,7 @@ if __name__ == '__main__':
     # Initialize a simple dictionnary to put inside energy informations
     energy_json = {}
 
-    # Initialize csv structure and add file head
+    # # Initialize csv structure and add file head
     # time_csv = []
     # time_csv.append(["Data", "Month", "start_sim", "end_sim", "heating_time",
     #                  "solar_heating", "extra_heating", "Difference", "ratio"])
@@ -343,7 +351,7 @@ if __name__ == '__main__':
                                                                           new[2]),
                                                                operator=new[3])
     # --------------------------------------------------------------------------
-        # # Display annual time informations
+        # Display annual time informations
         # time_json[name]['Annual'] = time_info(frame=datas[name])
         # for m_ in months:
         #     if m_ != 'Annual':
@@ -351,11 +359,11 @@ if __name__ == '__main__':
         #         chunk = EvalData.only_month(frame=datas[name].frame,
         #                                     month=all_months[m_])
         #         time_json[name][m_] = time_info(frame=chunk)
-        # # Prepare time data to export
-        #     prepare_export(dico=time_json, name=name)
-        #     # Create csv structure
-        #     time_csv.append([name, m_] +
-        #                     [el for el in time_json[name][m_].values()])
+        # Prepare time data to export
+            # prepare_export(dico=time_json, name=name)
+            # # Create csv structure
+            # time_csv.append([name, m_] +
+            #                 [el for el in time_json[name][m_].values()])
     # --------------------------------------------------------------------------
         # Add all plot for each set of datas
         for el in structs[name]:
