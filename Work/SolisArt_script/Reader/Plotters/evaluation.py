@@ -702,7 +702,7 @@ class MultiPlotter(object):
             Method used to change xticks labels.
                 - labels must be a list:
                     - list of list : each list will be zip and each elements of
-                      list of lits will be concatenate
+                      list of list will be concatenate
                     - list of elements : each elements will be concatenate
                     - example : ["b", "i"]  ---> ["b", "i"]
                                 [["b", "i"], ["b", i"]]  ---> ["bi", "bi"]
@@ -866,7 +866,7 @@ class MultiPlotter(object):
 
     def bar_sup_plot(self, frame, fields, colors={}, loc='left', pos=(1, 1),
                      names=[], title='Hist me', h_width=0.9,
-                     ylabel="Kwh", emphs=None, **kwargs):
+                     ylabel="Kwh", emphs=[], **kwargs):
         """
             Plot a superimposed bar plot of each fields inside the frame and
             for each row.
@@ -923,7 +923,7 @@ class MultiPlotter(object):
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
                      names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
-                     emphs=None, line_dict={}, **kwargs):
+                     emphs=[], line_dict={}, **kwargs):
         """
             Plot a cumulated bar plot of each fields inside the frame and
             for each row.
@@ -935,7 +935,7 @@ class MultiPlotter(object):
                 - names is a list of new xticks labels (empty list for defaults)
                 - title is text to write as axe title
                 - h_width is the bar width
-                - emphs list of column name  used to draw a bar top line,
+                - emphs list of column name used to draw a bar top line,
                   each emph of emphs must be a frame column name
                 - **kwargs will be passed to axe.bar()
         """

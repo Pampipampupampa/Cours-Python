@@ -479,6 +479,7 @@ if __name__ == '__main__':
                                       loc='center', line_dict={"linewidth": 4},
                                       names=structs[name][plot][1],
                                       title=titles[plot] + '\n{}'.format(name_cap))
+                    print(structs[name][plot][1])
                 elif 'sup' in plot:
                     Plot.colors = col_dict[plot]
                     print(structs[name][plot][0])

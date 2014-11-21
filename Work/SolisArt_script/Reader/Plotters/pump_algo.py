@@ -155,7 +155,7 @@ class PumpAlgoPlotter(plotter.Plotter):
                                )
 
         # Extra valve switch
-        self.ax11.annotate("Ouvert vers appoint",
+        self.ax11.annotate("Ouvert vers le solaire",
                            xy=(self.frame_plt.index[self.conds['Vextra'][0][0]],
                                self.frame_plt['Vextra_state'][self.frame_plt.index[self.conds['Vextra'][0][0]]]),
                            xycoords='data', xytext=(50, 20),
@@ -169,7 +169,7 @@ class PumpAlgoPlotter(plotter.Plotter):
                                            relpos=(0.2, 0.5),
                                            )
                            )
-        self.ax21.annotate("Ouvert vers appoint",
+        self.ax21.annotate("Ouvert vers le solaire",
                            xy=(self.frame_plt.index[self.conds['Vextra'][0][0]],
                                self.frame_plt['Vextra_state'][self.frame_plt.index[self.conds['Vextra'][0][0]]]),
                            xycoords='data', xytext=(50, 20),
