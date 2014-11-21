@@ -45,24 +45,26 @@ Plot = MultiPlotter({}, nb_cols=2, nb_rows=2, colors=colors,
                     title=title, sharex=False, sharey=True)
 Plot.font_legend = {'size': 18,
                     'family': 'Anonymous Pro'}
+Plot.font_base = {'family': 'Anonymous Pro',
+                  'size': 13}
 Plot.fig_init(figsize=(24, 12))
 
 ################################### Plotting ###################################
 # First
 Plot.bar_sup_plot(frames["chambery"], fields=fields, pos=(0, 0), title=title+"chambery",
-                  ylabel="KWh", names=short_names)
+                  ylabel="$KWh/m^2$", names=short_names)
 percents = ['{:.1f} %'.format(i) for i in frames["chambery"]['rendement'].values]
 Plot.change_xticks_labels([short_names, [' : '] * 12, percents], pos=(0, 0))
 
 # Second
 Plot.bar_sup_plot(frames["bordeaux"], fields=fields, pos=(0, 1), title=title+"bordeaux",
-                  ylabel="KWh", names=short_names)
+                  ylabel="$KWh/m^2$", names=short_names)
 percents = ['{:.1f} %'.format(i) for i in frames["bordeaux"]['rendement'].values]
 Plot.change_xticks_labels([short_names, [' : '] * 12, percents], pos=(0, 1))
 
 # Third
 Plot.bar_sup_plot(frames["marseille"], fields=fields, pos=(1, 0), title=title+"marseille",
-                  ylabel="KWh", names=short_names)
+                  ylabel="$KWh/m^2$", names=short_names)
 percents = ['{:.1f} %'.format(i) for i in frames["marseille"]['rendement'].values]
 Plot.change_xticks_labels([short_names, [' : '] * 12, percents], pos=(1, 0))
 

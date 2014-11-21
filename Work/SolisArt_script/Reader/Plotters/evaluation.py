@@ -231,6 +231,30 @@ class EvalData(object):
         for step in steps:
             yield base_time + datetime.timedelta(seconds=int(step))
 
+    @staticmethod
+    def to_timestep_two(dates, times, base_time=datetime.datetime(2014, 1, 1),
+                        form=["%d/%m/%Y %H:%M", "%d/%m/%y %H:%M"]):
+        """
+            Convert a datetime string object split into two list
+            `dates` and `times` to a timestep representation.
+            base_time used as
+            form must be the string representation of each list :
+                - `dates` before " "
+                - `times` after " "
+        """
+        for date, time in zip(dates, times):
+            # Year with four digits (ex 2014)
+            try:
+                date_time = datetime.datetime.strptime((date.strip() + " " +
+                                                        time.strip()),
+                                                       form[0])
+            # Year with only last two digits (ex 14)
+            except ValueError:
+                date_time = datetime.datetime.strptime((date.strip() + " " +
+                                                        time.strip()),
+                                                       form[0])
+            yield (date_time - base_time).total_seconds()
+
     def add_column(self, frame, used_cols, operator='+'):
         """
             Return a new dataframe column with current columns.
