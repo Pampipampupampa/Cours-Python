@@ -252,7 +252,7 @@ class EvalData(object):
             except ValueError:
                 date_time = datetime.datetime.strptime((date.strip() + " " +
                                                         time.strip()),
-                                                       form[0])
+                                                       form[1])
             yield (date_time - base_time).total_seconds()
 
     def add_column(self, frame, used_cols, operator='+'):
