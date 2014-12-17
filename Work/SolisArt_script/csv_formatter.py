@@ -21,6 +21,7 @@ from functools import wraps  # Keep trace of decorated functions arguments
 field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "Collector.temSen[40].T": "T1",
                    "Collector.Tinside[40]": "T1",
+                   "inFlow_Collector.vol[1].T": "T2",
                    "T2.T": "T2", "T3.T": "T3", "Pump_Control.T3": "T3",
                    "T4.T": "T4", "Pump_Control.T4": "T4",
                    "T5.T": "T5", "Pump_Control.T5": "T5",
