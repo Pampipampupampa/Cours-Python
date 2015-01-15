@@ -345,8 +345,6 @@ class EvalData(object):
             respect match_map structure and a dict of each timestep of match.
                 - frame : DataFrame
                 - cols_map : list of columns to test
-                - match_map : sequence of corresponding cols_map value
-                              (wanted value for each col of cols_map)
                 - used_col : column used for operations of summation
                 - summation : start value for frame summation
                 - debug : print(summation, dict of step summation)
@@ -509,7 +507,7 @@ class MultiPlotter(object):
         # Space between boxplot groups
         self.pad = 1
 
-    def fig_init(self, figsize=(20, 10), title_pos=(0.5, 0.93), facecolor=None,
+    def fig_init(self, figsize=(22, 11), title_pos=(0.5, 0.93), facecolor=None,
                  ha='center', sharex=None, sharey=None):
         """ Create all needed axes """
         # Default parameters
@@ -773,7 +771,7 @@ class MultiPlotter(object):
             - loc used to place title
             - pos used to set specific axe (always a tuple even if only one axe)
             - colors are colors of parts. If None self.colors used
-            - **kwargs will be passed to axe.pie()
+            - **kwargs will be passed to frame.plot()
         """
         if colormap == "default":
             colormap = self.colormap
@@ -859,7 +857,7 @@ class MultiPlotter(object):
         self.format_boxticks(list_frame, pos, start)
 
     def diag_plot(self, frame, to_diag, title='Diag me', labels=None,
-                  loc='left', pos=(1, 0), explode=(0.1, 0, 0), radius=0.8,
+                  loc='left', pos=(1, 0), explode=(0.1, 0, 0, 0), radius=0.7,
                   colors=None, legend=False, **kwargs):
         """
             Used to plot diagrams with a dataframe prepared with EvalData class.

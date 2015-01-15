@@ -2,7 +2,7 @@
 # -*- coding:Utf8 -*-
 
 """
-    Used to plot barplot, diag_Bplot, boxplot, simple plot, ...
+    Used to plot barplot, diag_plot, boxplot, simple plot, ...
     Basic actions can be easily done on annual data like prepare data
     for boxplotting.
 
@@ -12,10 +12,17 @@
         - type of plot
         - number of dataframes useds names
         - how to cut file (used after as dict keys)
+        - new columns create by existing columns operations
+        - temporary renaming (only during script execution)
+        - Storing data to json/csv (Energy and working time already implement)
+
+    To use this script with csv files older than 2015 you have to make some change
+    to fields, conv_dict and new_fields dictionnary or take a script older commit
+    before 2015 (see github repository or git fonctionnality for more details)
 """
 
 # import csv
-import json
+# import json
 
 # Import internal lib
 from Plotters.evaluation import *
@@ -58,11 +65,11 @@ def time_info(frame, display=True):
     # ##########################################################################
     # ##########################################################################
     # Recup solar time TEST
-    # chauff_sol, _ = frame.col_sum_map_test(frame.frame,
-    #                                        debug=False,
-    #                                        cols_map=["Flow_Collector",
-    #                                                  "Vsolar_state"],
-    #                                        start_sum=frame.frame.index[0])
+    sol, _ = frame.col_sum_map_test(frame.frame,
+                                    debug=False,
+                                    cols_map=["Flow_Collector",
+                                              "Vsolar_state"],
+                                    start_sum=frame.frame.index[0])
     # ##########################################################################
     # ##########################################################################
 
@@ -79,6 +86,7 @@ def time_info(frame, display=True):
     time_dict['heating_time'] = chauff_app + chauff_sol
     time_dict['solar_heating'] = chauff_sol
     time_dict['extra_heating'] = chauff_app
+    time_dict['solar_working'] = sol
     if chauff_app > chauff_sol:
         time_dict['Difference'] = chauff_app - chauff_sol
     else:
@@ -100,7 +108,7 @@ def prepare_export(dico, name):
         Change format to prepare export to csv or json.
     """
     to_seconds = ('heating_time', 'extra_heating', 'solar_heating',
-                  'Difference')
+                  'Difference', 'solar_working')
     dico[name][m_]['start_sim'] = str(dico[name][m_]['start_sim'])
     dico[name][m_]['end_sim'] = str(dico[name][m_]['end_sim'])
     for conv in to_seconds:
@@ -115,9 +123,10 @@ def prepare_export(dico, name):
 fold = FOLDER / 'clean'
 
 # Bar emphazis
-emphs_dict = {'bar_cumA': ['Pertes'],
+emphs_dict = {'bar_cumA': ['Pertes réseau'],
               'bar_cumC': ['Energie solaire'],
-              'bar_sup': ['Energie solaire']}
+              'bar_supC': ['Energie solaire'],
+              'bar_supDispo': []}
 
 # Fields (to plot new type of graph add new fields here)
 fields = {'box_Tbal': ['T3', 'T4', 'T5'],
@@ -125,20 +134,28 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_H': ['Diffus', 'Direct'],
           'box_HDir': ['HDirNor', 'Direct'],
           'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
-          'diag_B': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
-                     ['Chauffage', 'ECS', 'Pertes']],
-          'diag_C': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
-                     ['Energie solaire', 'Appoint']],
-          'bar_cumC': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
-                       ['ECS', 'Chauffage', 'Pertes']],
-          'bar_cumA': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
-                       ['Energie solaire', 'Appoint']],
-          'bar_sup': [['Energie solaire', 'Appoint', 'Chauffage', 'ECS'],
-                      ['ECS', 'Chauffage', 'Pertes']],
+          'diag_B': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                      'Energie captable', 'Consommation appoint'],
+                     ['Chauffage', 'ECS', 'Pertes appoint', 'Pertes réseau']],
+          'diag_P': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                      'Energie captable', 'Consommation appoint'],
+                     ['Production\nappoint', 'Energie solaire']],
+          'bar_cumC': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                        'Energie captable', 'Consommation appoint'],
+                       ['ECS', 'Chauffage', 'Pertes réseau']],
+          'bar_cumA': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                        'Energie captable', 'Consommation appoint'],
+                       ['Energie solaire', 'Production\nappoint']],
+          'bar_supC': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                        'Energie captable', 'Consommation appoint'],
+                       ['ECS', 'Chauffage', 'Pertes réseau']],
+          'bar_supDispo': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                            'Energie captable', 'Consommation appoint'],
+                           ['Energie captable', 'Energie solaire']],
           'area_E': ['ECS', 'Energie solaire', 'Chauffage'],
-          'area_EB': ['ECS', 'Chauffage', 'Pertes'],
-          'line_E': ['ECS', 'Energie solaire', 'Appoint', 'Chauffage'],
-          'line_ES': ['Energie solaire'],
+          'area_EB': ['ECS', 'Chauffage', 'Pertes totales'],
+          'line_E': ['ECS', 'Energie solaire', 'Production\nappoint', 'Chauffage'],
+          'line_ES': ['Energie solaire', 'Energie captable'],
           'line_TE': ['T3', 'T4', 'T5', 'T12_house'],
           'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
           'line_H': ['Diffus', 'Direct'],
@@ -154,23 +171,23 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'line_Backup': ['Backup_state', 'ECS_state'],
           'line_V3V': ['Vsolar_state', 'Vextra_state']}
 
-# Colors (if we want to plot line_ES you first need to force the use of color
-#         instead of colormap)
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
                     ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
-            'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16'],
-            'diag_C': ['#fdf6e3', '#268bd2'],
-            'bar_cumA': {'Appoint': '#fdf6e3', 'Energie solaire': 'orange',
-                         'Pertes': '#cb4b16'},
-            'bar_cumC': {'Appoint': '#dc322f', 'Chauffage': '#fdf6e3',
+            'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16', '#dc322f'],
+            'diag_P': ['#6c71c4', 'orange'],
+            'bar_cumA': {'Production\nappoint': '#fdf6e3', 'Energie solaire': 'orange',
+                         'Pertes totales': '#cb4b16'},
+            'bar_cumC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
                          'ECS': '#268bd2', 'Energie solaire': 'orange',
-                         'Pertes': '#cb4b16'},
-            'bar_sup': {'Appoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                        'ECS': '#268bd2', 'Energie solaire': 'orange',
-                        'Pertes': '#cb4b16'},
+                         'Pertes réseau': '#cb4b16'},
+            'bar_supDispo': {'Energie solaire': 'orange',
+                             'Energie captable': '#859900'},
+            'bar_supC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
+                         'ECS': '#268bd2', 'Energie solaire': 'orange',
+                         'Pertes réseau': '#cb4b16'},
             'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
-            'line_ES': 'orange', 'line_H': 'Accent', 'line_debA': 'Accent',
+            'line_ES': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
             'line_debS': 'Accent', 'line_debC': 'Accent', 'line_T': 'Accent',
             'line_debSE': 'Accent', 'line_debCE': 'Accent', 'area_EB': 'Accent',
             'line_debSCE': 'Accent', 'line_V3V': 'Accent',
@@ -187,12 +204,13 @@ titles = {'title': 'Bilan de la simulation',
                    'de l’irradiation sur les panneaux',
           'box_HDir': 'Evolution mensuelle de la variation \n' +
                       'du potentiel de l’irradiation directe sur les panneaux',
-          'box_P': 'Evolution de l’état des pompes appoint et solaire',
+          'box_P': 'Evolution de l’état des pompes d’appoint et solaires',
           'diag_B': 'Taux de couverture',
-          'diag_C': 'Répartition des consommations',
+          'diag_P': 'Répartition de la production',
           'bar_cumA': 'Evolution mensuelle des apports',
-          'bar_cumC': "Evolution mensuelle des consommations d'énergie",
-          'bar_sup': "Evolution mensuelle des apports et consommations d'énergie",
+          'bar_cumC': "Evolution mensuelle de la production d'énergie",
+          'bar_supC': "Evolution mensuelle des apports et de la production d'énergie",
+          'bar_supDispo': "Evolution mensuelle des gains et du rendement solaire",
           'area_E': 'Evolution annuelle de la consommation en énergie',
           'area_EB': 'Evolution annuelle des besoins',
           'line_E': 'Evolution annuelle de la consommation en énergie',
@@ -217,14 +235,23 @@ titles = {'title': 'Bilan de la simulation',
 # Change data columns names
 conv_dict = {'DrawingUp_Energy': 'ECS', 'Radiator_Energy': 'Chauffage',
              'Collector_Energy': 'Energie solaire',
-             'Boiler_Energy': 'Appoint',
+             # Must be a comment with csv files older than 2015
+             'CollectorPanel_Energy': 'Energie captable',
+             # Must be a comment with csv files older than 2015
+             'BoilerFuel_Energy': 'Consommation appoint',
+             # Must be a comment with csv files older than 2015
+             'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
+             'Boiler_Energy': 'Production\nappoint',
              'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
 
 # New fields
 new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
-              ('Consommations', 'Energie solaire', 'Appoint', '+'),
-              ('Pertes', 'Consommations', 'Besoins', '-'),
-              ('Taux de couverture', 'Energie solaire', 'Consommations', '/'))
+              ('Production', 'Energie solaire', 'Production\nappoint', '+'),
+              ('Pertes réseau', 'Production', 'Besoins', '-'),
+              ('Pertes appoint', 'Consommation appoint', 'Production\nappoint', '-'),
+              ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
+              ('Taux de couverture', 'Energie solaire', 'Production', '/'),
+              ('Rendement capteur', 'Energie solaire', 'Energie captable', '/'))
 
 # Prepare Taux de couverture (list of formatted datas)
 short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
@@ -282,7 +309,7 @@ if __name__ == '__main__':
     # Default instructions
     if plots == ['']:
         plots = ['none', 'none',
-                 'diag_C,diag_B,bar_cumA,bar_cumC']
+                 'diag_P,diag_B,bar_cumA,bar_cumC']
         print('---> Defaults will be used : \n{}'.format(plots))
     share_x = plots.pop(0)  # Recup sharex flag
     share_y = plots.pop(0)  # Recup sharey flag
@@ -351,7 +378,7 @@ if __name__ == '__main__':
                                                                           new[2]),
                                                                operator=new[3])
     # --------------------------------------------------------------------------
-        # Display annual time informations
+        # # Display annual time informations
         # time_json[name]['Annual'] = time_info(frame=datas[name])
         # for m_ in months:
         #     if m_ != 'Annual':
@@ -359,12 +386,12 @@ if __name__ == '__main__':
         #         chunk = EvalData.only_month(frame=datas[name].frame,
         #                                     month=all_months[m_])
         #         time_json[name][m_] = time_info(frame=chunk)
-        # Prepare time data to export
-            # prepare_export(dico=time_json, name=name)
+        #     # Prepare time data to export
+        #     prepare_export(dico=time_json, name=name)
             # # Create csv structure
             # time_csv.append([name, m_] +
             #                 [el for el in time_json[name][m_].values()])
-    # --------------------------------------------------------------------------
+    # --    ------------------------------------------------------------------------
         # Add all plot for each set of datas
         for el in structs[name]:
             if 'bar' in el:
@@ -372,11 +399,12 @@ if __name__ == '__main__':
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
                 # Here we populate the energy_json
-                if 'C' in el:
+                if 'Dispo' in el:
                     # Explicit copy
                     tmp = structs[name][el][0].copy()
                     tmp.index = structs[name][el][1]
                     tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
+                    tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
                     # Temporary ordered dict to keep months in the right order
                     temp = OrdD()
                     for mth in tmp.index:
@@ -399,17 +427,17 @@ if __name__ == '__main__':
             elif any(c in el for c in ('area', 'line')):
 
                 # Just to see Temperature of drawing up variation
-                # chunk = datas[name].frame.copy()
-                # flag = 'Flow_Drawing'
-                # chunk['RealT'] = chunk['T11_Drawing_up']
-                # chunk['RealT'].where(chunk[flag] > 0.12,  -1, inplace=True)
-                # print('TdrawingUp = ',
-                #       chunk[chunk["RealT"] != -1]['RealT'].mean())
+                chunk = datas[name].frame.copy()
+                flag = 'Flow_Drawing'
+                chunk['RealT'] = chunk['T11_Drawing_up'][:]
+                chunk['RealT'].where(chunk[flag] > 0.12,  -1, inplace=True)
+                print('TdrawingUp = ',
+                      chunk[chunk["RealT"] != -1]['RealT'].mean())
 
                 # Data which can be reduce to a 30min step size
-                # structs[name][el] = EvalData.resample(frame=datas[name].frame,
-                #                                           sample='30min',
-                #                                           interpolate=True)
+                structs[name][el] = EvalData.resample(frame=datas[name].frame,
+                                                      sample='30min',
+                                                      interpolate=True)
                 structs[name][el] = datas[name].frame
 
     # # Write to a json file all energy informations
@@ -490,12 +518,20 @@ if __name__ == '__main__':
                                       names=structs[name][plot][1],
                                       title=titles[plot] + '\n{}'.format(name_cap))
                 # Each xticks = short month name +
-                # Taux de couverture de couverture solaire mensuel
-                percents = ['{:.1%}'.format(i)
-                            for i in
-                            structs[name][plot][0]['Taux de couverture'].values]
-                Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
-                                          pos=pos)
+                if any(c in plot for c in ('C', 'A')):
+                    # Taux de couverture de couverture solaire mensuel
+                    percents = ['{:.1%}'.format(i)
+                                for i in
+                                structs[name][plot][0]['Taux de couverture'].values]
+                    Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
+                                              pos=pos)
+                if 'Dispo' in plot:
+                    # Taux de couverture de couverture solaire mensuel
+                    percents = ['{:.1%}'.format(i)
+                                for i in
+                                structs[name][plot][0]['Rendement capteur'].values]
+                    Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
+                                              pos=pos)
                 # Uncomment to set a y limit for each bar_cum plot
                 # Plot.catch_axes(*pos).set_ylim(0, 2500)
             elif 'box' in plot:
@@ -505,7 +541,10 @@ if __name__ == '__main__':
                                      title=titles[plot] + '\n{}'.format(name_cap))
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
-                explode = [0.1]  # Initial value for explode
+                if "_B" in plot:
+                    explode = [0.1, 0.1]  # Initial value for explode
+                else:
+                    explode = [0.1]       # Initial value for explode
                 # To have len() matching between explode and fields[plot][1]
                 while len(explode) < len(fields[plot][1]):
                     explode.append(0.0)
@@ -519,7 +558,6 @@ if __name__ == '__main__':
                 else:
                     p_title = titles[plot]
                 a = fields[plot][1]
-                # Used to have less than 80 characters
                 f = structs[name][plot]
                 b = (' ({:.0f} KWh)'.format(f.ix[el, :1].values[0]) for el in a)
                 # Create a list of string composed of a and b

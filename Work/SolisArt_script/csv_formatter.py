@@ -19,8 +19,8 @@ from functools import wraps  # Keep trace of decorated functions arguments
 
 # Fields converters for house and general simulation
 field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
-                   "Collector.temSen[40].T": "T1",
-                   "Collector.Tinside[40]": "T1",
+                   "Collector.temSen[20].T": "T1",
+                   "Collector.Tinside[20]": "T1",
                    "inFlow_Collector.vol[1].T": "T2",
                    "T2.T": "T2", "T3.T": "T3", "Pump_Control.T3": "T3",
                    "T4.T": "T4", "Pump_Control.T4": "T4",
@@ -57,6 +57,9 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "weaBus.HDirNor": "HDirNor",
                    "Collector.HDifTilIso.H": "HDifTil_collector",
                    "Collector.HDirTil.H": "HDirTil_collector",
+                   "Collector.Energy_on_panel": "CollectorPanel_Energy",
+                   "Boiler.Energy_ToAmbiant": "BoilerLosses_Energy",
+                   "Boiler.Energy_FuelConsumption": "BoilerFuel_Energy",
                    "integrator_collector.Energy": "Collector_Energy",
                    "integrator_boiler.Energy": "Boiler_Energy",
                    "integrator_radiator.Energy": "Radiator_Energy",
@@ -442,16 +445,16 @@ algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
 if __name__ == '__main__':
 
     # Input and output
-    # csv_iyen = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
+    # csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
     #          "Algo\\V3Vsolar_algo.csv"
     # csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
     #           "Algo\\V3Vsolar_algo_clean.csv"
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "chambery15KWh200plus_20140905.csv"
+             "marseille-6p_20150115.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "chambery15KWh200plus_20140905.csv"
+              "marseille-6p_20150115.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

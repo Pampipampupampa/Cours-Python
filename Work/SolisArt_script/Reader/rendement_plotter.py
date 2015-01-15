@@ -13,7 +13,7 @@ from Plotters.evaluation import *
 ########################
 
 
-FOLDER = path("D:\Github\Projets\SolisArt\Faire\SolisArt\RendementActuel")
+FOLDER = path("D:\Github\Projets\SolisArt\Etudes\Rendement_production")
 datas = {"chambery": FOLDER + "\\chambery_exp.csv", "bordeaux": FOLDER + "\\bordeaux_exp.csv",
          "marseille": FOLDER + "\\marseille_exp.csv"}
 sep, index_col = ",", "Time"
@@ -76,7 +76,7 @@ Plot.adjust_plots(hspace=0.6, wspace=0.15,
 Plot.tight_layout()
 
 # Save plotting informations to files
-sav_plot(folder=path("D:\Github\Projets\SolisArt\Faire\SolisArt\RendementActuel"),
+sav_plot(folder=FOLDER,
          base_name="_rendements", plotter=Plot, facecolor="white")
 
 # Display plots
