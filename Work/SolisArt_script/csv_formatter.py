@@ -7,6 +7,11 @@
     Clean and formate a Dymola output file
     for SolisGraph software.
 
+    ***
+        Careful this script only work with simulation using real pumps base on dp and pump revolutions
+        for field_converter
+    ***
+
 """
 
 
@@ -33,10 +38,14 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "Pump_Control.pumps_state[2]": "S5_state",
                    "Pump_Control.pumps_state[3]": "S4_state",
                    "Pump_Control.pumps_state[4]": "S2_state",
-                   "Pump_Control.S6_outter": "Flow_S6",
-                   "Pump_Control.S5_outter": "Flow_S5",
-                   "Pump_Control.S4_outter": "Flow_S4",
-                   "Pump_Control.Sj_outter[1]": "Flow_S2",
+                   "Pump_Control.S6_outter": "Speed_S6",
+                   "Pump_Control.S5_outter": "Speed_S5",
+                   "Pump_Control.S4_outter": "Speed_S4",
+                   "Pump_Control.Sj_outter[1]": "Speed_S2",
+                   "C6.m_flow": "Flow_S6",
+                   "C5.m_flow": "Flow_S5",
+                   "C4.m_flow": "Flow_S4",
+                   "C2.m_flow": "Flow_S2",
                    "Control.V3V_solar_outter": "Vsolar_state",
                    "Control.V3V_extra_outter": "Vextra_state",
                    "Control.backupHeater_mod.CHAUFF": "CHAUFF_state",
@@ -53,8 +62,8 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "Buffer_Tank.portHex_a.m_flow": "Flow_ExchStorTank",
                    "Boiler.m_flow": "Flow_Boiler",
                    "Radiator.m_flow": "Flow_Radiator",
-                   "weaBus.HDifHor": "HDifHor",
-                   "weaBus.HDirNor": "HDirNor",
+                   "Collector.weaBus.HDifHor": "HDifHor",
+                   "Collector.weaBus.HDirNor": "HDirNor",
                    "Collector.HDifTilIso.H": "HDifTil_collector",
                    "Collector.HDirTil.H": "HDirTil_collector",
                    "Collector.Energy_on_panel": "CollectorPanel_Energy",
@@ -452,9 +461,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "marseille-6p_20150115.csv"
+             "test.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "marseille-6p_20150115.csv"
+              "test.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
