@@ -81,7 +81,9 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "PHea.y": "House_Power", "product.y": "Flow_Extraction",
                    "EHea.y": "House_Energy", "miniAverage.TminOfDay": "T9_mini",
                    "miniAverage.TmoyOfDay": "T9_moy",
-                   "weaDat.weaBus.TDryBul": "T9_ext"
+                   "weaDat.weaBus.TDryBul": "T9_ext",
+                   "Collector.heaGai[1].Q_flow": "SolarPower_absorbed",
+                   "Collector.QLos[1].Q_flow": "SolarPower_lost"
                    }
 
 # Fields converters for algorithms
@@ -189,9 +191,8 @@ algo_field_converter = {"flow_out.splitter.out_value[1]": "Flow_Solar",
                         "V3Vextra_mod1.ECS_out": "ECS_out_state",
                         "V3Vextra_mod1.CHAUFF_out[1]": "CHAUFF_out_state"}
 
-
 #######################################
-#### Classes, Methods, Functions : ####
+#    Classes, Methods, Functions :    #
 #######################################
 
 
@@ -276,6 +277,20 @@ def to_100(struct, column):
           - column is a panda dataFrame column name
     """
     struct[column] *= 100
+
+
+def to_W_per_m2(struct, column):
+    """
+        Multiply to have  values inside struct[column].
+          - struct is a panda dataFrame
+          - column is a panda dataFrame column name
+    """
+    collector_area = 2.32
+    nb_collector = int(csv_in.split("-")[1].split("p")[0])
+    try:
+        struct[column] *= 20 / (collector_area*nb_collector)
+    except ZeroDivisionError:
+        struct[column] = 0
 
 
 def to_10(struct, column):
@@ -426,7 +441,7 @@ def process_actions(in_file, out_file, start_time, D_type=None, seps=(",", ";"),
 
 
 ########################
-### Regex matching : ###
+#   Regex matching :   #
 ########################
 
 # Be careful with regex matching
@@ -434,7 +449,8 @@ unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+)|(\AT\d+)"),
                               to_celsius),
                   "kWh": (re.compile("[A-Z]([a-z A-Z])*_Energy"), to_kwh),
                   "l_min": (re.compile("\AS\d+\Z" "|\AFlow_[A-Z]+"), to_l_min),
-                  "mult_100": (re.compile("(\S+)_state\Z"), to_100)}
+                  "mult_100": (re.compile("(\S+)_state\Z"), to_100),
+                  "to W/m2": (re.compile("SolarPower_([a-z])+"), to_W_per_m2)}
 
 algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
                                               "|(\ATsolaire\Z)" +
@@ -448,7 +464,7 @@ algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
 
 
 ########################
-#### Main Program : ####
+#    Main Program :    #
 ########################
 
 if __name__ == '__main__':
@@ -461,9 +477,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "test.csv"
+             "marseille-3p_20150129.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "test.csv"
+              "marseille-3p_20150129.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

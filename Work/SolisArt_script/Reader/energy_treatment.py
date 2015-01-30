@@ -26,8 +26,10 @@ with open(json_file, 'r', encoding='utf-8') as f:
 
 # Create structures to plots times
 title = "Energy informations"
-parameters = ("Appoint", "Besoins", "Pertes", "ECS", "Taux de couverture",
-              "Consommations", "Energie solaire", "Chauffage")
+parameters = ("Production", "Pertes capteur", "Pertes réseau", "Energie captable",
+              "Pertes totales", "Production\nsolaire", "Pertes appoint",
+              "Rendement capteur", "Besoins", "Taux de couverture",
+              "Consommation\nappoint", "Chauffage", "Production\nappoint", "ECS")
 cols = tuple(el for el in datas)
 structs = {ind: el for ind, el in iter_nested_json(datas, parameters,
                                                    rows, cols)}
@@ -44,16 +46,22 @@ for val in parameters:
     # Now append the row:
     frames[val] = frames[val].append(sum_df)
 
-# Update the last row of "Taux de couverture"
+# Update the last col of "Taux de couverture"
 for col in cols:
     # Calculate new ratio
     frames["Taux de couverture"].ix[-1:,
                                     col] = (100 *
-                                            frames["Energie solaire"].ix[-1:,
-                                                                         col] /
+                                            frames["Production\nsolaire"].ix[-1:,
+                                                                             col] /
                                             frames["Consommations"].ix[-1:,
                                                                        col])
-
+    # Calculate new ratio
+    frames["Rendement capteur"].ix[-1:,
+                                   col] = (100 *
+                                           frames["Production\nsolaire"].ix[-1:,
+                                                                            col] /
+                                           frames["Energie captable"].ix[-1:,
+                                                                         col])
 
 # Add plot
 Plot = MultiPlotter({}, nb_cols=2, nb_rows=2, colors=None,
@@ -78,9 +86,9 @@ couverture = Plot.frame_plot(frames["Taux de couverture"].ix[-1:, :], fields="al
 #                          legend=False,
 #                          title='Pertes',
 #                          loc='left', kind="bar", pos=(1, 1))
-solaire = Plot.frame_plot(frames["Energie solaire"].ix[-1:, :], fields="all",
+solaire = Plot.frame_plot(frames["Production\nsolaire"].ix[-1:, :], fields="all",
                           legend=False,
-                          title='Energie solaire',
+                          title='Production\nsolaire',
                           loc='left', kind="bar", pos=(1, 0))
 appoint = Plot.frame_plot(frames["Appoint"].ix[-1:, :], fields="all",
                           legend=False,

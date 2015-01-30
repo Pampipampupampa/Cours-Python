@@ -116,7 +116,7 @@ def prepare_export(dico, name):
 
 
 ########################
-#### Main Program : ####
+#    Main Program :    #
 ########################
 
 # Select directory
@@ -124,8 +124,8 @@ fold = FOLDER / 'clean'
 
 # Bar emphazis
 emphs_dict = {'bar_cumA': ['Pertes réseau'],
-              'bar_cumC': ['Energie solaire'],
-              'bar_supC': ['Energie solaire'],
+              'bar_cumC': ['Production\nsolaire'],
+              'bar_supC': ['Production\nsolaire'],
               'bar_supDispo': []}
 
 # Fields (to plot new type of graph add new fields here)
@@ -134,29 +134,34 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_H': ['Diffus', 'Direct'],
           'box_HDir': ['HDirNor', 'Direct'],
           'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
-          'diag_B': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation appoint'],
+          'diag_B': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                      'Energie captable', 'Consommation\nappoint'],
                      ['Chauffage', 'ECS', 'Pertes appoint', 'Pertes réseau']],
-          'diag_P': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation appoint'],
-                     ['Production\nappoint', 'Energie solaire']],
-          'bar_cumC': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation appoint'],
+          'diag_P': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                      'Energie captable', 'Consommation\nappoint'],
+                     ['Pertes capteur', 'Production\nsolaire']],
+          'diag_C': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                      'Energie captable', 'Consommation\nappoint'],
+                     ['Consommation\nappoint', 'Production\nsolaire']],
+          'bar_cumC': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                        'Energie captable', 'Consommation\nappoint'],
                        ['ECS', 'Chauffage', 'Pertes réseau']],
-          'bar_cumA': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation appoint'],
-                       ['Energie solaire', 'Production\nappoint']],
-          'bar_supC': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation appoint'],
+          'bar_cumA': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                        'Energie captable', 'Consommation\nappoint'],
+                       ['Production\nsolaire', 'Production\nappoint']],
+          'bar_supC': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                        'Energie captable', 'Consommation\nappoint'],
                        ['ECS', 'Chauffage', 'Pertes réseau']],
-          'bar_supDispo': [['Energie solaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                            'Energie captable', 'Consommation appoint'],
-                           ['Energie captable', 'Energie solaire']],
-          'area_E': ['ECS', 'Energie solaire', 'Chauffage'],
+          'bar_supDispo': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
+                            'Energie captable', 'Consommation\nappoint'],
+                           ['Energie captable', 'Production\nsolaire']],
+          'area_E': ['Production\nsolaire', 'Consommation\nappoint'],
+          'area_P': ['Production\nsolaire', 'Pertes totales', 'Production\nappoint'],
           'area_EB': ['ECS', 'Chauffage', 'Pertes totales'],
-          'line_E': ['ECS', 'Energie solaire', 'Production\nappoint', 'Chauffage'],
-          'line_ES': ['Energie solaire', 'Energie captable'],
+          'line_E': ['ECS', 'Production\nsolaire', 'Production\nappoint', 'Chauffage'],
+          'line_ES': ['Production\nsolaire', 'Energie captable'],
           'line_TE': ['T3', 'T4', 'T5', 'T12_house'],
+          # 'line_TE': ['T7', 'T8', 'T12_house'],
           'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
           'line_H': ['Diffus', 'Direct'],
           'line_debA': ['Flow_S6', 'Flow_S5', 'Flow_S4', 'Flow_S2'],
@@ -175,22 +180,23 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
                     ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
             'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16', '#dc322f'],
-            'diag_P': ['#6c71c4', 'orange'],
-            'bar_cumA': {'Production\nappoint': '#fdf6e3', 'Energie solaire': 'orange',
+            'diag_P': ['#804040', 'orange'],
+            'diag_C': ['#d33682', 'orange'],
+            'bar_cumA': {'Production\nappoint': '#fdf6e3', 'Production\nsolaire': 'orange',
                          'Pertes totales': '#cb4b16'},
             'bar_cumC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                         'ECS': '#268bd2', 'Energie solaire': 'orange',
+                         'ECS': '#268bd2', 'Production\nsolaire': 'orange',
                          'Pertes réseau': '#cb4b16'},
-            'bar_supDispo': {'Energie solaire': 'orange',
+            'bar_supDispo': {'Production\nsolaire': 'orange',
                              'Energie captable': '#859900'},
             'bar_supC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                         'ECS': '#268bd2', 'Energie solaire': 'orange',
+                         'ECS': '#268bd2', 'Production\nsolaire': 'orange',
                          'Pertes réseau': '#cb4b16'},
             'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
             'line_ES': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
             'line_debS': 'Accent', 'line_debC': 'Accent', 'line_T': 'Accent',
             'line_debSE': 'Accent', 'line_debCE': 'Accent', 'area_EB': 'Accent',
-            'line_debSCE': 'Accent', 'line_V3V': 'Accent',
+            'line_debSCE': 'Accent', 'line_V3V': 'Accent', 'area_P': 'Accent',
             'line_Drawing': 'Accent', 'line_Backup': 'Accent',
             'line_debSCEbuffer': 'Accent'}
 
@@ -206,12 +212,14 @@ titles = {'title': 'Bilan de la simulation',
                       'du potentiel de l’irradiation directe sur les panneaux',
           'box_P': 'Evolution de l’état des pompes d’appoint et solaires',
           'diag_B': 'Taux de couverture',
-          'diag_P': 'Répartition de la production',
+          'diag_P': 'Rendement capteur',
+          'diag_C': 'Répartition de la consommation',
           'bar_cumA': 'Evolution mensuelle des apports',
           'bar_cumC': "Evolution mensuelle de la production d'énergie",
           'bar_supC': "Evolution mensuelle des apports et de la production d'énergie",
           'bar_supDispo': "Evolution mensuelle des gains et du rendement solaire",
           'area_E': 'Evolution annuelle de la consommation en énergie',
+          'area_P': 'Evolution annuelle de la production en énergie',
           'area_EB': 'Evolution annuelle des besoins',
           'line_E': 'Evolution annuelle de la consommation en énergie',
           'line_ES': 'Evolution annuelle de la production solaire',
@@ -234,11 +242,11 @@ titles = {'title': 'Bilan de la simulation',
 
 # Change data columns names
 conv_dict = {'DrawingUp_Energy': 'ECS', 'Radiator_Energy': 'Chauffage',
-             'Collector_Energy': 'Energie solaire',
+             'Collector_Energy': 'Production\nsolaire',
              # Must be a comment with csv files older than 2015
              'CollectorPanel_Energy': 'Energie captable',
              # Must be a comment with csv files older than 2015
-             'BoilerFuel_Energy': 'Consommation appoint',
+             'BoilerFuel_Energy': 'Consommation\nappoint',
              # Must be a comment with csv files older than 2015
              'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
              'Boiler_Energy': 'Production\nappoint',
@@ -246,19 +254,35 @@ conv_dict = {'DrawingUp_Energy': 'ECS', 'Radiator_Energy': 'Chauffage',
 
 # New fields
 new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
-              ('Production', 'Energie solaire', 'Production\nappoint', '+'),
+              ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
               ('Pertes réseau', 'Production', 'Besoins', '-'),
-              ('Pertes appoint', 'Consommation appoint', 'Production\nappoint', '-'),
+              ('Pertes appoint', 'Consommation\nappoint', 'Production\nappoint', '-'),
               ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
-              ('Taux de couverture', 'Energie solaire', 'Production', '/'),
-              ('Rendement capteur', 'Energie solaire', 'Energie captable', '/'))
+              ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
+              ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
+              ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
+              # ('Gain\nsolaire', 'SolarPower_absorbed', 'SolarPower_lost', '-'))
 
 # Prepare Taux de couverture (list of formatted datas)
 short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
                'Nov', 'Dec']
 
-# Test
+# Test new
+# chambery-6p_20150125.csv marseille-6p_20150123.csv bordeaux-6p_20150119.csv
+# lyon-6p_20150116.csv strasbourg-6p_20150123.csv
+# chambery-9p_20150120.csv marseille-9p_20150124.csv bordeaux-9p_20150126.csv
+# lyon-9p_20150126.csv strasbourg-9p_20150127.csv
+# chambery-0p_20150121.csv marseille-0p_20150122.csv bordeaux-0p_20150125.csv
+# lyon-0p_20150124.csv strasbourg-0p_20150126.csv
+# chambery-3p_20150128.csv marseille-3p_20150129.csv bordeaux-3p_20150128.csv
+# lyon-3p_20150128.csv
+# chambery300v-6p_20150127.csv
+
+# strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
+
+
+# Test old
 # _ chambery3p_20140802.csv chambery_20140825.csv chambery9p_20140821.csv
 # chambery12p_20140802.csv lyon_20140920.csv
 # marseille_20140630.csv strasbourg_20140707.csv bordeaux_20140715.csv
@@ -270,6 +294,9 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # chambery12padapt_20141006.csv
 # marseille5KWh_20141013.csv
 # none none
+
+# Debugger
+# import pdb; pdb.set_trace()
 
 if __name__ == '__main__':
     # Dynamic selection of multiple csv with specific separator
@@ -338,7 +365,7 @@ if __name__ == '__main__':
                       splitters=(sep,) * nb_name)
 
     #
-    ################## EvalData class : Prepare datas ##################
+    #                      EvalData class : Prepare datas                      #
     #
     # Keep only 2014 datas into the dict
     datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
@@ -434,13 +461,13 @@ if __name__ == '__main__':
                 print('TdrawingUp = ',
                       chunk[chunk["RealT"] != -1]['RealT'].mean())
 
-                # Data which can be reduce to a 30min step size
+                # Data which can be reduce to a 1 hour step size
                 structs[name][el] = EvalData.resample(frame=datas[name].frame,
-                                                      sample='30min',
+                                                      sample='1h',
                                                       interpolate=True)
-                structs[name][el] = datas[name].frame
+                # structs[name][el] = datas[name].frame
 
-    # # Write to a json file all energy informations
+    # Write to a json file all energy informations
     # with open('energy.json', 'w', encoding='utf-8') as f:
     #     json.dump(energy_json, f, indent=4)
     # # Write to a json file all heating time informations
@@ -458,7 +485,7 @@ if __name__ == '__main__':
     print('\n|\n|\n|--> Class creation now finish, plotting datas\n')
 
     #
-    ################## MultiPlotter class : Plot datas ##################
+    #                     MultiPlotter class : Plot datas                      #
     #
     add = ' -- '.join(data for data in datas)
     title = titles['title'] + ' pour les données de ' + add
@@ -468,7 +495,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    # rows, cols = 2, 2
+    # rows, cols = 2, 4
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -498,14 +525,26 @@ if __name__ == '__main__':
             pos = test_index(name, plot)
             print(pos)
             if 'bar' in plot:
+                ylabel = "KWh"
                 Plot.colors = col_dict[plot]
+                # # KWh to KWh/m2
+                # for column_name in structs[name][plot][0].columns:
+                #     if any(c in column_name for c in ("Taux de couverture",
+                #                                       "Rendement capteur")):
+                #         continue
+                #     else:
+                #         structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (2.32*6)
+                # ylabel = "$KWh/m^2$"
+                # #
                 print(structs[name][plot][0])
+                # Debugger
+                # import pdb; pdb.set_trace()
                 if 'cum' in plot:
                     Plot.bar_cum_plot(structs[name][plot][0],
                                       emphs=emphs_dict[plot],
                                       pos=pos, fields=fields[plot][1],
                                       loc='center', line_dict={"linewidth": 4},
-                                      names=structs[name][plot][1],
+                                      names=structs[name][plot][1], ylabel=ylabel,
                                       title=titles[plot] + '\n{}'.format(name_cap))
                     print(structs[name][plot][1])
                 elif 'sup' in plot:
@@ -514,7 +553,7 @@ if __name__ == '__main__':
                     Plot.bar_sup_plot(structs[name][plot][0],
                                       emphs=emphs_dict[plot],
                                       pos=pos, fields=fields[plot][1],
-                                      loc='center',
+                                      loc='center', ylabel=ylabel,
                                       names=structs[name][plot][1],
                                       title=titles[plot] + '\n{}'.format(name_cap))
                 # Each xticks = short month name +
@@ -549,7 +588,7 @@ if __name__ == '__main__':
                 while len(explode) < len(fields[plot][1]):
                     explode.append(0.0)
                 # Add specific title for diag_B
-                if 'diag_B' in plot:
+                if any(c in plot for c in ('_B', '_P')):
                     frame = structs[name][plot]
                     columns = frame.columns
                     p_title = '{1} : {0:.2%}'.format(frame.get_value(titles[plot],
@@ -592,7 +631,7 @@ if __name__ == '__main__':
                     # All datas
                     Plot.frame_plot(structs[name][plot], fields=fields[plot],
                                     title=titles[plot] + '\n{}'.format(name_cap),
-                                    pos=pos, loc='center', stacked=True,
+                                    pos=pos, loc='center', stacked=False,
                                     colormap=col_dict[plot],
                                     linewidth=2, kind=plot.split('_')[0])
                     # Specific month

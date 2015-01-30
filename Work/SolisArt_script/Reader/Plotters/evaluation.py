@@ -338,6 +338,7 @@ class EvalData(object):
                                                     frame))
         return summation, step_list
 
+    # Only used for solar heating time (ugly hack)
     def col_sum_map_test(self, frame, cols_map, used_col="index",
                          start_sum=0, debug=False):
         """
