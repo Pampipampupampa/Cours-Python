@@ -62,3 +62,7 @@ docs/_build/
 
 # Other
 *.json
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
