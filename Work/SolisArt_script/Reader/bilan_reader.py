@@ -119,6 +119,10 @@ def prepare_export(dico, name):
 #    Main Program :    #
 ########################
 
+# Constant
+A_COL = 2.32  # Collector area
+
+
 # Select directory
 fold = FOLDER / 'clean'
 
@@ -268,7 +272,16 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
                'Nov', 'Dec']
 
-# Test new
+
+
+# Test new:
+# chambery-0p_20150206.csv
+# chambery-3p_20150206.csv
+# chambery-6p_20150207.csv
+# chambery-9p_20150208.csv
+
+
+# Test old:
 # chambery-6p_20150125.csv marseille-6p_20150123.csv bordeaux-6p_20150119.csv
 # lyon-6p_20150116.csv strasbourg-6p_20150123.csv
 # chambery-9p_20150120.csv marseille-9p_20150124.csv bordeaux-9p_20150126.csv
@@ -276,24 +289,11 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 # chambery-0p_20150121.csv marseille-0p_20150122.csv bordeaux-0p_20150125.csv
 # lyon-0p_20150124.csv strasbourg-0p_20150126.csv
 # chambery-3p_20150128.csv marseille-3p_20150129.csv bordeaux-3p_20150128.csv
-# lyon-3p_20150128.csv
-# chambery300v-6p_20150127.csv
+# lyon-3p_20150128.csv strasbourg-3p_20150202.csv
+# chambery300vp-6p_20150127.csv chambery300vm-6p_20150202.csv
+
 
 # strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
-
-
-# Test old
-# _ chambery3p_20140802.csv chambery_20140825.csv chambery9p_20140821.csv
-# chambery12p_20140802.csv lyon_20140920.csv
-# marseille_20140630.csv strasbourg_20140707.csv bordeaux_20140715.csv
-# chambery17KWh_20140910.csv chambery17KWh200plus_20140905.csv
-# chamberyNosun_20140908.csv chambery17KWhNosun_20140911.csv
-# marseilleNosun_20141009.csv
-# chambery100plus_20140808.csv chambery100moins_20140811.csv
-# chambery3padapt_20141020.csv chambery9padapt_20141001.csv
-# chambery12padapt_20141006.csv
-# marseille5KWh_20141013.csv
-# none none
 
 # Debugger
 # import pdb; pdb.set_trace()
@@ -415,9 +415,9 @@ if __name__ == '__main__':
         #         time_json[name][m_] = time_info(frame=chunk)
         #     # Prepare time data to export
         #     prepare_export(dico=time_json, name=name)
-            # # Create csv structure
-            # time_csv.append([name, m_] +
-            #                 [el for el in time_json[name][m_].values()])
+        #     # Create csv structure
+        #     # time_csv.append([name, m_] +
+        #     #                 [el for el in time_json[name][m_].values()])
     # --    ------------------------------------------------------------------------
         # Add all plot for each set of datas
         for el in structs[name]:
@@ -467,7 +467,7 @@ if __name__ == '__main__':
                                                       interpolate=True)
                 # structs[name][el] = datas[name].frame
 
-    # Write to a json file all energy informations
+    # # Write to a json file all energy informations
     # with open('energy.json', 'w', encoding='utf-8') as f:
     #     json.dump(energy_json, f, indent=4)
     # # Write to a json file all heating time informations
@@ -525,18 +525,23 @@ if __name__ == '__main__':
             pos = test_index(name, plot)
             print(pos)
             if 'bar' in plot:
-                ylabel = "KWh"
+                ylabel = "$KWh$"
                 Plot.colors = col_dict[plot]
-                # # KWh to KWh/m2
-                # for column_name in structs[name][plot][0].columns:
-                #     if any(c in column_name for c in ("Taux de couverture",
-                #                                       "Rendement capteur")):
-                #         continue
-                #     else:
-                #         structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (2.32*6)
-                # ylabel = "$KWh/m^2$"
-                # #
+                # KWh to KWh/m2 (Careful collector area extract from name)
+                nb_col = int(name.split("-")[1][:1])
+                # Check number of collectors
+                print("**********   ", nb_col, "   ***********")
+                if 'Dispo' in plot:
+                    for column_name in structs[name][plot][0].columns:
+                        if any(c in column_name for c in ("Taux de couverture",
+                                                          "Rendement capteur")):
+                            continue
+                        else:
+                            structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (A_COL * nb_col)
+                    ylabel = "$KWh/m^2$"
+                # Data check
                 print(structs[name][plot][0])
+
                 # Debugger
                 # import pdb; pdb.set_trace()
                 if 'cum' in plot:
@@ -546,10 +551,8 @@ if __name__ == '__main__':
                                       loc='center', line_dict={"linewidth": 4},
                                       names=structs[name][plot][1], ylabel=ylabel,
                                       title=titles[plot] + '\n{}'.format(name_cap))
-                    print(structs[name][plot][1])
                 elif 'sup' in plot:
                     Plot.colors = col_dict[plot]
-                    print(structs[name][plot][0])
                     Plot.bar_sup_plot(structs[name][plot][0],
                                       emphs=emphs_dict[plot],
                                       pos=pos, fields=fields[plot][1],
@@ -578,6 +581,7 @@ if __name__ == '__main__':
                 Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False,
                                      patch_artist=True, loc='center',
                                      title=titles[plot] + '\n{}'.format(name_cap))
+                # Plot.catch_axes(*pos).set_ylim(-10, 900)
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
                 if "_B" in plot:

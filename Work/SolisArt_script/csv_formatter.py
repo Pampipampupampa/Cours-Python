@@ -477,9 +477,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\" + \
-             "marseille-3p_20150129.csv"
+             "chambery-0p_20150206.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\" + \
-              "marseille-3p_20150129.csv"
+              "chambery-0p_20150206.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

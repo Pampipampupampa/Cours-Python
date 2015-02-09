@@ -9,12 +9,12 @@ from json_decode import iter_nested_json
 
 
 ########################
-#### Main Program : ####
+#    Main Program :    #
 ########################
 
 # File to load
 json_file = "D:\Github\solarsystem\Outputs\Plots_stock\Energy_sav" + \
-            "\\dico_energy.json"
+            "\\dico_energy_20150204.json"
 
 rows = ['January', 'February', 'March', 'April', 'May',
         'June', 'July', 'August', 'September', 'October',
@@ -53,8 +53,8 @@ for col in cols:
                                     col] = (100 *
                                             frames["Production\nsolaire"].ix[-1:,
                                                                              col] /
-                                            frames["Consommations"].ix[-1:,
-                                                                       col])
+                                            frames["Production"].ix[-1:,
+                                                                    col])
     # Calculate new ratio
     frames["Rendement capteur"].ix[-1:,
                                    col] = (100 *
@@ -63,6 +63,9 @@ for col in cols:
                                            frames["Energie captable"].ix[-1:,
                                                                          col])
 
+# Columns to plot
+to_plot = ['February', 'April', 'July', 'September', 'December']
+
 # Add plot
 Plot = MultiPlotter({}, nb_cols=2, nb_rows=2, colors=None,
                     title=title, sharex=True, sharey=False)
@@ -70,38 +73,42 @@ Plot.font_legend = {'size': 5,
                     'family': 'Anonymous Pro'}
 Plot.fig_init(figsize=(24, 12))
 
-Consommations = Plot.frame_plot(frames["Consommations"].ix[-1:, :], fields="all",
-                                legend=False,
-                                title='Consommations',
-                                loc='left', kind="bar", pos=(0, 0))
+
 couverture = Plot.frame_plot(frames["Taux de couverture"].ix[-1:, :], fields="all",
                              legend=False,
-                             title='Couverture', ylim=(-10, 110),
+                             title='Couverture solaire', ylim=(-10, 110),
                              loc='left', kind="bar", pos=(0, 1))
-# besoins = Plot.frame_plot(frames["Besoins"].ix[-1:, :], fields="all",
-#                           legend=False,
-#                           title='Besoins',
-#                           loc='left', kind="bar", pos=(1, 0))
-# pertes = Plot.frame_plot(frames["Pertes"].ix[-1:, :], fields="all",
-#                          legend=False,
-#                          title='Pertes',
-#                          loc='left', kind="bar", pos=(1, 1))
+rendement = Plot.frame_plot(frames["Rendement capteur"].ix[-1:, :], fields="all",
+                            legend=False,
+                            title='Rendement des capteurs',
+                            loc='left', kind="bar", pos=(1, 1))
 solaire = Plot.frame_plot(frames["Production\nsolaire"].ix[-1:, :], fields="all",
                           legend=False,
-                          title='Production\nsolaire',
-                          loc='left', kind="bar", pos=(1, 0))
-appoint = Plot.frame_plot(frames["Appoint"].ix[-1:, :], fields="all",
+                          title='Production solaire',
+                          loc='left', kind="bar", pos=(0, 0))
+appoint = Plot.frame_plot(frames["Production\nappoint"].ix[-1:, :], fields="all",
                           legend=False,
-                          title='Energie appoint',
-                          loc='left', kind="bar", pos=(1, 1))
+                          title='Production appoint',
+                          loc='left', kind="bar", pos=(1, 0))
 
 # Add ylabel to each plots
 Plot.set_axes_label('KWh', pos=(0, 0), axe='y')
 Plot.set_axes_label('%', pos=(0, 1), axe='y')
 Plot.set_axes_label('KWh', pos=(1, 0), axe='y')
-Plot.set_axes_label('KWh', pos=(1, 1), axe='y')
+Plot.set_axes_label('%', pos=(1, 1), axe='y')
 # Change legend alignement
-Plot.catch_axes(*(1, 0)).legend(ncol=1)
+Plot.catch_axes(*(1, 0)).legend(ncol=1, loc=0)
+
+# Only for annual simulations
+# Tight plot (left aligned)
+Plot.catch_axes(*(1, 0)).set_xlim(-0.255, 0.382)
+Plot.catch_axes(*(1, 1)).set_xlim(-0.255, 0.382)
+Plot.catch_axes(*(0, 0)).set_xlim(-0.255, 0.382)
+Plot.catch_axes(*(0, 1)).set_xlim(-0.255, 0.382)
+# Tight plot (vertical limit)
+Plot.catch_axes(*(1, 1)).set_ylim(-5, 55)
+Plot.catch_axes(*(0, 1)).set_ylim(-5, 85)
+
 
 # Adjust plot format (avoid overlaps)
 Plot.adjust_plots(hspace=0.6, wspace=0.15,
@@ -110,8 +117,8 @@ Plot.adjust_plots(hspace=0.6, wspace=0.15,
 Plot.tight_layout()
 
 
-sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-         base_name="Simulation_energy", plotter=Plot, facecolor="white")
+# sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+         # base_name="Simulation_energy", plotter=Plot, facecolor="white")
 
 # Display plots
 Plot.show()
