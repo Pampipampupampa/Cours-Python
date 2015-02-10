@@ -22,7 +22,7 @@
 """
 
 # import csv
-# import json
+import json
 
 # Import internal lib
 from Plotters.evaluation import *
@@ -134,7 +134,7 @@ emphs_dict = {'bar_cumA': ['Pertes réseau'],
 
 # Fields (to plot new type of graph add new fields here)
 fields = {'box_Tbal': ['T3', 'T4', 'T5'],
-          'box_Tint': ['T9_ext', 'T1', 'T12_house'],
+          'box_Text': ['T9_ext'],
           'box_H': ['Diffus', 'Direct'],
           'box_HDir': ['HDirNor', 'Direct'],
           'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
@@ -208,8 +208,8 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
 titles = {'title': 'Bilan de la simulation',
           'box_Tbal': 'Evolution mensuelle de la variation \n' +
                       'des températures des ballons',
-          'box_Tint': 'Evolution mensuelle de la variation \n' +
-                      'des températures capteurs, extérieure et intérieure',
+          'box_Text': 'Evolution mensuelle de la variation \n' +
+                      'dee la température etérieure',
           'box_H': 'Evolution mensuelle de la variation \n' +
                    'de l’irradiation sur les panneaux',
           'box_HDir': 'Evolution mensuelle de la variation \n' +
@@ -426,19 +426,25 @@ if __name__ == '__main__':
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
                 # Here we populate the energy_json
-                if 'Dispo' in el:
-                    # Explicit copy
-                    tmp = structs[name][el][0].copy()
-                    tmp.index = structs[name][el][1]
-                    tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
-                    tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
-                    # Temporary ordered dict to keep months in the right order
-                    temp = OrdD()
-                    for mth in tmp.index:
-                        temp[mth] = {para: tmp[para][mth]
-                                     for para in tmp.columns}
-                    # Populate dict with temp ordered dict
-                    energy_json[name] = temp
+                # if 'Dispo' in el:
+                #     # Explicit copy
+                #     tmp = structs[name][el][0].copy()
+                #     tmp.index = structs[name][el][1]
+                #     tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
+                #     tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
+                #     # Temporary ordered dict to keep months in the right order
+                #     temp = OrdD()
+                #     for mth in tmp.index:
+                #         temp[mth] = {para: tmp[para][mth]
+                #                      for para in tmp.columns}
+                #         # Add mean temperature per months
+                #         t_fields = ['T1', 'T3', 'T4', 'T5', 'T7', 'T8', 'T9_ext', 'T12_house']
+                #         f_temp = datas[name].frame[t_fields].resample('1m', how='mean')
+                #         f_temp.index = tmp.index
+                #         for temperature in f_temp.columns:
+                #             temp[mth][temperature] = f_temp[temperature][mth]
+                #     # Populate dict with temp ordered dict
+                #     energy_json[name] = temp
 
             elif 'box' in el:
                 # structs[name][el] = (datas[name].box_actions(datas[name].frame,
@@ -467,9 +473,9 @@ if __name__ == '__main__':
                                                       interpolate=True)
                 # structs[name][el] = datas[name].frame
 
-    # # Write to a json file all energy informations
-    # with open('energy.json', 'w', encoding='utf-8') as f:
-    #     json.dump(energy_json, f, indent=4)
+    # Write to a json file all energy informations
+    with open('energy.json', 'w', encoding='utf-8') as f:
+        json.dump(energy_json, f, indent=4)
     # # Write to a json file all heating time informations
     # with open('heating_time.json', 'w', encoding='utf-8') as f:
     #     json.dump(time_json, f, indent=4)
