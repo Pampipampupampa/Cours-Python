@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"fon",
+				"font_legend	statement"
+			],
+			[
+				"dia",
+				"diag_C"
+			],
+			[
+				"fondic",
+				"fontdict"
+			],
+			[
+				"sav",
+				"savefig"
+			],
+			[
+				"T1",
+				"T12_house"
+			],
+			[
 				"boH",
 				"box_H"
 			],
@@ -30,10 +50,6 @@
 			[
 				"diag",
 				"diag_P"
-			],
-			[
-				"dia",
-				"diag_C"
 			],
 			[
 				"y",
@@ -498,22 +514,6 @@
 			[
 				"dataframe",
 				"dataframes"
-			],
-			[
-				"new",
-				"new_fields	statement"
-			],
-			[
-				"has",
-				"hasattr"
-			],
-			[
-				"prop",
-				"property	class"
-			],
-			[
-				"Plot",
-				"Plot_test	statement"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "SolisArt_script/csv_formatter.py",
 			"settings":
 			{
-				"buffer_size": 22692,
+				"buffer_size": 22696,
 				"line_ending": "Windows"
 			}
 		},
@@ -531,23 +531,31 @@
 			"file": "SolisArt_script/Reader/bilan_reader.py",
 			"settings":
 			{
-				"buffer_size": 33555,
+				"buffer_size": 35198,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "SolisArt_script/Reader/energy_treatment.py",
+			"file": "SolisArt_script/Reader/Plotters/parameters.py",
 			"settings":
 			{
-				"buffer_size": 4892,
+				"buffer_size": 7387,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "SolisArt_script/Reader/time_treatment.py",
+			"file": "SolisArt_script/Reader/Plotters/evaluation.py",
 			"settings":
 			{
-				"buffer_size": 3377,
+				"buffer_size": 49845,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SolisArt_script/Reader/publi_plotter.py",
+			"settings":
+			{
+				"buffer_size": 9332,
 				"line_ending": "Windows"
 			}
 		}
@@ -561,6 +569,22 @@
 			[
 				"pyr",
 				"SublimeREPL: Python - RUN current file"
+			],
+			[
+				"pyth",
+				"Set Syntax: Python"
+			],
+			[
+				"yr",
+				"Set Syntax: R"
+			],
+			[
+				"pr",
+				"Permute Lines: Reverse"
+			],
+			[
+				"ins",
+				"Gist: Insert Gist"
 			],
 			[
 				"prev",
@@ -613,10 +637,6 @@
 			[
 				"remv",
 				"Package Control: Remove Package"
-			],
-			[
-				"ins",
-				"Package Control: Install Package"
 			],
 			[
 				"py",
@@ -675,10 +695,6 @@
 				"File: Save All"
 			],
 			[
-				"pr",
-				"Permute Lines: Reverse"
-			],
-			[
 				"pas",
 				"Project: Save As"
 			],
@@ -718,6 +734,16 @@
 	},
 	"file_history":
 	[
+		"/D/Github/Cours-Python/.gitignore",
+		"/D/Github/Projets/Publications/SolarCombisystem/README.md",
+		"/D/Github/solarsystem/Outputs/clean/Old/README.md",
+		"/D/Github/Cours-Python/Work/Notebooks/.ipynb_checkpoints/Solar_system_output-checkpoint.ipynb",
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy.json",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy_treatment.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/time_treatment.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
 		"/C/Users/bois/Downloads/add.md",
 		"/F/Base-de-données-secondaire-exp-nationale.xls",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/heating_time.json",
@@ -725,17 +751,12 @@
 		"/C/Users/bois/Downloads/SolisArt_diapo_20150204.tex",
 		"/C/Users/bois/Downloads/SolisArt_report.tex",
 		"/D/Github/Projets/SolisArt/Rapport/2015_02_02/SolisArt_report.tex",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy_treatment.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/time_treatment.py",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Energy_sav/energy.json",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/json_decode.py",
 		"/C/Users/bois/Downloads/Base-de-données-secondaire-exp-nationale.xls",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy.json",
 		"/D/Github/Cours-Python/Work/Python_extractDisplay.sublime-project",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
 		"/D/Github/Projets/SolisArt/Rapport/2015_01_29/diapo_solisart.tex",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Récapitulatif.md",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Taux_économie.md",
 		"/D/Github/Projets/IGC/Etudes/Plafond_rafraichissant/README.txt",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
@@ -762,7 +783,6 @@
 		"/D/Instructions.md",
 		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/README.md",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Users/bois/Desktop/Dymola_message.txt",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Time_sav/old/heating_time_2014.json",
@@ -841,11 +861,7 @@
 		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Source_file/Avril01_Mai06.txt",
 		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Avril01_Mai06_exp.csv",
 		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Mars01_Avril01_exp.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Mai01_Juin05_exp.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/Toulouse_Trnsys_backup.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/Toulouse_Dymola.xls",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/Toulouse_incl_Trnsys.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Mars_Mai.txt"
+		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Mai01_Juin05_exp.csv"
 	],
 	"find":
 	{
@@ -863,6 +879,39 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"-.",
+			"rotation",
+			"sav",
+			"size",
+			"font_legend",
+			"Anonymous Pro",
+			", ncol=1",
+			"fontdict=font_base, ",
+			"title",
+			"strasbourg-3p_20150210.csv",
+			"strasbourg-0p_20150209.csv",
+			"strasbourg-6p_20150211.csv",
+			"marseille-0p_20150208.csv",
+			"marseille-9p_20150209.csv",
+			"marseille-6p_20150208.csv",
+			"marseille-3p_20150207.csv",
+			"bordeaux-9p_20150210.csv",
+			"bordeaux",
+			"chambery",
+			"plot",
+			"box",
+			"Speed",
+			"Flow",
+			"bordeaux-6p_20150209.csv",
+			"bordeaux-3p_20150208.csv",
+			"bordeaux-0p_20150210.csv",
+			"chambery-0p_20150206.csv",
+			"boxpl",
+			"rendements",
+			"chambery",
+			"rotation",
+			"limit",
+			"T9_ext",
 			"chambery-3p_20150206.csv",
 			"chambery-6p_20150207.csv",
 			"chambery-9p_20150208.csv",
@@ -957,40 +1006,7 @@
 			"area",
 			"selec",
 			"on ap",
-			"appoint",
-			"Production",
-			"BoilerFuel_Energy",
-			"P",
-			"bar_supDispo,bar_cumC,",
-			"bordeaux-6p_20150119.csv",
-			"Energie solaire",
-			"solaire",
-			"Energie solaire",
-			"lyon",
-			"marseille-6p_20150115",
-			"Flow_ExchTank_top",
-			"Flow_ExchTank_bot",
-			"S4",
-			"Flow_S2",
-			"Flow",
-			"Flow_S6",
-			"Pertes",
-			"chambery",
-			"0.8",
-			"Plotter",
-			"Plot",
-			"time_info",
-			"if",
-			"radius",
-			"Pertes autres",
-			"Production appoint",
-			"diag",
-			"diag_B",
-			"Pertes'",
-			"_C",
-			"diag_C",
-			"Consommations",
-			"Appoint"
+			"appoint"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1008,13 +1024,13 @@
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
-		"whole_word": true,
+		"whole_word": false,
 		"wrap": true
 	},
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -1023,15 +1039,19 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 22692,
+						"buffer_size": 22696,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								20869,
-								20869
+								21263,
+								21263
+							],
+							[
+								21368,
+								21368
 							]
 						],
 						"settings":
@@ -1041,10 +1061,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8702.0,
+						"translation.y": 8530.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -1053,88 +1073,118 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 33555,
+						"buffer_size": 35198,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13567,
-								13567
+								13700,
+								13674
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4980.0,
+						"translation.y": 4522.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "SolisArt_script/Reader/energy_treatment.py",
+					"file": "SolisArt_script/Reader/Plotters/parameters.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4892,
+						"buffer_size": 7387,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3906,
-								3906
+								1053,
+								1053
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1349.0,
+						"translation.y": 285.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "SolisArt_script/Reader/Plotters/evaluation.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 49845,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								19019,
+								19019
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8436.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "SolisArt_script/Reader/time_treatment.py",
+					"buffer": 4,
+					"file": "SolisArt_script/Reader/publi_plotter.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3377,
+						"buffer_size": 9332,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3377,
-								3377
+								4471,
+								4471
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_indent": true,
+							"open_with_edit": true,
+							"syntax": "Packages/Python/Python.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1274.0,
+						"translation.y": 1806.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1199,12 +1249,12 @@
 		"selected_items":
 		[
 			[
-				"pyr",
-				"SolisArt_script\\Reader\\Plotters\\parameters.py"
-			],
-			[
 				"yr",
 				"Notebooks\\.ipynb_checkpoints\\Solar_system_output-checkpoint.ipynb"
+			],
+			[
+				"pyr",
+				"SolisArt_script\\Reader\\Plotters\\parameters.py"
 			]
 		],
 		"width": 0.0
@@ -1235,7 +1285,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 263.0,
 	"status_bar_visible": true,
 	"template_settings":

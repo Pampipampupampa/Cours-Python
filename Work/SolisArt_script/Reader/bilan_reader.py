@@ -137,7 +137,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_Text': ['T9_ext'],
           'box_H': ['Diffus', 'Direct'],
           'box_HDir': ['HDirNor', 'Direct'],
-          'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
+          'box_S': ['Speed_S6', 'Speed_S5', 'Speed_S2'],
           'diag_B': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
                       'Energie captable', 'Consommation\nappoint'],
                      ['Chauffage', 'ECS', 'Pertes appoint', 'Pertes réseau']],
@@ -214,7 +214,7 @@ titles = {'title': 'Bilan de la simulation',
                    'de l’irradiation sur les panneaux',
           'box_HDir': 'Evolution mensuelle de la variation \n' +
                       'du potentiel de l’irradiation directe sur les panneaux',
-          'box_P': 'Evolution de l’état des pompes d’appoint et solaires',
+          'box_S': 'Evolution de la vitesse des pompes',
           'diag_B': 'Taux de couverture',
           'diag_P': 'Rendement capteur',
           'diag_C': 'Répartition de la consommation',
@@ -273,12 +273,11 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
                'Nov', 'Dec']
 
 
-
 # Test new:
-# chambery-0p_20150206.csv
-# chambery-3p_20150206.csv
-# chambery-6p_20150207.csv
-# chambery-9p_20150208.csv
+# chambery-0p_20150206.csv bordeaux-0p_20150210.csv marseille-0p_20150208.csv strasbourg-0p_20150209.csv
+# chambery-3p_20150206.csv bordeaux-3p_20150208.csv marseille-3p_20150207.csv strasbourg-3p_20150210.csv
+# chambery-6p_20150207.csv bordeaux-6p_20150209.csv marseille-6p_20150208.csv strasbourg-6p_20150211.csv
+# chambery-9p_20150208.csv bordeaux-9p_20150210.csv marseille-9p_20150209.csv strasbourg-9p_20150211.csv
 
 
 # Test old:
@@ -425,7 +424,7 @@ if __name__ == '__main__':
                 structs[name][el] = (datas[name].bar_energy(datas[name].frame,
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
-                # Here we populate the energy_json
+                # # Here we populate the energy_json
                 # if 'Dispo' in el:
                 #     # Explicit copy
                 #     tmp = structs[name][el][0].copy()
@@ -447,9 +446,6 @@ if __name__ == '__main__':
                 #     energy_json[name] = temp
 
             elif 'box' in el:
-                # structs[name][el] = (datas[name].box_actions(datas[name].frame,
-                #                                              fields=fields[el],
-                #                                              diurnal=False))
                 structs[name][el] = (datas[name].box_actions(datas[name].frame,
                                                              fields=fields[el],
                                                              diurnal=True))
@@ -585,9 +581,17 @@ if __name__ == '__main__':
             elif 'box' in plot:
                 Plot.colors = col_dict['box']
                 Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False,
-                                     patch_artist=True, loc='center',
+                                     patch_artist=True, loc='center', rot=0,
+                                     prop_legend={'ncol': 3},
                                      title=titles[plot] + '\n{}'.format(name_cap))
-                # Plot.catch_axes(*pos).set_ylim(-10, 900)
+
+                # # Remove after publi
+                # Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False, rot=0,
+                #                      patch_artist=True, loc='center', prop_legend={'ncol': 3},
+                #                      title='' + '\n{}'.format(name_cap))
+                # Plot.catch_axes(*pos).set_ylim(-5, 2500)
+                # Plot.catch_axes(*pos).set_ylabel("1/min", fontsize=28, style='italic')
+
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
                 if "_B" in plot:
@@ -659,6 +663,18 @@ if __name__ == '__main__':
                                     pos=pos, loc='center',
                                     colormap=col_dict[plot],
                                     linewidth=2, kind=plot.split('_')[0])
+
+                    # # Remove after publi
+                    # Plot.frame_plot(structs[name][plot], fields=fields[plot],
+                    #                 title='' + '\n{}'.format(name_cap),
+                    #                 pos=pos, loc='center',
+                    #                 colormap=col_dict[plot],
+                    #                 linewidth=2, kind=plot.split('_')[0])
+                    # Plot.catch_axes(*pos).set_ylabel("°C", fontsize=28, style='italic')
+                    # Plot.catch_axes(*pos).legend(['T3', 'T4', 'T5', 'T_house'], loc=1,
+                    #                              prop={'size': 24,
+                    #                                    'family': 'Source Code Pro'},
+                    #                              ncol=1)
                     # Specific month
                     # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
                     #                                     month=5),
@@ -682,7 +698,7 @@ if __name__ == '__main__':
     if len(datas) == 1:
         base_name = name
     sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white")
+             base_name=base_name, plotter=Plot, facecolor="white", dpi=300)
 
     # Display plots
     Plot.show()
