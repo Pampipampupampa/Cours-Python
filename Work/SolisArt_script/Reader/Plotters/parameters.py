@@ -6,7 +6,7 @@
 
 
 ########################################
-#### Classes and Methods imported : ####
+#    Classes and Methods imported :    #
 ########################################
 
 
@@ -28,7 +28,7 @@ from itertools import chain, islice
 from collections import deque
 
 ######################
-#### Parameters : ####
+#    Parameters :    #
 ######################
 
 
@@ -40,13 +40,15 @@ elif name == 'posix':
 
 # Create font properties
 # Can be use to plot for publication
+# font_base = {'size': 18,
+#              'family': 'STIXGeneral'}
+#             'mathtext.fontset': 'stix'
+#             'text.usetex': True}  # Used to force latex inside figures
+# Favorite
 font_base = {'size': 18,
-             'family': 'STIXGeneral'}
+             'family': 'Source Code Pro'}
 
-             # 'mathtext.fontset': 'stix'
-             # 'text.usetex': True}  # Used to force latex inside figures
-
-# # Restore
+# # Restore default
 # matplotlib.rcParams.update({'font.size': 12,
 #                             'font.family': 'sans',
 #                             'text.usetex': False})
@@ -54,8 +56,8 @@ font_base = {'size': 18,
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
-matplotlib.rc('xtick', labelsize=10)
-matplotlib.rc('ytick', labelsize=10)
+matplotlib.rc('xtick', labelsize=23)  # base =12
+matplotlib.rc('ytick', labelsize=23)  # base =12
 matplotlib.rc('legend', fontsize=12)
 matplotlib.rc('legend', labelspacing=0.2)
 
@@ -70,7 +72,7 @@ secondes = SecondLocator(interval=10)
 secondes_formatter = DateFormatter("%M:%S")
 
 #######################################
-#### Classes, Methods, Functions : ####
+#    Classes, Methods, Functions :    #
 #######################################
 
 

@@ -480,11 +480,10 @@ class MultiPlotter(object):
     """
     # Text formatters
     font_title = {'size': 16,
-                  'family': 'Anonymous Pro'}
-    font_base = {'family': 'serif',
-                 'size': 13}
-    font_legend = {'size': 10,
-                   'family': 'Anonymous Pro'}
+                  'family': 'Source Code Pro'}
+    font_base = font_base
+    font_legend = {'size': 24,
+                   'family': 'Source Code Pro'}
     width = 2  # Line width
     colormap = "Accent"  # Color set
     background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
@@ -493,6 +492,9 @@ class MultiPlotter(object):
     names = ['January', 'February', 'March', 'April', 'May',
              'June', 'July', 'August', 'September', 'October',
              'November', 'December']
+    names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
+             'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
+             'Nov', 'Dec']
 
     def __init__(self, frames, colors, title='Title', nb_rows=2, nb_cols=2,
                  sharex=False, sharey=False):
@@ -690,7 +692,7 @@ class MultiPlotter(object):
             plt.setp(box['medians'], marker=marker[4],
                      **{key: val[4] for key, val in kw.items()})
 
-    def format_boxticks(self, list_frame, pos=(0, 0), start=0, names=[],
+    def format_boxticks(self, list_frame, pos=(0, 0), start=0, names=[], rot=30,
                         **kwargs):
         """
             Place and format xticks. Add boxes legends.
@@ -705,7 +707,7 @@ class MultiPlotter(object):
         self.catch_axes(*pos).set_xticks(self.optimize_xticks_pos(list_frame,
                                                                   start=start))
         self.catch_axes(*pos).set_xlim(-1, len(list_frame)*(len(cols)+self.pad))
-        self.set_xtiks_labels(pos, names)
+        self.set_xtiks_labels(pos, names, rotation=rot)
 
         # Add legend by drawing curves and hiding them just after
         curves = []  # Container for Line2D
@@ -795,8 +797,9 @@ class MultiPlotter(object):
                                 colors=colors, **kwargs)
 
     def boxes_mult_plot(self, list_frame, colors=(None,)*5,  title='Box me !',
-                        loc='left', pos=(0, 0), widths=0.6, whis=1000,
-                        mean=True, mean_dict={}, box_dict={}, **kwargs):
+                        loc='left', pos=(0, 0), widths=0.6, whis=1000, rot=30,
+                        mean=True, mean_dict={}, box_dict={},
+                        prop_legend={'ncol': 1}, **kwargs):
         """
             Draw a boxplot for each columns inside each dataframe of
             the list_frame. Each groups have space between them.
@@ -814,6 +817,7 @@ class MultiPlotter(object):
             - mean_dict used as a Dict of parameters passed to axe.plot()
             - box_dict used as a Dict of parameters passed to self.set_boxes()
                 - None leads to default value
+            - prop_legend is a dict of parameter to format legend
             - **kwargs will be passed to axe.boxplot()
         """
         # Defaults
@@ -855,7 +859,7 @@ class MultiPlotter(object):
         # Get group center
         start = int(len(list_frame[0].columns)/2+0.5) - 1
         # Set legend and xticks positions
-        self.format_boxticks(list_frame, pos, start)
+        self.format_boxticks(list_frame, pos, start, rot=rot, **prop_legend)
 
     def diag_plot(self, frame, to_diag, title='Diag me', labels=None,
                   loc='left', pos=(1, 0), explode=(0.1, 0, 0, 0), radius=0.7,
