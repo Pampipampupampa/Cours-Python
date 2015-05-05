@@ -14,7 +14,7 @@ from json_decode import iter_nested_json
 
 # File to load
 json_file = "D:\Github\solarsystem\Outputs\Plots_stock\Energy_sav" + \
-            "\\dico_energy_20150204.json"
+            "\\dico_energy_20150219.json"
 
 rows = ['January', 'February', 'March', 'April', 'May',
         'June', 'July', 'August', 'September', 'October',
@@ -64,7 +64,9 @@ for col in cols:
                                                                          col])
 
 # Columns to plot
-to_plot = ['February', 'April', 'July', 'September', 'December']
+# to_plot = ['January', 'February', 'March', 'April']
+# to_plot = ['May', 'June', 'July', 'August']
+# to_plot = ['September', 'October', 'November', 'December']
 
 # Add plot
 Plot = MultiPlotter({}, nb_cols=2, nb_rows=2, colors=None,
@@ -107,7 +109,7 @@ Plot.catch_axes(*(0, 0)).set_xlim(-0.255, 0.382)
 Plot.catch_axes(*(0, 1)).set_xlim(-0.255, 0.382)
 # Tight plot (vertical limit)
 Plot.catch_axes(*(1, 1)).set_ylim(-5, 55)
-Plot.catch_axes(*(0, 1)).set_ylim(-5, 85)
+Plot.catch_axes(*(0, 1)).set_ylim(-5, 100)
 
 
 # Adjust plot format (avoid overlaps)

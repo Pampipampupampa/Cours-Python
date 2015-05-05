@@ -15,7 +15,7 @@ from json_decode import iter_nested_json
 
 # File to load
 json_file = "D:\Github\solarsystem\Outputs\Plots_stock\Time_sav" + \
-            "\\heating_time_20150204.json"
+            "\\heating_time_20150219.json"
 # Load json
 with open(json_file, 'r', encoding='utf-8') as f:
     datas = json.load(f, object_pairs_hook=OrdD)
@@ -83,8 +83,8 @@ Plot.adjust_plots(hspace=0.6, wspace=0.15,
                   left=0.05, right=0.96)
 Plot.tight_layout()
 
-sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-         base_name="Simulation_time", plotter=Plot, facecolor="white")
+# sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+         # base_name="Simulation_time", plotter=Plot, facecolor="white")
 
 # Display plots
 Plot.show()

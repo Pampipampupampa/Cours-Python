@@ -482,7 +482,7 @@ class MultiPlotter(object):
     font_title = {'size': 16,
                   'family': 'Source Code Pro'}
     font_base = font_base
-    font_legend = {'size': 24,
+    font_legend = {'size': 14,
                    'family': 'Source Code Pro'}
     width = 2  # Line width
     colormap = "Accent"  # Color set

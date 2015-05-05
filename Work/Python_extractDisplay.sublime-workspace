@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"are",
+				"area_E"
+			],
+			[
+				"barc",
+				"bar_cumC"
+			],
+			[
+				"box",
+				"box_Tbal"
+			],
+			[
+				"lineT",
+				"line_T"
+			],
+			[
+				"linTe",
+				"line_TE"
+			],
+			[
+				"linedSC",
+				"line_debSCE"
+			],
+			[
+				"bar",
+				"bar_cumC"
+			],
+			[
 				"fon",
 				"font_legend	statement"
 			],
@@ -30,10 +58,6 @@
 			[
 				"baC",
 				"bar_cumC"
-			],
-			[
-				"bar",
-				"bar_supDispo"
 			],
 			[
 				"bars",
@@ -82,10 +106,6 @@
 			[
 				"di",
 				"diag_B"
-			],
-			[
-				"barc",
-				"bar_cumA"
 			],
 			[
 				"linTE",
@@ -224,10 +244,6 @@
 				"line_debSCE"
 			],
 			[
-				"lineT",
-				"line_T"
-			],
-			[
 				"boxT",
 				"box_Tbal"
 			],
@@ -358,10 +374,6 @@
 			[
 				"diC",
 				"diag_C"
-			],
-			[
-				"box",
-				"box_H"
 			],
 			[
 				"sola",
@@ -502,18 +514,6 @@
 			[
 				"datafr",
 				"dataframe"
-			],
-			[
-				"nae",
-				"names"
-			],
-			[
-				"xtiks",
-				"xticks"
-			],
-			[
-				"dataframe",
-				"dataframes"
 			]
 		]
 	},
@@ -523,15 +523,7 @@
 			"file": "SolisArt_script/csv_formatter.py",
 			"settings":
 			{
-				"buffer_size": 22696,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "SolisArt_script/Reader/bilan_reader.py",
-			"settings":
-			{
-				"buffer_size": 35198,
+				"buffer_size": 24939,
 				"line_ending": "Windows"
 			}
 		},
@@ -539,7 +531,7 @@
 			"file": "SolisArt_script/Reader/Plotters/parameters.py",
 			"settings":
 			{
-				"buffer_size": 7387,
+				"buffer_size": 7403,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,15 +539,15 @@
 			"file": "SolisArt_script/Reader/Plotters/evaluation.py",
 			"settings":
 			{
-				"buffer_size": 49845,
+				"buffer_size": 49755,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "SolisArt_script/Reader/publi_plotter.py",
+			"file": "SolisArt_script/Reader/bilan_reader.py",
 			"settings":
 			{
-				"buffer_size": 9332,
+				"buffer_size": 36701,
 				"line_ending": "Windows"
 			}
 		}
@@ -569,6 +561,14 @@
 			[
 				"pyr",
 				"SublimeREPL: Python - RUN current file"
+			],
+			[
+				"prev",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"insta	",
+				"Package Control: Install Package"
 			],
 			[
 				"pyth",
@@ -585,10 +585,6 @@
 			[
 				"ins",
 				"Gist: Insert Gist"
-			],
-			[
-				"prev",
-				"Markdown Preview: Preview in Browser"
 			],
 			[
 				"as",
@@ -734,23 +730,60 @@
 	},
 	"file_history":
 	[
-		"/D/Github/Cours-Python/.gitignore",
-		"/D/Github/Projets/Publications/SolarCombisystem/README.md",
-		"/D/Github/solarsystem/Outputs/clean/Old/README.md",
 		"/D/Github/Cours-Python/Work/Notebooks/.ipynb_checkpoints/Solar_system_output-checkpoint.ipynb",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy.json",
+		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script.mos",
+		"/D/Github/Projets/IGC/Meeting/20150413/README.md",
+		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
+		"/D/Github/Projets/SolisArt/SolisArt_projects.sublime-workspace",
+		"/D/Github/Projets/z1apqhss.oa2.txt",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/compare_Algo_IGC_house.md",
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/Markdown Preview/MarkdownPreview.sublime-settings",
+		"/D/Github/Projets/Other/BDD_ Schneider/README.md",
+		"/D/Github/Projets/IGC/Réunions/20150306/README.md",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_baseZsz.csv",
+		"/C/Users/bois/Downloads/JeremyBOIS_TestSSC/20130507_selection.csv",
+		"/C/Users/bois/Downloads/JeremyBOIS_TestSSC/donneesSelection.txt",
+		"/D/Github/solarsystem/.gitignore",
+		"/D/Github/solarsystem/.git/HEAD",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_baseMeter.csv",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.bnd",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_basetable.tab",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.eio",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.mtd",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.shd",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.audit",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.eso",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.mtr",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.err",
+		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_base.csv",
+		"/D/Github/Projets/IGC/Réunions/20141119/README.md",
+		"/D/Github/Projets/Publications/Publication_projects.sublime-workspace",
+		"/D/Github/Projets/Publications/Publication_projects.sublime-project",
+		"/C/Users/bois/Downloads/The_Vector_Space_problems.py",
+		"/D/Github/Projets/IGC/Réunions/20150129/README.md",
+		"/D/Github/Projets/Publications/SolarCombisystem/README.md",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/README.md",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_02/Récapitulatif.md",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_02/SolisArt_report.tex",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy_treatment.py",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/time_treatment.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
-		"/C/Users/bois/Downloads/add.md",
+		"/D/Github/solarsystem/Outputs/Plots_stock/Energy_sav/dico_energy.json",
+		"/D/Github/Projets/SolisArt/Rapport/2014_11_04/SolisArt_report.tex",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/publi_plotter.py",
 		"/F/Base-de-données-secondaire-exp-nationale.xls",
+		"/C/Users/bois/Downloads/snow.html",
+		"/D/Github/Cours-Python/.gitignore",
+		"/D/Github/solarsystem/Outputs/clean/Old/README.md",
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/energy.json",
+		"/C/Users/bois/Downloads/add.md",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/heating_time.json",
 		"/D/Github/Projets/IGC/Réunions/20150129/Diaporama/SolisArt_diapo_20150204.tex",
 		"/C/Users/bois/Downloads/SolisArt_diapo_20150204.tex",
 		"/C/Users/bois/Downloads/SolisArt_report.tex",
-		"/D/Github/Projets/SolisArt/Rapport/2015_02_02/SolisArt_report.tex",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Energy_sav/energy.json",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/json_decode.py",
 		"/C/Users/bois/Downloads/Base-de-données-secondaire-exp-nationale.xls",
@@ -759,16 +792,13 @@
 		"/D/Github/solarsystem/Outputs/Plots_stock/Récapitulatif.md",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Taux_économie.md",
 		"/D/Github/Projets/IGC/Etudes/Plafond_rafraichissant/README.txt",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
 		"/D/Github/Projets/SolisArt/Rapport/2014_12_09/production_solaire.tex",
 		"/D/Github/Projets/IGC/Plafond_rafraichissant/Etude/plafond_raffraichissant.csv",
-		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
 		"/D/Github/Projets/IGC/Plafond_rafraichissant/README.txt",
 		"/D/Github/Projets/IGC/Plafond_rafraichissant/Etude/plafond_raffraichissant_seconds.csv",
 		"/D/Github/Projets/IGC/Plafond_rafraichissant/Etude/plafond_raffraichissant.txt",
 		"/D/Github/Projets/SolisArt/Doc/Toulouse/MAS 2013-06/FUNEMIN juin et juillet.csv",
-		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script.mos",
 		"/C/Users/bois/Desktop/test",
 		"/D/Github/solarsystem/SolarSystem/TEST.csv",
 		"/C/Users/bois/Anaconda/envs/py33/Lib/site-packages/buildingspy/simulate/Simulator.py",
@@ -796,11 +826,9 @@
 		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/extract_show_meteoFrance.py",
 		"/D/Github/Projets/SolarCombisystem/abstract.tex",
 		"/D/Github/Projets/IGC/Réunions/20141216/README.md",
-		"/D/Github/Projets/SolisArt/Rapport/2014_11_04/SolisArt_report.tex",
 		"/D/Github/modelica-buildings/README.md",
 		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_NEW.mos",
 		"/D/Github/Projets/IGC/Réunions/20141014/README.md",
-		"/D/Github/Projets/IGC/Réunions/20141119/README.md",
 		"/D/Github/Projets/SolisArt/Rapport/9_decembre_2014/production_solaire.tex",
 		"/D/Github/Projets/SolisArt/Rapport/4_novembre_2014/SolisArt_report.tex",
 		"/D/Github/Projets/SolisArt/Faire/SolisArt/Report/production_solaire.tex",
@@ -829,39 +857,7 @@
 		"/D/Github/Projets/SolisArt/Rapport/4_novembre_2014/diapo_solisart.tex",
 		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/Avril_compare.txt",
 		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Output/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/README.md",
-		"/D/Github/Projets/SolisArt/Doc/Toulouse/Mas 2012_03_01 au 04_01/FSIXMIN 2012_03_01 au 04_01_prepare.csv",
-		"/D/Github/Projets/SolisArt/Doc/Toulouse/Mas 2012_03_01 au 04_01/Mars01_Avril01.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Output/Avril01_Mai06_exp.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/MarsAvrilMai_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Merignac/Treatment/Monthly_Merignac_weather.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Olivier/Avril01_Mai06_olivier.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Output/Clean/Mars01_Avril01_dymola.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Olivier/Mars01_Avril01_olivier.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Output/Clean/Avril01_Mai06_dymola.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Trnsys/MarsAvrilMai_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Trnsys/Avril_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Trnsys/Mai_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/Mai_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Olivier/Mai01_Juin05_olivier.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/Mai01_Juin05.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Olivier/Juin01_Juillet01_olivier.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Trnsys/Mars_Mai_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Trnsys/Backup/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/Juin01_Juillet01.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/Mars01_Avril01.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/Avril01_Mai06.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Trnsys/Toulouse_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Merignac/Merignac_2009.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/Toulouse_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Treatment/Avril01_Mai06_treatment.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/Collector_Dymola_Mars_Mai.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Source_file/Mars01_Avril01.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Source_file/Avril01_Mai06.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Avril01_Mai06_exp.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Mars01_Avril01_exp.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Mai01_Juin05_exp.csv"
+		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/README.md"
 	],
 	"find":
 	{
@@ -879,6 +875,24 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"new_fields",
+			"Production\\nElectrique",
+			"a ",
+			": ",
+			"\"C",
+			"  ",
+			",",
+			"ight",
+			"interior",
+			"to_plot",
+			"lyon-3p_20150218.csv",
+			"lyon-9p_20150219.csv",
+			"lyon-0p_20150218.csv",
+			"chambery300vp-6p_20150218.csv",
+			"strasbourg-9p_20150211.csv",
+			"A_COL",
+			"'Flow_Radiator'",
+			"prop_legend",
 			"-.",
 			"rotation",
 			"sav",
@@ -988,25 +1002,7 @@
 			"new_fields",
 			"args",
 			"self.args",
-			"args",
-			"mosFile",
-			"self._MODELICA_EXE",
-			"_MODELICA_EXE",
-			"self._showGUI",
-			"chambery-NoSolar_20150121.csv",
-			"chambery",
-			"Colle",
-			"ol",
-			")}\n",
-			"SolarPower",
-			"Production solaire",
-			"Consommation appoint",
-			"chambery-9p_20150120.csv",
-			"Production",
-			"area",
-			"selec",
-			"on ap",
-			"appoint"
+			"args"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1030,7 +1026,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1039,49 +1035,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 22696,
+						"buffer_size": 24939,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								21263,
-								21263
-							],
-							[
-								21368,
-								21368
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 8530.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "SolisArt_script/Reader/bilan_reader.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 35198,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								13700,
-								13674
+								6247,
+								6263
 							]
 						],
 						"settings":
@@ -1091,27 +1053,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4522.0,
+						"translation.y": 1458.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
+					"buffer": 1,
 					"file": "SolisArt_script/Reader/Plotters/parameters.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7387,
+						"buffer_size": 7403,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1053,
-								1053
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1121,27 +1083,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 285.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "SolisArt_script/Reader/Plotters/evaluation.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 49845,
+						"buffer_size": 49755,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								19019,
-								19019
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1151,37 +1113,37 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8436.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "SolisArt_script/Reader/publi_plotter.py",
+					"buffer": 3,
+					"file": "SolisArt_script/Reader/bilan_reader.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9332,
+						"buffer_size": 36701,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4471,
-								4471
+								23131,
+								23131
 							]
 						],
 						"settings":
 						{
-							"auto_indent": true,
-							"open_with_edit": true,
-							"syntax": "Packages/Python/Python.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1806.0,
+						"translation.y": 8390.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1266,7 +1228,7 @@
 		[
 			[
 				"",
-				"D:\\Github\\Projets\\Publications\\Publication_projects.sublime-project"
+				"D:\\Github\\Projets\\SolisArt\\SolisArt_projects.sublime-project"
 			]
 		],
 		"width": 380.0
@@ -1285,7 +1247,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 263.0,
 	"status_bar_visible": true,
 	"template_settings":

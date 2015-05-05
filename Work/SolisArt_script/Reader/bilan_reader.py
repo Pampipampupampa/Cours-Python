@@ -124,7 +124,7 @@ A_COL = 2.32  # Collector area
 
 
 # Select directory
-fold = FOLDER / 'clean'
+fold = FOLDER/'clean'/'IGC'
 
 # Bar emphazis
 emphs_dict = {'bar_cumA': ['Pertes réseau'],
@@ -159,14 +159,19 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'bar_supDispo': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
                             'Energie captable', 'Consommation\nappoint'],
                            ['Energie captable', 'Production\nsolaire']],
-          'area_E': ['Production\nsolaire', 'Consommation\nappoint'],
+          # 'area_E': ['Production\nsolaire', 'Consommation\nappoint'],
+          'area_E': ['Taux de couverture', 'Rendement capteur'],
+          # 'area_E': ['Production\nsolaire', 'Chauffage solaire',
+          #            'Consommation\nElectrique_chauffage'],
           'area_P': ['Production\nsolaire', 'Pertes totales', 'Production\nappoint'],
           'area_EB': ['ECS', 'Chauffage', 'Pertes totales'],
           'line_E': ['ECS', 'Production\nsolaire', 'Production\nappoint', 'Chauffage'],
           'line_ES': ['Production\nsolaire', 'Energie captable'],
-          'line_TE': ['T3', 'T4', 'T5', 'T12_house'],
+          # 'line_TE': ['T3', 'T4', 'T5'],
+          'line_TE': ['T1', 'T3', 'T4', 'T5'],
           # 'line_TE': ['T7', 'T8', 'T12_house'],
-          'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
+          # 'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
+          'line_T': ['T12_house', 'T9_ext', 'T13_exch_outlet', 'T14_blowing'],
           'line_H': ['Diffus', 'Direct'],
           'line_debA': ['Flow_S6', 'Flow_S5', 'Flow_S4', 'Flow_S2'],
           'line_debS': ['Flow_S6', 'Flow_S5'],
@@ -175,7 +180,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
                          'Flow_ExchStorTank'],
           'line_debCE': ['Flow_S4', 'Flow_Boiler'],
           'line_debSCEbuffer': ['Flow_ExchStorTank', 'Flow_Boiler'],
-          'line_debSCE': ['Flow_Collector', 'Flow_Radiator'],
+          'line_debSCE': ['Flow_Collector', 'Flow_S2'],
           'line_Drawing': ['Flow_Drawing'],
           'line_Backup': ['Backup_state', 'ECS_state'],
           'line_V3V': ['Vsolar_state', 'Vextra_state']}
@@ -222,14 +227,18 @@ titles = {'title': 'Bilan de la simulation',
           'bar_cumC': "Evolution mensuelle de la production d'énergie",
           'bar_supC': "Evolution mensuelle des apports et de la production d'énergie",
           'bar_supDispo': "Evolution mensuelle des gains et du rendement solaire",
-          'area_E': 'Evolution annuelle de la consommation en énergie',
+          # 'area_E': 'Evolution annuelle de la consommation en énergie',
+          'area_E': 'Evolution des facteurs caractéristiques',
           'area_P': 'Evolution annuelle de la production en énergie',
           'area_EB': 'Evolution annuelle des besoins',
           'line_E': 'Evolution annuelle de la consommation en énergie',
           'line_ES': 'Evolution annuelle de la production solaire',
-          'line_TE': 'Evolution annuelle des températures dans les ballons',
-          'line_T': 'Evolution annuelle de la température intérieure ' +
-                    '\net extérieure',
+          # 'line_TE': 'Evolution annuelle des températures dans les ballons',
+          'line_TE': 'Evolution des températures du système solaire',
+          # 'line_T': 'Evolution annuelle de la température intérieure ' +
+          #           '\net extérieure',
+          'line_T': 'Evolution de la température dans le circuit d’air neuf ' +
+                    '\net de la température intérieure',
           'line_H': 'Evolution annuelle de la puissance captée',
           'line_debA': 'Evolution des débits solaires et de chauffage',
           'line_debS': 'Evolution des débits solaires',
@@ -245,27 +254,48 @@ titles = {'title': 'Bilan de la simulation',
 
 
 # Change data columns names
-conv_dict = {'DrawingUp_Energy': 'ECS', 'Radiator_Energy': 'Chauffage',
+# conv_dict = {'DrawingUp_Energy': 'ECS',
+#              'Radiator_Energy': 'Chauffage',
+#              'Collector_Energy': 'Production\nsolaire',
+#              # Must be commented with csv files older than 2015
+#              'CollectorPanel_Energy': 'Energie captable',
+#              # Must be commented with csv files older than 2015
+#              'BoilerFuel_Energy': 'Consommation\nappoint',
+#              # Must be commented with csv files older than 2015
+#              'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
+#              'Boiler_Energy': 'Production\nappoint',
+#              'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
+
+conv_dict = {'DrawingUp_Energy': 'ECS',
+             'SolarHeating_Energy': 'Chauffage solaire',
              'Collector_Energy': 'Production\nsolaire',
-             # Must be a comment with csv files older than 2015
              'CollectorPanel_Energy': 'Energie captable',
-             # Must be a comment with csv files older than 2015
-             'BoilerFuel_Energy': 'Consommation\nappoint',
-             # Must be a comment with csv files older than 2015
-             'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
-             'Boiler_Energy': 'Production\nappoint',
+             'ElectricalDHW_Energy': 'Consommation\nElectrique_ECS',
+             'ElectricalHeating_Energy': 'Consommation\nElectrique_chauffage',
+             'InternalGains_Energy': 'Gains internes',
              'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
 
 # New fields
-new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
+# new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
+#               ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
+#               ('Pertes réseau', 'Production', 'Besoins', '-'),
+#               ('Pertes appoint', 'Consommation\nappoint', 'Production\nappoint', '-'),
+#               ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
+#               ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
+#               ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
+#               ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
+#               # ('Gain\nsolaire', 'SolarPower_absorbed', 'SolarPower_lost', '-'))
+
+new_fields = (('Production\nappoint', 'Consommation\nElectrique_ECS',
+               'Consommation\nElectrique_chauffage', '+'),
+              ('Besoins chauffage', 'Consommation\nElectrique_chauffage',
+               'Chauffage solaire', '+'),
+              ('Besoins', 'ECS', 'Besoins chauffage', '+'),
               ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
               ('Pertes réseau', 'Production', 'Besoins', '-'),
-              ('Pertes appoint', 'Consommation\nappoint', 'Production\nappoint', '-'),
-              ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
               ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
               ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
               ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
-              # ('Gain\nsolaire', 'SolarPower_absorbed', 'SolarPower_lost', '-'))
 
 # Prepare Taux de couverture (list of formatted datas)
 short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
@@ -274,23 +304,11 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 
 
 # Test new:
-# chambery-0p_20150206.csv bordeaux-0p_20150210.csv marseille-0p_20150208.csv strasbourg-0p_20150209.csv
-# chambery-3p_20150206.csv bordeaux-3p_20150208.csv marseille-3p_20150207.csv strasbourg-3p_20150210.csv
-# chambery-6p_20150207.csv bordeaux-6p_20150209.csv marseille-6p_20150208.csv strasbourg-6p_20150211.csv
-# chambery-9p_20150208.csv bordeaux-9p_20150210.csv marseille-9p_20150209.csv strasbourg-9p_20150211.csv
-
-
-# Test old:
-# chambery-6p_20150125.csv marseille-6p_20150123.csv bordeaux-6p_20150119.csv
-# lyon-6p_20150116.csv strasbourg-6p_20150123.csv
-# chambery-9p_20150120.csv marseille-9p_20150124.csv bordeaux-9p_20150126.csv
-# lyon-9p_20150126.csv strasbourg-9p_20150127.csv
-# chambery-0p_20150121.csv marseille-0p_20150122.csv bordeaux-0p_20150125.csv
-# lyon-0p_20150124.csv strasbourg-0p_20150126.csv
-# chambery-3p_20150128.csv marseille-3p_20150129.csv bordeaux-3p_20150128.csv
-# lyon-3p_20150128.csv strasbourg-3p_20150202.csv
-# chambery300vp-6p_20150127.csv chambery300vm-6p_20150202.csv
-
+# chambery-0p_20150206.csv bordeaux-0p_20150210.csv marseille-0p_20150208.csv strasbourg-0p_20150209.csv lyon-0p_20150218.csv
+# chambery-3p_20150206.csv bordeaux-3p_20150208.csv marseille-3p_20150207.csv strasbourg-3p_20150210.csv lyon-3p_20150218.csv
+# chambery-6p_20150207.csv bordeaux-6p_20150209.csv marseille-6p_20150208.csv strasbourg-6p_20150211.csv lyon-6p_20150219.csv
+# chambery-9p_20150208.csv bordeaux-9p_20150210.csv marseille-9p_20150209.csv strasbourg-9p_20150211.csv lyon-9p_20150219.csv
+# chambery300vm-6p_20150218.csv chambery300vp-6p_20150218.csv
 
 # strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
 
@@ -455,13 +473,13 @@ if __name__ == '__main__':
                                                              fields=fields[el][0]))
             elif any(c in el for c in ('area', 'line')):
 
-                # Just to see Temperature of drawing up variation
-                chunk = datas[name].frame.copy()
-                flag = 'Flow_Drawing'
-                chunk['RealT'] = chunk['T11_Drawing_up'][:]
-                chunk['RealT'].where(chunk[flag] > 0.12,  -1, inplace=True)
-                print('TdrawingUp = ',
-                      chunk[chunk["RealT"] != -1]['RealT'].mean())
+                # # Just to see Temperature of drawing up variation
+                # chunk = datas[name].frame.copy()
+                # flag = 'Flow_Drawing'
+                # chunk['RealT'] = chunk['T11_Drawing_up'][:]
+                # chunk['RealT'].where(chunk[flag] > 0.12,  -1, inplace=True)
+                # print('TdrawingUp = ',
+                #       chunk[chunk["RealT"] != -1]['RealT'].mean())
 
                 # Data which can be reduce to a 1 hour step size
                 structs[name][el] = EvalData.resample(frame=datas[name].frame,
@@ -469,9 +487,9 @@ if __name__ == '__main__':
                                                       interpolate=True)
                 # structs[name][el] = datas[name].frame
 
-    # Write to a json file all energy informations
-    with open('energy.json', 'w', encoding='utf-8') as f:
-        json.dump(energy_json, f, indent=4)
+    # # Write to a json file all energy informations
+    # with open('energy.json', 'w', encoding='utf-8') as f:
+    #     json.dump(energy_json, f, indent=4)
     # # Write to a json file all heating time informations
     # with open('heating_time.json', 'w', encoding='utf-8') as f:
     #     json.dump(time_json, f, indent=4)
@@ -497,7 +515,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    # rows, cols = 2, 4
+    # rows, cols = 3, 1
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -582,7 +600,7 @@ if __name__ == '__main__':
                 Plot.colors = col_dict['box']
                 Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False,
                                      patch_artist=True, loc='center', rot=0,
-                                     prop_legend={'ncol': 3},
+                                     prop_legend={'ncol': 1},
                                      title=titles[plot] + '\n{}'.format(name_cap))
 
                 # # Remove after publi
@@ -632,13 +650,13 @@ if __name__ == '__main__':
                                     colormap=col_dict[plot],
                                     linewidth=2, kind=plot.split('_')[0],
                                     ylim=[-10, 110])
-                    # Specific month
+                    # # Specific month
                     # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
-                    #                                     month=5),
+                    #                                     month=2),
                     #                 fields=fields[plot],
                     #                 title=titles[plot]+'\n{}'.format(name_cap),
                     #                 pos=pos, loc='center',
-                    #                 color=col_dict[plot],
+                    #                 colormap=col_dict[plot],
                     #                 linewidth=2, kind=plot.split('_')[0],
                     #                 ylim=[-10, 110])
                 elif 'area' in plot:
@@ -675,13 +693,13 @@ if __name__ == '__main__':
                     #                              prop={'size': 24,
                     #                                    'family': 'Source Code Pro'},
                     #                              ncol=1)
-                    # Specific month
+                    # # Specific month
                     # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
-                    #                                     month=5),
+                    #                                     month=2),
                     #                 fields=fields[plot],
                     #                 title=titles[plot]+'\n{}'.format(name_cap),
                     #                 pos=pos, loc='center',
-                    #                 color=col_dict[plot],
+                    #                 colormap=col_dict[plot],
                     #                 linewidth=2, kind=plot.split('_')[0])
             else:
                 print('Nothing will be show for {}'.format(plot))
@@ -698,7 +716,7 @@ if __name__ == '__main__':
     if len(datas) == 1:
         base_name = name
     sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white", dpi=300)
+             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()

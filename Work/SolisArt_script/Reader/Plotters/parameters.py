@@ -40,13 +40,13 @@ elif name == 'posix':
 
 # Create font properties
 # Can be use to plot for publication
-# font_base = {'size': 18,
-#              'family': 'STIXGeneral'}
+font_base = {'size': 18,
+             'family': 'STIXGeneral'}
 #             'mathtext.fontset': 'stix'
 #             'text.usetex': True}  # Used to force latex inside figures
 # Favorite
-font_base = {'size': 18,
-             'family': 'Source Code Pro'}
+# font_base = {'size': 18,
+             # 'family': 'Source Code Pro'}
 
 # # Restore default
 # matplotlib.rcParams.update({'font.size': 12,
@@ -56,8 +56,8 @@ font_base = {'size': 18,
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
-matplotlib.rc('xtick', labelsize=23)  # base =12
-matplotlib.rc('ytick', labelsize=23)  # base =12
+matplotlib.rc('xtick', labelsize=12)  # base =23 (publi)
+matplotlib.rc('ytick', labelsize=16)  # base =23 (publi)
 matplotlib.rc('legend', fontsize=12)
 matplotlib.rc('legend', labelspacing=0.2)
 
