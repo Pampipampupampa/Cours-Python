@@ -304,7 +304,7 @@ class EvalData(object):
         # Check parameters
         assert len(cols_map) == len(match_map), "Must have same lengths"
         # Add `Test` column
-        frame["Test"] = 1
+        frame.loc[:, "Test"] = 1
         # Change `Test` column values (0 if not match, else not change)
         for el in range(len(cols_map)):
             frame.loc[(frame[cols_map[el]] != match_map[el]), "Test"] = 0
@@ -340,7 +340,7 @@ class EvalData(object):
 
     # Only used for solar heating time (ugly hack)
     def col_sum_map_test(self, frame, cols_map, used_col="index",
-                         start_sum=0, debug=False):
+                         start_sum=0, debug=False, second=True):
         """
             Return sum of used_col values for all cols_map which
             respect match_map structure and a dict of each timestep of match.
@@ -357,9 +357,10 @@ class EvalData(object):
         # Avoid duplicate operations
         all_ind, last_ind = frame.index, frame[len(frame)-1:].index
         # Add `Test` column
-        frame["Test"] = 0
+        frame.loc[:, "Test"] = 0
         frame.loc[(frame[cols_map[0]] >= 0.001), "Test"] = 1
-        frame.loc[(frame[cols_map[1]] != 100), "Test"] = 0
+        if second:
+            frame.loc[(frame[cols_map[1]] != 100), "Test"] = 0
         # Start iteration over dataframe index
         for ind in all_ind:
             pass_test = True
@@ -489,9 +490,9 @@ class MultiPlotter(object):
     background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
 
     sample = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-    names = ['January', 'February', 'March', 'April', 'May',
-             'June', 'July', 'August', 'September', 'October',
-             'November', 'December']
+    # names = ['January', 'February', 'March', 'April', 'May',
+    #          'June', 'July', 'August', 'September', 'October',
+    #          'November', 'December']
     names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
              'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
              'Nov', 'Dec']
@@ -1038,10 +1039,9 @@ if __name__ == '__main__':
                       skiprows=(1,)*10,
                       splitters=("_",)*10)
 
-    #
-    ################## EvalData class : Prepare datas ##################
-    #
-
+##############
+# EVALUATION #
+##############
     data = EvalData(frames[name])
 
     # Change data columns names
@@ -1079,10 +1079,9 @@ if __name__ == '__main__':
     # LINE2D
     data.line = data.resample(frame=data.frame, sample='12h')
 
-    # #
-    # ################## MultiPlotter class : Plot datas ##################
-    # #
-
+###########
+# PLOTTER #
+###########
     # Prepare boxplots as first added data to MultiPlotter class
     frames_ = {'Temps': data.box_T, 'Irradiations': data.box_H}
 

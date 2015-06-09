@@ -4,8 +4,10 @@
     Regroups all constants used inside bilan_reader.
 """
 
+from Plotters.evaluation import *
+
 # Constant
-A_COL = 2.32  # Collector area
+A_COL = {'IDMK': 2.32, 'Cobralino': 1.926}  # Collector area
 
 # Bar emphazis
 emphs_dict = {'bar_cumA': ['Pertes réseau'],
@@ -13,46 +15,65 @@ emphs_dict = {'bar_cumA': ['Pertes réseau'],
               'bar_supC': ['Production\nsolaire'],
               'bar_supDispo': []}
 
+# Change data columns names
+conv_dict = {'DrawingUp_Energy': 'ECS', 'Radiator_Energy': 'Chauffage',
+             'Collector_Energy': 'Production\nsolaire',
+             # Must be a comment with csv files older than 2015
+             'CollectorPanel_Energy': 'Energie captable',
+             # Must be a comment with csv files older than 2015
+             'BoilerFuel_Energy': 'Consommation\nappoint',
+             # Must be a comment with csv files older than 2015
+             'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
+             'Boiler_Energy': 'Production\nappoint',
+             'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
+
+# New fields
+new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
+              ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
+              ('Pertes réseau', 'Production', 'Besoins', '-'),
+              ('Pertes appoint', 'Consommation\nappoint', 'Production\nappoint', '-'),
+              ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
+              ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
+              ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
+              ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
+              # ('Gain\nsolaire', 'SolarPower_absorbed', 'SolarPower_lost', '-'))
+
+# Prepare Taux de couverture (list of formatted datas)
+short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
+               'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
+               'Nov', 'Dec']
+
+# Create list of all values inside conv_dict
+conv_value_list = [values for values in conv_dict.values()]
+
 # Fields (to plot new type of graph add new fields here)
 fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_Text': ['T9_ext'],
           'box_H': ['Diffus', 'Direct'],
           'box_HDir': ['HDirNor', 'Direct'],
-          'box_S': ['Speed_S6', 'Speed_S5', 'Speed_S2'],
-          'diag_B': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation\nappoint'],
+          'box_P': ['Flow_S6', 'Flow_S5', 'Flow_S4'],
+          'diag_B': [conv_value_list,
                      ['Chauffage', 'ECS', 'Pertes appoint', 'Pertes réseau']],
-          'diag_P': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation\nappoint'],
+          'diag_P': [conv_value_list,
                      ['Pertes capteur', 'Production\nsolaire']],
-          'diag_C': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation\nappoint'],
+          'diag_C': [conv_value_list,
                      ['Consommation\nappoint', 'Production\nsolaire']],
-          'bar_cumC': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation\nappoint'],
+          'bar_cumC': [conv_value_list,
                        ['ECS', 'Chauffage', 'Pertes réseau']],
-          'bar_cumA': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation\nappoint'],
+          'bar_cumA': [conv_value_list,
                        ['Production\nsolaire', 'Production\nappoint']],
-          'bar_supC': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation\nappoint'],
+          'bar_supC': [conv_value_list,
                        ['ECS', 'Chauffage', 'Pertes réseau']],
-          'bar_supDispo': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                            'Energie captable', 'Consommation\nappoint'],
+          'bar_supDispo': [conv_value_list,
                            ['Energie captable', 'Production\nsolaire']],
-          # 'area_E': ['Production\nsolaire', 'Consommation\nappoint'],
-          'area_E': ['Taux de couverture', 'Rendement capteur'],
-          # 'area_E': ['Production\nsolaire', 'Chauffage solaire',
-          #            'Consommation\nElectrique_chauffage'],
+          'area_E': ['Production\nsolaire', 'Consommation\nappoint'],
           'area_P': ['Production\nsolaire', 'Pertes totales', 'Production\nappoint'],
           'area_EB': ['ECS', 'Chauffage', 'Pertes totales'],
           'line_E': ['ECS', 'Production\nsolaire', 'Production\nappoint', 'Chauffage'],
           'line_ES': ['Production\nsolaire', 'Energie captable'],
-          # 'line_TE': ['T3', 'T4', 'T5'],
-          'line_TE': ['T1', 'T3', 'T4', 'T5'],
+          'line_TE': ['T3', 'T4', 'T5', 'T12_house'],
           # 'line_TE': ['T7', 'T8', 'T12_house'],
-          # 'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
-          'line_T': ['T12_house', 'T9_ext', 'T13_exch_outlet', 'T14_blowing'],
+          'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
           'line_H': ['Diffus', 'Direct'],
           'line_debA': ['Flow_S6', 'Flow_S5', 'Flow_S4', 'Flow_S2'],
           'line_debS': ['Flow_S6', 'Flow_S5'],
@@ -61,7 +82,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
                          'Flow_ExchStorTank'],
           'line_debCE': ['Flow_S4', 'Flow_Boiler'],
           'line_debSCEbuffer': ['Flow_ExchStorTank', 'Flow_Boiler'],
-          'line_debSCE': ['Flow_Collector', 'Flow_S2'],
+          'line_debSCE': ['Flow_Collector', 'Flow_Radiator'],
           'line_Drawing': ['Flow_Drawing'],
           'line_Backup': ['Backup_state', 'ECS_state'],
           'line_V3V': ['Vsolar_state', 'Vextra_state']}
@@ -100,7 +121,7 @@ titles = {'title': 'Bilan de la simulation',
                    'de l’irradiation sur les panneaux',
           'box_HDir': 'Evolution mensuelle de la variation \n' +
                       'du potentiel de l’irradiation directe sur les panneaux',
-          'box_S': 'Evolution de la vitesse des pompes',
+          'box_P': 'Evolution de l’état des pompes d’appoint et solaires',
           'diag_B': 'Taux de couverture',
           'diag_P': 'Rendement capteur',
           'diag_C': 'Répartition de la consommation',
@@ -108,18 +129,14 @@ titles = {'title': 'Bilan de la simulation',
           'bar_cumC': "Evolution mensuelle de la production d'énergie",
           'bar_supC': "Evolution mensuelle des apports et de la production d'énergie",
           'bar_supDispo': "Evolution mensuelle des gains et du rendement solaire",
-          # 'area_E': 'Evolution annuelle de la consommation en énergie',
-          'area_E': 'Evolution des facteurs caractéristiques',
+          'area_E': 'Evolution annuelle de la consommation en énergie',
           'area_P': 'Evolution annuelle de la production en énergie',
           'area_EB': 'Evolution annuelle des besoins',
           'line_E': 'Evolution annuelle de la consommation en énergie',
           'line_ES': 'Evolution annuelle de la production solaire',
-          # 'line_TE': 'Evolution annuelle des températures dans les ballons',
-          'line_TE': 'Evolution des températures du système solaire',
-          # 'line_T': 'Evolution annuelle de la température intérieure ' +
-          #           '\net extérieure',
-          'line_T': 'Evolution de la température dans le circuit d’air neuf ' +
-                    '\net de la température intérieure',
+          'line_TE': 'Evolution annuelle des températures dans les ballons',
+          'line_T': 'Evolution annuelle de la température intérieure ' +
+                    '\net extérieure',
           'line_H': 'Evolution annuelle de la puissance captée',
           'line_debA': 'Evolution des débits solaires et de chauffage',
           'line_debS': 'Evolution des débits solaires',
@@ -134,33 +151,70 @@ titles = {'title': 'Bilan de la simulation',
           'line_Backup': 'Evolution de l’état de l’appoint et de ECS'}
 
 
-# Change data columns names
-conv_dict = {'DrawingUp_Energy': 'ECS',
-             'Radiator_Energy': 'Chauffage',
-             'Collector_Energy': 'Production\nsolaire',
-             # Must be commented with csv files older than 2015
-             'CollectorPanel_Energy': 'Energie captable',
-             # Must be commented with csv files older than 2015
-             'BoilerFuel_Energy': 'Consommation\nappoint',
-             # Must be commented with csv files older than 2015
-             'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
-             'Boiler_Energy': 'Production\nappoint',
-             'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
+def time_info(frame, display=True):
+    """
+        frame must be an instance of EvalData class.
+        if display is True :
+          ---> print time informations about the frame simulation result.
+        Return a dict of all time informations.
+    """
+    time_dict = OrdD()
+    # Recup solar heating time
+    chauff_sol, _ = frame.col_sum_map(frame.frame,
+                                      debug=False,
+                                      cols_map=['S2_state',
+                                                'Vsolar_state',
+                                                'Vextra_state'],
+                                      match_map=(100, 100, 100),
+                                      start_sum=frame.frame.index[0])
+    # ##########################################################################
+    # ##########################################################################
+    # Recup solar time TEST
+    sol, _ = frame.col_sum_map_test(frame.frame,
+                                    debug=False,
+                                    cols_map=["Flow_Collector",
+                                              "Vsolar_state"],
+                                    start_sum=frame.frame.index[0])
+    # ##########################################################################
+    # ##########################################################################
+
+    # Recup extra heating time
+    chauff_app, _ = frame.col_sum_map(frame.frame,
+                                      debug=False,
+                                      cols_map=['S2_state',
+                                                'Vextra_state'],
+                                      match_map=(100, 0),
+                                      start_sum=frame.frame.index[0])
+    # Populate the time_dict
+    time_dict['start_sim'] = frame.frame.index[0]
+    time_dict['end_sim'] = frame.frame.index[-1]
+    time_dict['heating_time'] = chauff_app + chauff_sol
+    time_dict['solar_heating'] = chauff_sol
+    time_dict['extra_heating'] = chauff_app
+    time_dict['solar_working'] = sol
+    if chauff_app > chauff_sol:
+        time_dict['Difference'] = chauff_app - chauff_sol
+    else:
+        time_dict['Difference'] = chauff_sol - chauff_app
+    try:
+        ratio = 100 * chauff_sol / (chauff_app + chauff_sol)
+        time_dict['ratio'] = ratio
+    except ZeroDivisionError:
+        time_dict['ratio'] = 0
+    # Display time informations
+    if display is True:
+        for key, item in time_dict.items():
+            print('\n---> {} : {}'.format(key, item))
+    return time_dict
 
 
-# New fields
-new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
-              ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
-              ('Pertes réseau', 'Production', 'Besoins', '-'),
-              ('Pertes appoint', 'Consommation\nappoint', 'Production\nappoint', '-'),
-              ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
-              ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
-              ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
-              ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
-              # ('Gain\nsolaire', 'SolarPower_absorbed', 'SolarPower_lost', '-'))
-
-
-# Prepare Taux de couverture (list of formatted datas)
-short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-               'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
-               'Nov', 'Dec']
+def prepare_export(dico, name, mois):
+    """
+        Change format to prepare export to csv or json.
+    """
+    to_seconds = ('heating_time', 'extra_heating', 'solar_heating',
+                  'Difference', 'solar_working')
+    dico[name][mois]['start_sim'] = str(dico[name][mois]['start_sim'])
+    dico[name][mois]['end_sim'] = str(dico[name][mois]['end_sim'])
+    for conv in to_seconds:
+        dico[name][mois][conv] = dico[name][mois][conv].total_seconds()

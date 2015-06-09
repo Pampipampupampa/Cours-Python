@@ -4,8 +4,152 @@
 		"selected_items":
 		[
 			[
+				"tye",
+				"type	class"
+			],
+			[
+				"nan",
+				"nan	statement"
+			],
+			[
+				"wea",
+				"weather	forflow"
+			],
+			[
+				"for",
+				"format"
+			],
+			[
+				"dic",
+				"dict_transform	statement"
+			],
+			[
+				"dta",
+				"data_mos	statement"
+			],
+			[
+				"mos",
+				"mos_last	statement"
+			],
+			[
+				"dat",
+				"data_output	statement"
+			],
+			[
+				"fil",
+				"file_name	param"
+			],
+			[
+				"if",
+				"if	If Condition"
+			],
+			[
+				"dict",
+				"dict_transform	param"
+			],
+			[
+				"files",
+				"file_mos	statement"
+			],
+			[
+				"writ",
+				"write_mos_file	function"
+			],
+			[
+				"extracted",
+				"extract_metadata	function"
+			],
+			[
+				"fina",
+				"file_name"
+			],
+			[
+				"wr",
+				"writelines	function"
+			],
+			[
+				"red",
+				"readline	function"
+			],
+			[
+				"rea",
+				"readable	function"
+			],
+			[
+				"tr",
+				"try	Try/Except Py3"
+			],
+			[
+				"da",
+				"data_output	statement"
+			],
+			[
+				"J",
+				"Jcm2_to_Whm2	function"
+			],
+			[
+				"data",
+				"data_mos	statement"
+			],
+			[
+				"inde",
+				"index_col	param"
+			],
+			[
+				"Time",
+				"Timestamp"
+			],
+			[
+				"index",
+				"index_col"
+			],
+			[
+				"colu",
+				"columns_mos"
+			],
+			[
+				"Gl",
+				"GLO"
+			],
+			[
+				"column",
+				"columns_mos"
+			],
+			[
+				"weather",
+				"data_weather"
+			],
+			[
+				"b",
+				"begin	\\begin{}…\\end{}"
+			],
+			[
+				"use",
+				"usepackage"
+			],
+			[
 				"are",
-				"area_E"
+				"area_P"
+			],
+			[
+				"di",
+				"diag_B"
+			],
+			[
+				"bar",
+				"bar_cumA"
+			],
+			[
+				"new",
+				"new_fields"
+			],
+			[
+				"ba",
+				"bar_supDispo"
+			],
+			[
+				"bila",
+				"bilan_constants_Solisart_WATERvector	module"
 			],
 			[
 				"barc",
@@ -26,10 +170,6 @@
 			[
 				"linedSC",
 				"line_debSCE"
-			],
-			[
-				"bar",
-				"bar_cumC"
 			],
 			[
 				"fon",
@@ -102,10 +242,6 @@
 			[
 				"Re",
 				"Rendement"
-			],
-			[
-				"di",
-				"diag_B"
 			],
 			[
 				"linTE",
@@ -192,16 +328,8 @@
 				"short_names	statement"
 			],
 			[
-				"index",
-				"index_col	param"
-			],
-			[
 				"sh",
 				"short_names	statement"
-			],
-			[
-				"ba",
-				"bar_cum_plot	function"
 			],
 			[
 				"base",
@@ -216,20 +344,12 @@
 				"scriptsize"
 			],
 			[
-				"colu",
-				"columns"
-			],
-			[
 				"col",
 				"columns"
 			],
 			[
 				"cente",
 				"centering"
-			],
-			[
-				"use",
-				"usepackage"
 			],
 			[
 				"sub",
@@ -356,10 +476,6 @@
 				"line_debS1"
 			],
 			[
-				"if",
-				"if	keyword"
-			],
-			[
 				"ar",
 				"area_E"
 			],
@@ -398,148 +514,32 @@
 			[
 				"plot",
 				"plot_disp	forflow"
-			],
-			[
-				"tit",
-				"titles	statement"
-			],
-			[
-				"b",
-				"box_H"
-			],
-			[
-				"bo",
-				"box_T"
-			],
-			[
-				"lie",
-				"line_T"
-			],
-			[
-				"Value",
-				"ValueError	class"
-			],
-			[
-				"share",
-				"share_y	statement"
-			],
-			[
-				"sha",
-				"sharey	param"
-			],
-			[
-				"cols",
-				"cols_map	param"
-			],
-			[
-				"last",
-				"last_ind	statement"
-			],
-			[
-				"Date",
-				"datetime	module"
-			],
-			[
-				"summ",
-				"summation	param"
-			],
-			[
-				"str",
-				"structs	statement"
-			],
-			[
-				"fiels",
-				"fields"
-			],
-			[
-				"dat",
-				"datas"
-			],
-			[
-				"t",
-				"try	Try/Except Py3"
-			],
-			[
-				"ti",
-				"titles"
-			],
-			[
-				"dtaa",
-				"dataframes"
-			],
-			[
-				"mea",
-				"mean_par	statement"
-			],
-			[
-				"Line",
-				"Line2D"
-			],
-			[
-				"ave",
-				"average_	param"
-			],
-			[
-				"med",
-				"med_cent"
-			],
-			[
-				"me",
-				"medians"
-			],
-			[
-				"whis",
-				"whiskers"
-			],
-			[
-				"sept",
-				"setp"
-			],
-			[
-				"datafra",
-				"dataframes"
-			],
-			[
-				"for",
-				"format	function"
-			],
-			[
-				"Ev",
-				"EvalData	class"
-			],
-			[
-				"lis",
-				"list	class"
-			],
-			[
-				"datafr",
-				"dataframe"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"file": "/D/Other/Perso/cd_audio.md",
+			"settings":
+			{
+				"buffer_size": 1330,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "SolisArt_script/csv_formatter.py",
 			"settings":
 			{
-				"buffer_size": 24939,
+				"buffer_size": 25595,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "SolisArt_script/Reader/Plotters/parameters.py",
+			"file": "SolisArt_script/Reader/bilan_constants_IGC_AIRvector.py",
 			"settings":
 			{
-				"buffer_size": 7403,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "SolisArt_script/Reader/Plotters/evaluation.py",
-			"settings":
-			{
-				"buffer_size": 49755,
+				"buffer_size": 8063,
 				"line_ending": "Windows"
 			}
 		},
@@ -547,20 +547,77 @@
 			"file": "SolisArt_script/Reader/bilan_reader.py",
 			"settings":
 			{
-				"buffer_size": 36701,
+				"buffer_size": 26220,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Tools/weather_transform.py",
+			"settings":
+			{
+				"buffer_size": 7463,
 				"line_ending": "Windows"
 			}
 		}
 	],
-	"build_system": "",
+	"build_system": "Packages/Markdown Preview/Markdown.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/LaTeXTools/LaTeX.sublime-build",
+					""
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/LaTeXTools/LaTeX.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Markdown Preview/Markdown.sublime-build",
+					""
+				],
+				[
+					"Packages/SublimeREPL/sublimerepl_build_system_hack.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Markdown Preview/Markdown.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 375.0,
+		"last_filter": "pyr",
 		"selected_items":
 		[
 			[
 				"pyr",
 				"SublimeREPL: Python - RUN current file"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Gist: Insert Gist"
+			],
+			[
+				"late",
+				"Build With: LaTeX"
 			],
 			[
 				"prev",
@@ -581,10 +638,6 @@
 			[
 				"pr",
 				"Permute Lines: Reverse"
-			],
-			[
-				"ins",
-				"Gist: Insert Gist"
 			],
 			[
 				"as",
@@ -659,10 +712,6 @@
 				"Markdown Preview: Preview in Browser"
 			],
 			[
-				"inst",
-				"Package Control: Install Package"
-			],
-			[
 				"PYR",
 				"SublimeREPL: Python - RUN current file"
 			],
@@ -728,19 +777,71 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/D/Github/Cours-Python/Work",
+		"/D/Github/Cours-Python/Work/SolisArt_script",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader",
+		"/D/Github/Cours-Python/Work/Tools"
+	],
 	"file_history":
 	[
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2012.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2013.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2014.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/FRA_Bordeaux.075100_IWEC.mos",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/Merignac_2012.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2012 - Copie.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2012 - Copie (2).mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/test.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/bordeaux_test.mos",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/FRA_Bordeaux.075100_IWEC.mos",
+		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/2012_test.mos",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/Merignac_2012.txt",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/Merignac_2014.mos",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/Merignac_2013.mos",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/Merignac_2014.txt",
+		"/C/Users/bois/TEMP/Conversion_weatherFiles/Merignac_2013.txt",
+		"/D/Github/Cours-Python/Work/Tools/weather_transform.py",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/extract_show_meteoFrance.py",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/README.md",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/Merignac_2014.txt",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/MERIGNAC_DONNEES_2010.csv",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/MERIGNAC_DONNEES_2014.csv",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/MERIGNAC_DONNEES_2009.csv",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/MERIGNAC_DONNEES_2011.csv",
 		"/D/Github/Cours-Python/Work/Notebooks/.ipynb_checkpoints/Solar_system_output-checkpoint.ipynb",
-		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script.mos",
-		"/D/Github/Projets/IGC/Meeting/20150413/README.md",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
+		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_water.mos",
+		"/D/Github/solarsystem/SolarSystem/Scripts/Old/Display_script.mos",
+		"/D/Github/Cours-Python/Work/Tools/ddd.py",
+		"/C/Users/bois/Downloads/Test_mos/Merignac_2013 - Copie.txt",
+		"/C/Users/bois/Downloads/Test_mos/Merignac_2013.txt",
+		"/C/Users/bois/Downloads/Test_mos/FRA_Bordeaux.075100_IWEC.mos",
+		"/C/Users/bois/Downloads/Test_mos/FRA_Bordeaux.075100_IWEC - Copie.mos",
+		"/C/Users/bois/Downloads/Test_mos/Merignac_2013.mos",
+		"/C/Users/bois/Downloads/Test_mos/Merignac_2012 - Copie.txt",
+		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Merignac_2009.txt",
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.toc",
+		"/D/Instructions.md",
+		"/D/faire.md",
+		"/D/Github/Projets/IGC/Meeting/20150506/README.md",
+		"/C/Users/bois/Downloads/RemindME.md",
+		"/D/Github/Projets/IGC/Meeting/20150413/diapo_IGC_combisystem.tex",
+		"/D/Github/Projets/IGC/Meeting/20150506/diapo_IGC_combisystem.tex",
 		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_Solisart_WATERvector.py",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
+		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script.mos",
+		"/D/Github/Projets/IGC/Meeting/20150413/README.md",
 		"/D/Github/Projets/SolisArt/SolisArt_projects.sublime-workspace",
 		"/D/Github/Projets/z1apqhss.oa2.txt",
 		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/compare_Algo_IGC_house.md",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/Markdown Preview/MarkdownPreview.sublime-settings",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector.py",
 		"/D/Github/Projets/Other/BDD_ Schneider/README.md",
 		"/D/Github/Projets/IGC/Réunions/20150306/README.md",
 		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Doc/IGC_baseZsz.csv",
@@ -809,55 +910,10 @@
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.system-ca-bundle",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.cache/01524fae79697630d0454ba3fabd9414.info",
 		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Olivier/Avril01_Mai06_olivier.txt",
-		"/D/faire.md",
-		"/D/Instructions.md",
-		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/README.md",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
 		"/C/Users/bois/Desktop/Dymola_message.txt",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/D/Github/solarsystem/Outputs/Plots_stock/Time_sav/old/heating_time_2014.json",
-		"/D/Github/solarsystem/Outputs/clean/chambery_20150109.csv",
-		"/D/Github/Projets/SolisArt/Etudes/Rendement_production/chambery_exp.csv",
-		"/D/Github/solarsystem/SolarSystem/Scripts/Recalage_script.mos",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/rendement_plotter.py",
-		"/D/Github/Projets/SolisArt/Etudes/Rendement_production/bordeaux_exp.csv",
-		"/D/Github/Projets/SolisArt/Etudes/Rendement_production/README.md",
-		"/D/Github/solarsystem/README.md",
-		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/extract_show_meteoFrance.py",
-		"/D/Github/Projets/SolarCombisystem/abstract.tex",
-		"/D/Github/Projets/IGC/Réunions/20141216/README.md",
-		"/D/Github/modelica-buildings/README.md",
-		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_NEW.mos",
-		"/D/Github/Projets/IGC/Réunions/20141014/README.md",
-		"/D/Github/Projets/SolisArt/Rapport/9_decembre_2014/production_solaire.tex",
-		"/D/Github/Projets/SolisArt/Rapport/4_novembre_2014/SolisArt_report.tex",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Report/production_solaire.tex",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Rendement_production/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Collecteur_variation/Comparaisons/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Olivier/Juin01_Juillet01_olivier.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Comparaisons/MarsAvrilMai_Irradiation_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Comparaisons/MarsAvrilMai_Energy_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Comparaisons/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/Mars_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Trnsys/MarsAvrilMai_Trnsys.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Merignac/extract_show_meteoFrance.py",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Merignac/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/Clean/Avril01_Mai06_dymola.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Output/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Input/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Dymola/Input/Avril01_Mai06.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/solisart.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/MarsAvrilMai_Energy_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/MarsAvrilMai_Irradiation_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/MarsAvrilMai_Energy_compare_test.csv",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Output/Clean/Mai01_Juin05_dymola.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/MarsAvrilMai_Energy_compare1.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/Avril_Energy_compare.txt",
-		"/D/Github/Projets/SolisArt/Rapport/4_novembre_2014/diapo_solisart.tex",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Comparaisons/Avril_compare.txt",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Output/README.md",
-		"/D/Github/Projets/SolisArt/Faire/SolisArt/Recalage/Data/Dymola/Input/README.md"
+		"/D/Github/solarsystem/Outputs/clean/chambery_20150109.csv"
 	],
 	"find":
 	{
@@ -875,6 +931,69 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"4575600.0",
+			"bordeauxAirRecyclePuisageReparti-4p_20150608.csv",
+			"bordeauxAirRecycle200vmBuffer-4p_20150606.csv",
+			"bordeauxAirRecycle100vpDHW-6p_20150604.csv",
+			"bordeauxAirRecycle100vmDHW-4p_20150606.csv",
+			"bordeauxAirRecycle100vpDHW-4p_20150604.csv",
+			",",
+			"dict_transform",
+			"Jcm2_to_Whm2",
+			"extr",
+			"to_drop",
+			"bordeauxAirRecycle60Inc-4p_20150607.csv",
+			"bordeauxAirRecycle45pOrientation-4p_20150607.csv",
+			"bordeauxAirRecycle-4p_20150605.csv",
+			"bordeauxAirRecycleCapteurHP-5p_20150605.csv",
+			"bordeauxAirRecycle200vpBuffer-4p_20150606.csv",
+			"bordeauxAirRecycle45mOrientation-4p_20150607.csv",
+			"bordeauxAirRecycleCapteurHP-4p_20150605.csv",
+			"bordeauxAirRecycleCapteurHP",
+			"bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv",
+			"bordeauxAirRecycle45Inc-4p_20150607.csv",
+			"bordeauxAirRecycle-6p_20150606.csv",
+			"bordeauxAirRecycle-2p_20150605.csv",
+			"bordeauxAirRecycleCapteurHP-4p_20150605",
+			"bordeauxAirRecycle-4p_20150505.csv",
+			"weather",
+			"\\",
+			"COLUMNS_MOS",
+			",",
+			"COLUMNS_MOS",
+			",",
+			"dict_transform",
+			"columns_mos",
+			"mos_file",
+			"change",
+			"index_col",
+			"data",
+			"_file",
+			"name",
+			"data_weather_name",
+			", ",
+			"Timestamp",
+			";",
+			", ",
+			",",
+			", ",
+			",",
+			"., ",
+			"Consommation",
+			"inFlow_Collector",
+			"Évolution des énergies",
+			"Flow",
+			"Consommation\\nElec_ECS",
+			"Consommation\\nElec",
+			"Consommation\\nElec_ECS",
+			"Besoins chauffage",
+			"Besoins chauff",
+			"Besoins chauffage",
+			"pd",
+			"new_fields",
+			"Production\\nappoint",
+			"plots",
+			"bordeauxAir-6p_20150413",
 			"new_fields",
 			"Production\\nElectrique",
 			"a ",
@@ -939,70 +1058,7 @@
 			"-1:",
 			"Consommations",
 			"time_csv",
-			"collector",
-			"2.32",
-			"strasbourg-3p_20150202.csv",
-			"chambery300vp-6p_20150127.csv",
-			"strasbourg-3p_20150202.csv",
-			"marseille-3p_20150129.csv",
-			"lyon-3p_20150128.csv",
-			"marseille-3p_20150129",
-			"panneaux",
-			"SolarP",
-			"bordeaux-3p_20150128.csv",
-			":",
-			"Energie solaire",
-			"Production",
-			"Product",
-			"product",
-			"strasbourg-6p_20000000.csv",
-			"chambery-3p_20150128.csv",
-			"strasbourg-9p_20150127.csv",
-			"sep",
-			"split",
-			"marseille",
-			"villes",
-			"diag_",
-			"diag_C",
-			"chambery",
-			"lyon-9p_20150126.csv",
-			"lyon-0p_20150124.csv",
-			"chambery-6p_20150125.csv",
-			"bordeaux-9p_20150126.csv",
-			"bordeaux-0p_20150125.csv",
-			"marseille-6p_20150123.csv",
-			"h!",
-			"30",
-			"32",
-			"35",
-			"40",
-			"Plafino",
-			"DeltaTeau",
-			"compare",
-			"EnerAvril",
-			"DebCircuit",
-			"compare",
-			"DeltaTeau",
-			"Isover",
-			"30",
-			"_",
-			"/",
-			"ctrl+d",
-			"/",
-			"        \\\\",
-			"\\midrule",
-			"°C",
-			"°",
-			"\\hline",
-			"marseille-6p_20150115.csv",
-			"lyon-6p_20150116.csv",
-			"csv",
-			"chambery-9p_20150120.csv",
-			"chambery-6p_20150114.csv",
-			"new_fields",
-			"args",
-			"self.args",
-			"args"
+			"collector"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1010,6 +1066,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			".",
 			"",
 			",",
 			"    ",
@@ -1026,24 +1083,56 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "SolisArt_script/csv_formatter.py",
+					"file": "/D/Other/Perso/cd_audio.md",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 24939,
+						"buffer_size": 1330,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6247,
-								6263
+								9,
+								9
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "SolisArt_script/csv_formatter.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 25595,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								24139,
+								24139
+							],
+							[
+								24269,
+								24269
 							]
 						],
 						"settings":
@@ -1053,33 +1142,33 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1458.0,
+						"translation.y": 1103.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "SolisArt_script/Reader/Plotters/parameters.py",
+					"buffer": 2,
+					"file": "SolisArt_script/Reader/bilan_constants_IGC_AIRvector.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7403,
+						"buffer_size": 8063,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								8063,
+								8063
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -1090,50 +1179,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "SolisArt_script/Reader/Plotters/evaluation.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 49755,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
 					"buffer": 3,
 					"file": "SolisArt_script/Reader/bilan_reader.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 36701,
+						"buffer_size": 26220,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								23131,
-								23131
+								5401,
+								5374
 							]
 						],
 						"settings":
@@ -1143,7 +1202,37 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8390.0,
+						"translation.y": 2112.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Tools/weather_transform.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7463,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6821,
+								6821
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2166.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1199,15 +1288,17 @@
 	{
 		"height": 118.0
 	},
+	"pinned_build_system": "",
 	"project": "Python_extractDisplay.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 64.0
 	},
 	"save_all_on_build": true,
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -1224,11 +1315,12 @@
 	"select_project":
 	{
 		"height": 500.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
 				"",
-				"D:\\Github\\Projets\\SolisArt\\SolisArt_projects.sublime-project"
+				"D:\\Github\\Projets\\SolisArt\\Rapport\\SolisArt_reports.sublime-project"
 			]
 		],
 		"width": 380.0
@@ -1236,11 +1328,13 @@
 	"select_symbol":
 	{
 		"height": 310.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
 		"width": 378.0
 	},
+	"selected_group": 0,
 	"settings":
 	{
 	},

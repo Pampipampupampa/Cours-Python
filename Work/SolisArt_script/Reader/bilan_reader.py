@@ -25,7 +25,7 @@
 import json
 
 # Import internal lib
-from Plotters.evaluation import *
+from bilan_constants_IGC_AIRvector import *
 
 
 def test_index(name, plot):
@@ -46,271 +46,33 @@ def test_index(name, plot):
     return index
 
 
-def time_info(frame, display=True):
-    """
-        frame must be an instance of EvalData class.
-        if display is True :
-          ---> print time informations about the frame simulation result.
-        Return a dict of all time informations.
-    """
-    time_dict = OrdD()
-    # Recup solar heating time
-    chauff_sol, _ = frame.col_sum_map(frame.frame,
-                                      debug=False,
-                                      cols_map=['S2_state',
-                                                'Vsolar_state',
-                                                'Vextra_state'],
-                                      match_map=(100, 100, 100),
-                                      start_sum=frame.frame.index[0])
-    # ##########################################################################
-    # ##########################################################################
-    # Recup solar time TEST
-    sol, _ = frame.col_sum_map_test(frame.frame,
-                                    debug=False,
-                                    cols_map=["Flow_Collector",
-                                              "Vsolar_state"],
-                                    start_sum=frame.frame.index[0])
-    # ##########################################################################
-    # ##########################################################################
-
-    # Recup extra heating time
-    chauff_app, _ = frame.col_sum_map(frame.frame,
-                                      debug=False,
-                                      cols_map=['S2_state',
-                                                'Vextra_state'],
-                                      match_map=(100, 0),
-                                      start_sum=frame.frame.index[0])
-    # Populate the time_dict
-    time_dict['start_sim'] = frame.frame.index[0]
-    time_dict['end_sim'] = frame.frame.index[-1]
-    time_dict['heating_time'] = chauff_app + chauff_sol
-    time_dict['solar_heating'] = chauff_sol
-    time_dict['extra_heating'] = chauff_app
-    time_dict['solar_working'] = sol
-    if chauff_app > chauff_sol:
-        time_dict['Difference'] = chauff_app - chauff_sol
-    else:
-        time_dict['Difference'] = chauff_sol - chauff_app
-    try:
-        ratio = 100 * chauff_sol / (chauff_app + chauff_sol)
-        time_dict['ratio'] = ratio
-    except ZeroDivisionError:
-        time_dict['ratio'] = 0
-    # Display time informations
-    if display is True:
-        for key, item in time_dict.items():
-            print('\n---> {} : {}'.format(key, item))
-    return time_dict
-
-
-def prepare_export(dico, name):
-    """
-        Change format to prepare export to csv or json.
-    """
-    to_seconds = ('heating_time', 'extra_heating', 'solar_heating',
-                  'Difference', 'solar_working')
-    dico[name][m_]['start_sim'] = str(dico[name][m_]['start_sim'])
-    dico[name][m_]['end_sim'] = str(dico[name][m_]['end_sim'])
-    for conv in to_seconds:
-        dico[name][m_][conv] = dico[name][m_][conv].total_seconds()
-
-
 ########################
 #    Main Program :    #
 ########################
 
-# Constant
-A_COL = 2.32  # Collector area
 
+# Select directory between projects
 
-# Select directory
 fold = FOLDER/'clean'/'IGC'
+# fold = FOLDER/'clean'/'SolisArt'
 
-# Bar emphazis
-emphs_dict = {'bar_cumA': ['Pertes réseau'],
-              'bar_cumC': ['Production\nsolaire'],
-              'bar_supC': ['Production\nsolaire'],
-              'bar_supDispo': []}
-
-# Fields (to plot new type of graph add new fields here)
-fields = {'box_Tbal': ['T3', 'T4', 'T5'],
-          'box_Text': ['T9_ext'],
-          'box_H': ['Diffus', 'Direct'],
-          'box_HDir': ['HDirNor', 'Direct'],
-          'box_S': ['Speed_S6', 'Speed_S5', 'Speed_S2'],
-          'diag_B': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation\nappoint'],
-                     ['Chauffage', 'ECS', 'Pertes appoint', 'Pertes réseau']],
-          'diag_P': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation\nappoint'],
-                     ['Pertes capteur', 'Production\nsolaire']],
-          'diag_C': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                      'Energie captable', 'Consommation\nappoint'],
-                     ['Consommation\nappoint', 'Production\nsolaire']],
-          'bar_cumC': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation\nappoint'],
-                       ['ECS', 'Chauffage', 'Pertes réseau']],
-          'bar_cumA': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation\nappoint'],
-                       ['Production\nsolaire', 'Production\nappoint']],
-          'bar_supC': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                        'Energie captable', 'Consommation\nappoint'],
-                       ['ECS', 'Chauffage', 'Pertes réseau']],
-          'bar_supDispo': [['Production\nsolaire', 'Production\nappoint', 'Chauffage', 'ECS',
-                            'Energie captable', 'Consommation\nappoint'],
-                           ['Energie captable', 'Production\nsolaire']],
-          # 'area_E': ['Production\nsolaire', 'Consommation\nappoint'],
-          'area_E': ['Taux de couverture', 'Rendement capteur'],
-          # 'area_E': ['Production\nsolaire', 'Chauffage solaire',
-          #            'Consommation\nElectrique_chauffage'],
-          'area_P': ['Production\nsolaire', 'Pertes totales', 'Production\nappoint'],
-          'area_EB': ['ECS', 'Chauffage', 'Pertes totales'],
-          'line_E': ['ECS', 'Production\nsolaire', 'Production\nappoint', 'Chauffage'],
-          'line_ES': ['Production\nsolaire', 'Energie captable'],
-          # 'line_TE': ['T3', 'T4', 'T5'],
-          'line_TE': ['T1', 'T3', 'T4', 'T5'],
-          # 'line_TE': ['T7', 'T8', 'T12_house'],
-          # 'line_T': ['T12_house', 'T10_solarInstruction', 'T9_ext'],
-          'line_T': ['T12_house', 'T9_ext', 'T13_exch_outlet', 'T14_blowing'],
-          'line_H': ['Diffus', 'Direct'],
-          'line_debA': ['Flow_S6', 'Flow_S5', 'Flow_S4', 'Flow_S2'],
-          'line_debS': ['Flow_S6', 'Flow_S5'],
-          'line_debC': ['Flow_S4', 'Flow_S2'],
-          'line_debSE': ['Flow_Collector', 'Flow_S5',
-                         'Flow_ExchStorTank'],
-          'line_debCE': ['Flow_S4', 'Flow_Boiler'],
-          'line_debSCEbuffer': ['Flow_ExchStorTank', 'Flow_Boiler'],
-          'line_debSCE': ['Flow_Collector', 'Flow_S2'],
-          'line_Drawing': ['Flow_Drawing'],
-          'line_Backup': ['Backup_state', 'ECS_state'],
-          'line_V3V': ['Vsolar_state', 'Vextra_state']}
-
-col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
-                    ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
-                    ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
-            'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16', '#dc322f'],
-            'diag_P': ['#804040', 'orange'],
-            'diag_C': ['#d33682', 'orange'],
-            'bar_cumA': {'Production\nappoint': '#fdf6e3', 'Production\nsolaire': 'orange',
-                         'Pertes totales': '#cb4b16'},
-            'bar_cumC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                         'ECS': '#268bd2', 'Production\nsolaire': 'orange',
-                         'Pertes réseau': '#cb4b16'},
-            'bar_supDispo': {'Production\nsolaire': 'orange',
-                             'Energie captable': '#859900'},
-            'bar_supC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                         'ECS': '#268bd2', 'Production\nsolaire': 'orange',
-                         'Pertes réseau': '#cb4b16'},
-            'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
-            'line_ES': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
-            'line_debS': 'Accent', 'line_debC': 'Accent', 'line_T': 'Accent',
-            'line_debSE': 'Accent', 'line_debCE': 'Accent', 'area_EB': 'Accent',
-            'line_debSCE': 'Accent', 'line_V3V': 'Accent', 'area_P': 'Accent',
-            'line_Drawing': 'Accent', 'line_Backup': 'Accent',
-            'line_debSCEbuffer': 'Accent'}
-
-# Titles
-titles = {'title': 'Bilan de la simulation',
-          'box_Tbal': 'Evolution mensuelle de la variation \n' +
-                      'des températures des ballons',
-          'box_Text': 'Evolution mensuelle de la variation \n' +
-                      'dee la température etérieure',
-          'box_H': 'Evolution mensuelle de la variation \n' +
-                   'de l’irradiation sur les panneaux',
-          'box_HDir': 'Evolution mensuelle de la variation \n' +
-                      'du potentiel de l’irradiation directe sur les panneaux',
-          'box_S': 'Evolution de la vitesse des pompes',
-          'diag_B': 'Taux de couverture',
-          'diag_P': 'Rendement capteur',
-          'diag_C': 'Répartition de la consommation',
-          'bar_cumA': 'Evolution mensuelle des apports',
-          'bar_cumC': "Evolution mensuelle de la production d'énergie",
-          'bar_supC': "Evolution mensuelle des apports et de la production d'énergie",
-          'bar_supDispo': "Evolution mensuelle des gains et du rendement solaire",
-          # 'area_E': 'Evolution annuelle de la consommation en énergie',
-          'area_E': 'Evolution des facteurs caractéristiques',
-          'area_P': 'Evolution annuelle de la production en énergie',
-          'area_EB': 'Evolution annuelle des besoins',
-          'line_E': 'Evolution annuelle de la consommation en énergie',
-          'line_ES': 'Evolution annuelle de la production solaire',
-          # 'line_TE': 'Evolution annuelle des températures dans les ballons',
-          'line_TE': 'Evolution des températures du système solaire',
-          # 'line_T': 'Evolution annuelle de la température intérieure ' +
-          #           '\net extérieure',
-          'line_T': 'Evolution de la température dans le circuit d’air neuf ' +
-                    '\net de la température intérieure',
-          'line_H': 'Evolution annuelle de la puissance captée',
-          'line_debA': 'Evolution des débits solaires et de chauffage',
-          'line_debS': 'Evolution des débits solaires',
-          'line_debC': 'Evolution des débits de chauffage',
-          'line_debSE': 'Evolution des débits des équipements solaire',
-          'line_debCE': 'Evolution des débits des équipements de chauffage',
-          'line_debSCE': 'Evolution des débits dans le collecteur et radiateur',
-          'line_debSCEbuffer': 'Evolution des débits dans la chaudière \n ' +
-                               'et le tampon',
-          'line_V3V': 'Etat des vannes de régulation',
-          'line_Drawing': 'Evolution du débit de puisage',
-          'line_Backup': 'Evolution de l’état de l’appoint et de ECS'}
-
-
-# Change data columns names
-# conv_dict = {'DrawingUp_Energy': 'ECS',
-#              'Radiator_Energy': 'Chauffage',
-#              'Collector_Energy': 'Production\nsolaire',
-#              # Must be commented with csv files older than 2015
-#              'CollectorPanel_Energy': 'Energie captable',
-#              # Must be commented with csv files older than 2015
-#              'BoilerFuel_Energy': 'Consommation\nappoint',
-#              # Must be commented with csv files older than 2015
-#              'BoilerLosses_Energy': 'Pertes ambiance\nchaudiere',
-#              'Boiler_Energy': 'Production\nappoint',
-#              'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
-
-conv_dict = {'DrawingUp_Energy': 'ECS',
-             'SolarHeating_Energy': 'Chauffage solaire',
-             'Collector_Energy': 'Production\nsolaire',
-             'CollectorPanel_Energy': 'Energie captable',
-             'ElectricalDHW_Energy': 'Consommation\nElectrique_ECS',
-             'ElectricalHeating_Energy': 'Consommation\nElectrique_chauffage',
-             'InternalGains_Energy': 'Gains internes',
-             'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct'}
-
-# New fields
-# new_fields = (('Besoins', 'ECS', 'Chauffage', '+'),
-#               ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
-#               ('Pertes réseau', 'Production', 'Besoins', '-'),
-#               ('Pertes appoint', 'Consommation\nappoint', 'Production\nappoint', '-'),
-#               ('Pertes totales', 'Pertes appoint', 'Pertes réseau', '+'),
-#               ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
-#               ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
-#               ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
-#               # ('Gain\nsolaire', 'SolarPower_absorbed', 'SolarPower_lost', '-'))
-
-new_fields = (('Production\nappoint', 'Consommation\nElectrique_ECS',
-               'Consommation\nElectrique_chauffage', '+'),
-              ('Besoins chauffage', 'Consommation\nElectrique_chauffage',
-               'Chauffage solaire', '+'),
-              ('Besoins', 'ECS', 'Besoins chauffage', '+'),
-              ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
-              ('Pertes réseau', 'Production', 'Besoins', '-'),
-              ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
-              ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
-              ('Pertes capteur', 'Energie captable', 'Production\nsolaire', '-'))
-
-# Prepare Taux de couverture (list of formatted datas)
-short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-               'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
-               'Nov', 'Dec']
-
-
-# Test new:
+# Solisart:
 # chambery-0p_20150206.csv bordeaux-0p_20150210.csv marseille-0p_20150208.csv strasbourg-0p_20150209.csv lyon-0p_20150218.csv
 # chambery-3p_20150206.csv bordeaux-3p_20150208.csv marseille-3p_20150207.csv strasbourg-3p_20150210.csv lyon-3p_20150218.csv
 # chambery-6p_20150207.csv bordeaux-6p_20150209.csv marseille-6p_20150208.csv strasbourg-6p_20150211.csv lyon-6p_20150219.csv
 # chambery-9p_20150208.csv bordeaux-9p_20150210.csv marseille-9p_20150209.csv strasbourg-9p_20150211.csv lyon-9p_20150219.csv
 # chambery300vm-6p_20150218.csv chambery300vp-6p_20150218.csv
-
 # strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
+
+# IGC:
+# bordeauxAirRecycle-6p_20150606.csv bordeauxAirRecycle-4p_20150605.csv bordeauxAirRecycle-2p_20150605.csv
+# bordeauxAirRecycle45Inc-4p_20150607.csv bordeauxAirRecycle60Inc-4p_20150607.csv
+# bordeauxAirRecycle45mOrientation-4p_20150607.csv bordeauxAirRecycle45pOrientation-4p_20150607.csv
+# bordeauxAirRecycle100vmDHW-4p_20150606.csv bordeauxAirRecycle100vpDHW-4p_20150604.csv bordeauxAirRecycle100vpDHW-6p_20150604.csv
+# bordeauxAirRecycle200vpBuffer-4p_20150606.csv bordeauxAirRecycle200vmBuffer-4p_20150606.csv
+# bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv bordeauxAirRecycleCapteurHP-4p_20150605.csv bordeauxAirRecycleCapteurHP-5p_20150605.csv
+# bordeauxAirRecyclePuisageReparti-4p_20150608.csv bordeauxAirRecyclePuisageMatin-4p_20150608.csv
+
 
 # Debugger
 # import pdb; pdb.set_trace()
@@ -381,9 +143,9 @@ if __name__ == '__main__':
                       skiprows=(1,) * nb_name,
                       splitters=(sep,) * nb_name)
 
-    #
-    #                      EvalData class : Prepare datas                      #
-    #
+##############
+# EVALUATION #
+##############
     # Keep only 2014 datas into the dict
     datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
 
@@ -402,11 +164,6 @@ if __name__ == '__main__':
     # Initialize a simple dictionnary to put inside energy informations
     energy_json = {}
 
-    # # Initialize csv structure and add file head
-    # time_csv = []
-    # time_csv.append(["Data", "Month", "start_sim", "end_sim", "heating_time",
-    #                  "solar_heating", "extra_heating", "Difference", "ratio"])
-
     for name in datas:
         # Change columns names
         datas[name].frame.columns = datas[name].change_names(conv_dict)
@@ -417,10 +174,11 @@ if __name__ == '__main__':
         # Add new fields to each datas
         for new in new_fields:
             # Create new columns
-            datas[name].frame[new[0]] = datas[name].add_column(datas[name].frame,
-                                                               used_cols=(new[1],
-                                                                          new[2]),
-                                                               operator=new[3])
+            datas[name].frame.loc[:, new[0]] = datas[name].add_column(datas[name].frame,
+                                                                      used_cols=(new[1],
+                                                                                 new[2]),
+                                                                      operator=new[3])
+
     # --------------------------------------------------------------------------
         # # Display annual time informations
         # time_json[name]['Annual'] = time_info(frame=datas[name])
@@ -431,17 +189,17 @@ if __name__ == '__main__':
         #                                     month=all_months[m_])
         #         time_json[name][m_] = time_info(frame=chunk)
         #     # Prepare time data to export
-        #     prepare_export(dico=time_json, name=name)
-        #     # Create csv structure
-        #     # time_csv.append([name, m_] +
-        #     #                 [el for el in time_json[name][m_].values()])
-    # --    ------------------------------------------------------------------------
+        #     prepare_export(dico=time_json, name=name, mois=m_)
+    # --------------------------------------------------------------------------
+
         # Add all plot for each set of datas
         for el in structs[name]:
             if 'bar' in el:
                 structs[name][el] = (datas[name].bar_energy(datas[name].frame,
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
+
+    # --------------------------------------------------------------------------
                 # # Here we populate the energy_json
                 # if 'Dispo' in el:
                 #     # Explicit copy
@@ -449,19 +207,22 @@ if __name__ == '__main__':
                 #     tmp.index = structs[name][el][1]
                 #     tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
                 #     tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
+                #     tmp['Taux de couverture\nDHW'] = tmp['Taux de couverture\nDHW'] * 100
+                #     tmp['Taux de couverture\nChauffage'] = tmp['Taux de couverture\nChauffage'] * 100
                 #     # Temporary ordered dict to keep months in the right order
                 #     temp = OrdD()
                 #     for mth in tmp.index:
                 #         temp[mth] = {para: tmp[para][mth]
                 #                      for para in tmp.columns}
                 #         # Add mean temperature per months
-                #         t_fields = ['T1', 'T3', 'T4', 'T5', 'T7', 'T8', 'T9_ext', 'T12_house']
+                #         t_fields = ['T1', 'T3', 'T4', 'T5', 'T7', 'T8', 'T9_ext', 'T12_house', T14_blowing]
                 #         f_temp = datas[name].frame[t_fields].resample('1m', how='mean')
                 #         f_temp.index = tmp.index
                 #         for temperature in f_temp.columns:
                 #             temp[mth][temperature] = f_temp[temperature][mth]
                 #     # Populate dict with temp ordered dict
                 #     energy_json[name] = temp
+    # --------------------------------------------------------------------------
 
             elif 'box' in el:
                 structs[name][el] = (datas[name].box_actions(datas[name].frame,
@@ -487,6 +248,7 @@ if __name__ == '__main__':
                                                       interpolate=True)
                 # structs[name][el] = datas[name].frame
 
+# --------------------------------------------------------------------------
     # # Write to a json file all energy informations
     # with open('energy.json', 'w', encoding='utf-8') as f:
     #     json.dump(energy_json, f, indent=4)
@@ -494,19 +256,15 @@ if __name__ == '__main__':
     # with open('heating_time.json', 'w', encoding='utf-8') as f:
     #     json.dump(time_json, f, indent=4)
 
-    # Write to a csv file all time informations
-    # with open('Simulation_timedata.csv', 'w', newline='',
-    #           encoding='utf-8') as csvfile:
-    #     spamwriter = csv.writer(csvfile, delimiter=';')
-    #     for row in time_csv:
-    #         spamwriter.writerow(row)
-
     # Only display to have a pretty interface
+# --------------------------------------------------------------------------
+
     print('\n|\n|\n|--> Class creation now finish, plotting datas\n')
 
-    #
-    #                     MultiPlotter class : Plot datas                      #
-    #
+
+###########
+# PLOTTER #
+###########
     add = ' -- '.join(data for data in datas)
     title = titles['title'] + ' pour les données de ' + add
 
@@ -552,18 +310,19 @@ if __name__ == '__main__':
                 # Check number of collectors
                 print("**********   ", nb_col, "   ***********")
                 if 'Dispo' in plot:
+                    # Working but ugly, please fix.
+                    area_col = A_COL['Cobralino'] if 'HP-' in name else A_COL['IDMK']
+                    # Process change for each column except which contains ratio.
                     for column_name in structs[name][plot][0].columns:
                         if any(c in column_name for c in ("Taux de couverture",
                                                           "Rendement capteur")):
                             continue
                         else:
-                            structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (A_COL * nb_col)
-                    ylabel = "$KWh/m^2$"
+                            structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (area_col * nb_col)
+                            ylabel = "$KWh/m^2$"
                 # Data check
                 print(structs[name][plot][0])
 
-                # Debugger
-                # import pdb; pdb.set_trace()
                 if 'cum' in plot:
                     Plot.bar_cum_plot(structs[name][plot][0],
                                       emphs=emphs_dict[plot],
@@ -585,15 +344,25 @@ if __name__ == '__main__':
                     percents = ['{:.1%}'.format(i)
                                 for i in
                                 structs[name][plot][0]['Taux de couverture'].values]
-                    Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
-                                              pos=pos)
+                if 'D' in plot:
+                    # Taux de couverture de couverture solaire mensuel ECS
+                    percents = ['{:.1%}'.format(i)
+                                for i in
+                                structs[name][plot][0]['Taux de couverture\nDHW'].values]
+
+                if 'H' in plot:
+                    # Taux de couverture de couverture solaire mensuel pour le chauffage
+                    percents = ['{:.1%}'.format(i)
+                                for i in
+                                structs[name][plot][0]['Taux de couverture\nChauffage'].values]
                 if 'Dispo' in plot:
                     # Taux de couverture de couverture solaire mensuel
                     percents = ['{:.1%}'.format(i)
                                 for i in
                                 structs[name][plot][0]['Rendement capteur'].values]
-                    Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
-                                              pos=pos)
+                percents = [percent if 'nan' not in percent else '*' for percent in percents]
+                Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
+                                          pos=pos)
                 # Uncomment to set a y limit for each bar_cum plot
                 # Plot.catch_axes(*pos).set_ylim(0, 2500)
             elif 'box' in plot:
@@ -641,66 +410,40 @@ if __name__ == '__main__':
                 Plot.catch_axes(*pos).set_title(label=label,
                                                 fontdict=Plot.font_title)
             elif any(c in plot for c in ('area', 'line')):
+                stacked = False
+                ylim = (None, None)
                 if 'V3V' in plot:
-                    # All datas
-                    Plot.frame_plot(structs[name][plot],
-                                    fields=fields[plot],
-                                    title=titles[plot] + '\n{}'.format(name_cap),
-                                    pos=pos, loc='center',
-                                    colormap=col_dict[plot],
-                                    linewidth=2, kind=plot.split('_')[0],
-                                    ylim=[-10, 110])
-                    # # Specific month
-                    # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
-                    #                                     month=2),
-                    #                 fields=fields[plot],
-                    #                 title=titles[plot]+'\n{}'.format(name_cap),
-                    #                 pos=pos, loc='center',
-                    #                 colormap=col_dict[plot],
-                    #                 linewidth=2, kind=plot.split('_')[0],
-                    #                 ylim=[-10, 110])
+                    ylim = [-10, 110]
                 elif 'area' in plot:
-                    # All datas
-                    Plot.frame_plot(structs[name][plot], fields=fields[plot],
-                                    title=titles[plot] + '\n{}'.format(name_cap),
-                                    pos=pos, loc='center', stacked=False,
-                                    colormap=col_dict[plot],
-                                    linewidth=2, kind=plot.split('_')[0])
-                    # Specific month
-                    # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
-                    #                                     month=5),
-                    #                 fields=fields[plot],
-                    #                 title=titles[plot]+'\n{}'.format(name_cap),
-                    #                 pos=pos, loc='center',
-                    #                 color=col_dict[plot],
-                    #                 linewidth=2, kind=plot.split('_')[0])
-                else:
-                    # All datas
-                    Plot.frame_plot(structs[name][plot], fields=fields[plot],
-                                    title=titles[plot] + '\n{}'.format(name_cap),
-                                    pos=pos, loc='center',
-                                    colormap=col_dict[plot],
-                                    linewidth=2, kind=plot.split('_')[0])
+                    stacked = False  # Default True in area plot inside plotter.
+                # All datas
+                Plot.frame_plot(structs[name][plot], fields=fields[plot],
+                                title=titles[plot] + '\n{}'.format(name_cap),
+                                pos=pos, loc='center', stacked=stacked,
+                                colormap=col_dict[plot], ylim=ylim,
+                                linewidth=2, kind=plot.split('_')[0])
 
-                    # # Remove after publi
-                    # Plot.frame_plot(structs[name][plot], fields=fields[plot],
-                    #                 title='' + '\n{}'.format(name_cap),
-                    #                 pos=pos, loc='center',
-                    #                 colormap=col_dict[plot],
-                    #                 linewidth=2, kind=plot.split('_')[0])
-                    # Plot.catch_axes(*pos).set_ylabel("°C", fontsize=28, style='italic')
-                    # Plot.catch_axes(*pos).legend(['T3', 'T4', 'T5', 'T_house'], loc=1,
-                    #                              prop={'size': 24,
-                    #                                    'family': 'Source Code Pro'},
-                    #                              ncol=1)
-                    # # Specific month
-                    # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
-                    #                                     month=2),
-                    #                 fields=fields[plot],
-                    #                 title=titles[plot]+'\n{}'.format(name_cap),
-                    #                 pos=pos, loc='center',
-                    #                 colormap=col_dict[plot],
-                    #                 linewidth=2, kind=plot.split('_')[0])
+                # # Specific month
+                # Plot.frame_plot(EvalData.keep_month(structs[name][plot],
+                #                                     month=2),
+                #                 fields=fields[plot],
+                #                 title=titles[plot]+'\n{}'.format(name_cap),
+                #                 pos=pos, loc='center', stacked=stacked
+                #                 colormap=col_dict[plot], ylim=ylim
+                #                 linewidth=2, kind=plot.split('_')[0])
+
+                # # Remove after publi
+                # Plot.frame_plot(structs[name][plot], fields=fields[plot],
+                #                 title='' + '\n{}'.format(name_cap),
+                #                 pos=pos, loc='center', stacked=stacked
+                #                 colormap=col_dict[plot], ylim=ylim
+                #                 linewidth=2, kind=plot.split('_')[0])
+                # Plot.catch_axes(*pos).set_ylabel("°C", fontsize=28, style='italic')
+                # Plot.catch_axes(*pos).legend(['T3', 'T4', 'T5', 'T_house'], loc=1,
+                #                              prop={'size': 24,
+                #                                    'family': 'Source Code Pro'},
+                #                              ncol=1)
+
             else:
                 print('Nothing will be show for {}'.format(plot))
 
@@ -711,12 +454,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # Save plots
-    base_name = "Simulation"
-    if len(datas) == 1:
-        base_name = name
-    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+    # # Save plots
+    # base_name = "Simulation"
+    # if len(datas) == 1:
+    #     base_name = name
+    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()
