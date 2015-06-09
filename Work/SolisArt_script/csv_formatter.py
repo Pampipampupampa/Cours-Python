@@ -26,7 +26,7 @@ from functools import wraps  # Keep trace of decorated functions arguments
 field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "Collector.temSen[20].T": "T1",
                    "Collector.Tinside[20]": "T1",
-                   "inFlow_Collector.vol[1].T": "T2",
+                   "inFlow_Collector.vol[24].T": "T2",
                    "T2.T": "T2", "T3.T": "T3", "Pump_Control.T3": "T3",
                    "T4.T": "T4", "Pump_Control.T4": "T4",
                    "T5.T": "T5", "Pump_Control.T5": "T5",
@@ -102,9 +102,12 @@ igc_converter = {"Control.T1": "T1",  "Control.T3": "T3",
                  "C5.m_flow": "Flow_S5",
                  "C2.m_flow": "Flow_S2",
                  "fan.m_flow_actual": "Flow_Fan",
+                 "recycled_air_flow.m_flow": "Flow_Recycled",
                  "Tsoufflage.T": "T14_blowing",
+                 "Tsoufflage_stable.T": "T14_blowing",
                  "Tafter_hex.T": "T13_exch_outlet",
                  "Tbefore_hex.T": "T13_exch_inlet",
+                 "Tbefore_hex_stable.T": "T13_exch_inlet",
                  "Control.V3V_solar_outter": "Vsolar_state",
                  "Collector.m_flow": "Flow_Collector",
                  "Health_Tank.portHex_a.m_flow": "Flow_ExchTank_bot",
@@ -122,6 +125,8 @@ igc_converter = {"Control.T1": "T1",  "Control.T3": "T3",
                  "integrator_collector.Energy": "Collector_Energy",
                  "integrator_drawingUp.Energy": "DrawingUp_Energy",
                  "integrator_exchanger.Energy": "SolarHeating_Energy",
+                 "integrator_solarDrawingUp.Energy": "SolarDrawingUp_Energy",
+                 "integrator_solarStorage_charge.Energy": "SolarStorage_Energy",
                  "Pump_Control.Elec_heating_Energy[1]": "ElecHeating_Energy",
                  "Control.Elec_DHW_Energy": "ElecDHW_Energy",
                  "EInternal.y": "InternalGains_Energy"
@@ -326,8 +331,12 @@ def to_W_per_m2(struct, column):
           - struct is a panda dataFrame
           - column is a panda dataFrame column name
     """
-    collector_area = 2.32
+    if 'HP' in csv_in:
+        collector_area = 1.926
+    else:
+        collector_area = 2.32
     nb_collector = int(csv_in.split("-")[1].split("p")[0])
+    # print(nb_collector, collector_area)
     try:
         struct[column] *= 20 / (collector_area*nb_collector)
     except ZeroDivisionError:
@@ -518,9 +527,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
-             "bordeauxAirRecycle-4p_20150505.csv"
+             "bordeauxAirRecyclePuisageMatin-4p_20150608.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
-              "bordeauxAirRecycle-4p_20150505.csv"
+              "bordeauxAirRecyclePuisageMatin-4p_20150608.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
