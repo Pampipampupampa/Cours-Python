@@ -64,14 +64,21 @@ fold = FOLDER/'clean'/'IGC'
 # chambery300vm-6p_20150218.csv chambery300vp-6p_20150218.csv
 # strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
 
+
 # IGC:
 # bordeauxAirRecycle-6p_20150606.csv bordeauxAirRecycle-4p_20150605.csv bordeauxAirRecycle-2p_20150605.csv
 # bordeauxAirRecycle45Inc-4p_20150607.csv bordeauxAirRecycle60Inc-4p_20150607.csv
 # bordeauxAirRecycle45mOrientation-4p_20150607.csv bordeauxAirRecycle45pOrientation-4p_20150607.csv
 # bordeauxAirRecycle100vmDHW-4p_20150606.csv bordeauxAirRecycle100vpDHW-4p_20150604.csv bordeauxAirRecycle100vpDHW-6p_20150604.csv
 # bordeauxAirRecycle200vpBuffer-4p_20150606.csv bordeauxAirRecycle200vmBuffer-4p_20150606.csv
-# bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv bordeauxAirRecycleCapteurHP-4p_20150605.csv bordeauxAirRecycleCapteurHP-5p_20150605.csv
 # bordeauxAirRecyclePuisageReparti-4p_20150608.csv bordeauxAirRecyclePuisageMatin-4p_20150608.csv
+# bordeauxAirRecycleM2012-4p_20150609.csv bordeauxAirRecycleM2013-4p_20150609.csv bordeauxAirRecycleM2014-4p_20150610.csv
+# bordeauxAirRecycle1er-4p_20150609.csv bordeauxAirRecycle2nd-4p_20150610.csv bordeauxAirRecycle3rd-4p_20150610.csv
+
+# bordeauxAirRecycleCapteurHP-4p_20150612.csv bordeauxAirRecycleCapteurHP-5p_20150612.csv
+
+# Ne pas utiliser sans vérifications
+# bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv bordeauxAirRecycleCapteurHP-4p_20150605.csv bordeauxAirRecycleCapteurHP-5p_20150605.csv
 
 
 # Debugger
@@ -200,11 +207,14 @@ if __name__ == '__main__':
                                                             fields=fields[el][0]))
 
     # --------------------------------------------------------------------------
-                # # Here we populate the energy_json
+                # # Here we populate the energy_json ().
+                # # This part of the script can be moved outside by simply used
+                # # JSON_TEMP_FIELDS for all columns ...
+                # # Constants define inside bilan_constant file.
                 # if 'Dispo' in el:
                 #     # Explicit copy
-                #     tmp = structs[name][el][0].copy()
-                #     tmp.index = structs[name][el][1]
+                #     tmp = structs[name][el][0][JSON_ENERGY_FIELDS].copy()
+                #     tmp.index = structs[name][el][1].copy()
                 #     tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
                 #     tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
                 #     tmp['Taux de couverture\nDHW'] = tmp['Taux de couverture\nDHW'] * 100
@@ -214,9 +224,8 @@ if __name__ == '__main__':
                 #     for mth in tmp.index:
                 #         temp[mth] = {para: tmp[para][mth]
                 #                      for para in tmp.columns}
-                #         # Add mean temperature per months
-                #         t_fields = ['T1', 'T3', 'T4', 'T5', 'T7', 'T8', 'T9_ext', 'T12_house', T14_blowing]
-                #         f_temp = datas[name].frame[t_fields].resample('1m', how='mean')
+                #         # Add mean value for other column not described inside JSON_ENERGY_FIELDS
+                #         f_temp = datas[name].frame[JSON_TEMP_FIELDS].resample('1m', how='mean')
                 #         f_temp.index = tmp.index
                 #         for temperature in f_temp.columns:
                 #             temp[mth][temperature] = f_temp[temperature][mth]
@@ -255,10 +264,9 @@ if __name__ == '__main__':
     # # Write to a json file all heating time informations
     # with open('heating_time.json', 'w', encoding='utf-8') as f:
     #     json.dump(time_json, f, indent=4)
-
-    # Only display to have a pretty interface
 # --------------------------------------------------------------------------
 
+    # Only display to have a pretty interface
     print('\n|\n|\n|--> Class creation now finish, plotting datas\n')
 
 
@@ -273,7 +281,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    # rows, cols = 3, 1
+    # rows, cols = 3, 2
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -324,12 +332,14 @@ if __name__ == '__main__':
                 print(structs[name][plot][0])
 
                 if 'cum' in plot:
-                    Plot.bar_cum_plot(structs[name][plot][0],
+                    Plot.bar_cum_plot(structs[name][plot][0], legend_dict={'ncol': 2},
                                       emphs=emphs_dict[plot],
                                       pos=pos, fields=fields[plot][1],
                                       loc='center', line_dict={"linewidth": 4},
                                       names=structs[name][plot][1], ylabel=ylabel,
                                       title=titles[plot] + '\n{}'.format(name_cap))
+                    # Uncomment to set a y limit for each bar_cum plot
+                    # Plot.catch_axes(*pos).set_ylim(0, 2500)
                 elif 'sup' in plot:
                     Plot.colors = col_dict[plot]
                     Plot.bar_sup_plot(structs[name][plot][0],
@@ -338,6 +348,8 @@ if __name__ == '__main__':
                                       loc='center', ylabel=ylabel,
                                       names=structs[name][plot][1],
                                       title=titles[plot] + '\n{}'.format(name_cap))
+                    # Uncomment to set a y limit for each bar_cum plot
+                    # Plot.catch_axes(*pos).set_ylim(0, 2500)
                 # Each xticks = short month name +
                 if any(c in plot for c in ('C', 'A')):
                     # Taux de couverture de couverture solaire mensuel

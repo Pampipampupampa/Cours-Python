@@ -156,6 +156,21 @@ titles = {'title': 'Bilan de la simulation',
           'line_Drawing': 'Evolution du débit de puisage'}
 
 
+# Field used as output for json energy file (check conv_dict to get correct names)
+# Already monthly values when script create json structure.
+# Careful if update conv_dict, you have to update this constant too.
+JSON_ENERGY_FIELDS = ['Gains internes', 'Chauffage_solaire',
+                      'Consommation\nElec_chauffage',
+                      'Energie captable', 'ECS_solaire',
+                      'Consommation\nElec_ECS',
+                      'Production\nsolaire', 'ECS'] + [field[0] for field in new_fields]
+
+# Field used as output for json energy file (check conv_dict to get correct names)
+# These fields will be resampling before.
+JSON_TEMP_FIELDS = ['T1', 'T3', 'T4', 'T5', 'T7', 'T8', 'T9_ext',
+                    'T12_house', 'T14_blowing']
+
+
 # Air system
 def time_info(frame, display=True):
     """
@@ -171,16 +186,12 @@ def time_info(frame, display=True):
                                       cols_map=['S2_state'],
                                       match_map=(100, ),
                                       start_sum=frame.frame.index[0])
-    # ##########################################################################
-    # ##########################################################################
     # Recup solar time TEST
     sol, _ = frame.col_sum_map_test(frame.frame,
                                     debug=False,
                                     cols_map=["Flow_Collector",
                                               "Vsolar_state"],
                                     start_sum=frame.frame.index[0])
-    # ##########################################################################
-    # ##########################################################################
 
     # Recup extra heating time with ugly function hack.
     chauff_app, _ = frame.col_sum_map_test(frame.frame,
