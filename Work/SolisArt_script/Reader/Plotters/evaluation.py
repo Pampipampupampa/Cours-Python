@@ -511,7 +511,7 @@ class MultiPlotter(object):
         # Space between boxplot groups
         self.pad = 1
 
-    def fig_init(self, figsize=(22, 11), title_pos=(0.5, 0.93), facecolor=None,
+    def fig_init(self, figsize=(24, 12), title_pos=(0.5, 0.93), facecolor=None,
                  ha='center', sharex=None, sharey=None):
         """ Create all needed axes """
         # Default parameters
@@ -864,7 +864,7 @@ class MultiPlotter(object):
 
     def diag_plot(self, frame, to_diag, title='Diag me', labels=None,
                   loc='left', pos=(1, 0), explode=(0.1, 0, 0, 0), radius=0.7,
-                  colors=None, legend=False, **kwargs):
+                  colors=None, legend=False, legend_dict={}, **kwargs):
         """
             Used to plot diagrams with a dataframe prepared with EvalData class.
             - to_diag is a list of columns names to plot
@@ -890,11 +890,11 @@ class MultiPlotter(object):
                                   explode=explode, radius=radius, **kwargs)
         # Set axe parameters
         self.catch_axes(*pos).legend(prop=self.font_legend)
-        self.catch_axes(*pos).legend().set_visible(legend)
+        self.catch_axes(*pos).legend().set_visible(legend, **legend_dict)
 
     def bar_sup_plot(self, frame, fields, colors={}, loc='left', pos=(1, 1),
                      names=[], title='Hist me', h_width=0.9,
-                     ylabel="Kwh", emphs=[], **kwargs):
+                     ylabel="Kwh", emphs=[], legend_dict={}, **kwargs):
         """
             Plot a superimposed bar plot of each fields inside the frame and
             for each row.
@@ -947,11 +947,11 @@ class MultiPlotter(object):
         # Add auto legend
         self.catch_axes(*pos).legend([temp[col] for col in columns],
                                      list(columns),
-                                     loc="best", prop=self.font_legend)
+                                     loc="best", prop=self.font_legend, **legend_dict)
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
                      names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
-                     emphs=[], line_dict={}, **kwargs):
+                     emphs=[], line_dict={}, legend_dict={}, **kwargs):
         """
             Plot a cumulated bar plot of each fields inside the frame and
             for each row.
@@ -1011,7 +1011,7 @@ class MultiPlotter(object):
         # Add auto legend
         self.catch_axes(*pos).legend([temp[col] for col in columns],
                                      list(columns),
-                                     loc="best", prop=self.font_legend)
+                                     loc="best", prop=self.font_legend, **legend_dict)
 
 
 ########################
