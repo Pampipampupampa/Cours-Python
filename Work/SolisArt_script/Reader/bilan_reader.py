@@ -24,8 +24,11 @@
 # import csv
 import json
 
-# Import internal lib
+# Select configuration file between projects
 from bilan_constants_IGC_AIRvector import *
+fold = FOLDER/'clean'/'IGC'
+# from bilan_constants_Solisart_WATERvector import *
+# fold = FOLDER/'clean'/'SolisArt'
 
 
 def test_index(name, plot):
@@ -50,11 +53,6 @@ def test_index(name, plot):
 #    Main Program :    #
 ########################
 
-
-# Select directory between projects
-
-fold = FOLDER/'clean'/'IGC'
-# fold = FOLDER/'clean'/'SolisArt'
 
 # Solisart:
 # chambery-0p_20150206.csv bordeaux-0p_20150210.csv marseille-0p_20150208.csv strasbourg-0p_20150209.csv lyon-0p_20150218.csv
@@ -376,7 +374,15 @@ if __name__ == '__main__':
                 Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
                                           pos=pos)
                 # Uncomment to set a y limit for each bar_cum plot
-                # Plot.catch_axes(*pos).set_ylim(0, 2500)
+                # Plot.catch_axes(*pos).set_ylim(0, 2250)
+
+                # # Change labels inside legend
+                # Plot.font_legend = {'size': 20,
+                #                     'family': 'Source Code Pro'}
+                # new_labels = ['Available solar energy', 'Solar production']
+                # new_labels = ['DHW', 'Space heating', 'Losses', 'Solar fraction']
+                # Plot.catch_axes(*pos).legend(labels=new_labels, loc="best",
+                #                              prop=Plot.font_legend)
             elif 'box' in plot:
                 Plot.colors = col_dict['box']
                 Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False,

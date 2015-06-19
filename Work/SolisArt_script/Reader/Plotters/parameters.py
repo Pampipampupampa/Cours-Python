@@ -56,8 +56,10 @@ font_base = {'size': 18,
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
-matplotlib.rc('xtick', labelsize=12)  # base =23 (publi)
-matplotlib.rc('ytick', labelsize=16)  # base =23 (publi)
+matplotlib.rc('xtick', labelsize=12)
+# matplotlib.rc('xtick', labelsize=15)
+matplotlib.rc('ytick', labelsize=16)
+# matplotlib.rc('ytick', labelsize=20)
 matplotlib.rc('legend', fontsize=12)
 matplotlib.rc('legend', labelspacing=0.2)
 

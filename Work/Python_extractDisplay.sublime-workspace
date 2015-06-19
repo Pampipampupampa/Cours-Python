@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"new",
+				"new_labels	statement"
+			],
+			[
+				"ba",
+				"bar_cumC"
+			],
+			[
+				"ite",
+				"item	Itemize"
+			],
+			[
+				"bH",
+				"bar_cumH"
+			],
+			[
+				"bac",
+				"bar_cumD"
+			],
+			[
+				"legend",
+				"legend_dict	param"
+			],
+			[
+				"em",
+				"emph	emph"
+			],
+			[
+				"flus",
+				"flushleft"
+			],
+			[
+				"bf",
+				"bf"
+			],
+			[
 				"bar",
 				"bar_cumC"
 			],
@@ -22,10 +58,6 @@
 			[
 				"area",
 				"area_col	statement"
-			],
-			[
-				"ba",
-				"bar_cumC"
 			],
 			[
 				"di",
@@ -162,10 +194,6 @@
 			[
 				"are",
 				"area_P"
-			],
-			[
-				"new",
-				"new_fields"
 			],
 			[
 				"bila",
@@ -412,10 +440,6 @@
 				"item	Itemize"
 			],
 			[
-				"ite",
-				"itemize"
-			],
-			[
 				"linE",
 				"line_E"
 			],
@@ -490,30 +514,6 @@
 			[
 				"emp",
 				"emphs_bar	statement"
-			],
-			[
-				"len",
-				"length	statement"
-			],
-			[
-				"diC",
-				"diag_C"
-			],
-			[
-				"sola",
-				"solaire"
-			],
-			[
-				"res",
-				"restore	function"
-			],
-			[
-				"even",
-				"event	param"
-			],
-			[
-				"li",
-				"line_T"
 			]
 		]
 	},
@@ -523,15 +523,7 @@
 			"file": "/D/Other/Perso/cd_audio.md",
 			"settings":
 			{
-				"buffer_size": 1330,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "SolisArt_script/Reader/bilan_reader.py",
-			"settings":
-			{
-				"buffer_size": 22905,
+				"buffer_size": 1401,
 				"line_ending": "Windows"
 			}
 		}
@@ -582,6 +574,10 @@
 			[
 				"pyr",
 				"SublimeREPL: Python - RUN current file"
+			],
+			[
+				"pyt",
+				"Set Syntax: Python"
 			],
 			[
 				"as",
@@ -762,17 +758,27 @@
 	],
 	"file_history":
 	[
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_Solisart_WATERvector.py",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
+		"/D/Github/Projets/IGC/Meeting/20150615/diapo_IGC_combisystem.tex",
+		"/D/Github/Projets/IGC/Meeting/20150615/diapo_IGC_fondations.tex",
+		"/D/Github/Projets/IGC/Meeting/20141119/diapo_IGC_combisystem.tex",
+		"/C/Users/bois/Desktop/fff.tex",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
+		"/D/Github/Projets/IGC/Réunions/20141118/diapo_IGC_combisystem.tex",
+		"/D/Github/Projets/IGC/Meeting/20150615/README.md",
+		"/D/Github/Projets/IGC/Meeting/20150506/Includes/RemindME.md",
+		"/D/Github/solarsystem/Outputs/clean/IGC/bordeauxAirRecycle2nd-4p_20150610.csv",
 		"/D/Github/solarsystem/Outputs/clean/IGC/bordeauxAirRecycleM2014-4p_20150610.csv",
 		"/D/Github/Projets/IGC/Etudes/House_solar_airVector/Results/json/energy.json",
 		"/D/Github/solarsystem/Outputs/clean/IGC/test.csv",
-		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
 		"/D/Github/Projets/IGC/Meeting/20150413/diapo_IGC_combisystem.tex",
 		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2014.mos",
 		"/C/Users/bois/Desktop/dfggr.csv",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_Solisart_WATERvector.py",
 		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2012.mos",
 		"/D/Github/Cours-Python/Work/Tools/weather_transform.py",
 		"/D/Github/solarsystem/Meteo/Bordeaux/Merignac/Merignac_2013.mos",
@@ -797,7 +803,6 @@
 		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/MERIGNAC_DONNEES_2009.csv",
 		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Merignac_compare/Backup/MERIGNAC_DONNEES_2011.csv",
 		"/D/Github/Cours-Python/Work/Notebooks/.ipynb_checkpoints/Solar_system_output-checkpoint.ipynb",
-		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
 		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_water.mos",
 		"/D/Github/solarsystem/SolarSystem/Scripts/Old/Display_script.mos",
 		"/D/Github/Cours-Python/Work/Tools/ddd.py",
@@ -815,7 +820,6 @@
 		"/D/Github/Projets/IGC/Meeting/20150506/README.md",
 		"/C/Users/bois/Downloads/RemindME.md",
 		"/D/Github/Projets/IGC/Meeting/20150506/diapo_IGC_combisystem.tex",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
 		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script.mos",
 		"/D/Github/Projets/IGC/Meeting/20150413/README.md",
 		"/D/Github/Projets/SolisArt/SolisArt_projects.sublime-workspace",
@@ -881,15 +885,7 @@
 		"/D/Github/Projets/IGC/Plafond_rafraichissant/Etude/plafond_raffraichissant.txt",
 		"/D/Github/Projets/SolisArt/Doc/Toulouse/MAS 2013-06/FUNEMIN juin et juillet.csv",
 		"/C/Users/bois/Desktop/test",
-		"/D/Github/solarsystem/SolarSystem/TEST.csv",
-		"/C/Users/bois/Anaconda/envs/py33/Lib/site-packages/buildingspy/simulate/Simulator.py",
-		"/C/Users/bois/Anaconda/envs/py33/lib/subprocess.py",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/PowerCursors/Default (Windows).sublime-keymap",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Theme/DarkSolarized.tmTheme",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Theme/DarkSolarizedMod.tmTheme",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.system-ca-bundle",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Package Control.cache/01524fae79697630d0454ba3fabd9414.info",
-		"/D/Github/Projets/SolisArt/Etudes/Collecteur_variation/Olivier/Avril01_Mai06_olivier.txt"
+		"/D/Github/solarsystem/SolarSystem/TEST.csv"
 	],
 	"find":
 	{
@@ -907,6 +903,24 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Anonymous Pro",
+			"datas",
+			"Eval",
+			"columns",
+			"bordeauxAirRecycle3rd-4p",
+			"}\n",
+			"Hypothèses",
+			"Modèle numérique",
+			"Mensuel",
+			"Buffer",
+			"legend",
+			"foot",
+			"center",
+			"Surface",
+			"degr",
+			"Surface",
+			"spir",
+			"usetheme",
 			"el",
 			"t_fields",
 			"json_temp_fields",
@@ -1016,25 +1030,7 @@
 			"Production\\nappoint",
 			"plots",
 			"bordeauxAir-6p_20150413",
-			"new_fields",
-			"Production\\nElectrique",
-			"a ",
-			": ",
-			"\"C",
-			"  ",
-			",",
-			"ight",
-			"interior",
-			"to_plot",
-			"lyon-3p_20150218.csv",
-			"lyon-9p_20150219.csv",
-			"lyon-0p_20150218.csv",
-			"chambery300vp-6p_20150218.csv",
-			"strasbourg-9p_20150211.csv",
-			"A_COL",
-			"'Flow_Radiator'",
-			"prop_legend",
-			"-."
+			"new_fields"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1059,7 +1055,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -1068,15 +1064,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1330,
+						"buffer_size": 1401,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9,
-								9
+								731,
+								731
 							]
 						],
 						"settings":
@@ -1084,37 +1080,7 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "SolisArt_script/Reader/bilan_reader.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 22905,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8099,
-								8099
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2505.0,
+						"translation.y": 813.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1223,7 +1189,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 263.0,
 	"status_bar_visible": true,
 	"template_settings":
