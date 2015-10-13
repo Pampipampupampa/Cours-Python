@@ -127,6 +127,10 @@ igc_converter = {"Control.T1": "T1",  "Control.T3": "T3",
                  "integrator_exchanger.Energy": "SolarHeating_Energy",
                  "integrator_solarDrawingUp.Energy": "SolarDrawingUp_Energy",
                  "integrator_solarStorage_charge.Energy": "SolarStorage_Energy",
+                 "integrator_losses.Energy_cumulated": "PipesLosses_Energy",
+                 "integrator_losses.Energy_losses": "PipesOnlyLosses_Energy",
+                 "integrator_HealthTank_losses.y": "DHWTankLosses_Energy",
+                 "integrator_StorageTank_losses.y": "StorageTankLosses_Energy",
                  "Pump_Control.Elec_heating_Energy[1]": "ElecHeating_Energy",
                  "Control.Elec_DHW_Energy": "ElecDHW_Energy",
                  "EInternal.y": "InternalGains_Energy"
@@ -332,7 +336,7 @@ def to_W_per_m2(struct, column):
           - column is a panda dataFrame column name
     """
     if 'HP' in csv_in:
-        collector_area = 1.926
+        collector_area = 1.957
     else:
         collector_area = 2.32
     nb_collector = int(csv_in.split("-")[1].split("p")[0])
@@ -527,9 +531,9 @@ if __name__ == '__main__':
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
-             "bordeauxAirRecycleCapteurHP-5p_20150612.csv"
+             "bordeauxAirRecycleM2012-4p_20150703.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
-              "bordeauxAirRecycleCapteurHP-5p_20150612.csv"
+              "bordeauxAirRecycleM2012-4p_20150703.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)

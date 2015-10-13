@@ -3,7 +3,7 @@
 """
     Extract informations from a csv weather file from Meteo France
     and update a .mos file with the uploaded data.
-    This script doesn’t update longitude and lattitude and other metadata from the epws files.
+    This script does not update longitude and lattitude and other metadata from the epws files.
 """
 
 import pandas as pd
@@ -91,7 +91,7 @@ def change_weather(file_mos, file_weather, dict_transform,
     # Update columns from data_mos with columns from data_weather and adapt units.
     for col_name in dict_transform:
         data_output[col_name] = data_weather[dict_transform[col_name][0]][:lower_last]
-        # Replace all np.nan values with 0 in order to respect modelica parser rules.
+        # Replace all np.nan values with 0 (modelica can not parse NaN).
         data_output[col_name].fillna(0, inplace=True)
         if dict_transform[col_name][1]:
             dict_transform[col_name][1](data_output, col_name)
@@ -128,23 +128,25 @@ def write_mos_file(data, file_name, metadata=None, encoding='utf-8'):
     print("dataframe length is {}".format(length))
 
 
-if __name__ == '__main__':
-    # Inputs parameters
-    FOLDER = path("C:\\Users\\bois\\TEMP\\Conversion_weatherFiles")
+def main(file_mos, file_weather, file_output, dict_transform):
+    """
+    Write to your computer a .mos file for each file in file_output according to
+    file_mos, file_weather, and dict_transform.
 
-    file_mos = FOLDER / "FRA_Bordeaux.075100_IWEC.mos"
-    # Order inside tuple important.
-    file_weather = (FOLDER / "Merignac_2012.txt", FOLDER / "Merignac_2013.txt",
-                    FOLDER / "Merignac_2014.txt")
-    file_output = (FOLDER / "Merignac_2012.mos", FOLDER / "Merignac_2013.mos",
-                   FOLDER / "Merignac_2014.mos")
+        :file_mos .mos weather file path.
+        :file_weather List of csv file path.
+        :file_output Corresponding .mos file as output.
+                     Must have the same order and length as file_weather.
+        :dict_transform Dict of .mos columns to alter with for each file in file_weather.
+                        Dict values must be a list with:
+                            - first element  = corresponding csv column name.
+                            - second element = a function to pass before altering .mos
+                        dict_transform allows for example to replace for each csv file
+                        the column 1 of the `file_mos` with column 3(first element)
+                        of csv files minus 30(second element).
 
-    # Diffuse irradiation not provide inside Meteo France data ---> fill of 0.
-    dict_transform = {"#C2 Dry bulb temperature in Celsius at indicated time": ["T", None],
-                      "#C9 Global horizontal radiation in Wh/m2": ["GLO", Jcm2_to_Whm2],
-                      "#C10 Direct normal radiation in Wh/m2": ["DIR", Jcm2_to_Whm2],
-                      "#C11 Diffuse horizontal radiation in Wh/m2": ["DIF", Jcm2_to_Whm2]}
-
+        :return Nothing
+    """
     # Treatment for each input/output file pair.
     for source, output in zip(file_weather, file_output):
         # Extract data from .mos and weather file to create new dataframe mix
@@ -157,4 +159,23 @@ if __name__ == '__main__':
         write_mos_file(data=data_output, file_name=output, metadata=metadata)
         print("Weather {} done !".format(output))
 
-    print("Done !!")
+
+if __name__ == '__main__':
+    # Inputs parameters
+    FOLDER = path("C:\\Users\\bois\\TEMP\\Conversion_weatherFiles")
+
+    file_mos = FOLDER / "FRA_Bordeaux.075100_IWEC.mos"
+    # Order inside tuples important.
+    file_weather = (FOLDER / "Merignac_2012.txt", FOLDER / "Merignac_2013.txt",
+                    FOLDER / "Merignac_2014.txt")
+    file_output = (FOLDER / "Merignac_2012.mos", FOLDER / "Merignac_2013.mos",
+                   FOLDER / "Merignac_2014.mos")
+
+    # Diffuse irradiation not provide inside Meteo France data ---> fill of 0.
+    dict_transform = {"#C2 Dry bulb temperature in Celsius at indicated time": ["T", None],
+                      "#C9 Global horizontal radiation in Wh/m2": ["GLO", Jcm2_to_Whm2],
+                      "#C10 Direct normal radiation in Wh/m2": ["DIR", Jcm2_to_Whm2],
+                      "#C11 Diffuse horizontal radiation in Wh/m2": ["DIF", Jcm2_to_Whm2]}
+
+    main(file_mos, file_weather, file_output, dict_transform)
+    print("Weathers files updated !!")

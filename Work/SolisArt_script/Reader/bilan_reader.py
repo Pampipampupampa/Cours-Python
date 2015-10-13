@@ -69,13 +69,13 @@ def test_index(name, plot):
 # bordeauxAirRecycle45mOrientation-4p_20150607.csv bordeauxAirRecycle45pOrientation-4p_20150607.csv
 # bordeauxAirRecycle100vmDHW-4p_20150606.csv bordeauxAirRecycle100vpDHW-4p_20150604.csv bordeauxAirRecycle100vpDHW-6p_20150604.csv
 # bordeauxAirRecycle200vpBuffer-4p_20150606.csv bordeauxAirRecycle200vmBuffer-4p_20150606.csv
-# bordeauxAirRecyclePuisageReparti-4p_20150608.csv bordeauxAirRecyclePuisageMatin-4p_20150608.csv
+# bordeauxAirRecyclePuisageReparti-4p_20150620.csv bordeauxAirRecyclePuisageMatin-4p_20150620.csv
 # bordeauxAirRecycleM2012-4p_20150609.csv bordeauxAirRecycleM2013-4p_20150609.csv bordeauxAirRecycleM2014-4p_20150610.csv
-# bordeauxAirRecycle1er-4p_20150609.csv bordeauxAirRecycle2nd-4p_20150610.csv bordeauxAirRecycle3rd-4p_20150610.csv
+# bordeauxAirRecycle1er-4p_20150622.csv bordeauxAirRecycle2nd-4p_20150622.csv bordeauxAirRecycle3rd-4p_20150622.csv
 
 # bordeauxAirRecycleCapteurHP-4p_20150612.csv bordeauxAirRecycleCapteurHP-5p_20150612.csv
 
-# Ne pas utiliser sans vérifications
+# Ne pas utiliser sans vérifications et comprendre les limites (voir tableur simulations)
 # bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv bordeauxAirRecycleCapteurHP-4p_20150605.csv bordeauxAirRecycleCapteurHP-5p_20150605.csv
 
 
@@ -196,7 +196,6 @@ if __name__ == '__main__':
         #     # Prepare time data to export
         #     prepare_export(dico=time_json, name=name, mois=m_)
     # --------------------------------------------------------------------------
-
         # Add all plot for each set of datas
         for el in structs[name]:
             if 'bar' in el:
@@ -279,7 +278,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    # rows, cols = 3, 2
+    rows, cols = 3, 1
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -472,12 +471,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # # Save plots
-    # base_name = "Simulation"
-    # if len(datas) == 1:
-    #     base_name = name
-    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+    # Save plots
+    base_name = "Simulation"
+    if len(datas) == 1:
+        base_name = name
+    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()
