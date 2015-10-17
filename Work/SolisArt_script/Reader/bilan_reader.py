@@ -17,7 +17,7 @@
         - Storing data to json/csv (Energy and working time already implement)
 
     To use this script with csv files older than 2015 you have to make some change
-    to fields, conv_dict and new_fields dictionnary or take a script older commit
+    to fields, conv_dict and new_fields dictionnary or take a script of an older commit
     before 2015 (see github repository or git fonctionnality for more details)
 """
 
@@ -26,6 +26,7 @@ import json
 
 # Select configuration file between projects
 from bilan_constants_IGC_AIRvector import *
+from bilan_constants_IGC_AIRvector_20151012 import *
 fold = FOLDER/'clean'/'IGC'
 # from bilan_constants_Solisart_WATERvector import *
 # fold = FOLDER/'clean'/'SolisArt'
@@ -62,8 +63,7 @@ def test_index(name, plot):
 # chambery300vm-6p_20150218.csv chambery300vp-6p_20150218.csv
 # strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
 
-
-# IGC:
+# IGC: IGC_airVectorRecyclePassive_solar5 and IGC_airVectorRecyclePassive_solar_MeteoFrance3
 # bordeauxAirRecycle-6p_20150606.csv bordeauxAirRecycle-4p_20150605.csv bordeauxAirRecycle-2p_20150605.csv
 # bordeauxAirRecycle45Inc-4p_20150607.csv bordeauxAirRecycle60Inc-4p_20150607.csv
 # bordeauxAirRecycle45mOrientation-4p_20150607.csv bordeauxAirRecycle45pOrientation-4p_20150607.csv
@@ -74,9 +74,12 @@ def test_index(name, plot):
 # bordeauxAirRecycle1er-4p_20150622.csv bordeauxAirRecycle2nd-4p_20150622.csv bordeauxAirRecycle3rd-4p_20150622.csv
 
 # bordeauxAirRecycleCapteurHP-4p_20150612.csv bordeauxAirRecycleCapteurHP-5p_20150612.csv
-
 # Ne pas utiliser sans vérifications et comprendre les limites (voir tableur simulations)
 # bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv bordeauxAirRecycleCapteurHP-4p_20150605.csv bordeauxAirRecycleCapteurHP-5p_20150605.csv
+
+
+# IGC last system:
+# bordeauxAirRecycle-4p_20151009.csv  # Ground temperature from weather data file.
 
 
 # Debugger
@@ -173,9 +176,6 @@ if __name__ == '__main__':
         # Change columns names
         datas[name].frame.columns = datas[name].change_names(conv_dict)
         print('\n\n', '\t' * 7, '*** {} ***'.format(name.upper()))
-        # Display columns names
-        print('\n---> Csv columns names after treatments')
-        print(datas[name].frame.columns)
         # Add new fields to each datas
         for new in new_fields:
             # Create new columns
@@ -183,6 +183,9 @@ if __name__ == '__main__':
                                                                       used_cols=(new[1],
                                                                                  new[2]),
                                                                       operator=new[3])
+        # Display columns names
+        print('\n---> Csv columns names after adding new fields')
+        print(datas[name].frame.columns)
 
     # --------------------------------------------------------------------------
         # # Display annual time informations
@@ -278,7 +281,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    rows, cols = 3, 1
+    # rows, cols = 3, 1
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -326,6 +329,7 @@ if __name__ == '__main__':
                             structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (area_col * nb_col)
                             ylabel = "$KWh/m^2$"
                 # Data check
+                # Need to reduce the number of plots.
                 print(structs[name][plot][0])
 
                 if 'cum' in plot:
@@ -471,12 +475,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # Save plots
-    base_name = "Simulation"
-    if len(datas) == 1:
-        base_name = name
-    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+    # # Save plots
+    # base_name = "Simulation"
+    # if len(datas) == 1:
+    #     base_name = name
+    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()
