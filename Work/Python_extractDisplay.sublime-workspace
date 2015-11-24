@@ -4,8 +4,120 @@
 		"selected_items":
 		[
 			[
+				"b",
+				"bf"
+			],
+			[
+				"delta",
+				"delta_x	statement"
+			],
+			[
+				"dat",
+				"datetime_index	statement"
+			],
+			[
+				"integ",
+				"integrate_simpson	function"
+			],
+			[
+				"date",
+				"datetime_index"
+			],
+			[
+				"base",
+				"base_date	param"
+			],
+			[
+				"ins",
+				"integrate_simpson	function"
+			],
+			[
+				"energ",
+				"energy_prec	statement"
+			],
+			[
+				"ener",
+				"energy_prec	statement"
+			],
+			[
+				"ti",
+				"time_step	forstmt"
+			],
+			[
+				"som",
+				"some_tools	module"
+			],
+			[
+				"sh",
+				"sharey"
+			],
+			[
+				"shar",
+				"sharey	param"
+			],
+			[
+				"sub",
+				"subplots	function"
+			],
+			[
+				"ite",
+				"item	Itemize"
+			],
+			[
+				"degr",
+				"degreeCelsius"
+			],
+			[
+				"A",
+				"Asparagus"
+			],
+			[
+				"barc",
+				"bar_cumC"
+			],
+			[
+				"aut",
+				"autotexts"
+			],
+			[
 				"di",
-				"diag_B"
+				"diag_C"
+			],
+			[
+				"line",
+				"linewidth"
+			],
+			[
+				"p",
+				"parser	module"
+			],
+			[
+				"Cons",
+				"Consommation_ECS"
+			],
+			[
+				"bar",
+				"bar_supDispo"
+			],
+			[
+				"Besoins",
+				"Besoins_ECS_puisage"
+			],
+			[
+				"Prod",
+				"Production_solaire"
+			],
+			[
+				"Chauffa",
+				"Chauffage"
+			],
+			[
+				"c",
+				"couverture"
+			],
+			[
+				"EC",
+				"ECS_solaire"
 			],
 			[
 				"Perte",
@@ -18,10 +130,6 @@
 			[
 				"pro",
 				"Production_solaire"
-			],
-			[
-				"bar",
-				"bar_plot	statement"
 			],
 			[
 				"flus",
@@ -74,10 +182,6 @@
 			[
 				"data",
 				"DataFrame"
-			],
-			[
-				"base",
-				"basename"
 			],
 			[
 				"fi",
@@ -136,20 +240,12 @@
 				"pattern_stop	param"
 			],
 			[
-				"dat",
-				"datetime_to_timestep	function"
-			],
-			[
 				"bas",
 				"base_date	param"
 			],
 			[
 				"strti",
 				"strptime"
-			],
-			[
-				"date",
-				"datetime"
 			],
 			[
 				"Date",
@@ -162,10 +258,6 @@
 			[
 				"na",
 				"names"
-			],
-			[
-				"c",
-				"columns"
 			],
 			[
 				"wrt",
@@ -210,10 +302,6 @@
 			[
 				"ba",
 				"bar_cumC"
-			],
-			[
-				"ite",
-				"item	Itemize"
 			],
 			[
 				"bH",
@@ -336,10 +424,6 @@
 				"data_weather"
 			],
 			[
-				"b",
-				"begin	\\begin{}…\\end{}"
-			],
-			[
 				"use",
 				"usepackage"
 			],
@@ -350,10 +434,6 @@
 			[
 				"bila",
 				"bilan_constants_Solisart_WATERvector	module"
-			],
-			[
-				"barc",
-				"bar_cumC"
 			],
 			[
 				"box",
@@ -434,104 +514,24 @@
 			[
 				"bot",
 				"box_Tbal"
-			],
-			[
-				"line_T",
-				"line_TE"
-			],
-			[
-				"trea",
-				"treat_file"
-			],
-			[
-				"sta",
-				"start_times"
-			],
-			[
-				"fram",
-				"frame_meteoFrance	statement"
-			],
-			[
-				"filena",
-				"files_names	statement"
-			],
-			[
-				"startti",
-				"start_times	statement"
-			],
-			[
-				"fra",
-				"frame_action	param"
-			],
-			[
-				"su",
-				"sum"
-			],
-			[
-				"start",
-				"start_time	statement"
-			],
-			[
-				"satt",
-				"start_time	statement"
-			],
-			[
-				"stati",
-				"start_time"
-			],
-			[
-				"file",
-				"file_name	statement"
-			],
-			[
-				"base_",
-				"base_time"
-			],
-			[
-				"skip",
-				"skiprows	param"
-			],
-			[
-				"prin",
-				"print	function"
-			],
-			[
-				"sho",
-				"short_names	statement"
-			],
-			[
-				"sh",
-				"short_names	statement"
-			],
-			[
-				"st",
-				"staticmethod	class"
-			],
-			[
-				"sc",
-				"scriptsize"
-			],
-			[
-				"col",
-				"columns"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "Tools/some_tools.py",
+			"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
 			"settings":
 			{
-				"buffer_size": 3361,
+				"buffer_size": 1222,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "SolisArt_script/Reader/bilan_reader.py",
+			"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20150907.tex",
 			"settings":
 			{
-				"buffer_size": 24237,
+				"buffer_size": 19923,
 				"line_ending": "Windows"
 			}
 		}
@@ -672,8 +672,28 @@
 				"SublimeREPL: Python - RUN current file"
 			],
 			[
-				"rem",
-				"Package Control: Remove Package"
+				"Pyr",
+				"SublimeREPL: Python - RUN current file"
+			],
+			[
+				"as",
+				"Anaconda: Show error list"
+			],
+			[
+				"py",
+				"SublimeREPL: Python - RUN current file"
+			],
+			[
+				"pep",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"setpy",
+				"Set Syntax: Python3"
+			],
+			[
+				"yr",
+				"Set Syntax: R"
 			],
 			[
 				"remo",
@@ -682,6 +702,10 @@
 			[
 				"inst",
 				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
 			],
 			[
 				"lis",
@@ -728,10 +752,6 @@
 				"Package Control: Install Package"
 			],
 			[
-				"as",
-				"Anaconda: Show error list"
-			],
-			[
 				"build",
 				"Build With: LaTeX"
 			],
@@ -758,10 +778,6 @@
 			[
 				"pyth",
 				"Set Syntax: Python"
-			],
-			[
-				"yr",
-				"Set Syntax: R"
 			],
 			[
 				"pr",
@@ -794,10 +810,6 @@
 			[
 				"remv",
 				"Package Control: Remove Package"
-			],
-			[
-				"py",
-				"SublimeREPL: Python - RUN current file"
 			],
 			[
 				"ins ",
@@ -880,24 +892,117 @@
 	"expanded_folders":
 	[
 		"/D/Github/Cours-Python/Work",
-		"/D/Github/Cours-Python/Work/Other",
 		"/D/Github/Cours-Python/Work/SolisArt_script",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader"
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader",
+		"/D/Github/Cours-Python/Work/Tools"
 	],
 	"file_history":
 	[
+		"/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20150907.tex",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Presentations/20151118/diaporama.tex",
+		"/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/graphs.py",
+		"/D/Github/Cours-Python/Work/Tools/extract_csv_IGC_fondations.py",
+		"/D/Github/Projets/TradiMaisons/Meeting/20151123/rapport.md",
+		"/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Reunion_avancements/20151023/README.md",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Reunion_avancements/20151023/diaporama.tex",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Bilan_20151023/diaporama.tex",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Pré-Etude/plafond_raffraichissant.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Pré-Etude/plafond_raffraichissant_seconds.csv",
+		"/D/Github/Cours-Python/Work/Tools/some_tools.py",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Pré-Etude/plafond_raffraichissant.txt",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3/full_exp_3jours.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/full_exp.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150723_105932694/dat00001.csv",
+		"/D/Github/Projets/Thèse/Notes/Notes_optimisation/AntColonyOptimization/README.md",
+		"/C/Users/bois/Downloads/snow.html",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_1/full_exp.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3/full_exp.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-3/full_exp.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-2/full_exp.txt",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/full_exp.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_110253083/README.md",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3/README.md",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-3/20150722_110342075/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-3/20150722_104500747/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-2/20150721_185727819/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-2/20150721_104058745/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-2/20150721_105450105/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_192048520/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_110253083/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/full_exp.txt",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150803_111339216/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150729_145312942/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_123823654/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_114711969/dat00001.csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150723_131750867/dat00001.csv",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_110253083/dat00001 (2).csv",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_110253083/dat00001.txt",
+		"/D/Github/Cours-Python/Work/Tools/rawdata_to_cleandata.py",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_123823654/dat00001.txt",
+		"/D/Github/Projets/Other/Simurex/README.md",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Bibliotheque/BiblioCompositionsNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Bibliotheque/BiblioMenuiseries2NonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioCompilationVentilationNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioEmetteursChaudFroidNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/recents.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioVentilationNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioBallonsNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioPontLineiqueNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioCompositionsNonStandard.txt",
+		"/D/Doc/Cours_IUT/2015-2016/PCE7_InitiationPleiades/Mes données Pleiades+COMFIE/Bibliotheque/BiblioModulePVNonStandard.txt",
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/SublimeREPL/config/Python/Main.sublime-menu",
+		"/C/Users/bois/AppData/Local/Temp/colormaps_reference.py",
+		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_2/20150716_101800762/README.md",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Bilan_20151023/README.md",
+		"/D/Mes données Pleiades+COMFIE/Bibliotheque/BiblioScenariosNonStandard.txt",
+		"/D/Github/Projets/Other/COMEPOS/Meeting/20151105/README.md",
+		"/D/Github/Projets/Thèse/Notes/Notes_optimisation/README.md",
+		"/D/Github/Projets/TradiMaisons/Simulations/Final_etude/README.md",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
+		"/C/Users/bois/Downloads/temp/test.tex",
+		"/C/Users/bois/Downloads/baskervaldadf/README",
+		"/D/Github/Projets/Thèse/Notes/Thèse_StéphanieDecker/README.md",
+		"/D/Doc/Thesis/Book-Thesis/Optimisations/Ant/MO-ACS/Code/moaco-0.1-src/moaco/trunk/README",
+		"/D/Doc/Thesis/Book-Thesis/Optimisations/Ant/MO-ACS/Code/moaco-0.1-src/moaco/trunk/PISA_LICENSE.txt",
+		"/C/Users/bois/AppData/Local/Temp/README.md",
+		"/D/Github/Projets/Thèse/Notes/Notes_optimisation/Note_wikipédia.md",
+		"/D/Github/Projets/Other/Simurex/Diaporama/presentation_poster.tex",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/data.txt",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/example3.py",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/example4.py",
+		"/D/Github/Projets/Other/README.md",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/example2.py",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/tree.dot",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/example1.py",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/example7.py",
+		"/D/Github/Projets/Other/Simurex/Atelier/Python_machineLearning/examples/example5.py",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Bilan_20151023/diaporama.toc",
+		"/D/Github/Projets/IGC/Meeting/20150413/Diaporama/diapo_IGC_combisystem.tex",
+		"/D/Github/Projets/IGC/Meeting/20150629/Diaporama/diapo_IGC_combisystem.tex",
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/D/Github/Projets/IGC/Meeting/20150615/Diaporama/diapo_IGC_combisystem.tex",
+		"/D/Github/Projets/Other/Simurex/Poster/Includes/equations.tex",
+		"/D/Github/Projets/Other/Simurex/Poster/README.md",
+		"/D/Github/Projets/Thèse/Publications/Energy saving analysis of a solar combi-system/Paper/Publication/IBPC15_ID628_Final.docx",
+		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector_20151012.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
+		"/D/Github/Cours-Python/Work/Other/verification_algo_air_system.py",
+		"/D/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/Simulations/Résultats/IGC_airVectorRecyclePassive_solar6/regulation_test_data_clean.csv",
+		"/C/Users/bois/Anaconda/envs/py34/lib/site-packages/pandas/io/parsers.py",
+		"/D/Github/solarsystem/Outputs/raw/IGC/limogesAirRecycle-4p_20151017.csv",
 		"/D/Github/solarsystem/Meteo/Toulouse/Toulouse_2005.mos",
-		"/D/Github/solarsystem/Meteo/Nantes/FRA_Nantes.072220_IWEC.mos",
+		"/D/Github/solarsystem/Meteo/Limoges/Limoges.mos",
+		"/D/Github/solarsystem/Meteo/Biarritz/Biarritz.mos",
 		"/D/Github/solarsystem/Meteo/Bordeaux/FRA_Bordeaux.075100_IWEC.mos",
+		"/D/Github/solarsystem/Meteo/Nantes/FRA_Nantes.072220_IWEC.mos",
 		"/D/Github/solarsystem/Meteo/README.md",
 		"/D/Github/solarsystem/Meteo/Biarritz/Biarritz.epw",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector_20151012.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
 		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_IGC_AIRvector.mos",
 		"/D/Github/solarsystem/Outputs/clean/IGC/README.md",
-		"/D/Github/Projets/Thèse/Notes/Notes_optimisation/README.md",
 		"/C/Users/bois/Downloads/Optimization_ToolKit/readme.txt",
 		"/D/Doc/Thesis/Book-Thesis/Optimisations/CleverAlgorithms/Makefile",
 		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
@@ -919,105 +1024,12 @@
 		"/D/Github/Projets/TradiMaisons/Meeting/20150907/Diaporama/diapo_tradimaisons_20150907.tex",
 		"/D/Github/solarsystem/Meteo/Chambery/FR_Chambery_74910TM2.mos",
 		"/D/Github/solarsystem/Meteo/Clermont-Ferrand/FRA_Clermont-Ferrand.074600_IWEC.mos",
-		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
-		"/D/Github/Projets/TradiMaisons/Simulations/Final_etude/README.md",
 		"/D/Github/Projets/TradiMaisons/Simulations/Final_etude/Pleiades/README.md",
-		"/D/Github/Projets/TradiMaisons/Meeting/20151014/Diaporama/diapo_IGC_combisystem.tex",
-		"/D/Github/Cours-Python/Work/Tools/rawdata_to_cleandata.py",
-		"/D/Github/Cours-Python/Work/Other/sankey_draw.py",
-		"/C/Users/bois/Downloads/sankey_draw.py",
-		"/C/Users/bois/Downloads/sankey_demo_basics.py",
-		"/C/Users/bois/Downloads/Temp/test_simulator.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
-		"/D/Github/Projets/IGC/Meeting/20150615/Diaporama/diapo_IGC_combisystem.tex",
-		"/D/Github/Projets/IGC/Meeting/20150413/Diaporama/diapo_IGC_combisystem.pdf",
-		"/C/Users/bois/AppData/Local/Temp/sankey_demo_basics.py",
-		"/D/Github/Projets/Other/Thèse/Notes/Notes_optimisation/README.md",
-		"/D/Github/Projets/Other/Thèse/Notes/Thèse_MathieuRivalain/README.md",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
-		"/D/Github/Projets/IGC/Meeting/20150615/Diaporama/diapo_IGC_fondations.tex",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Text boldface.sublime-snippet",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Wrap in environment.sublime-snippet",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Wrap in command.sublime-snippet",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Installed Packages/.ptmp402588/README.md",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/latex_cite_completions.py",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/ToggleTheme.sublime-settings",
-		"/D/Github/Projets/Other/Thèse/Bilan_avancement/Réunion_avancement_20150722/README.md",
-		"/D/Github/Projets/Other/Thèse/Bilan_avancement/Reunion_avancement_20150907/README.md",
-		"/D/Github/Projets/Other/Thèse/Notes/Notes_optimisation/Note_wikipédia.md",
-		"/C/Users/bois/Dropbox/MaimounaApps/Idea.md",
-		"/D/Github/Projets/Other/Thèse/Optimisation/Notes/README.md",
-		"/D/Github/Projets/Other/Optimisation_multi-critères_notes/README.md",
-		"/C/Users/bois/Dropbox/MaimounaApps/questions.md",
-		"/C/Users/bois/AppData/Local/Temp/Idea.md.mos",
-		"/D/Github/Projets/Other/Thèse_StéphanieDecker/README.md",
-		"/D/Other/Tools/Rania_Merheb/Rania_Merheb_script.mdown",
-		"/D/Other/Tools/Rania_Merheb/Couplage - Copie/model_proba.py",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/README.md",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_123823654/README.md",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_123823654/dat00001.txt",
-		"/D/Github/Projets/TradiMaisons/Simulations/Etude/README.md",
-		"/D/Github/Projets/TradiMaisons/Simulations/Etude/Pleiades/README.md",
-		"/D/Github/Projets/TradiMaisons/Rapport/20150918/README.md",
-		"/D/Github/Projets/TradiMaisons/Simulations/Pré-étude/README.md",
-		"/C/Program Files (x86)/IZUBA énergies/Pleiades+Comfie/Fichiers meteos/CLERMONT-FERRAND.ini",
-		"/C/Users/bois/Anaconda/Lib/site-packages/buildingspy/simulate/Simulator.py",
-		"/C/Users/bois/Downloads/Temp/test/run.mos",
-		"/D/Github/Cours-Python/Work/Tools/weather_transform.py",
-		"/C/Users/bois/Anaconda/Lib/site-packages/buildingspy/io/reporter.py",
-		"/C/Users/bois/AppData/Roaming/Dynasim/setup.mos",
-		"/D/Github/solarsystem/Outputs/README.md",
-		"/D/Github/Projets/TradiMaisons/Meeting/20150907/README.md",
-		"/D/Github/Projets/Other/Thèse/Reunion_avancement_20150907/README.md",
-		"/D/Github/Projets/Other/README.md",
-		"/D/Github/Projets/TradiMaisons/Simulations/README.md",
-		"/D/Github/Projets/TradiMaisons/Doc/README.md",
-		"/D/Github/Projets/IGC/Meeting/20141119/README.md",
-		"/D/Github/Projets/Other/Thèse/Réunion_avancement_20150722/README.md",
-		"/D/Github/Projets/TradiMaisons/Rapport/Diaporama/diapo_tradimaisons_20150907.tex",
-		"/D/Github/Projets/TradiMaisons/README.md",
-		"/C/Users/bois/Desktop/CLERMONT-FERRAND.ini",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/README.md",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150806_170153770/README.md",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150803_111339216/README.md",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150729_145312942/README.md",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150806_170153770/dat00002.csv",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150803_111339216/dat00001.csv",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150729_145312942/dat00001.csv",
-		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150806_170153770/dat00001.csv",
-		"/C/Users/bois/Downloads/Temp/test.txt",
-		"/D/Github/Projets/IGC/Etudes/Etude_expérimentale_PlafinoInnovert/Expérimentations/Data/Fondations/Expérience_4/20150724_123823654/dat00001.txt",
-		"/D/Github/Projets/IGC/Etudes/Etude_expérimentale_PlafinoInnovert/Expérimentations/Data/Fondations/Expérience_1/20150710_112912668/dat00001.txt",
-		"/C/Users/bois/Anaconda/envs/py34/lib/site-packages/path.py",
-		"/C/Users/bois/.jupyter/jupyter_qtconsole_config.py",
-		"/D/Github/Projets/IGC/Etudes/Etude_expérimentale_PlafinoInnovert/Expérimentations/Data/Fondations/Expérience_2/20150716_101800762/dat00001.txt",
-		"/D/Github/Projets/IGC/Etudes/Etude_expérimentale_PlafinoInnovert/Expérimentations/Data/Fondations/Expérience_0/20150710_104832071/dat00001.txt",
-		"/D/Github/Projets/IGC/Etudes/Etude_expérimentale_PlafinoInnovert/Expérimentations/Data/Fondations/Expérience_0/20150710_104832071/dat00001.csv",
-		"/C/Users/bois/AppData/Local/Temp/Python3.sublime-settings.mos",
-		"/C/Users/bois/Downloads/Packages/User/Default (Linux).sublime-keymap",
-		"/C/Users/bois/Anaconda/envs/py34/lib/site-packages/pandas/__init__.py",
-		"/C/Users/bois/Downloads/Packages/User/SublimeCodeIntel.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/StickySearch.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/AdvancedNewFile/AdvancedNewFile.sublime-settings",
-		"/C/Users/bois/Downloads/Packages/User/Package Control.sublime-settings",
-		"/C/Users/bois/Downloads/Packages/User/Preferences.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Installed Packages/Python 3/Comments(Python3).tmPreferences",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Installed Packages/.ptmp877242/Comments(Python3).tmPreferences",
-		"/C/Users/bois/Downloads/Packages/User/Python.sublime-settings",
-		"/C/Users/bois/Downloads/Packages/User/Python3.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/Anaconda.sublime-settings",
-		"/C/Users/bois/Downloads/Packages/User/Anaconda.sublime-settings",
-		"/C/Users/bois/.jupyter/jupyter_notebook_config.py",
-		"/C/Users/bois/.ipython/profile_Pampi/ipython_config.py",
-		"/C/Users/bois/.ipython/profile_Pampi/ipython_qtconsole_config.py",
-		"/C/Users/bois/Anaconda/envs/py34/Lib/site-packages/IPython/__main__.py",
-		"/C/Users/bois/.ipython/README"
+		"/D/Github/Projets/TradiMaisons/Meeting/20151014/Diaporama/diapo_IGC_combisystem.tex"
 	],
 	"find":
 	{
-		"height": 54.0
+		"height": 30.0
 	},
 	"find_in_files":
 	{
@@ -1031,6 +1043,123 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"\\normalsize",
+			"m2",
+			"small",
+			"Consommation électrique",
+			"Solution de base sans Velux",
+			"Solution sans Velux",
+			"Solution avec ajout de Velux",
+			"Occultation",
+			"Comparaison des propositions",
+			"angle=-90, origin=c, ",
+			"jpg",
+			"pdf",
+			"<br />",
+			"set",
+			"Accent",
+			"Set1",
+			"\nSweep #,Time,Chan 101 (C),Chan 102 (C),Chan 105 (C),Chan 106 (C),Chan 107 (C),Chan 108 (C),Chan 109 (C),Chan 110 (C),Chan 115 (C),Chan 116 (C)",
+			"Sweep #,Time,Chan 101 (C),Chan 102 (C),Chan 105 (C),Chan 106 (C),Chan 107 (C),Chan 108 (C),Chan 109 (C),Chan 110 (C),Chan 115 (C),Chan 116 (C)\n1",
+			"Sweep #,Time,Chan 101 (C),Chan 102 (C),Chan 105 (C),Chan 106 (C),Chan 107 (C),Chan 108 (C),Chan 109 (C),Chan 110 (C),Chan 115 (C),Chan 116 (C)\n",
+			"Sweep #,Time,Chan 101 (C),Chan 102 (C),Chan 105 (C),Chan 106 (C),Chan 107 (C),Chan 108 (C),Chan 109 (C),Chan 110 (C),Chan 115 (C),Chan 116 (C)",
+			"Sweep #,Time,Chan 101 (C),Chan 102 (C),Chan 105 (C),Chan 106 (C),Chan 107 (C),Chan 108 (C),Chan 109 (C),Chan 110 (C),Chan 115 (C),Chan 116 (C)\n",
+			"Chan",
+			"first",
+			"_string",
+			"integr",
+			"inte",
+			"simps",
+			"main",
+			"to_datetime_string",
+			"to_datetime_minute",
+			"\"\n",
+			"python34",
+			"python3",
+			"meta",
+			"noeuds",
+			"iteration",
+			"Ant",
+			"Systèmes",
+			"Bâtiment",
+			"scénario",
+			"Systèmes",
+			"\\frametitle{Évolution de l’Arbre}",
+			"mcda",
+			"su",
+			"Vecteur Eau",
+			"Modèle",
+			"Régulation",
+			"06",
+			"{",
+			"Position g",
+			"small",
+			"Hypothèses",
+			"Linehead",
+			"        # self.catch_axes(*pos).set_title(label=title,\n        #                                 fontdict=self.font_title,\n        #                                 loc=loc)",
+			"Gains internes",
+			"Apports internes",
+			"diag",
+			"InternalGains_Energy",
+			"bordeauxAirRecycle200Buffer200DHW-4p_20151020.csv",
+			"solaire",
+			"legend",
+			"font_legend",
+			"Chauffage électrique interdit",
+			"Autorisation de chauffage électrique",
+			";",
+			"frame",
+			"\\",
+			"convert_to_datetime",
+			"bordeauxAirRecycle-4p_20151017.csv",
+			"bordeauxAirRecycle-6p_20151019.csv",
+			"csv",
+			"nantesAirRecycle-4p_20151018.csv",
+			"ECS_Elec",
+			"Chauffage_Elec",
+			"Consommation\\nElec_chauffage",
+			"Consommation_ECS",
+			"nappoint",
+			"'Production\\nappoint'",
+			"'Production'",
+			"Production",
+			"Production\\nappoint",
+			"Production_ECS",
+			"Production\\nChauffage",
+			"Consommation\\nElec_chauffage",
+			"Besoins_ECS\\nballon",
+			"Besoins_ECS",
+			"nballon",
+			"Besoins_ECS\\n_ballon",
+			"Besoins_ECS\\\\nballon",
+			"Besoins_EC\\n_ballon",
+			"Besoins_EC",
+			"Besoins_ECS_puisage",
+			"Besoins_ECS_ballon",
+			"Production\\nChauffage",
+			"Besoins_ECS_puisage",
+			"Chauffage_direct",
+			"Besoins_ECS",
+			"'Consommation\\nappoint'",
+			"Chauffage",
+			"'chauffage'",
+			"chauffage",
+			"Chauffage",
+			"Production_ECS_réelle",
+			"Pertes_solaires",
+			"Production_solaire",
+			"Production_ECS_réelle",
+			"Production_ECS",
+			"Besoins_ECS",
+			"Production_solaire\\nutile",
+			"'ECS'",
+			"Production_ECS",
+			"Ballon_ECS_pertes",
+			"ECS_solaire",
+			"Ballon_ECS_pertes",
+			"bordeauxAirRecycle-4p_20151009.csv",
+			"\"",
+			"0.012",
 			",",
 			"Chauffage  \\",
 			"sup",
@@ -1041,124 +1170,7 @@
 			"Stockage_pertes",
 			"emphs_dict",
 			"StorageTankPassiveGain_Energy",
-			"DHWTankPassiveGain_Energy",
-			"DHWTankTotalLosses_Energy",
-			"StorageTankTotalLosses_Energy",
-			"PipesLosses_Energy",
-			"fields",
-			"StorageTankTotalLosses_Energy",
-			"fields",
-			"StorageTankTotalLosses_Energy",
-			"new_fields",
-			"Chauffage_direct",
-			"Ballon_pertes",
-			"Ballons_pertes",
-			"bordeauxAirRecycleM2012-4p_20150703.csv",
-			"Chauffage_solaire_actif",
-			"Taux de couverture\\nECS",
-			"Taux de couverture",
-			"Taux de couverture\\n",
-			"Pertes réseau",
-			"DHW_tank_pertes",
-			"DHW_tank",
-			"Pertes capteur",
-			"Taux de couverture\\nDHW",
-			"besoins",
-			"Besoins",
-			"Chauffage_solaire",
-			"DHW_tank_pertes",
-			"Production\\nappoint",
-			"Chauffage",
-			"Storage",
-			"DHW_tank_pertes",
-			"Besoins",
-			"Taux de couverture\\nDHW",
-			"couverture",
-			"DHW_tank",
-			"StorageTankPassiveGain_Energy",
-			"integrator_HealthTank_losses",
-			"`",
-			"Kwh",
-			"5",
-			"center",
-			"flushright",
-			"flushleft",
-			"3",
-			"png",
-			"\\begin{minipage}",
-			"E+[9]",
-			"E*[9]",
-			"E[9]",
-			"E[0-6]",
-			"E[09]",
-			"E[0,9]",
-			"E[0 9]",
-			"E[a-z]",
-			"E+[a-z]",
-			"E*[a-z]",
-			"E*[a-b]",
-			"E[a-b]",
-			"E[1-9]",
-			"R{",
-			"C{",
-			"Zonage du bâti",
-			"test",
-			"Plot",
-			"font_title",
-			"25",
-			"#ffffff",
-			"000000",
-			"37c959",
-			"house",
-			"1",
-			",",
-			"system",
-			"solaire",
-			"Électrique",
-			"menu",
-			"***",
-			".\n",
-			"Multiple Criteria Decision",
-			"MCDA",
-			"MCDM",
-			"+",
-			"résultant",
-			"m2",
-			"ctrl+shift+:",
-			"ctrl+shift+;",
-			"ctrl+shift+m",
-			"shift+ctrl",
-			" ",
-			"le",
-			",",
-			", +",
-			"print",
-			"timeout",
-			"standard",
-			"Error:",
-			"test",
-			"\\{\\",
-			"degree",
-			"°C",
-			"### ",
-			" - ",
-			"/",
-			"swi",
-			"inver",
-			"03",
-			"08",
-			"/",
-			"x",
-			"operations",
-			"func",
-			"kwargs",
-			"func",
-			"args",
-			"func",
-			",",
-			"value",
-			"walk",
-			"oulet"
+			"DHWTankPassiveGain_Energy"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1166,6 +1178,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"",
 			".",
 			"",
 			",",
@@ -1188,26 +1201,24 @@
 			[
 				{
 					"buffer": 0,
-					"file": "Tools/some_tools.py",
+					"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3361,
+						"buffer_size": 1222,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								116,
-								116
+								1047,
+								1047
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python 3/Python3.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1218,29 +1229,29 @@
 				},
 				{
 					"buffer": 1,
-					"file": "SolisArt_script/Reader/bilan_reader.py",
+					"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20150907.tex",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 24237,
+						"buffer_size": 19923,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3721,
-								3721
+								19209,
+								19209
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python 3/Python3.tmLanguage",
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 955.0,
+						"translation.y": 11264.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1251,7 +1262,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 30.0
 	},
 	"input":
 	{
@@ -1300,7 +1311,7 @@
 	"project": "Python_extractDisplay.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 56.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1349,8 +1360,8 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
-	"side_bar_width": 368.0,
+	"side_bar_visible": true,
+	"side_bar_width": 277.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

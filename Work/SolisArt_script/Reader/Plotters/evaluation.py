@@ -190,21 +190,21 @@ class EvalData(object):
     @staticmethod
     def integrate_simpson(frame, column):
         """
-            Return the integrate of specific column using index as
-            integration range.
+            Integrate a specific column using index as integration time range.
             Simpson's Rule Formula is used.
+            The index column must be in seconds.
         """
         # Create explicite copy
         frame = frame.copy()
         # Create new column to check row number
         frame["number"] = np.arange(0, len(frame))
         ind = frame.index[:]
-        first = (ind[-1] - ind[0]) / ((len(frame)-1) * 3)
+        delta_x = (ind[-1] - ind[0]) / (len(frame)-1)
         boundaries = frame[column][ind[0]] + frame[column][ind[-1]]
         # Modulo and `frame["number"]` used to sort odd and even rows number
-        inside = (4 * np.sum(frame[column][1:-1][frame["number"] % 2 != 0]) +
-                  2 * np.sum(frame[column][1:-1][frame["number"] % 2 == 0]))
-        return first * (boundaries + inside)
+        inside = (4 * np.sum(frame[column][ind[1]:ind[-1]][frame["number"] % 2 != 0]) +
+                  2 * np.sum(frame[column][ind[1]:ind[-1]][frame["number"] % 2 == 0]))
+        return delta_x / 3 * (boundaries + inside)
 
     @staticmethod
     def integrate_trapezoidal(frame, column):
@@ -480,10 +480,10 @@ class MultiPlotter(object):
             - sharey set to True to share yaxis with all plots
     """
     # Text formatters
-    font_title = {'size': 16,
+    font_title = {'size': 20,
                   'family': 'Source Code Pro'}
     font_base = font_base
-    font_legend = {'size': 14,
+    font_legend = {'size': 20,
                    'family': 'Source Code Pro'}
     width = 2  # Line width
     colormap = "Accent"  # Color set
@@ -576,7 +576,7 @@ class MultiPlotter(object):
                 self.unzoom(event.inaxes)  # Axe instance
             else:
                 self.zoom(event.inaxes)  # Axe instance
-        elif event.key == "k":
+        elif event.key == "d":
             self.display_axis(event.inaxes)
         self.fig.canvas.draw()
 
@@ -884,10 +884,12 @@ class MultiPlotter(object):
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
                                         loc=loc)
-        self.catch_axes(*pos).pie(temp, colors=colors or self.colors,
-                                  labels=labels or to_diag, shadow=True,
-                                  autopct='%1.1f%%', startangle=90,
-                                  explode=explode, radius=radius, **kwargs)
+        patches, texts, autotexts = self.catch_axes(*pos).pie(temp, colors=colors or self.colors,
+                                                              labels=labels or to_diag, shadow=True,
+                                                              autopct='%1.1f%%', startangle=90,
+                                                              explode=explode, radius=radius, **kwargs)
+        for text in texts:
+            text.set_fontsize(self.font_legend["size"])
         # Set axe parameters
         self.catch_axes(*pos).legend(prop=self.font_legend)
         self.catch_axes(*pos).legend().set_visible(legend, **legend_dict)
@@ -916,9 +918,9 @@ class MultiPlotter(object):
         names = names or self.names
         print('\n---' + 'Plotting superimposed Bars' + '---' + '\n', columns)
         # Plot all plots
-        self.catch_axes(*pos).set_title(label=title,
-                                        fontdict=self.font_title,
-                                        loc=loc)
+        # self.catch_axes(*pos).set_title(label=title,
+        #                                 fontdict=self.font_title,
+        #                                 loc=loc)
         # Draw all bar and stock them inside an Ordered dict
         temp = OrdD()
         for col in columns:
@@ -945,9 +947,9 @@ class MultiPlotter(object):
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
         # Add auto legend
-        self.catch_axes(*pos).legend([temp[col] for col in columns],
-                                     list(columns),
-                                     loc="best", prop=self.font_legend, **legend_dict)
+        # self.catch_axes(*pos).legend([temp[col] for col in columns],
+        #                              list(columns),
+        #                              loc="best", prop=self.font_legend, **legend_dict)
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
                      names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
@@ -974,9 +976,9 @@ class MultiPlotter(object):
         # Get fields
         fields = fields or columns
         print('\n---' + 'Plotting cumulated Bars' + '---' + '\n', columns)
-        self.catch_axes(*pos).set_title(label=title,
-                                        fontdict=self.font_title,
-                                        loc=loc)
+        # self.catch_axes(*pos).set_title(label=title,
+        #                                 fontdict=self.font_title,
+        #                                 loc=loc)
         # Draw all bar and stock them inside an Ordered dict
         temp = OrdD()
         # Bottom for bars
@@ -1009,9 +1011,9 @@ class MultiPlotter(object):
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
         # Add auto legend
-        self.catch_axes(*pos).legend([temp[col] for col in columns],
-                                     list(columns),
-                                     loc="best", prop=self.font_legend, **legend_dict)
+        # self.catch_axes(*pos).legend([temp[col] for col in columns],
+        #                              list(columns),
+        #                              loc="best", prop=self.font_legend, **legend_dict)
 
 
 ########################

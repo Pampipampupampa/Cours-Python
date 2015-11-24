@@ -80,6 +80,10 @@ def test_index(name, plot):
 
 # IGC last system:
 # bordeauxAirRecycle-4p_20151009.csv  # Ground temperature from weather data file.
+# nantesAirRecycle-4p_20151018.csv limogesAirRecycle-4p_20151017.csv
+# bordeauxAirRecycle-4p_20151017.csv bordeauxAirRecycleNoOverheat-4p_20151018.csv bordeauxAirRecycle-6p_20151019.csv
+# bordeauxAirRecycle200Buffer200DHW-4p_20151020.csv bordeauxAirRecycle200DHW-4p_20151020.csv
+# Bordeaux-4panneaux_.csv Bordeaux-6panneaux_.csv
 
 
 # Debugger
@@ -205,7 +209,8 @@ if __name__ == '__main__':
                 structs[name][el] = (datas[name].bar_energy(datas[name].frame,
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
-
+                # Debugger
+                # import pdb; pdb.set_trace()
     # --------------------------------------------------------------------------
                 # # Here we populate the energy_json ().
                 # # This part of the script can be moved outside by simply used
@@ -281,7 +286,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    # rows, cols = 3, 1
+    rows, cols = 1, 2
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -403,7 +408,7 @@ if __name__ == '__main__':
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
                 if "_B" in plot:
-                    explode = [0.1, 0.1]  # Initial value for explode
+                    explode = [0.1, 0.1, 0.1]  # Initial value for explode
                 else:
                     explode = [0.1]       # Initial value for explode
                 # To have len() matching between explode and fields[plot][1]
@@ -469,9 +474,9 @@ if __name__ == '__main__':
                 print('Nothing will be show for {}'.format(plot))
 
     # Adjust plot format (avoid overlaps)
-    Plot.adjust_plots(hspace=0.6, wspace=0.15,
-                      top=0.85, bottom=0.08,
-                      left=0.05, right=0.96)
+    # Plot.adjust_plots(hspace=0.6, wspace=0.15,
+    #                   top=0.85, bottom=0.08,
+    #                   left=0.05, right=0.96)
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)

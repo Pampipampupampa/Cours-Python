@@ -5,6 +5,8 @@
     List of class and function which can be useful or not ...
 """
 
+import numpy as np
+
 
 # def fields_converter(frame, fields_operation):
 #     """Inline conversion field according to fields_operation dictionnary.
@@ -17,6 +19,46 @@
 #         func = args.pop()
 #         func(frame, field, *args)
 #     return
+
+
+def resample(frame, sample='30min', interpolate=True, **kwargs):
+    """
+        Reduce dataframe (the frame must have a datetime index.
+        **kwargs can be fill_method, limit, label, loffset, axis, kind, ...
+            ---> See DataFrame.resample or Series.resample
+    """
+    if interpolate is True:
+        return frame.resample(sample, **kwargs).interpolate()
+    else:
+        return frame.resample(sample, **kwargs)
+
+
+def integrate_trapezoidal(frame, column):
+    result = 0
+    ind = frame.index[:]
+    for i in range(0, len(ind)-1):
+        result = result + ((frame[column][ind[i+1]] +
+                            frame[column][ind[i]]) * (ind[i+1] - ind[i]) / 2)
+    return result
+
+
+def integrate_simpson(frame, column):
+    """
+        Integrate a specific column using index as integration time range.
+        Simpson's Rule Formula is used.
+        The index column must be in seconds.
+    """
+    # Create explicite copy
+    frame = frame.copy()
+    # Create new column to check row number
+    frame["number"] = np.arange(0, len(frame))
+    ind = frame.index[:]
+    delta_x = (ind[-1] - ind[0]) / (len(frame)-1)
+    boundaries = frame[column][ind[0]] + frame[column][ind[-1]]
+    # Modulo and `frame["number"]` used to sort odd and even rows number
+    inside = (4 * np.sum(frame[column][ind[1]:ind[-1]][frame["number"] % 2 != 0]) +
+              2 * np.sum(frame[column][ind[1]:ind[-1]][frame["number"] % 2 == 0]))
+    return delta_x / 3 * (boundaries + inside)
 
 
 def fields_converter(frame, fields_operation):
@@ -111,6 +153,25 @@ def pression_CIPM(temperature):
     """
     a1, a2, a3, a4, a5 = -3.983035, 301.797, 522528.9, 69.34881, 999.974950
     return a5 * (1 - ((temperature + a1)**2 * (temperature + a2) / (a3 * (temperature + a4))))
+
+
+def datetime_to_timestep(dates, base_date=None):
+    """Return a generator of timestep (in seconds) for each date in dates which
+    is an iterable.
+
+    :param dates: An iterable of datetime.datetime object like
+    :param base_date: A datetime.datetime object used as base to compute delta
+                      (default use first datetime in dates as base_date)
+    :type dates: list, tuple, array, narray, generator
+
+    :return: A generator of datetime.timedelta in seconds.
+    :rtype: float
+    """
+    if base_date is None:
+        base_date = next(dates)
+        yield 0.  # (base_date - base_date).total_seconds()
+    for date in dates:
+        yield (date - base_date).total_seconds()
 
 
 if __name__ == '__main__':

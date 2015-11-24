@@ -26,14 +26,14 @@ emphs_dict = {'bar_cumA': ['Pertes_solaires'],
               'bar_cumD': [],
               'bar_cumH': []}
 
-conv_dict = {'DrawingUp_Energy': 'ECS',
+conv_dict = {'DrawingUp_Energy': 'Besoins_ECS_puisage',
              'SolarHeating_Energy': 'Chauffage_solaire_actif',
              'SolarDrawingUp_Energy': 'ECS_solaire',
              'Collector_Energy': 'Production\nsolaire',
              'CollectorPanel_Energy': 'Energie captable',
              'ElecDHW_Energy': 'Consommation\nElec_ECS',
-             'ElecHeating_Energy': 'Consommation\nElec_chauffage',
-             'InternalGains_Energy': 'Gains internes',
+             'ElecHeating_Energy': 'Chauffage_elec',
+             'InternalGains_Energy': 'Gains\ninternes',
              'HDifTil_collector': 'Diffus', 'HDirTil_collector': 'Direct',
              'DHWTankTotalLosses_Energy': 'Ballon_ECS_pertes',
              'DHWTankPassiveGain_Energy': 'Ballon_ECS_gains',
@@ -41,14 +41,18 @@ conv_dict = {'DrawingUp_Energy': 'ECS',
              'StorageTankPassiveGain_Energy': 'Ballon_stockage_gains',
              'PipesLosses_Energy': 'Pertes réseau'}
 
+# 3 définitons:
+#   - Consommation: Représente la demande en énergie
+#   - Production: Remplace consommation pour le solaire
+#   - Besoins: Représente la demande en chauffage et en ECS nécessaire
 
+# Avant de tracer un graphe il faut vérifier que le bilan donné est le bon (correspond à ce que on veut montrer).
 new_fields = (
-              # Productions.
-              ('Production\nappoint', 'Consommation\nElec_ECS',
-               'Consommation\nElec_chauffage', '+'),
+              # Consommations.
               ('Consommation\nappoint', 'Consommation\nElec_ECS',
-               'Consommation\nElec_chauffage', '+'),
-              ('Production', 'Production\nsolaire', 'Production\nappoint', '+'),
+               'Chauffage_elec', '+'),
+              ('Énergie\nnécessaire', 'Production\nsolaire', 'Consommation\nappoint', '+'),
+              ('ECS_elec', 'Consommation\nElec_ECS', 'ECS_solaire', '+'),
               # Pertes réelles (les pertes des ballons utiles à l’ambiance ne sont pas considérées)
               ('Stockage_pertes', 'Ballon_stockage_pertes', 'Ballon_stockage_gains', '-'),
               ('Sanitaire_pertes', 'Ballon_ECS_pertes', 'Ballon_ECS_gains', '-'),
@@ -57,16 +61,17 @@ new_fields = (
               # Productions solaires utiles
               ('Production_solaire\nutile', 'Production\nsolaire', 'Pertes_solaires', '-'),
               ('Chauffage_solaire_passif', 'Ballon_ECS_gains', 'Ballon_stockage_gains', '+'),
-              ('ECS_solaire', 'ECS', 'Consommation\nElec_ECS', '-'),
               ('Chauffage_solaire', 'Chauffage_solaire_actif', 'Chauffage_solaire_passif', '+'),
               # Besoins
-              ('Chauffage_direct', 'Consommation\nElec_chauffage', 'Chauffage_solaire_actif', '+'),  # Besoin hors apports par les ballons.
-              ('Chauffage', 'Consommation\nElec_chauffage', 'Chauffage_solaire', '+'),                    # Besoin ECS, Chauffage, gains par ballons.
-              ('Besoins', 'ECS', 'Chauffage', '+'),
+              ('Chauffage_direct', 'Chauffage_elec', 'Chauffage_solaire_actif', '+'),  # Besoin hors apports par les ballons.
+              ('Besoins\nChauffage', 'Chauffage_elec', 'Chauffage_solaire', '+'),   # Besoin ECS, Chauffage, gains par ballons.
+              ('Besoins_ECS', 'Énergie\nnécessaire', 'Besoins\nChauffage', '-'),  # On soustrait le chauffage (ballons passif et actif) puis
+              ('Besoins_ECS', 'Besoins_ECS', 'Pertes_solaires', '-'),             # on soustrait les pertes (ballons passif et réseaux)
+              ('Besoins', 'Besoins_ECS', 'Besoins\nChauffage', '+'),
               # Rendements
-              ('Taux de couverture', 'Production\nsolaire', 'Production', '/'),
-              ('Taux de couverture\nChauffage', 'Chauffage_solaire', 'Chauffage', '/'),
-              ('Taux de couverture\nDHW', 'ECS_solaire', 'ECS', '/'),
+              ('Taux de couverture', 'Production\nsolaire', 'Énergie\nnécessaire', '/'),
+              ('Taux de couverture\nChauffage', 'Chauffage_solaire', 'Besoins\nChauffage', '/'),
+              ('Taux de couverture\nDHW', 'ECS_solaire', 'ECS_elec', '/'),
               ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
               # Part solaire non récupérée par les capteurs solaires.
               ('Solaire_non_capté', 'Energie captable', 'Production\nsolaire', '-'))
@@ -88,28 +93,28 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_HDir': ['HDirNor', 'Direct'],
           'box_S': ['Speed_S6', 'Speed_S5', 'Speed_S2'],
           'diag_B': [conv_value_list,
-                     ['Chauffage', 'ECS', 'Pertes_solaires']],
+                     ['Besoins\nChauffage', 'Besoins_ECS', 'Pertes_solaires', 'Gains\ninternes']],
           'diag_C': [conv_value_list,
                      ['Consommation\nappoint', 'Production\nsolaire']],
           'bar_cumC': [conv_value_list,
-                       ['ECS', 'Chauffage', 'Pertes_solaires']],
+                       ['Besoins_ECS', 'Besoins\nChauffage', 'Pertes_solaires']],
           'bar_cumA': [conv_value_list,
-                       ['Production\nsolaire', 'Production\nappoint']],
+                       ['Production\nsolaire', 'Consommation\nappoint']],
           'bar_cumH': [conv_value_list,
-                       ['Chauffage_solaire', 'Consommation\nElec_chauffage', 'Stockage_pertes']],
+                       ['Chauffage_solaire', 'Chauffage_elec', 'Stockage_pertes']],
           'bar_cumD': [conv_value_list,
                        ['ECS_solaire', 'Consommation\nElec_ECS', 'Sanitaire_pertes']],
           'bar_supC': [conv_value_list,
-                       ['ECS', 'Chauffage', 'Pertes_solaires']],
+                       ['Besoins_ECS', 'Besoins\nChauffage', 'Pertes_solaires']],
           'bar_supDispo': [conv_value_list,
                            ['Energie captable', 'Production\nsolaire']],
           # This plot return a cumulative evolution of Taux de couverture and Rendement.
           # We deal with energy not power so we don’t have taux de couverture and Rendement
           # at each time step.
           'area_E': ['Taux de couverture', 'Rendement capteur'],
-          'area_P': ['Production\nsolaire', 'Pertes_solaires', 'Production\nappoint'],
-          'area_EB': ['ECS', 'Chauffage', 'Pertes_solaires'],
-          'line_E': ['ECS', 'Production\nsolaire', 'Production\nappoint', 'Chauffage'],
+          'area_P': ['Production\nsolaire', 'Pertes_solaires', 'Consommation\nappoint'],
+          'area_EB': ['Besoins_ECS', 'Besoins\nChauffage', 'Pertes_solaires'],
+          'line_E': ['Besoins_ECS', 'Production\nsolaire', 'Consommation\nappoint', 'Besoins\nChauffage'],
           'line_ES': ['Production\nsolaire', 'Energie captable'],
           'line_TE': ['T1', 'T3', 'T5'],
           'line_T': ['T9_ext', "T13_exch_inlet", 'T13_exch_outlet', 'T14_blowing'],
@@ -124,22 +129,22 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
 col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#586e75', '#002b36', '#586e75', '#586e75', '#268bd2'),
                     ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
-            'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16', '#dc322f'],
+            'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16', '#859900'],
             'diag_P': ['#804040', 'orange'],
             'diag_C': ['#d33682', 'orange'],
-            'bar_cumA': {'Production\nappoint': '#fdf6e3', 'Production\nsolaire': 'orange',
+            'bar_cumA': {'Consommation\nappoint': '#fdf6e3', 'Production\nsolaire': 'orange',
                          'Pertes totales': '#cb4b16'},
-            'bar_cumC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                         'ECS': '#268bd2', 'Production_solaire\nutile': 'orange',
+            'bar_cumC': {'Consommation\nappoint': '#dc322f', 'Besoins\nChauffage': '#fdf6e3',
+                         'Besoins_ECS': '#268bd2', 'Production_solaire\nutile': 'orange',
                          'Pertes_solaires': '#cb4b16'},
             'bar_cumD': {'Consommation\nElec_ECS': '#fdf6e3', 'ECS_solaire': 'orange',
                          'Sanitaire_pertes': '#cb4b16'},
-            'bar_cumH': {'Consommation\nElec_chauffage': '#fdf6e3', 'Chauffage_solaire': 'orange',
+            'bar_cumH': {'Chauffage_elec': '#fdf6e3', 'Chauffage_solaire': 'orange',
                          'Stockage_pertes': '#cb4b16'},
             'bar_supDispo': {'Production\nsolaire': 'orange',
                              'Energie captable': '#859900'},
-            'bar_supC': {'Production\nappoint': '#dc322f', 'Chauffage': '#fdf6e3',
-                         'ECS': '#268bd2', 'Production\nsolaire': 'orange',
+            'bar_supC': {'Consommation\nappoint': '#dc322f', 'Besoins\nChauffage': '#fdf6e3',
+                         'Besoins_ECS': '#268bd2', 'Production\nsolaire': 'orange',
                          'Pertes_solaires': '#cb4b16'},
             'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
             'line_ES': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
@@ -163,12 +168,11 @@ titles = {'title': 'Bilan de la simulation',
           'diag_B': 'Taux de couverture',
           'diag_C': 'Répartition de la consommation',
           'bar_cumA': 'Evolution mensuelle des apports',
-          'bar_cumC': "Evolution mensuelle de la production d'énergie",
-          'bar_cumD': "Evolution mensuelle de la production d'ECS",
-          'bar_cumH': "Evolution mensuelle de la production du chauffage",
+          'bar_cumC': "Evolution mensuelle de la production d'énergie\n(énergies cumulées)",
+          'bar_cumD': "Evolution mensuelle de la production d'ECS\n(énergies cumulées)",
+          'bar_cumH': "Evolution mensuelle de la production du chauffage\n(énergies cumulées)",
           'bar_supC': "Evolution mensuelle des apports et de la production d'énergie\n(énergies superposées)",
           'bar_supDispo': "Evolution mensuelle des gains et du rendement solaire\n(énergies superposées)",
-          # 'bar_supDispo': "",
           'area_E': 'Evolution des facteurs caractéristiques',
           'area_P': 'Evolution annuelle de la production en énergie',
           'area_EB': 'Evolution annuelle des besoins',
@@ -188,11 +192,11 @@ titles = {'title': 'Bilan de la simulation',
 # Field used as output for json energy file (check conv_dict to get correct names)
 # Already monthly values when script create json structure.
 # Careful if update conv_dict, you have to update this constant too.
-JSON_ENERGY_FIELDS = ['Gains internes', 'Chauffage_solaire_actif',
-                      'Consommation\nElec_chauffage',
+JSON_ENERGY_FIELDS = ['Gains\ninternes', 'Chauffage_solaire_actif',
+                      'Chauffage_elec',
                       'Energie captable', 'ECS_solaire',
                       'Consommation\nElec_ECS',
-                      'Production\nsolaire', 'ECS'] + [field[0] for field in new_fields]
+                      'Production\nsolaire', 'Besoins_ECS'] + [field[0] for field in new_fields]
 
 # Field used as output for json energy file (check conv_dict to get correct names)
 # These fields will be resampling before.

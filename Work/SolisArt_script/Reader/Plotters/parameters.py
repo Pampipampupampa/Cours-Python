@@ -40,7 +40,7 @@ elif name == 'posix':
 
 # Create font properties
 # Can be use to plot for publication
-font_base = {'size': 18,
+font_base = {'size': 20,
              'family': 'STIXGeneral'}
 #             'mathtext.fontset': 'stix'
 #             'text.usetex': True}  # Used to force latex inside figures
@@ -56,12 +56,12 @@ font_base = {'size': 18,
 # Change matplotlib default settings
 matplotlib.rcParams['backend.qt4'] = "PySide"
 matplotlib.rc('font', **font_base)
-matplotlib.rc('xtick', labelsize=12)
-# matplotlib.rc('xtick', labelsize=15)
-matplotlib.rc('ytick', labelsize=16)
-# matplotlib.rc('ytick', labelsize=20)
-matplotlib.rc('legend', fontsize=12)
-matplotlib.rc('legend', labelspacing=0.2)
+# matplotlib.rc('xtick', labelsize=12)
+matplotlib.rc('xtick', labelsize=15)
+# matplotlib.rc('ytick', labelsize=16)
+matplotlib.rc('ytick', labelsize=20)
+# matplotlib.rc('legend', fontsize=12)
+# matplotlib.rc('legend', labelspacing=0.2)
 
 # Artist shape used by annotations
 el = Ellipse((2, -1), 0.5, 0.5)

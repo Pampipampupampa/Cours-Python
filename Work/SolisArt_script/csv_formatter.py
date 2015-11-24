@@ -136,6 +136,11 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
 #                  "EInternal.y": "InternalGains_Energy"
 #                  }
 
+air_regulation_20151020 = {"Pump_Control.Text": "T9_ext",  "TRooAir.T": "T12_house",
+                           "Tsoufflage_stable.T": "T14_blowing",
+                           "Tsolar_instruction.T": "T12_consigneSolaire",
+                           "Tinstruction.T": "T12_consigne"}
+
 airSystem_20151012 = {"Control.T1": "T1",  "Control.T3": "T3",
                       "Control.T4": "T4", "Control.T5": "T5",
                       "Control.T7": "T7", "Control.T8": "T8",
@@ -575,17 +580,19 @@ algo_unit_converter = {"celsius": (re.compile("(\AT\d+[^_state]+\Z)" +
 
 if __name__ == '__main__':
 
-    # Input and output
-    # csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-    #          "Algo\\V3Vsolar_algo.csv"
-    # csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\Issues\\" + \
-    #           "Algo\\V3Vsolar_algo_clean.csv"
+    # # Input and output
+    # csv_in = "D:\\Github\\Projets\\IGC\\Etudes\\Simulations_Air_Solaire_maisonIndividuelle\\" + \
+    #          "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar6\\" + \
+    #          "regulation_test_data.csv"
+    # csv_out = "D:\\Github\\Projets\\IGC\\Etudes\\Simulations_Air_Solaire_maisonIndividuelle\\" + \
+    #           "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar6\\" + \
+    #           "regulation_test_data_clean.csv"
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
-             "bordeauxAirRecycle-4p_20151009.csv"
+             "bordeauxAirRecycle200DHW-4p_20151020.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
-              "bordeauxAirRecycle-4p_20151009.csv"
+              "bordeauxAirRecycle200DHW-4p_20151020.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
