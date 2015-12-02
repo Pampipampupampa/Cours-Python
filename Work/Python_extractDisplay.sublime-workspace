@@ -4,6 +4,94 @@
 		"selected_items":
 		[
 			[
+				"are",
+				"area_col"
+			],
+			[
+				"dic",
+				"diag_C"
+			],
+			[
+				"dia",
+				"diag_C"
+			],
+			[
+				"di",
+				"bar_supDispo"
+			],
+			[
+				"col",
+				"collector	forstmt"
+			],
+			[
+				"et",
+				"ete_ouest_occ	statement"
+			],
+			[
+				"cons",
+				"consigneRT"
+			],
+			[
+				"sce",
+				"scenario"
+			],
+			[
+				"del",
+				"delimiter"
+			],
+			[
+				"inp",
+				"input_files	param"
+			],
+			[
+				"ste",
+				"step_size	param"
+			],
+			[
+				"time",
+				"time_step	statement"
+			],
+			[
+				"fro",
+				"from_iterable	function"
+			],
+			[
+				"inpu",
+				"input_file"
+			],
+			[
+				"def",
+				"defaultdict	class"
+			],
+			[
+				"extr",
+				"extract_columns_from	function"
+			],
+			[
+				"map",
+				"map_format	param"
+			],
+			[
+				"chu",
+				"chunks_list	statement"
+			],
+			[
+				"chunk",
+				"chunks_iterator	function"
+			],
+			[
+				"ch",
+				"chunks_iterator	function"
+			],
+			[
+				"if",
+				"ifmain	if __name__ == '__main__'"
+			],
+			[
+				"ite",
+				"iterable	param"
+			],
+			[
 				"b",
 				"bf"
 			],
@@ -60,10 +148,6 @@
 				"subplots	function"
 			],
 			[
-				"ite",
-				"item	Itemize"
-			],
-			[
 				"degr",
 				"degreeCelsius"
 			],
@@ -78,10 +162,6 @@
 			[
 				"aut",
 				"autotexts"
-			],
-			[
-				"di",
-				"diag_C"
 			],
 			[
 				"line",
@@ -146,10 +226,6 @@
 			[
 				"Sys",
 				"Systeme"
-			],
-			[
-				"dia",
-				"diagrams	statement"
 			],
 			[
 				"path",
@@ -268,10 +344,6 @@
 				"not_needed	param"
 			],
 			[
-				"if",
-				"if	If Condition"
-			],
-			[
 				"Da",
 				"DataFrame"
 			],
@@ -352,10 +424,6 @@
 				"format"
 			],
 			[
-				"dic",
-				"dict_transform	statement"
-			],
-			[
 				"dta",
 				"data_mos	statement"
 			],
@@ -428,10 +496,6 @@
 				"usepackage"
 			],
 			[
-				"are",
-				"area_P"
-			],
-			[
 				"bila",
 				"bilan_constants_Solisart_WATERvector	module"
 			],
@@ -450,88 +514,16 @@
 			[
 				"fon",
 				"font_legend	statement"
-			],
-			[
-				"fondic",
-				"fontdict"
-			],
-			[
-				"sav",
-				"savefig"
-			],
-			[
-				"T1",
-				"T12_house"
-			],
-			[
-				"boH",
-				"box_H"
-			],
-			[
-				"baC",
-				"bar_cumC"
-			],
-			[
-				"bars",
-				"bar_supDispo"
-			],
-			[
-				"barC",
-				"bar_cumC"
-			],
-			[
-				"y",
-				"Yes"
-			],
-			[
-				"con",
-				"consommation"
-			],
-			[
-				"to",
-				"totales"
-			],
-			[
-				"arE",
-				"area_E"
-			],
-			[
-				"conv",
-				"conv_dict"
-			],
-			[
-				"Re",
-				"Rendement"
-			],
-			[
-				"linTE",
-				"line_TE"
-			],
-			[
-				"cap",
-				"captable"
-			],
-			[
-				"bot",
-				"box_Tbal"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
+			"file": "SolisArt_script/Reader/bilan_reader.py",
 			"settings":
 			{
-				"buffer_size": 1222,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20150907.tex",
-			"settings":
-			{
-				"buffer_size": 19923,
+				"buffer_size": 25010,
 				"line_ending": "Windows"
 			}
 		}
@@ -894,18 +886,52 @@
 		"/D/Github/Cours-Python/Work",
 		"/D/Github/Cours-Python/Work/SolisArt_script",
 		"/D/Github/Cours-Python/Work/SolisArt_script/Reader",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters",
 		"/D/Github/Cours-Python/Work/Tools"
 	],
 	"file_history":
 	[
+		"/D/Github/Projets/IGC/Meeting/20151202/Diaporama/SolaireThermique/diaporama.tex",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector_20151201.py",
+		"/D/Github/Projets/IGC/Meeting/20151202/Diaporama/Fondations/diaporama.tex",
+		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
+		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
+		"/D/Github/Projets/IGC/Meeting/20151202/Diaporama/SolaireThermique/diaporama.toc",
+		"/D/Github/solarsystem/Meteo/Nantes/FRA_Nantes.072220_IWEC.mos",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector_20151012.py",
+		"/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20151123.tex",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
+		"/D/Github/Projets/Other/Simurex/Ecole_Porticcio_2015/README.md",
+		"/D/Github/Cours-Python/Work/Tools/scenario_constructor.py",
+		"/D/Github/Projets/Thèse/Bilan_avancement/Reunion_avancements/20151023/diaporama.tex",
+		"/D/Github/solarsystem/Meteo/README.md",
+		"/D/Github/solarsystem/Meteo/Limoges/Limoges.mos",
+		"/D/Github/solarsystem/Meteo/Biarritz/Biarritz.mos",
+		"/D/Github/solarsystem/Meteo/Biarritz/Biarritz.epw",
+		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_IGC_AIRvector.mos",
+		"/D/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/Simulations/Scenarios/ScenarioRT2012.txt",
+		"/C/Users/bois/Downloads/ScenarioRT2012.txt",
+		"/C/Users/bois/Downloads/ophelie/README.md",
+		"/C/Users/bois/Downloads/ophelie/CSV/elec_puissance_energy_clean.csv",
+		"/D/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/Simulations/Scenarios/scenario.csv",
+		"/D/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/Simulations/Scenarios/occupancy.csv",
+		"/D/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/Simulations/Scenarios/lights.csv",
+		"/D/Github/Cours-Python/Work/Tools/table.csv",
+		"/C/Users/bois/Downloads/data_batterie_clean.csv",
+		"/C/Users/bois/Downloads/data_batterie.csv",
+		"/D/Mes données Pleiades+COMFIE/Bibliotheque/BiblioScenariosNonStandard.txt",
+		"/D/Github/Cours-Python/Work/Notebooks/.ipynb_checkpoints/Solar_system_output-checkpoint.ipynb",
+		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
+		"/C/Users/bois/Downloads/Temp/table.csv",
+		"/D/Github/Projets/.gitignore",
+		"/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
 		"/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20150907.tex",
 		"/D/Github/Projets/Thèse/Bilan_avancement/Presentations/20151118/diaporama.tex",
 		"/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/graphs.py",
 		"/D/Github/Cours-Python/Work/Tools/extract_csv_IGC_fondations.py",
 		"/D/Github/Projets/TradiMaisons/Meeting/20151123/rapport.md",
-		"/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
 		"/D/Github/Projets/Thèse/Bilan_avancement/Reunion_avancements/20151023/README.md",
-		"/D/Github/Projets/Thèse/Bilan_avancement/Reunion_avancements/20151023/diaporama.tex",
 		"/D/Github/Projets/Thèse/Bilan_avancement/Bilan_20151023/diaporama.tex",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Pré-Etude/plafond_raffraichissant.csv",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Pré-Etude/plafond_raffraichissant_seconds.csv",
@@ -936,7 +962,6 @@
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_123823654/dat00001.csv",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150724_114711969/dat00001.csv",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_4/20150723_131750867/dat00001.csv",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/evaluation.py",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_110253083/dat00001 (2).csv",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_3-1/20150720_110253083/dat00001.txt",
 		"/D/Github/Cours-Python/Work/Tools/rawdata_to_cleandata.py",
@@ -956,11 +981,9 @@
 		"/C/Users/bois/AppData/Local/Temp/colormaps_reference.py",
 		"/D/Github/Projets/IGC/Etudes/Etude_experimentale_PlafinoInnovert/Experimentations/Data/Fondations/Experience_2/20150716_101800762/README.md",
 		"/D/Github/Projets/Thèse/Bilan_avancement/Bilan_20151023/README.md",
-		"/D/Mes données Pleiades+COMFIE/Bibliotheque/BiblioScenariosNonStandard.txt",
 		"/D/Github/Projets/Other/COMEPOS/Meeting/20151105/README.md",
 		"/D/Github/Projets/Thèse/Notes/Notes_optimisation/README.md",
 		"/D/Github/Projets/TradiMaisons/Simulations/Final_etude/README.md",
-		"/D/Github/Projets/SolisArt/Rapport/2015_02_10/SolisArt_report.tex",
 		"/C/Users/bois/Downloads/temp/test.tex",
 		"/C/Users/bois/Downloads/baskervaldadf/README",
 		"/D/Github/Projets/Thèse/Notes/Thèse_StéphanieDecker/README.md",
@@ -986,50 +1009,20 @@
 		"/D/Github/Projets/Other/Simurex/Poster/Includes/equations.tex",
 		"/D/Github/Projets/Other/Simurex/Poster/README.md",
 		"/D/Github/Projets/Thèse/Publications/Energy saving analysis of a solar combi-system/Paper/Publication/IBPC15_ID628_Final.docx",
-		"/D/Github/Cours-Python/Work/SolisArt_script/csv_formatter.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_constants_IGC_AIRvector_20151012.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/Plotters/parameters.py",
-		"/D/Github/Cours-Python/Work/SolisArt_script/Reader/bilan_reader.py",
 		"/D/Github/Cours-Python/Work/Other/verification_algo_air_system.py",
 		"/D/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/Simulations/Résultats/IGC_airVectorRecyclePassive_solar6/regulation_test_data_clean.csv",
 		"/C/Users/bois/Anaconda/envs/py34/lib/site-packages/pandas/io/parsers.py",
 		"/D/Github/solarsystem/Outputs/raw/IGC/limogesAirRecycle-4p_20151017.csv",
 		"/D/Github/solarsystem/Meteo/Toulouse/Toulouse_2005.mos",
-		"/D/Github/solarsystem/Meteo/Limoges/Limoges.mos",
-		"/D/Github/solarsystem/Meteo/Biarritz/Biarritz.mos",
 		"/D/Github/solarsystem/Meteo/Bordeaux/FRA_Bordeaux.075100_IWEC.mos",
-		"/D/Github/solarsystem/Meteo/Nantes/FRA_Nantes.072220_IWEC.mos",
-		"/D/Github/solarsystem/Meteo/README.md",
-		"/D/Github/solarsystem/Meteo/Biarritz/Biarritz.epw",
-		"/D/Github/solarsystem/SolarSystem/Scripts/Display_script_IGC_AIRvector.mos",
 		"/D/Github/solarsystem/Outputs/clean/IGC/README.md",
 		"/C/Users/bois/Downloads/Optimization_ToolKit/readme.txt",
 		"/D/Doc/Thesis/Book-Thesis/Optimisations/CleverAlgorithms/Makefile",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/builders/pdfBuilder.py",
-		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/builders/traditionalBuilder.py",
-		"/D/Doc/Thesis/Book-Thesis/Optimisations/CleverAlgorithms/book/book.tex",
-		"/D/Doc/Thesis/Book-Thesis/Optimisations/book/definitions.tex",
-		"/D/Doc/Thesis/Book-Thesis/Optimisations/book/book.tex",
-		"/D/Doc/Thesis/Book-Thesis/Optimisations/CleverAlgorithms/book/bibtex.bib",
-		"/D/Doc/Thesis/Book-Thesis/Optimisations/CleverAlgorithms/book/c_stochastic.tex",
-		"/D/Github/Projets/Other/COMEPOS/Meeting/README.md",
-		"/D/Github/Projets/COMEPOS/Meeting/README.md",
-		"/D/Github/Projets/Thèse/README.md",
-		"/D/Github/Projets/README.md",
-		"/H/Readme.txt",
-		"/C/Users/bois/Downloads/weathers",
-		"/D/Github/Projets/TradiMaisons/Meeting/20151014/Diaporama/diapo_tradimaisons_20150907.tex",
-		"/D/Github/Projets/TradiMaisons/Meeting/20151014/Diaporama/graphs.py",
-		"/D/Github/Projets/TradiMaisons/Meeting/20150907/Diaporama/diapo_tradimaisons_20150907.tex",
-		"/D/Github/solarsystem/Meteo/Chambery/FR_Chambery_74910TM2.mos",
-		"/D/Github/solarsystem/Meteo/Clermont-Ferrand/FRA_Clermont-Ferrand.074600_IWEC.mos",
-		"/D/Github/Projets/TradiMaisons/Simulations/Final_etude/Pleiades/README.md",
-		"/D/Github/Projets/TradiMaisons/Meeting/20151014/Diaporama/diapo_IGC_combisystem.tex"
+		"/C/Users/bois/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings"
 	],
 	"find":
 	{
-		"height": 30.0
+		"height": 54.0
 	},
 	"find_in_files":
 	{
@@ -1043,6 +1036,57 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"small",
+			"normalsize",
+			"large",
+			"0.19",
+			"perf_capteur_mensuel_apports",
+			"biarritzAirRecycle-4p_20151201.csv",
+			"large",
+			":}\n",
+			"\\large",
+			"bordeauxAirRecycleSkyPro12CPC58-4p_20151201.csv",
+			"toulouseAirRecycle-4p_20151130.csv",
+			"COLS_SURF",
+			"]",
+			"Amaranth",
+			"{",
+			"83",
+			"la performance du",
+			"Moyenne",
+			"Maximale",
+			"Minimale",
+			"multirow",
+			"multi",
+			"degrecelsius",
+			"\\%",
+			"\\fram\\vfill",
+			"nantesAirRecycle-4p_20151128.csv",
+			"bordeauxAirRecycle-4p_20151129.csv",
+			"Rendement capteur",
+			"Algorithme",
+			"Modelisation",
+			"m",
+			"l",
+			"\\hline",
+			"Subtitle",
+			"\"",
+			"Tsol",
+			"InternalGains_power",
+			"data_batterie",
+			"fieldnames",
+			"\\",
+			"schedule",
+			"input_files",
+			"schedule",
+			"extract_table_from",
+			"construct_scenario",
+			"extract_week_schedule_from",
+			"csv",
+			"construct_scenario",
+			"map(",
+			"map",
+			"chunks_iterator",
 			"\\normalsize",
 			"m2",
 			"small",
@@ -1119,58 +1163,7 @@
 			"Chauffage_Elec",
 			"Consommation\\nElec_chauffage",
 			"Consommation_ECS",
-			"nappoint",
-			"'Production\\nappoint'",
-			"'Production'",
-			"Production",
-			"Production\\nappoint",
-			"Production_ECS",
-			"Production\\nChauffage",
-			"Consommation\\nElec_chauffage",
-			"Besoins_ECS\\nballon",
-			"Besoins_ECS",
-			"nballon",
-			"Besoins_ECS\\n_ballon",
-			"Besoins_ECS\\\\nballon",
-			"Besoins_EC\\n_ballon",
-			"Besoins_EC",
-			"Besoins_ECS_puisage",
-			"Besoins_ECS_ballon",
-			"Production\\nChauffage",
-			"Besoins_ECS_puisage",
-			"Chauffage_direct",
-			"Besoins_ECS",
-			"'Consommation\\nappoint'",
-			"Chauffage",
-			"'chauffage'",
-			"chauffage",
-			"Chauffage",
-			"Production_ECS_réelle",
-			"Pertes_solaires",
-			"Production_solaire",
-			"Production_ECS_réelle",
-			"Production_ECS",
-			"Besoins_ECS",
-			"Production_solaire\\nutile",
-			"'ECS'",
-			"Production_ECS",
-			"Ballon_ECS_pertes",
-			"ECS_solaire",
-			"Ballon_ECS_pertes",
-			"bordeauxAirRecycle-4p_20151009.csv",
-			"\"",
-			"0.012",
-			",",
-			"Chauffage  \\",
-			"sup",
-			"bar_s",
-			"Chauffage_solaire_actif",
-			"Chauffage_direct",
-			"Chauffage",
-			"Stockage_pertes",
-			"emphs_dict",
-			"StorageTankPassiveGain_Energy",
-			"DHWTankPassiveGain_Energy"
+			"nappoint"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1196,62 +1189,34 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/README.md",
+					"file": "SolisArt_script/Reader/bilan_reader.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1222,
+						"buffer_size": 25010,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1047,
-								1047
+								15377,
+								15377
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "/D/Github/Projets/TradiMaisons/Meeting/20151123/Diaporama/diapo_tradimaisons_20150907.tex",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 19923,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								19209,
-								19209
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/LaTeX/LaTeX.tmLanguage",
+							"syntax": "Packages/Python 3/Python3.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 11264.0,
+						"translation.y": 5760.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1262,7 +1227,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 30.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -1311,7 +1276,7 @@
 	"project": "Python_extractDisplay.sublime-project",
 	"replace":
 	{
-		"height": 56.0
+		"height": 90.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1361,7 +1326,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 277.0,
+	"side_bar_width": 403.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

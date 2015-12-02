@@ -144,6 +144,8 @@ air_regulation_20151020 = {"Pump_Control.Text": "T9_ext",  "TRooAir.T": "T12_hou
 airSystem_20151012 = {"Control.T1": "T1",  "Control.T3": "T3",
                       "Control.T4": "T4", "Control.T5": "T5",
                       "Control.T7": "T7", "Control.T8": "T8",
+                      "Tsolar_instruction.T": "T12_consigneSolaire",
+                      "Tinstruction.T": "T12_consigne",
                       "DrawingUp.Tdrawing_up.T": "T11_Drawing_up",
                       "PipeNetwork_Source.T_in": "T11_Drawing_in",
                       "Pump_Control.Text": "T9_ext", "TRooAir.T": "T12_house",
@@ -490,7 +492,7 @@ def remove_duplicate(struct):
 def process_actions(in_file, out_file, start_time, D_type=None, seps=(",", ";"),
                     csv_index="Time", skiprows=None, nrows=None,
                     convert_dicts=({}, {}), head=None, new_index="Date",
-                    float_format="%.2f", verbose=False):
+                    float_format="%.5f", verbose=False):
     """
         Load and format the csv file.
         Return all fields except the index one.
@@ -582,17 +584,23 @@ if __name__ == '__main__':
 
     # # Input and output
     # csv_in = "D:\\Github\\Projets\\IGC\\Etudes\\Simulations_Air_Solaire_maisonIndividuelle\\" + \
-    #          "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar6\\" + \
+    #          "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar7\\" + \
     #          "regulation_test_data.csv"
     # csv_out = "D:\\Github\\Projets\\IGC\\Etudes\\Simulations_Air_Solaire_maisonIndividuelle\\" + \
-    #           "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar6\\" + \
+    #           "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar7\\" + \
     #           "regulation_test_data_clean.csv"
 
     # Input and output
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
-             "bordeauxAirRecycle200DHW-4p_20151020.csv"
+             "limogesAirRecycle-4p_20151201.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
-              "bordeauxAirRecycle200DHW-4p_20151020.csv"
+              "limogesAirRecycle-4p_20151201.csv"
+
+    # # Ophélie
+    # csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
+    #          "elec_puissance_energy.csv"
+    # csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
+    #           "elec_puissance_energy.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
