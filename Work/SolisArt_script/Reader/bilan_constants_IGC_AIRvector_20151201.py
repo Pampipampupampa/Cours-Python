@@ -16,7 +16,7 @@
 from Plotters.evaluation import *
 
 # Constant
-A_COL = {'IDMK': 2.32, 'Cobralino': 1.926}  # Collectors area
+A_COL = {'IDMK25': 2.32, 'Cobralino': 1.926, 'Radco308c': 2.193, 'SkyPro12CPC58': 2.28}  # Collectors area
 
 # Bar emphazis
 emphs_dict = {'bar_cumA': ['Pertes_solaires'],
@@ -73,6 +73,7 @@ new_fields = (
               ('Taux de couverture\nChauffage', 'Chauffage_solaire', 'Besoins\nChauffage', '/'),
               ('Taux de couverture\nDHW', 'ECS_solaire', 'ECS_elec', '/'),
               ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
+              ('Rendement solaire', 'Production_solaire\nutile', 'Energie captable', '/'),
               # Part solaire non récupérée par les capteurs solaires.
               ('Solaire_non_capté', 'Energie captable', 'Production\nsolaire', '-'))
 
@@ -95,7 +96,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'diag_B': [conv_value_list,
                      ['Besoins\nChauffage', 'Besoins_ECS', 'Pertes_solaires', 'Gains\ninternes']],
           'diag_C': [conv_value_list,
-                     ['Consommation\nappoint', 'Production\nsolaire']],
+                     ['Consommation\nappoint', 'Production_solaire\nutile', 'Pertes_solaires']],
           'bar_cumC': [conv_value_list,
                        ['Besoins_ECS', 'Besoins\nChauffage', 'Pertes_solaires']],
           'bar_cumA': [conv_value_list,
@@ -107,7 +108,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'bar_supC': [conv_value_list,
                        ['Besoins_ECS', 'Besoins\nChauffage', 'Pertes_solaires']],
           'bar_supDispo': [conv_value_list,
-                           ['Energie captable', 'Production\nsolaire']],
+                           ['Energie captable', 'Production\nsolaire', 'Production_solaire\nutile']],
           # This plot return a cumulative evolution of Taux de couverture and Rendement.
           # We deal with energy not power so we don’t have taux de couverture and Rendement
           # at each time step.
@@ -131,7 +132,7 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
                     ('#859900', '#002b36', '#859900', '#859900', '#268bd2')),
             'diag_B': ['#fdf6e3', '#268bd2', '#cb4b16', '#859900'],
             'diag_P': ['#804040', 'orange'],
-            'diag_C': ['#d33682', 'orange'],
+            'diag_C': ['#d33682', 'orange', '#cb4b16'],
             'bar_cumA': {'Consommation\nappoint': '#fdf6e3', 'Production\nsolaire': 'orange',
                          'Pertes totales': '#cb4b16'},
             'bar_cumC': {'Consommation\nappoint': '#dc322f', 'Besoins\nChauffage': '#fdf6e3',
@@ -142,7 +143,8 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
             'bar_cumH': {'Chauffage_elec': '#fdf6e3', 'Chauffage_solaire': 'orange',
                          'Stockage_pertes': '#cb4b16'},
             'bar_supDispo': {'Production\nsolaire': 'orange',
-                             'Energie captable': '#859900'},
+                             'Energie captable': '#fdf6e3',
+                             'Production_solaire\nutile': '#859900'},
             'bar_supC': {'Consommation\nappoint': '#dc322f', 'Besoins\nChauffage': '#fdf6e3',
                          'Besoins_ECS': '#268bd2', 'Production\nsolaire': 'orange',
                          'Pertes_solaires': '#cb4b16'},
@@ -203,7 +205,6 @@ JSON_ENERGY_FIELDS = ['Gains\ninternes', 'Chauffage_solaire_actif',
 JSON_TEMP_FIELDS = ['T1', 'T3', 'T4', 'T5', 'T7', 'T8', 'T9_ext',
                     'T12_house', 'T14_blowing']
 
-
 # Air system
 def time_info(frame, display=True):
     """
@@ -258,3 +259,5 @@ def prepare_export(dico, name, mois):
     dico[name][mois]['end_sim'] = str(dico[name][mois]['end_sim'])
     for conv in to_seconds:
         dico[name][mois][conv] = dico[name][mois][conv].total_seconds()
+
+

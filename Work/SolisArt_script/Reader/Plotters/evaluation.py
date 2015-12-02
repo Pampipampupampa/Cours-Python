@@ -918,9 +918,9 @@ class MultiPlotter(object):
         names = names or self.names
         print('\n---' + 'Plotting superimposed Bars' + '---' + '\n', columns)
         # Plot all plots
-        # self.catch_axes(*pos).set_title(label=title,
-        #                                 fontdict=self.font_title,
-        #                                 loc=loc)
+        self.catch_axes(*pos).set_title(label=title,
+                                        fontdict=self.font_title,
+                                        loc=loc)
         # Draw all bar and stock them inside an Ordered dict
         temp = OrdD()
         for col in columns:
@@ -947,9 +947,9 @@ class MultiPlotter(object):
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
         # Add auto legend
-        # self.catch_axes(*pos).legend([temp[col] for col in columns],
-        #                              list(columns),
-        #                              loc="best", prop=self.font_legend, **legend_dict)
+        self.catch_axes(*pos).legend([temp[col] for col in columns],
+                                     list(columns),
+                                     loc="best", prop=self.font_legend, **legend_dict)
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
                      names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
@@ -976,9 +976,9 @@ class MultiPlotter(object):
         # Get fields
         fields = fields or columns
         print('\n---' + 'Plotting cumulated Bars' + '---' + '\n', columns)
-        # self.catch_axes(*pos).set_title(label=title,
-        #                                 fontdict=self.font_title,
-        #                                 loc=loc)
+        self.catch_axes(*pos).set_title(label=title,
+                                        fontdict=self.font_title,
+                                        loc=loc)
         # Draw all bar and stock them inside an Ordered dict
         temp = OrdD()
         # Bottom for bars
@@ -1011,9 +1011,9 @@ class MultiPlotter(object):
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
         # Add auto legend
-        # self.catch_axes(*pos).legend([temp[col] for col in columns],
-        #                              list(columns),
-        #                              loc="best", prop=self.font_legend, **legend_dict)
+        self.catch_axes(*pos).legend([temp[col] for col in columns],
+                                     list(columns),
+                                     loc="best", prop=self.font_legend, **legend_dict)
 
 
 ########################

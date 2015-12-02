@@ -22,11 +22,11 @@
 """
 
 # import csv
-import json
+# import json
 
 # Select configuration file between projects
 from bilan_constants_IGC_AIRvector import *
-from bilan_constants_IGC_AIRvector_20151012 import *
+from bilan_constants_IGC_AIRvector_20151201 import *
 fold = FOLDER/'clean'/'IGC'
 # from bilan_constants_Solisart_WATERvector import *
 # fold = FOLDER/'clean'/'SolisArt'
@@ -73,18 +73,16 @@ def test_index(name, plot):
 # bordeauxAirRecycleM2012-4p_20150609.csv bordeauxAirRecycleM2013-4p_20150609.csv bordeauxAirRecycleM2014-4p_20150610.csv
 # bordeauxAirRecycle1er-4p_20150622.csv bordeauxAirRecycle2nd-4p_20150622.csv bordeauxAirRecycle3rd-4p_20150622.csv
 
-# bordeauxAirRecycleCapteurHP-4p_20150612.csv bordeauxAirRecycleCapteurHP-5p_20150612.csv
-# Ne pas utiliser sans vérifications et comprendre les limites (voir tableur simulations)
-# bordeauxAirRecycle100vpDHWCapteurHP-4p_20150604.csv bordeauxAirRecycleCapteurHP-4p_20150605.csv bordeauxAirRecycleCapteurHP-5p_20150605.csv
-
-
-# IGC last system:
+# IGC system 20151026:
 # bordeauxAirRecycle-4p_20151009.csv  # Ground temperature from weather data file.
 # nantesAirRecycle-4p_20151018.csv limogesAirRecycle-4p_20151017.csv
 # bordeauxAirRecycle-4p_20151017.csv bordeauxAirRecycleNoOverheat-4p_20151018.csv bordeauxAirRecycle-6p_20151019.csv
 # bordeauxAirRecycle200Buffer200DHW-4p_20151020.csv bordeauxAirRecycle200DHW-4p_20151020.csv
-# Bordeaux-4panneaux_.csv Bordeaux-6panneaux_.csv
 
+# IGC air recycle system 20151202:
+# bordeauxAirRecycle-4p_20151129.csv toulouseAirRecycle-4p_20151130.csv nantesAirRecycle-4p_20151128.csv
+# biarritzAirRecycle-4p_20151201.csv limogesAirRecycle-4p_20151201.csv
+# bordeauxAirRecycleSkyPro12CPC58-4p_20151201.csv
 
 # Debugger
 # import pdb; pdb.set_trace()
@@ -320,15 +318,22 @@ if __name__ == '__main__':
                 Plot.colors = col_dict[plot]
                 # KWh to KWh/m2 (Careful collector area extract from name)
                 nb_col = int(name.split("-")[1][:1])
-                # Check number of collectors
-                print("**********   ", nb_col, "   ***********")
                 if 'Dispo' in plot:
-                    # Working but ugly, please fix.
-                    area_col = A_COL['Cobralino'] if 'HP-' in name else A_COL['IDMK']
-                    # Process change for each column except which contains ratio.
+                    find = False
+                    # Dict defines in `bilan_constants_IGC_AIRvector_20151201`
+                    for collector in A_COL:
+                        if collector in name:
+                            area_col = A_COL[collector]
+                            find = True
+                            break
+                    if not find:
+                        area_col = A_COL['IDMK25']
+                    # Check number and size of collectors
+                    print("**********   ", nb_col, area_col, "   ***********")
                     for column_name in structs[name][plot][0].columns:
                         if any(c in column_name for c in ("Taux de couverture",
-                                                          "Rendement capteur")):
+                                                          "Rendement capteur",
+                                                          "Rendement solaire")):
                             continue
                         else:
                             structs[name][plot][0][column_name] = structs[name][plot][0][column_name] / (area_col * nb_col)
@@ -375,9 +380,11 @@ if __name__ == '__main__':
                                 structs[name][plot][0]['Taux de couverture\nChauffage'].values]
                 if 'Dispo' in plot:
                     # Taux de couverture de couverture solaire mensuel
-                    percents = ['{:.1%}'.format(i)
-                                for i in
-                                structs[name][plot][0]['Rendement capteur'].values]
+                    percents = ['\n{:.1%}\n{:.1%}'.format(i, j)
+                                for (i, j) in
+                                zip(structs[name][plot][0]['Rendement capteur'].values,
+                                    structs[name][plot][0]['Rendement solaire'].values)]
+                print(structs[name][plot][0]['Rendement solaire'])
                 percents = [percent if 'nan' not in percent else '*' for percent in percents]
                 Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
                                           pos=pos)
@@ -473,19 +480,19 @@ if __name__ == '__main__':
             else:
                 print('Nothing will be show for {}'.format(plot))
 
-    # Adjust plot format (avoid overlaps)
+    # # Adjust plot format (avoid overlaps)
     # Plot.adjust_plots(hspace=0.6, wspace=0.15,
     #                   top=0.85, bottom=0.08,
-    #                   left=0.05, right=0.96)
+    #                   left=0.07, right=0.96)
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # # Save plots
-    # base_name = "Simulation"
-    # if len(datas) == 1:
-    #     base_name = name
-    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+    # Save plots
+    base_name = "Simulation"
+    if len(datas) == 1:
+        base_name = name
+    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()
