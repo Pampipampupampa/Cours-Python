@@ -30,7 +30,6 @@ from matplotlib.dates import MinuteLocator, SecondLocator
 #### Classes, Methods, Functions : ####
 #######################################
 
-
 def convert_to_datetime(step, start=datetime.datetime(2014, 1, 1)):
     """
       This parser convert to a real datetime format

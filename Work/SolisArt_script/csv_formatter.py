@@ -73,7 +73,7 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
                    "integrator_boiler.Energy": "Boiler_Energy",
                    "integrator_radiator.Energy": "Radiator_Energy",
                    "integrator_drawingUp.Energy": "DrawingUp_Energy",
-                   "PipeNetwork_Source.T_in": "T11_Drawing_in",
+                   "PipeNetwork_Source.T_in": "T11_cold",
                    "integrator_drawingUp.Tout": "T11_Drawing_up",
                    "integrator_drawingUp.m_flow": "Flow_Drawing",
                    "TRooHou1.y": "T12_hour", "roo.heaPorRad.T": "T12_rad_house",
@@ -90,7 +90,7 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
 #                  "Control.T4": "T4", "Control.T5": "T5",
 #                  "Control.T7": "T7", "Control.T8": "T8",
 #                  "DrawingUp.Tdrawing_up.T": "T11_Drawing_up",
-#                  "PipeNetwork_Source.T_in": "T11_Drawing_in",
+#                  "PipeNetwork_Source.T_in": "T11_cold",
 #                  "Pump_Control.Text": "T9_ext", "TRooAir.T": "T12_house",
 #                  "Pump_Control.pumps_state_algo.pumps_state[1]": "S6_state",
 #                  "Pump_Control.pumps_state_algo.pumps_state[2]": "S5_state",
@@ -147,7 +147,7 @@ airSystem_20151012 = {"Control.T1": "T1",  "Control.T3": "T3",
                       "Tsolar_instruction.T": "T12_consigneSolaire",
                       "Tinstruction.T": "T12_consigne",
                       "DrawingUp.Tdrawing_up.T": "T11_Drawing_up",
-                      "PipeNetwork_Source.T_in": "T11_Drawing_in",
+                      "PipeNetwork_Source.T_in": "T11_cold",
                       "Pump_Control.Text": "T9_ext", "TRooAir.T": "T12_house",
                       "Pump_Control.pumps_state_algo.pumps_state[1]": "S6_state",
                       "Pump_Control.pumps_state_algo.pumps_state[2]": "S5_state",
@@ -193,6 +193,68 @@ airSystem_20151012 = {"Control.T1": "T1",  "Control.T3": "T3",
                       "integrator_HealthTank_losses.Classic_Energy": "DHWTankTotalLosses_Energy",
                       "integrator_StorageTank_losses.Computed_Energy": "StorageTankPassiveGain_Energy",
                       "integrator_StorageTank_losses.Classic_Energy": "StorageTankTotalLosses_Energy",
+                      }
+
+airSystem_20160126 = {
+                      # Temperature outputs
+                      "SELECTION.Temperature.Computed.algorithm_control.T1": "T1",
+                      "SELECTION.Temperature.Computed.algorithm_control.T3": "T3",
+                      "SELECTION.Temperature.Computed.algorithm_control.T4": "T4",
+                      "SELECTION.Temperature.Computed.algorithm_control.T5": "T5",
+                      "SELECTION.Temperature.Computed.algorithm_control.T7": "T7",
+                      "SELECTION.Temperature.Computed.hex.T_in1": "T8",
+                      "SELECTION.Temperature.Computed.algorithm_control.Text": "T9_ext",
+                      "SELECTION.Temperature.Computed.algorithm_control.Tamb[1]": "T12_house",
+                      "SELECTION.Temperature.Computed.algorithm_control.Tsouff[1]": "T14_blowing",
+                      "SELECTION.Temperature.Computed.algorithm_control.Texch_out[1]": "T13_exch_outlet",
+                      "SELECTION.Temperature.Computed.hex.T_in2": "T13_exch_inlet",
+                      "SELECTION.Temperature.Consigne.Tcold_water.T": "T11_cold",
+                      "SELECTION.Temperature.Consigne.algorithm_control.Schedules[1].y[1]": "T12_consigne",
+                      "SELECTION.Temperature.Consigne.algorithm_control.Schedules[1].y[2]": "T12_consigneSolaire",
+                      # Three ways valve
+                      "SELECTION.Valve.algorithm_control.V3V_solar": "Vsolar_state",
+                      # Pumps characteristics
+                      "SELECTION.Pump.State.algorithm_control.S6_state": "S6_state",
+                      "SELECTION.Pump.State.algorithm_control.S5_state": "S5_state",
+                      "SELECTION.Pump.State.algorithm_control.Sj_state[1]": "S2_state",
+                      "SELECTION.Pump.Speed.algorithm_control.S6_speed": "Speed_S6",
+                      "SELECTION.Pump.Speed.algorithm_control.S5_speed": "Speed_S5",
+                      "SELECTION.Pump.Speed.algorithm_control.Sj_speed[1]": "Speed_S2",
+                      "SELECTION.Pump.MassFlow.C6.m_flow": "Flow_S6",
+                      "SELECTION.Pump.MassFlow.C5.m_flow": "Flow_S5",
+                      "SELECTION.Pump.MassFlow.C2.m_flow": "Flow_S2",
+                      "SELECTION.Pump.MassFlow.Drawing_up.m_flow_p": "Flow_DrawingUp",      # Puisage ECS: débit total
+                      "SELECTION.Pump.MassFlow.Drawing_up.m_flow_b": "Flow_DrawingUpTank",  # Puisage ECS: débit ballon
+                      # Fans characteristics
+                      "SELECTION.Fan.MassFlow.fan.m_flow": "Flow_Fan",
+                      "SELECTION.Fan.MassFlow.recycled_air_flow.m_flow": "Flow_Recycled",
+                      "SELECTION.Fan.MassFlow.Outside_air_flow.m_flow": "Flow_Outside",
+                      # Power outputs
+                      "SELECTION.Power.Electric.algorithm_control.power_air_elec[1]": "ElecHeating_power",
+                      "SELECTION.Power.Electric.algorithm_control.power_DHW_elec": "ElecDHW_power",
+                      "weaBus.HDifHor": "HDifHor",
+                      "weaBus.HDirNor": "HDirNor",
+                      "SELECTION.Power.Solar.Collector.HDifTilIso.H": "HDifTil_collector",
+                      "SELECTION.Power.Solar.Collector.HDirTil.H": "HDirTil_collector",
+                      "SELECTION.Power.Solar.Collector.heaGai[1].Q_flow": "SolarPower_absorbed",
+                      "SELECTION.Power.Solar.Collector.QLos[1].Q_flow": "SolarPower_lost",
+                      "SELECTION.Power.Internal.sum_gains.y": "InternalGains_power",
+                      "SELECTION.Power.DrawingUp.Drawing_up.integrator.u": "DrawingUp_power",
+                      # Energy outputs
+                      "SELECTION.Energy.Solar.Collector.integrator.y": "CollectorPanel_Energy",
+                      "SELECTION.Energy.Solar.integrator_collector.Energy": "Collector_Energy",
+                      "SELECTION.Energy.DrawingUp.Drawing_up.Energy": "DrawingUp_Energy",
+                      "SELECTION.Energy.Solar.integrator_exchanger.Energy": "SolarHeating_Energy",
+                      "SELECTION.Energy.Solar.integrator_DHW_Solar_charge.Energy": "SolarDrawingUp_Energy",
+                      "SELECTION.Energy.Solar.integrator_StorageTank_Solar_charge.Energy": "SolarStorage_Energy",
+                      "SELECTION.Energy.Losses.integrator_losses.Energy": "PipesLosses_Energy",
+                      "SELECTION.Energy.Electric.algorithm_control.energy_air_elec[1]": "ElecHeating_Energy",
+                      "SELECTION.Energy.Electric.algorithm_control.energy_DHW_elec": "ElecDHW_Energy",
+                      "SELECTION.Energy.Internal.integrator_Internal": "InternalGains_Energy",
+                      "SELECTION.Energy.Losses.integrator_DHW_losses.Computed_Energy": "DHWTankPassiveGain_Energy",
+                      "SELECTION.Energy.Losses.integrator_DHW_losses.Classic_Energy": "DHWTankTotalLosses_Energy",
+                      "SELECTION.Energy.Losses.integrator_StorageTank_losses.Computed_Energy": "StorageTankPassiveGain_Energy",
+                      "SELECTION.Energy.Losses.integrator_StorageTank_losses.Classic_Energy": "StorageTankTotalLosses_Energy",
                       }
 
 # Fields converters for algorithms
@@ -590,7 +652,7 @@ if __name__ == '__main__':
     #           "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar7\\" + \
     #           "regulation_test_data_clean.csv"
 
-    # Input and output
+    # # IGC
     csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
              "limogesAirRecycle-4p_20151201.csv"
     csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
