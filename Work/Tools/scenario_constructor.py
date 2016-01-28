@@ -124,22 +124,25 @@ if __name__ == '__main__':
     # week_schedule_from_table(["table.csv", "table.csv", "table.csv"])
 
     #
-    # Generation of IGC scenarios
+    # Generation of IGC schedules
     #
     FOLDER = "D://Github//Projets//IGC//Etudes//Simulations_Air_Solaire_maisonIndividuelle//Simulations//Scenarios//"
 
     occupancy, lights, equipments = FOLDER + "occupancy.csv", FOLDER + "lights.csv", FOLDER + "equipments.csv"
-    consigne, solaire = FOLDER + "consigne.csv", FOLDER + "solaire.csv"
+    consigne, solaire, ventilation = FOLDER + "consigne.csv", FOLDER + "solaire.csv", FOLDER + "ventilation.csv"
     consigneRT = FOLDER + "consigneRT.csv"
     hiver_occ = FOLDER + "occultation_hiver.csv"
     ete_est_occ, ete_ouest_occ = FOLDER + "occultation_ete_est.csv", FOLDER + "occultation_ete_ouest.csv"
+    puisage = FOLDER + "puisage.csv"
 
     # schedule = week_schedule_from_table([occupancy, lights, equipments],
     #                                     step_size=3600, delimiter=",")
-    schedule = week_schedule_from_table([consigne, solaire],
-                                        step_size=3600, delimiter=",")
-    # schedule = week_schedule_from_table(consigneRT,
+    # schedule = week_schedule_from_table([consigne, solaire, ventilation],
     #                                     step_size=3600, delimiter=",")
+    schedule = week_schedule_from_table(consigneRT,
+                                        step_size=3600, delimiter=",")
     # schedule = week_schedule_from_table([occupancy, lights, equipments, hiver_occ, ete_est_occ, ete_ouest_occ],
+    #                                     step_size=3600, delimiter=",")
+    # schedule = week_schedule_from_table(puisage,
     #                                     step_size=3600, delimiter=",")
     print(schedule)
