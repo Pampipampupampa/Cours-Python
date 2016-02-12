@@ -1,6 +1,6 @@
 # EnergyPlusToFMU #
 
-Mise à jour: 20160122
+**Mise à jour: 20160210**
 
 ## Script Python ##
 Les scripts ont été fortement modifiés pour améliorer:
@@ -40,7 +40,7 @@ Il est nécessaire d’être dans le même dossier que le script `EnergyPlusToFM
 L’argument `-d` est normalement là pour le debug mais sans celui-ci les fichiers
 intermédiaires ne peuvent pas être supprimés.
 
-    C:\Users\bois\Anaconda\envs\py34\python.exe .\EnergyPlusToFMU.py -d -i C:\EnergyPlusV8-4-0\Energy+.idd <path_to_idf_file>
+    python.exe .\EnergyPlusToFMU.py -d -i C:\EnergyPlusV8-4-0\Energy+.idd <path_to_idf_file>
 
 Il est possible de lier un fichier météo en ajoutant ce fichier comme source:
 
@@ -50,11 +50,11 @@ Enfin l’option `-L` permet de conserver les fichiers intermédiaires.
 
 Ainsi on transforme un fichier energy plus `.idf` en FMU `.fmu` en utilisant la commande suivante:
 
-    C:\Users\bois\Anaconda\envs\py34\python.exe .\EnergyPlusToFMU.py -d -w <path_to_weather_file> -i C:\EnergyPlusV8-4-0\Energy+.idd <path_to_idf_file>
+    python.exe .\EnergyPlusToFMU.py -d -w <path_to_weather_file> -i C:\EnergyPlusV8-4-0\Energy+.idd <path_to_idf_file>
 
 **Exemple:**
 
-    C:\Users\bois\Anaconda\envs\py34\python.exe .\EnergyPlusToFMU.py -d -w "D:\Github\solarsystem\Meteo\Bordeaux\FRA_Bordeaux.075100_IWEC.epw" -i C:\EnergyPlusV8-4-0\Energy+.idd "D:\Github\Cours-Python\Work\Tools\EnergyPlusToFMU\Examples\Schedule\_fmu-export-schedule.idf"
+    python.exe .\EnergyPlusToFMU.py -d -w "D:\Github\solarsystem\Meteo\Bordeaux\FRA_Bordeaux.075100_IWEC.epw" -i C:\EnergyPlusV8-4-0\Energy+.idd "D:\Github\Cours-Python\Work\Tools\EnergyPlusToFMU\Examples\Schedule\_fmu-export-schedule.idf"
 
 
 ## Utilisation du FMU: ##

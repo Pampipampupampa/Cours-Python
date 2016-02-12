@@ -206,8 +206,9 @@ def deleteFile(fileName):
     if os.path.isfile(fileName):
         try:
             os.remove(fileName)
-        except:
-            quitWithError('Unable to delete file {' + fileName + '}', False)
+        except Exception as e:
+            print(e)
+            # quitWithError('Unable to delete file {' + fileName + '}', False)
     elif os.path.isdir(fileName):
         quitWithError('Expecting {' + fileName + '} to be a file; found a directory', False)
 
