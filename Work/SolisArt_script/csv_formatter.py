@@ -551,7 +551,7 @@ def remove_duplicate(struct):
 
 
 @benchmark
-def process_actions(in_file, out_file, start_time, D_type=None, seps=(",", ";"),
+def process_actions(in_file, out_file, start_time, D_type=None, seps=(";", ";"),
                     csv_index="Time", skiprows=None, nrows=None,
                     convert_dicts=({}, {}), head=None, new_index="Date",
                     float_format="%.5f", verbose=False):
@@ -580,7 +580,6 @@ def process_actions(in_file, out_file, start_time, D_type=None, seps=(",", ";"),
     # Open csv
     new_csv = pd.read_csv(in_file, nrows=nrows, delimiter=seps[0],
                           skiprows=skiprows, index_col=csv_index)
-
     # Change all fields names
     new_csv.columns = [field for field in change_fields(new_csv,
                                                         convert_dicts[0])]
@@ -653,16 +652,10 @@ if __name__ == '__main__':
     #           "regulation_test_data_clean.csv"
 
     # # IGC
-    csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
-             "limogesAirRecycle-4p_20151201.csv"
-    csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
-              "limogesAirRecycle-4p_20151201.csv"
-
-    # # Ophélie
-    # csv_in = "D:\\GitHub\\SolarSystem\\Outputs\\raw\\IGC\\" + \
-    #          "elec_puissance_energy.csv"
-    # csv_out = "D:\\GitHub\\SolarSystem\\Outputs\\clean\\IGC\\" + \
-    #           "elec_puissance_energy.csv"
+    csv_in = "D:\\Github\\solarsystem\\Outputs\\raw\\IGC\\" + \
+             "bordeauxAir-4p_20160207.csv"
+    csv_out = "D:\\Github\\solarsystem\\Outputs\\clean\\IGC\\" + \
+              "bordeauxAir-4p_20160207.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -685,7 +678,7 @@ if __name__ == '__main__':
         # Cast to set because update_xml_linestyle accept only set
         fields = set(process_actions(csv_in, csv_out, start, verbose=True,
                                      D_type="", nrows=None, head=head,
-                                     convert_dicts=(airSystem_20151012,
+                                     convert_dicts=(airSystem_20160126,
                                                     unit_converter)))
         print("-"*25 + "\nFields are :")
         for field in fields:
