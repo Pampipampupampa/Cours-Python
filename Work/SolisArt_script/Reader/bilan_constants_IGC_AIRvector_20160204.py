@@ -15,8 +15,11 @@
 
 from Plotters.evaluation import *
 
-# Constant
-A_COL = {'IDMK25': 2.32, 'Cobralino': 1.926, 'Radco308c': 2.193, 'SkyPro12CPC58': 2.28}  # Collectors area
+
+# Collectors area
+A_COL = {'IDMK25': 2.32, 'Cobralino': 1.926, 'Radco308c': 2.193,
+         'SkyPro12CPC58': 2.28, 'SkyPro': 2.28,
+         'SkyProScaled12CPC58': 2.32, 'SkyProS': 2.32}
 
 # Bar emphazis
 emphs_dict = {'bar_cumA': ['Pertes_solaires'],
@@ -84,7 +87,8 @@ short_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
 
 
 # Create list of all values inside conv_dict
-conv_value_list = [values for values in conv_dict.values()]
+not_energy_but_rename = ("Diffus", "Direct")  # Used to avoid useless aggregations
+conv_value_list = [value for value in conv_dict.values() if value not in (not_energy_but_rename)]
 
 # Fields (to plot new type of graph add new fields here)
 fields = {'box_Tbal': ['T3', 'T4', 'T5'],

@@ -140,6 +140,14 @@ class EvalData(object):
                                                  steps=steps,
                                                  interval=interval))
 
+    def shorter_months(self, months):
+        short_mapper = {"January": 'Jan', "February": 'Feb', "March": 'Mar',
+                        "April": 'Apr', "May": 'May',
+                        "June": 'Jun', "July": 'Jul', "August": 'Aug',
+                        "September": 'Sept', "October": 'Oct',
+                        "November": 'Nov', "December": 'Dec'}
+        return [short_mapper[month] for month in months]
+
     @staticmethod
     def keep_hour_range(frame, range_=(9, 18)):
         """
@@ -391,8 +399,7 @@ class EvalData(object):
                                                     frame))
         return summation, step_list
 
-    def bar_energy(self, frame, fields=None, new_fields=(),
-                   interval=None):
+    def bar_energy(self, frame, fields=None, new_fields=()):
         """
             Proceed all treatments to extract structure to plot energy Bar
             new_fields index must be strutured as below:
@@ -403,23 +410,22 @@ class EvalData(object):
                     ---> frame[0] = frame[1] operator[3] frame[2]
         """
         fields = fields or self.fields
-        # Reduce dataframe
-        frame = self.resample(frame)
-        # Get chunks
-        frame = self.reduce_data(frame, fields)
-        # Get only last values for each chunks
-        frame = [frame[i][-1:] for i in range(len(frame))]
-        # Set each values difference to keep only energy evolution per sample
-        frame = ((frame[0],) +
-                 tuple(frame[ind+1] -
-                       frame[ind].values for ind in range(len(frame)-1)))
-        # Group all data together
-        frame = pd.concat([el for el in frame])
-        lab_interval = interval or self.length
-        # Create indices
-        indices = ["{:%B}".format(frame.index[i]) for i in range(lab_interval)]
-        # Numerical index for each Bar
-        frame.index = [el for el in range(1, lab_interval+1)]
+        # Simulation ended at midnight an then can start a new month at 00:00:00
+        # To avoid unnecessary bar we only keep complete month.
+        # So if a simulation ended at 2016-12-27 and start at 2016-01-01 we keep only
+        # 11 month for bar plot.
+        if frame[:][-1:].index.is_month_end:
+            frame = frame[fields].resample('M', "last")
+        else:
+            frame = frame[fields].resample('M', "last")[:-1]
+        frame_copy = frame.copy(deep=True)  # Keep a trace of the original frame
+        frame = frame - frame.shift(1)      # Substract all rows by the upper one
+        # After the shift the first row have a 'NaN' value because we can get a
+        # upper row for the upper one.
+        frame.iloc[0] = frame_copy.iloc[0]  # Assign first row of copy to original
+        length = len(frame)
+        # Get month name for each row
+        month_xticks = ["{:%B}".format(frame.index[i]) for i in range(length)]
         if new_fields:
             # For each new columns
             for new in new_fields:
@@ -427,7 +433,8 @@ class EvalData(object):
                 frame[new[0]] = self.add_column(frame,
                                                 used_cols=(new[1], new[2]),
                                                 operator=new[3])
-        return frame, indices
+        # Return data and a shortened version of monthly x ticks
+        return frame, self.shorter_months(month_xticks)
 
     def diag_energy(self, frame, fields=None, month=12,
                     new_fields=()):
@@ -480,11 +487,11 @@ class MultiPlotter(object):
             - sharey set to True to share yaxis with all plots
     """
     # Text formatters
-    font_title = {'size': 20,
-                  'family': 'Source Code Pro'}
+    font_title = {'size': 25,
+                  'family': 'Baskerville Old Face'}
     font_base = font_base
-    font_legend = {'size': 20,
-                   'family': 'Source Code Pro'}
+    font_legend = {'size': 17,
+                   'family': 'Baskerville Old Face'}
     width = 2  # Line width
     colormap = "Accent"  # Color set
     background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
@@ -799,7 +806,7 @@ class MultiPlotter(object):
 
     def boxes_mult_plot(self, list_frame, colors=(None,)*5,  title='Box me !',
                         loc='left', pos=(0, 0), widths=0.6, whis=1000, rot=30,
-                        mean=True, mean_dict={}, box_dict={},
+                        mean=False, mean_dict={}, box_dict={},
                         prop_legend={'ncol': 1}, **kwargs):
         """
             Draw a boxplot for each columns inside each dataframe of
@@ -917,6 +924,10 @@ class MultiPlotter(object):
         # Get names
         names = names or self.names
         print('\n---' + 'Plotting superimposed Bars' + '---' + '\n', columns)
+        # Get an integer list of the index used to place bar plot
+        # See `matplotlib.pyplot.bar` specially `left` kwargs argument
+        length = len(frame)
+        left_shifts = [el for el in range(1, length+1)]
         # Plot all plots
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
@@ -924,7 +935,7 @@ class MultiPlotter(object):
         # Draw all bar and stock them inside an Ordered dict
         temp = OrdD()
         for col in columns:
-            temp[col] = self.catch_axes(*pos).bar(frame.index.values,
+            temp[col] = self.catch_axes(*pos).bar(left_shifts,
                                                   frame[col].values,
                                                   color=self.colors[col],
                                                   width=h_width,
@@ -933,7 +944,7 @@ class MultiPlotter(object):
         if emphs:
             for emph in emphs:
                 self.catch_axes(*pos).bar(left=frame.index.values,
-                                          height=[1]*12,
+                                          height=[1]*length,
                                           bottom=frame[emph].values,
                                           ec=self.colors[emph], fill=False,
                                           width=h_width, linewidth=3,
@@ -975,6 +986,10 @@ class MultiPlotter(object):
         names = names or self.names
         # Get fields
         fields = fields or columns
+        # Get an integer list of the index used to place bar plot
+        # See `matplotlib.pyplot.bar` specially `left` kwargs argument
+        length = len(frame)
+        left_shifts = [el for el in range(1, length+1)]
         print('\n---' + 'Plotting cumulated Bars' + '---' + '\n', columns)
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
@@ -985,7 +1000,7 @@ class MultiPlotter(object):
         bottom = pd.DataFrame(zeros_like(frame[[columns[0]]]),
                               columns=["Bottom"], index=frame.index)
         for col in fields:
-            temp[col] = self.catch_axes(*pos).bar(left=frame.index.values,
+            temp[col] = self.catch_axes(*pos).bar(left=left_shifts,
                                                   height=frame[col],
                                                   bottom=bottom["Bottom"],
                                                   width=h_width,
@@ -996,7 +1011,7 @@ class MultiPlotter(object):
         if emphs:
             for emph in emphs:
                 temp[emph] = self.catch_axes(*pos).bar(left=frame.index.values,
-                                                       height=[0]*12,
+                                                       height=[0]*length,
                                                        bottom=frame[emph],
                                                        ec=self.colors[emph],
                                                        fill=False,

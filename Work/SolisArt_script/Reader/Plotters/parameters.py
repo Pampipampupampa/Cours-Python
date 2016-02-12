@@ -34,13 +34,13 @@ from collections import deque
 
 # Specific folder in linux or windows
 if name == 'nt':
-    FOLDER = path("D:/GitHub/SolarSystem/Outputs")
+    FOLDER = path("D:/GitHub/solarsystem/Outputs")
 elif name == 'posix':
     FOLDER = path('~').expanduser() / "Documents/Git/solarsystem/Outputs"
 
 # Create font properties
 # Can be use to plot for publication
-font_base = {'size': 20,
+font_base = {'size': 15,
              'family': 'STIXGeneral'}
 #             'mathtext.fontset': 'stix'
 #             'text.usetex': True}  # Used to force latex inside figures

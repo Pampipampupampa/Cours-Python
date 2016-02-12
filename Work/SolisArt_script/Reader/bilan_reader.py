@@ -25,8 +25,8 @@
 # import json
 
 # Select configuration file between projects
-from bilan_constants_IGC_AIRvector import *
-from bilan_constants_IGC_AIRvector_20151201 import *
+# from bilan_constants_IGC_AIRvector import *
+from bilan_constants_IGC_AIRvector_20160204 import *
 fold = FOLDER/'clean'/'IGC'
 # from bilan_constants_Solisart_WATERvector import *
 # fold = FOLDER/'clean'/'SolisArt'
@@ -83,6 +83,15 @@ def test_index(name, plot):
 # bordeauxAirRecycle-4p_20151129.csv toulouseAirRecycle-4p_20151130.csv nantesAirRecycle-4p_20151128.csv
 # biarritzAirRecycle-4p_20151201.csv limogesAirRecycle-4p_20151201.csv
 # bordeauxAirRecycleSkyPro12CPC58-4p_20151201.csv
+
+# IGC air recycle system 20160203 (version12):
+# Glazed
+# limogesAirRecycle-4p_20160203.csv bordeauxAirRecycle-4p_20160204.csv bordeauxAirRecycle-4p_20160209.csv
+# limogesAirRecycleInc45-4p_20160204.csv
+# Tubular
+# limogesAirRecycleSkyProScaled12CPC58-4p_20160204.csv
+# Do not start from January 1st
+# bordeauxAirRecycleStartOctober-4p_20160209.csv
 
 # Debugger
 # import pdb; pdb.set_trace()
@@ -157,7 +166,9 @@ if __name__ == '__main__':
 # EVALUATION #
 ##############
     # Keep only 2014 datas into the dict
-    datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
+    # datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
+    # Keep all data
+    datas = {name: EvalData(frames[name]) for name in frames}
 
     # Prepare structure for time_json (later populate with time heating infos)
     # Time per month
@@ -208,7 +219,7 @@ if __name__ == '__main__':
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
                 # Debugger
-                # import pdb; pdb.set_trace()
+                # import pdb;pdb.set_trace()
     # --------------------------------------------------------------------------
                 # # Here we populate the energy_json ().
                 # # This part of the script can be moved outside by simply used
@@ -284,7 +295,7 @@ if __name__ == '__main__':
     print('Number of plots : {}'.format(sum_))
     rows, cols = to_table(sum_)
     # If we want a specific size for the axes map
-    rows, cols = 1, 2
+    # rows, cols = 1, 2
     print('columns : {}\t rows : {}'.format(cols, rows))
     print('-' * 30, 'Mapping of positions coordinates:', '-' * 30, sep='\n')
     for row in range(rows):
@@ -361,32 +372,33 @@ if __name__ == '__main__':
                                       title=titles[plot] + '\n{}'.format(name_cap))
                     # Uncomment to set a y limit for each bar_cum plot
                     # Plot.catch_axes(*pos).set_ylim(0, 2500)
-                # Each xticks = short month name +
+                # Change xticks labels to add solar efficiency
                 if any(c in plot for c in ('C', 'A')):
                     # Taux de couverture de couverture solaire mensuel
-                    percents = ['{:.1%}'.format(i)
+                    percents = ['{:.0%}'.format(i)
                                 for i in
                                 structs[name][plot][0]['Taux de couverture'].values]
                 if 'D' in plot:
                     # Taux de couverture de couverture solaire mensuel ECS
-                    percents = ['{:.1%}'.format(i)
+                    percents = ['{:.0%}'.format(i)
                                 for i in
                                 structs[name][plot][0]['Taux de couverture\nDHW'].values]
 
                 if 'H' in plot:
                     # Taux de couverture de couverture solaire mensuel pour le chauffage
-                    percents = ['{:.1%}'.format(i)
+                    percents = ['{:.0%}'.format(i)
                                 for i in
                                 structs[name][plot][0]['Taux de couverture\nChauffage'].values]
                 if 'Dispo' in plot:
                     # Taux de couverture de couverture solaire mensuel
-                    percents = ['\n{:.1%}\n{:.1%}'.format(i, j)
+                    percents = ['\n{:.0%}\n{:.0%}'.format(i, j)
                                 for (i, j) in
                                 zip(structs[name][plot][0]['Rendement capteur'].values,
                                     structs[name][plot][0]['Rendement solaire'].values)]
                 print(structs[name][plot][0]['Rendement solaire'])
-                percents = [percent if 'nan' not in percent else '*' for percent in percents]
-                Plot.change_xticks_labels([short_names, [' : '] * 12, percents],
+                used_percents = [percent if 'nan' not in percent else '*' for percent in percents]
+                Plot.change_xticks_labels([structs[name][plot][1], [' : '] * len(structs[name][plot][1]),
+                                           used_percents],
                                           pos=pos)
                 # Uncomment to set a y limit for each bar_cum plot
                 # Plot.catch_axes(*pos).set_ylim(0, 2250)
