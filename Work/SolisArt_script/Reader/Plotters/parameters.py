@@ -40,7 +40,7 @@ elif name == 'posix':
 
 # Create font properties
 # Can be use to plot for publication
-font_base = {'size': 15,
+font_base = {'size': 30,
              'family': 'STIXGeneral'}
 #             'mathtext.fontset': 'stix'
 #             'text.usetex': True}  # Used to force latex inside figures

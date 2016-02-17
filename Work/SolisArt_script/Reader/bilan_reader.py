@@ -357,7 +357,7 @@ if __name__ == '__main__':
                     Plot.bar_cum_plot(structs[name][plot][0], legend_dict={'ncol': 2},
                                       emphs=emphs_dict[plot],
                                       pos=pos, fields=fields[plot][1],
-                                      loc='center', line_dict={"linewidth": 4},
+                                      loc='center', line_dict={"linewidth": 6},
                                       names=structs[name][plot][1], ylabel=ylabel,
                                       title=titles[plot] + '\n{}'.format(name_cap))
                     # Uncomment to set a y limit for each bar_cum plot
@@ -499,12 +499,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # Save plots
-    base_name = "Simulation"
-    if len(datas) == 1:
-        base_name = name
-    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+    # # Save plots
+    # base_name = "Simulation"
+    # if len(datas) == 1:
+    #     base_name = name
+    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()

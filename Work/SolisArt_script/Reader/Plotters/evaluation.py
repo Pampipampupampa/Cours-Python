@@ -436,8 +436,7 @@ class EvalData(object):
         # Return data and a shortened version of monthly x ticks
         return frame, self.shorter_months(month_xticks)
 
-    def diag_energy(self, frame, fields=None, month=12,
-                    new_fields=()):
+    def diag_energy(self, frame, fields=None, new_fields=()):
         """
             Proceed all treatments to extract structure to plot energy diagram
             new_fields index must be strutured as below:
@@ -450,7 +449,7 @@ class EvalData(object):
         # Default value for fields
         fields = fields or self.fields
         # Keep only last time step of ``month`` for all fields
-        frame = frame[frame.index.month == month][-1:][fields]
+        frame = frame[-1:][fields]
         if new_fields:
             # For each new columns
             for new in new_fields:
@@ -489,8 +488,9 @@ class MultiPlotter(object):
     # Text formatters
     font_title = {'size': 25,
                   'family': 'Baskerville Old Face'}
-    font_base = font_base
-    font_legend = {'size': 17,
+    font_base = font_base = {'size': 40,
+                             'family': 'STIXGeneral'}
+    font_legend = {'size': 15,
                    'family': 'Baskerville Old Face'}
     width = 2  # Line width
     colormap = "Accent"  # Color set
@@ -980,21 +980,23 @@ class MultiPlotter(object):
                   each emph of emphs must be a frame column name
                 - **kwargs will be passed to axe.bar()
         """
-        # Print data informations
+        # # Print data informations
         columns = frame[fields+emphs].columns
-        # Get names
+        # # Get names
         names = names or self.names
-        # Get fields
+        # # Get fields
         fields = fields or columns
-        # Get an integer list of the index used to place bar plot
-        # See `matplotlib.pyplot.bar` specially `left` kwargs argument
+        # # Get an integer list of the index used to place bar plot
+        # # See `matplotlib.pyplot.bar` specially `left` kwargs argument
         length = len(frame)
-        left_shifts = [el for el in range(1, length+1)]
+        frame.index = [el for el in range(1, length+1)]
+        left_shifts = frame.index.values
+        frame.index = left_shifts
         print('\n---' + 'Plotting cumulated Bars' + '---' + '\n', columns)
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
                                         loc=loc)
-        # Draw all bar and stock them inside an Ordered dict
+        # # Draw all bar and stock them inside an Ordered dict
         temp = OrdD()
         # Bottom for bars
         bottom = pd.DataFrame(zeros_like(frame[[columns[0]]]),
@@ -1014,10 +1016,11 @@ class MultiPlotter(object):
                                                        height=[0]*length,
                                                        bottom=frame[emph],
                                                        ec=self.colors[emph],
-                                                       fill=False,
+                                                       color=self.colors[emph],
+                                                       fill=True,
                                                        width=h_width,
                                                        **line_dict)
-        # Set axe parameters
+        # # Set axe parameters
         self.catch_axes(*pos).set_ylabel(ylabel=ylabel, labelpad=20)
         self.catch_axes(*pos).set_xlim(h_width, len(names)+1)
         self.catch_axes(*pos).set_xticks(arange(1.5-(1-h_width)/2,

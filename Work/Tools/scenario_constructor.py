@@ -135,8 +135,8 @@ if __name__ == '__main__':
     ete_est_occ, ete_ouest_occ = FOLDER + "occultation_ete_est.csv", FOLDER + "occultation_ete_ouest.csv"
     puisage = FOLDER + "puisage.csv"
 
-    # schedule = week_schedule_from_table([occupancy, lights, equipments],
-    #                                     step_size=3600, delimiter=",")
+    schedule = week_schedule_from_table([occupancy, lights, equipments],
+                                        step_size=3600, delimiter=",")
     # schedule = week_schedule_from_table([consigne, solaire, ventilation],
     #                                     step_size=3600, delimiter=",")
     # schedule = week_schedule_from_table([ventilation],
@@ -147,6 +147,6 @@ if __name__ == '__main__':
     #                                     step_size=3600, delimiter=",")
     # schedule = week_schedule_from_table([occupancy, lights, equipments, hiver_occ, ete_est_occ, ete_ouest_occ],
     #                                     step_size=3600, delimiter=",")
-    schedule = week_schedule_from_table(FOLDER + "puisage_matin.csv",
-                                        step_size=3600, delimiter=",")
+    # schedule = week_schedule_from_table(FOLDER + "puisage_matin.csv",
+    #                                     step_size=3600, delimiter=",")
     print(schedule)
