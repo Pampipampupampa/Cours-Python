@@ -1,0 +1,680 @@
+!-Generator IDFEditor 1.47
+!-Option SortedOrder
+
+!-NOTE: All comments with '!-' are ignored by the IDFEditor and are generated automatically.
+!-      Use '!' comments if they need to be retained when using the IDFEditor.
+
+
+!-   ===========  ALL OBJECTS IN CLASS: VERSION ===========
+
+Version,
+    8.4;                     !- Version Identifier
+
+
+!-   ===========  ALL OBJECTS IN CLASS: BUILDING ===========
+
+Building,
+    maison_fmu,              !- Name
+    0,                       !- North Axis {deg}
+    Country,                 !- Terrain
+    0.04,                    !- Loads Convergence Tolerance Value
+    0.04,                    !- Temperature Convergence Tolerance Value {deltaC}
+    FullInteriorAndExterior, !- Solar Distribution
+    25,                      !- Maximum Number of Warmup Days
+    6;                       !- Minimum Number of Warmup Days
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SHADOWCALCULATION ===========
+
+ShadowCalculation,
+    AverageOverDaysInFrequency,  !- Calculation Method
+    1,                       !- Calculation Frequency
+    15000;                   !- Maximum Figures in Shadow Overlap Calculations
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SURFACECONVECTIONALGORITHM:INSIDE ===========
+
+SurfaceConvectionAlgorithm:Inside,
+    TARP;                    !- Algorithm
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SURFACECONVECTIONALGORITHM:OUTSIDE ===========
+
+SurfaceConvectionAlgorithm:Outside,
+    DOE-2;                   !- Algorithm
+
+
+!-   ===========  ALL OBJECTS IN CLASS: HEATBALANCEALGORITHM ===========
+
+HeatBalanceAlgorithm,
+    ConductionTransferFunction,  !- Algorithm
+    200;                     !- Surface Temperature Upper Limit {C}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: ZONEAIRHEATBALANCEALGORITHM ===========
+
+ZoneAirHeatBalanceAlgorithm,
+    ThirdOrderBackwardDifference;  !- Algorithm
+
+
+!-   ===========  ALL OBJECTS IN CLASS: TIMESTEP ===========
+
+Timestep,
+    10;                      !- Number of Timesteps per Hour
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
+
+Site:Location,
+    BORDEAUX,                !- Name
+    44.83,                   !- Latitude {deg}
+    -0.7,                    !- Longitude {deg}
+    1,                       !- Time Zone {hr}
+    61;                      !- Elevation {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
+
+RunPeriod,
+    ,                        !- Name
+    1,                       !- Begin Month
+    1,                       !- Begin Day of Month
+    12,                      !- End Month
+    31,                      !- End Day of Month
+    Monday,                  !- Day of Week for Start Day
+    No,                      !- Use Weather File Holidays and Special Days
+    No,                      !- Use Weather File Daylight Saving Period
+    No,                      !- Apply Weekend Holiday Rule
+    No,                      !- Use Weather File Rain Indicators
+    No,                      !- Use Weather File Snow Indicators
+    1;                       !- Number of Times Runperiod to be Repeated
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SITE:GROUNDTEMPERATURE:BUILDINGSURFACE ===========
+
+Site:GroundTemperature:BuildingSurface,
+    18,                      !- January Ground Temperature {C}
+    18,                      !- February Ground Temperature {C}
+    18,                      !- March Ground Temperature {C}
+    18,                      !- April Ground Temperature {C}
+    18,                      !- May Ground Temperature {C}
+    18,                      !- June Ground Temperature {C}
+    18,                      !- July Ground Temperature {C}
+    18,                      !- August Ground Temperature {C}
+    18,                      !- September Ground Temperature {C}
+    18,                      !- October Ground Temperature {C}
+    18,                      !- November Ground Temperature {C}
+    18;                      !- December Ground Temperature {C}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SITE:GROUNDREFLECTANCE ===========
+
+Site:GroundReflectance,
+    0.2,                     !- January Ground Reflectance {dimensionless}
+    0.2,                     !- February Ground Reflectance {dimensionless}
+    0.2,                     !- March Ground Reflectance {dimensionless}
+    0.2,                     !- April Ground Reflectance {dimensionless}
+    0.2,                     !- May Ground Reflectance {dimensionless}
+    0.2,                     !- June Ground Reflectance {dimensionless}
+    0.2,                     !- July Ground Reflectance {dimensionless}
+    0.2,                     !- August Ground Reflectance {dimensionless}
+    0.2,                     !- September Ground Reflectance {dimensionless}
+    0.2,                     !- October Ground Reflectance {dimensionless}
+    0.2,                     !- November Ground Reflectance {dimensionless}
+    0.2;                     !- December Ground Reflectance {dimensionless}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULETYPELIMITS ===========
+
+ScheduleTypeLimits,
+    Temperature,             !- Name
+    -60,                     !- Lower Limit Value
+    200,                     !- Upper Limit Value
+    Continuous,              !- Numeric Type
+    Temperature;             !- Unit Type
+
+ScheduleTypeLimits,
+    Any Number;              !- Name
+
+ScheduleTypeLimits,
+    Control Type,            !- Name
+    0,                       !- Lower Limit Value
+    4,                       !- Upper Limit Value
+    DISCRETE;                !- Numeric Type
+
+ScheduleTypeLimits,
+    Fraction,                !- Name
+    0.0,                     !- Lower Limit Value
+    1.0,                     !- Upper Limit Value
+    Continuous;              !- Numeric Type
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:DAY:HOURLY ===========
+
+Schedule:Day:Hourly,
+    Infiltration_day,        !- Name
+    Fraction,                !- Schedule Type Limits Name
+    1,                       !- Hour 1
+    1,                       !- Hour 2
+    1,                       !- Hour 3
+    1,                       !- Hour 4
+    1,                       !- Hour 5
+    1,                       !- Hour 6
+    1,                       !- Hour 7
+    1,                       !- Hour 8
+    1,                       !- Hour 9
+    1,                       !- Hour 10
+    1,                       !- Hour 11
+    1,                       !- Hour 12
+    1,                       !- Hour 13
+    1,                       !- Hour 14
+    1,                       !- Hour 15
+    1,                       !- Hour 16
+    1,                       !- Hour 17
+    1,                       !- Hour 18
+    1,                       !- Hour 19
+    1,                       !- Hour 20
+    1,                       !- Hour 21
+    1,                       !- Hour 22
+    1,                       !- Hour 23
+    1;                       !- Hour 24
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:WEEK:DAILY ===========
+
+Schedule:Week:Daily,
+    Infiltration_week,       !- Name
+    Infiltration_day,        !- Sunday Schedule:Day Name
+    Infiltration_day,        !- Monday Schedule:Day Name
+    Infiltration_day,        !- Tuesday Schedule:Day Name
+    Infiltration_day,        !- Wednesday Schedule:Day Name
+    Infiltration_day,        !- Thursday Schedule:Day Name
+    Infiltration_day,        !- Friday Schedule:Day Name
+    Infiltration_day,        !- Saturday Schedule:Day Name
+    Infiltration_day,        !- Holiday Schedule:Day Name
+    Infiltration_day,        !- SummerDesignDay Schedule:Day Name
+    Infiltration_day,        !- WinterDesignDay Schedule:Day Name
+    Infiltration_day,        !- CustomDay1 Schedule:Day Name
+    Infiltration_day;        !- CustomDay2 Schedule:Day Name
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:YEAR ===========
+
+Schedule:Year,
+    Infiltration_year,       !- Name
+    Fraction,                !- Schedule Type Limits Name
+    Infiltration_week,       !- Schedule:Week Name 1
+    1,                       !- Start Month 1
+    1,                       !- Start Day 1
+    12,                      !- End Month 1
+    31;                      !- End Day 1
+
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:CONSTANT ===========
+
+Schedule:Constant,
+    Heating Setpoints,       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    20;                      !- Hourly Value
+
+Schedule:Constant,
+    Zone Control Type,       !- Name
+    Control Type,            !- Schedule Type Limits Name
+    1;                       !- Hourly Value
+
+
+!-   ===========  ALL OBJECTS IN CLASS: MATERIAL ===========
+
+Material,
+    1/2IN Gypsum,            !- Name
+    Smooth,                  !- Roughness
+    0.0127,                  !- Thickness {m}
+    0.16,                    !- Conductivity {W/m-K}
+    784.9,                   !- Density {kg/m3}
+    830.000000000001,        !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.4,                     !- Solar Absorptance
+    0.4;                     !- Visible Absorptance
+
+Material,
+    1IN Stucco,              !- Name
+    Smooth,                  !- Roughness
+    0.0253,                  !- Thickness {m}
+    0.691799999999999,       !- Conductivity {W/m-K}
+    1858,                    !- Density {kg/m3}
+    836.999999999999,        !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.92,                    !- Solar Absorptance
+    0.92;                    !- Visible Absorptance
+
+Material,
+    8IN Concrete HW,         !- Name
+    MediumRough,             !- Roughness
+    0.2033,                  !- Thickness {m}
+    1.72959999999999,        !- Conductivity {W/m-K}
+    2242.99999999999,        !- Density {kg/m3}
+    836.999999999999,        !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.65,                    !- Solar Absorptance
+    0.65;                    !- Visible Absorptance
+
+Material,
+    MAT-CC05 4 HW CONCRETE,  !- Name
+    Rough,                   !- Roughness
+    0.1016,                  !- Thickness {m}
+    1.311,                   !- Conductivity {W/m-K}
+    2240,                    !- Density {kg/m3}
+    836.800000000001,        !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.85,                    !- Solar Absorptance
+    0.85;                    !- Visible Absorptance
+
+Material,
+    Metal Decking,           !- Name
+    MediumSmooth,            !- Roughness
+    0.0015,                  !- Thickness {m}
+    45.006,                  !- Conductivity {W/m-K}
+    7680,                    !- Density {kg/m3}
+    418.4,                   !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.6,                     !- Solar Absorptance
+    0.6;                     !- Visible Absorptance
+
+Material,
+    Roof Insulation [18],    !- Name
+    MediumRough,             !- Roughness
+    0.1693,                  !- Thickness {m}
+    0.049,                   !- Conductivity {W/m-K}
+    265,                     !- Density {kg/m3}
+    836.800000000001,        !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Material,
+    Roof Membrane,           !- Name
+    VeryRough,               !- Roughness
+    0.0095,                  !- Thickness {m}
+    0.16,                    !- Conductivity {W/m-K}
+    1121.29,                 !- Density {kg/m3}
+    1460,                    !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.7,                     !- Solar Absorptance
+    0.7;                     !- Visible Absorptance
+
+Material,
+    Wall Insulation [37],    !- Name
+    MediumRough,             !- Roughness
+    0.0680999999999999,      !- Thickness {m}
+    0.0432,                  !- Conductivity {W/m-K}
+    91,                      !- Density {kg/m3}
+    836.999999999999,        !- Specific Heat {J/kg-K}
+    0.9,                     !- Thermal Absorptance
+    0.5,                     !- Solar Absorptance
+    0.5;                     !- Visible Absorptance
+
+
+!-   ===========  ALL OBJECTS IN CLASS: WINDOWMATERIAL:SIMPLEGLAZINGSYSTEM ===========
+
+WindowMaterial:SimpleGlazingSystem,
+    FenetreMateriau_fmu,     !- Name
+    1.4,                     !- U-Factor {W/m2-K}
+    0.6,                     !- Solar Heat Gain Coefficient
+    0.8;                     !- Visible Transmittance
+
+
+!-   ===========  ALL OBJECTS IN CLASS: CONSTRUCTION ===========
+
+Construction,
+    Fenetre_fmu,             !- Name
+    FenetreMateriau_fmu;     !- Outside Layer
+
+Construction,
+    Mur_fmu,                 !- Name
+    1IN Stucco,              !- Outside Layer
+    8IN Concrete HW,         !- Layer 2
+    Wall Insulation [37],    !- Layer 3
+    1/2IN Gypsum;            !- Layer 4
+
+Construction,
+    Plafond_fmu,             !- Name
+    Roof Membrane,           !- Outside Layer
+    Roof Insulation [18],    !- Layer 2
+    Metal Decking;           !- Layer 3
+
+Construction,
+    Plancher_fmu,            !- Name
+    MAT-CC05 4 HW CONCRETE;  !- Outside Layer
+
+
+!-   ===========  ALL OBJECTS IN CLASS: GLOBALGEOMETRYRULES ===========
+
+GlobalGeometryRules,
+    UpperLeftCorner,         !- Starting Vertex Position
+    Counterclockwise,        !- Vertex Entry Direction
+    Relative,                !- Coordinate System
+    Relative,                !- Daylighting Reference Point Coordinate System
+    Relative;                !- Rectangular Surface Coordinate System
+
+
+!-   ===========  ALL OBJECTS IN CLASS: ZONE ===========
+
+Zone,
+    ZoneThermique,           !- Name
+    0,                       !- Direction of Relative North {deg}
+    0,                       !- X Origin {m}
+    0,                       !- Y Origin {m}
+    0,                       !- Z Origin {m}
+    1,                       !- Type
+    1,                       !- Multiplier
+    autocalculate,           !- Ceiling Height {m}
+    autocalculate,           !- Volume {m3}
+    autocalculate;           !- Floor Area {m2}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: BUILDINGSURFACE:DETAILED ===========
+
+BuildingSurface:Detailed,
+    mur_est,                 !- Name
+    Wall,                    !- Surface Type
+    Mur_fmu,                 !- Construction Name
+    ZoneThermique,           !- Zone Name
+    Outdoors,                !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    ,                        !- View Factor to Ground
+    ,                        !- Number of Vertices
+    20,                      !- Vertex 1 X-coordinate {m}
+    0,                       !- Vertex 1 Y-coordinate {m}
+    2.5,                     !- Vertex 1 Z-coordinate {m}
+    20,                      !- Vertex 2 X-coordinate {m}
+    0,                       !- Vertex 2 Y-coordinate {m}
+    0,                       !- Vertex 2 Z-coordinate {m}
+    20,                      !- Vertex 3 X-coordinate {m}
+    30,                      !- Vertex 3 Y-coordinate {m}
+    0,                       !- Vertex 3 Z-coordinate {m}
+    20,                      !- Vertex 4 X-coordinate {m}
+    30,                      !- Vertex 4 Y-coordinate {m}
+    2.5;                     !- Vertex 4 Z-coordinate {m}
+
+BuildingSurface:Detailed,
+    mur_nord,                !- Name
+    Wall,                    !- Surface Type
+    Mur_fmu,                 !- Construction Name
+    ZoneThermique,           !- Zone Name
+    Outdoors,                !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    ,                        !- View Factor to Ground
+    ,                        !- Number of Vertices
+    20,                      !- Vertex 1 X-coordinate {m}
+    30,                      !- Vertex 1 Y-coordinate {m}
+    2.5,                     !- Vertex 1 Z-coordinate {m}
+    20,                      !- Vertex 2 X-coordinate {m}
+    30,                      !- Vertex 2 Y-coordinate {m}
+    0,                       !- Vertex 2 Z-coordinate {m}
+    0,                       !- Vertex 3 X-coordinate {m}
+    30,                      !- Vertex 3 Y-coordinate {m}
+    0,                       !- Vertex 3 Z-coordinate {m}
+    0,                       !- Vertex 4 X-coordinate {m}
+    30,                      !- Vertex 4 Y-coordinate {m}
+    2.5;                     !- Vertex 4 Z-coordinate {m}
+
+BuildingSurface:Detailed,
+    mur_ouest,               !- Name
+    Wall,                    !- Surface Type
+    Mur_fmu,                 !- Construction Name
+    ZoneThermique,           !- Zone Name
+    Outdoors,                !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    ,                        !- View Factor to Ground
+    ,                        !- Number of Vertices
+    0,                       !- Vertex 1 X-coordinate {m}
+    30,                      !- Vertex 1 Y-coordinate {m}
+    2.5,                     !- Vertex 1 Z-coordinate {m}
+    0,                       !- Vertex 2 X-coordinate {m}
+    30,                      !- Vertex 2 Y-coordinate {m}
+    0,                       !- Vertex 2 Z-coordinate {m}
+    0,                       !- Vertex 3 X-coordinate {m}
+    0,                       !- Vertex 3 Y-coordinate {m}
+    0,                       !- Vertex 3 Z-coordinate {m}
+    0,                       !- Vertex 4 X-coordinate {m}
+    0,                       !- Vertex 4 Y-coordinate {m}
+    2.5;                     !- Vertex 4 Z-coordinate {m}
+
+BuildingSurface:Detailed,
+    mur_sud,                 !- Name
+    Wall,                    !- Surface Type
+    Mur_fmu,                 !- Construction Name
+    ZoneThermique,           !- Zone Name
+    Outdoors,                !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    ,                        !- View Factor to Ground
+    ,                        !- Number of Vertices
+    0,                       !- Vertex 1 X-coordinate {m}
+    0,                       !- Vertex 1 Y-coordinate {m}
+    2.5,                     !- Vertex 1 Z-coordinate {m}
+    0,                       !- Vertex 2 X-coordinate {m}
+    0,                       !- Vertex 2 Y-coordinate {m}
+    0,                       !- Vertex 2 Z-coordinate {m}
+    20,                      !- Vertex 3 X-coordinate {m}
+    0,                       !- Vertex 3 Y-coordinate {m}
+    0,                       !- Vertex 3 Z-coordinate {m}
+    20,                      !- Vertex 4 X-coordinate {m}
+    0,                       !- Vertex 4 Y-coordinate {m}
+    2.5;                     !- Vertex 4 Z-coordinate {m}
+
+BuildingSurface:Detailed,
+    Plafond,                 !- Name
+    Roof,                    !- Surface Type
+    Plafond_fmu,             !- Construction Name
+    ZoneThermique,           !- Zone Name
+    Outdoors,                !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    SunExposed,              !- Sun Exposure
+    WindExposed,             !- Wind Exposure
+    ,                        !- View Factor to Ground
+    ,                        !- Number of Vertices
+    20,                      !- Vertex 1 X-coordinate {m}
+    0,                       !- Vertex 1 Y-coordinate {m}
+    2.5,                     !- Vertex 1 Z-coordinate {m}
+    20,                      !- Vertex 2 X-coordinate {m}
+    30,                      !- Vertex 2 Y-coordinate {m}
+    2.5,                     !- Vertex 2 Z-coordinate {m}
+    0,                       !- Vertex 3 X-coordinate {m}
+    30,                      !- Vertex 3 Y-coordinate {m}
+    2.5,                     !- Vertex 3 Z-coordinate {m}
+    0,                       !- Vertex 4 X-coordinate {m}
+    0,                       !- Vertex 4 Y-coordinate {m}
+    2.5;                     !- Vertex 4 Z-coordinate {m}
+
+BuildingSurface:Detailed,
+    Plancher,                !- Name
+    Floor,                   !- Surface Type
+    Plancher_fmu,            !- Construction Name
+    ZoneThermique,           !- Zone Name
+    Ground,                  !- Outside Boundary Condition
+    ,                        !- Outside Boundary Condition Object
+    NoSun,                   !- Sun Exposure
+    NoWind,                  !- Wind Exposure
+    ,                        !- View Factor to Ground
+    ,                        !- Number of Vertices
+    20,                      !- Vertex 1 X-coordinate {m}
+    30,                      !- Vertex 1 Y-coordinate {m}
+    0,                       !- Vertex 1 Z-coordinate {m}
+    20,                      !- Vertex 2 X-coordinate {m}
+    0,                       !- Vertex 2 Y-coordinate {m}
+    0,                       !- Vertex 2 Z-coordinate {m}
+    0,                       !- Vertex 3 X-coordinate {m}
+    0,                       !- Vertex 3 Y-coordinate {m}
+    0,                       !- Vertex 3 Z-coordinate {m}
+    0,                       !- Vertex 4 X-coordinate {m}
+    30,                      !- Vertex 4 Y-coordinate {m}
+    0;                       !- Vertex 4 Z-coordinate {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: FENESTRATIONSURFACE:DETAILED ===========
+
+FenestrationSurface:Detailed,
+    fenetre_est,             !- Name
+    Window,                  !- Surface Type
+    Fenetre_fmu,             !- Construction Name
+    mur_est,                 !- Building Surface Name
+    ,                        !- Outside Boundary Condition Object
+    0.5,                     !- View Factor to Ground
+    ,                        !- Shading Control Name
+    ,                        !- Frame and Divider Name
+    ,                        !- Multiplier
+    ,                        !- Number of Vertices
+    20,                      !- Vertex 1 X-coordinate {m}
+    1.49664448196297,        !- Vertex 1 Y-coordinate {m}
+    1.68419746704659,        !- Vertex 1 Z-coordinate {m}
+    20,                      !- Vertex 2 X-coordinate {m}
+    1.49664448196297,        !- Vertex 2 Y-coordinate {m}
+    1.11419746704659,        !- Vertex 2 Z-coordinate {m}
+    20,                      !- Vertex 3 X-coordinate {m}
+    28.746644481963,         !- Vertex 3 Y-coordinate {m}
+    1.11419746704659,        !- Vertex 3 Z-coordinate {m}
+    20,                      !- Vertex 4 X-coordinate {m}
+    28.746644481963,         !- Vertex 4 Y-coordinate {m}
+    1.68419746704659;        !- Vertex 4 Z-coordinate {m}
+
+FenestrationSurface:Detailed,
+    fenetre_sud,             !- Name
+    Window,                  !- Surface Type
+    Fenetre_fmu,             !- Construction Name
+    mur_sud,                 !- Building Surface Name
+    ,                        !- Outside Boundary Condition Object
+    0.5,                     !- View Factor to Ground
+    ,                        !- Shading Control Name
+    ,                        !- Frame and Divider Name
+    ,                        !- Multiplier
+    ,                        !- Number of Vertices
+    1.13683480473877,        !- Vertex 1 X-coordinate {m}
+    0,                       !- Vertex 1 Y-coordinate {m}
+    1.84859445067752,        !- Vertex 1 Z-coordinate {m}
+    1.13683480473877,        !- Vertex 2 X-coordinate {m}
+    0,                       !- Vertex 2 Y-coordinate {m}
+    0.788594450677523,       !- Vertex 2 Z-coordinate {m}
+    17.8668348047388,        !- Vertex 3 X-coordinate {m}
+    0,                       !- Vertex 3 Y-coordinate {m}
+    0.788594450677523,       !- Vertex 3 Z-coordinate {m}
+    17.8668348047388,        !- Vertex 4 X-coordinate {m}
+    0,                       !- Vertex 4 Y-coordinate {m}
+    1.84859445067752;        !- Vertex 4 Z-coordinate {m}
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OTHEREQUIPMENT ===========
+
+OtherEquipment,
+    OthEquSen_ZoneOne,       !- Name
+    ZoneThermique,           !- Zone or ZoneList Name
+    FMU_OthEqu_ZoneOne,      !- Schedule Name
+    EquipmentLevel,          !- Design Level Calculation Method
+    10000,                   !- Design Level {W}
+    ,                        !- Power per Zone Floor Area {W/m2}
+    ,                        !- Power per Person {W/Person}
+    0,                       !- Fraction Latent
+    0,                       !- Fraction Radiant
+    0;                       !- Fraction Lost
+
+
+!-   ===========  ALL OBJECTS IN CLASS: ZONEINFILTRATION:DESIGNFLOWRATE ===========
+
+ZoneInfiltration:DesignFlowRate,
+    ZoneThermique_infiltration,  !- Name
+    ZoneThermique,           !- Zone or ZoneList Name
+    Infiltration_year,       !- Schedule Name
+    Flow/Zone,               !- Design Flow Rate Calculation Method
+    0.018,                   !- Design Flow Rate {m3/s}
+    ,                        !- Flow per Zone Floor Area {m3/s-m2}
+    ,                        !- Flow per Exterior Surface Area {m3/s-m2}
+    ,                        !- Air Changes per Hour {1/hr}
+    1,                       !- Constant Term Coefficient
+    0,                       !- Temperature Term Coefficient
+    0,                       !- Velocity Term Coefficient
+    0;                       !- Velocity Squared Term Coefficient
+
+
+!-   ===========  ALL OBJECTS IN CLASS: EXTERNALINTERFACE ===========
+
+ExternalInterface,
+    FunctionalMockupUnitExport;  !- Name of External Interface
+
+
+!-   ===========  ALL OBJECTS IN CLASS: EXTERNALINTERFACE:FUNCTIONALMOCKUPUNITEXPORT:FROM:VARIABLE ===========
+
+ExternalInterface:FunctionalMockupUnitExport:From:Variable,
+    ZoneThermique,           !- Output:Variable Index Key Name
+    Zone Mean Air Temperature ,  !- Output:Variable Name
+    TRooMea;                 !- FMU Variable Name
+
+
+!-   ===========  ALL OBJECTS IN CLASS: EXTERNALINTERFACE:FUNCTIONALMOCKUPUNITEXPORT:TO:SCHEDULE ===========
+
+ExternalInterface:FunctionalMockupUnitExport:To:Schedule,
+    FMU_OthEqu_ZoneOne,      !- Schedule Name
+    Fraction,                !- Schedule Type Limits Names
+    Q,                       !- FMU Variable Name
+    0;                       !- Initial Value
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLEDICTIONARY ===========
+
+Output:VariableDictionary,
+    regular,                 !- Key Field
+    Unsorted;                !- Sort Option
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:SURFACES:DRAWING ===========
+
+Output:Surfaces:Drawing,
+    DXF,                     !- Report Type
+    Triangulate3DFace;       !- Report Specifications 1
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:CONSTRUCTIONS ===========
+
+Output:Constructions,
+    Constructions,           !- Details Type 1
+    Materials;               !- Details Type 2
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLE ===========
+
+Output:Variable,
+    ZoneThermique,           !- Key Value
+    Zone Mean Air Temperature,  !- Variable Name
+    Timestep;                !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Zone Outdoor Air Drybulb Temperature,  !- Variable Name
+    Timestep;                !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Other Equipment Total Heating Rate,  !- Variable Name
+    Timestep;                !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Other Equipment Total Heating Energy,  !- Variable Name
+    Timestep;                !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Zone Other Equipment Total Heating Rate,  !- Variable Name
+    Timestep;                !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Zone Other Equipment Total Heating Energy,  !- Variable Name
+    Timestep;                !- Reporting Frequency
+
