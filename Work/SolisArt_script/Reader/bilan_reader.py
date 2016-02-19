@@ -90,8 +90,11 @@ def test_index(name, plot):
 # limogesAirRecycleInc45-4p_20160204.csv
 # Tubular
 # limogesAirRecycleSkyProScaled12CPC58-4p_20160204.csv
-# Do not start from January 1st
+
+# IGC air recycle system 20160219 (version14):
+# Not a full year
 # bordeauxAirRecycleStartOctober-4p_20160209.csv
+# bordeauxAir6M-4p_20160215.csv bordeauxAir6M-4p_20160216.csv
 
 # Debugger
 # import pdb; pdb.set_trace()
@@ -161,13 +164,23 @@ if __name__ == '__main__':
                       in_conv_index=(None,) * nb_name,
                       skiprows=(1,) * nb_name,
                       splitters=(sep,) * nb_name)
-
 ##############
 # EVALUATION #
 ##############
     # Keep only 2014 datas into the dict
     # datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
-    # Keep all data
+
+    # Remove first months row if not complete (Make initialization outside results)
+    for name in frames:
+        # Check fist month length
+        length_first_month = len(frames[name][frames[name].index.month == frames[name].index[0].month].resample("D"))
+        if length_first_month < 27:
+            # Start dataframe at first row of next month
+            start_value = frames[name][frames[name].index.month == (frames[name].index[0].month + 1)].index[0]
+            frames[name] = frames[name][:][start_value:]
+            print("Removing data from first month of {} (used by initialization)".format(name))
+
+    # Wrap all frames in a EvalData structure
     datas = {name: EvalData(frames[name]) for name in frames}
 
     # Prepare structure for time_json (later populate with time heating infos)
@@ -395,7 +408,6 @@ if __name__ == '__main__':
                                 for (i, j) in
                                 zip(structs[name][plot][0]['Rendement capteur'].values,
                                     structs[name][plot][0]['Rendement solaire'].values)]
-                print(structs[name][plot][0]['Rendement solaire'])
                 used_percents = [percent if 'nan' not in percent else '*' for percent in percents]
                 Plot.change_xticks_labels([structs[name][plot][1], [' : '] * len(structs[name][plot][1]),
                                            used_percents],
@@ -412,9 +424,10 @@ if __name__ == '__main__':
                 #                              prop=Plot.font_legend)
             elif 'box' in plot:
                 Plot.colors = col_dict['box']
-                Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False,
+                names = [short_names[month_nb-1] for month_nb in structs[name][plot][1]]
+                Plot.boxes_mult_plot(structs[name][plot][0], pos=pos, mean=False,
                                      patch_artist=True, loc='center', rot=0,
-                                     prop_legend={'ncol': 1},
+                                     prop_legend={'ncol': 1, 'names': names},
                                      title=titles[plot] + '\n{}'.format(name_cap))
 
                 # # Remove after publi
@@ -499,12 +512,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # # Save plots
-    # base_name = "Simulation"
-    # if len(datas) == 1:
-    #     base_name = name
-    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+    # Save plots
+    base_name = "Simulation"
+    if len(datas) == 1:
+        base_name = name
+    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
 
     # Display plots
     Plot.show()

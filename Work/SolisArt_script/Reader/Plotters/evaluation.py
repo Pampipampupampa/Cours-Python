@@ -464,15 +464,23 @@ class EvalData(object):
     def box_actions(self, frame, fields=None, diurnal=True):
         """ Proceed all actions to prepare data for box plotting """
         fields = fields or self.fields
-        # Reduce dataframe
-        frame = self.resample(frame)
-        # Get chunks
-        frame = self.reduce_data(frame, fields)
+        # Simulation ended at midnight an then can start a new month at 00:00:00
+        # To avoid unnecessary boxplot we only keep complete month.
+        # So if a simulation ended at 2016-12-27 and start at 2016-01-01 we keep only
+        # 11 month for bar plot.
+        if frame[:][-1:].index.is_month_end:
+            frame = frame[fields].resample('30min').interpolate()
+        else:
+            frame = frame[fields].resample('30min').interpolate()[:-1]
+        # Get chunks without last time step
+        nb_month = [month_nb for month_nb in frame.resample("M").index.month]
+        list_frames = [frame[frame.index.month == month] for month in nb_month]
         # Keep only diurnal values
         if diurnal:
-            for ind in range(len(frame)):
-                frame[ind] = self.keep_hour_range(frame[ind])
-        return frame
+            for ind in range(len(list_frames)):
+                list_frames[ind] = self.keep_hour_range(list_frames[ind])
+        # Return a list of dataframes and a list of corresponding months numbers
+        return list_frames, nb_month
 
 
 class MultiPlotter(object):
@@ -715,6 +723,7 @@ class MultiPlotter(object):
         self.catch_axes(*pos).set_xticks(self.optimize_xticks_pos(list_frame,
                                                                   start=start))
         self.catch_axes(*pos).set_xlim(-1, len(list_frame)*(len(cols)+self.pad))
+
         self.set_xtiks_labels(pos, names, rotation=rot)
 
         # Add legend by drawing curves and hiding them just after

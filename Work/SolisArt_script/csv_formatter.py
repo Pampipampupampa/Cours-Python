@@ -653,9 +653,9 @@ if __name__ == '__main__':
 
     # # IGC
     csv_in = "D:\\Github\\solarsystem\\Outputs\\raw\\IGC\\" + \
-             "bordeauxAir-4p_20160207.csv"
+             "bordeauxAir6M-4p_20160216.csv"
     csv_out = "D:\\Github\\solarsystem\\Outputs\\clean\\IGC\\" + \
-              "bordeauxAir-4p_20160207.csv"
+              "bordeauxAir6M-4p_20160216.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
