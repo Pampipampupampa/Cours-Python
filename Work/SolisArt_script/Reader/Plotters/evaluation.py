@@ -207,7 +207,7 @@ class EvalData(object):
         # Create new column to check row number
         frame["number"] = np.arange(0, len(frame))
         ind = frame.index[:]
-        delta_x = (ind[-1] - ind[0]) / (len(frame)-1)
+        delta_x = (ind[-1] - ind[0]) / (len(frame) - 1)
         boundaries = frame[column][ind[0]] + frame[column][ind[-1]]
         # Modulo and `frame["number"]` used to sort odd and even rows number
         inside = (4 * np.sum(frame[column][ind[1]:ind[-1]][frame["number"] % 2 != 0]) +
@@ -218,9 +218,9 @@ class EvalData(object):
     def integrate_trapezoidal(frame, column):
         result = 0
         ind = frame.index[:]
-        for i in range(0, len(ind)-1):
-            result = result + ((frame[column][ind[i+1]] +
-                                frame[column][ind[i]]) * (ind[i+1] - ind[i]) / 2)
+        for i in range(0, len(ind) - 1):
+            result = result + ((frame[column][ind[i + 1]] +
+                                frame[column][ind[i]]) * (ind[i + 1] - ind[i]) / 2)
         return result
 
     @staticmethod
@@ -427,7 +427,7 @@ class EvalData(object):
         # Get month name for each row
         month_xticks = ["{:%B}".format(frame.index[i]) for i in range(length)]
         if new_fields:
-            # For each new columns
+            # For each new fields
             for new in new_fields:
                 # Create new columns
                 frame[new[0]] = self.add_column(frame,
@@ -494,20 +494,17 @@ class MultiPlotter(object):
             - sharey set to True to share yaxis with all plots
     """
     # Text formatters
-    font_title = {'size': 25,
+    font_title = {'size': 40 - 20,
                   'family': 'Baskerville Old Face'}
-    font_base = font_base = {'size': 40,
+    font_base = font_base = {'size': 40 - 20,
                              'family': 'STIXGeneral'}
-    font_legend = {'size': 15,
+    font_legend = {'size': 30 - 15,
                    'family': 'Baskerville Old Face'}
     width = 2  # Line width
     colormap = "Accent"  # Color set
     background_color = (1, 0.98, 0.98)  # background_color old=(0.84, 0.89, 0.9)
 
     sample = (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-    # names = ['January', 'February', 'March', 'April', 'May',
-    #          'June', 'July', 'August', 'September', 'October',
-    #          'November', 'December']
     names = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
              'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
              'Nov', 'Dec']
@@ -599,7 +596,7 @@ class MultiPlotter(object):
         """ Set title text inside canvas and figure """
         self.fig.canvas.manager.set_window_title(self.title)
 
-    def adjust_plots(self, top=None,  bottom=None,  left=None,  right=None,
+    def adjust_plots(self, top=None, bottom=None, left=None, right=None,
                      hspace=None, wspace=None):
         """ Force figure padding.  None lead to default rc parameters. """
         self.fig.subplots_adjust(top=top, bottom=bottom, left=left, right=right,
@@ -621,8 +618,8 @@ class MultiPlotter(object):
         """
         cols = list_frame[0].columns
         return [el for el in range(start,
-                                   len(list_frame)*(len(cols)+self.pad),
-                                   len(list_frame[0].columns)+self.pad)]
+                                   len(list_frame) * (len(cols) + self.pad),
+                                   len(list_frame[0].columns) + self.pad)]
 
     def catch_axes(self, nb_row, nb_col):
         """
@@ -722,7 +719,7 @@ class MultiPlotter(object):
         names = names or self.names  # Get x ticks labels
         self.catch_axes(*pos).set_xticks(self.optimize_xticks_pos(list_frame,
                                                                   start=start))
-        self.catch_axes(*pos).set_xlim(-1, len(list_frame)*(len(cols)+self.pad))
+        self.catch_axes(*pos).set_xlim(-1, len(list_frame) * (len(cols) + self.pad))
 
         self.set_xtiks_labels(pos, names, rotation=rot)
 
@@ -813,7 +810,7 @@ class MultiPlotter(object):
             frame[columns].plot(ax=self.catch_axes(*pos), kind=kind,
                                 colors=colors, **kwargs)
 
-    def boxes_mult_plot(self, list_frame, colors=(None,)*5,  title='Box me !',
+    def boxes_mult_plot(self, list_frame, colors=(None,) * 5, title='Box me !',
                         loc='left', pos=(0, 0), widths=0.6, whis=1000, rot=30,
                         mean=False, mean_dict={}, box_dict={},
                         prop_legend={'ncol': 1}, **kwargs):
@@ -840,8 +837,8 @@ class MultiPlotter(object):
         # Defaults
         mean_dict = mean_dict or {'color': '#fdf6e3', 'marker': '*',
                                   'markeredgecolor': '#002b36', 'alpha': 0.5}
-        box_dict = box_dict or {'linewidth': (1.5, 1, 1, 0.5, 2),
-                                'alpha': (0.6, 1, 1, 1, 0.2)}
+        box_dict = box_dict or {'linewidth': (1.5, 1, 1, 0.5, 5),
+                                'alpha': (0.6, 1, 1, 1, 0.5)}
         # Print data informations
         columns = list_frame[0].columns
         # Plot all plots
@@ -874,7 +871,7 @@ class MultiPlotter(object):
             # Set boxes parameters
             self.set_boxes(temp, kw=box_dict)
         # Get group center
-        start = int(len(list_frame[0].columns)/2+0.5) - 1
+        start = int(len(list_frame[0].columns) / 2 + 0.5) - 1
         # Set legend and xticks positions
         self.format_boxticks(list_frame, pos, start, rot=rot, **prop_legend)
 
@@ -929,14 +926,14 @@ class MultiPlotter(object):
                 - **kwargs will be passed to axe.bar()
         """
         # Print data informations
-        columns = frame[fields+emphs].columns
+        columns = frame[fields + emphs].columns
         # Get names
         names = names or self.names
         print('\n---' + 'Plotting superimposed Bars' + '---' + '\n', columns)
         # Get an integer list of the index used to place bar plot
         # See `matplotlib.pyplot.bar` specially `left` kwargs argument
         length = len(frame)
-        left_shifts = [el for el in range(1, length+1)]
+        left_shifts = [el for el in range(1, length + 1)]
         # Plot all plots
         self.catch_axes(*pos).set_title(label=title,
                                         fontdict=self.font_title,
@@ -953,16 +950,16 @@ class MultiPlotter(object):
         if emphs:
             for emph in emphs:
                 self.catch_axes(*pos).bar(left=frame.index.values,
-                                          height=[1]*length,
+                                          height=[1] * length,
                                           bottom=frame[emph].values,
                                           ec=self.colors[emph], fill=False,
                                           width=h_width, linewidth=3,
                                           **kwargs)
         # Set axe parameters
         self.catch_axes(*pos).set_ylabel(ylabel=ylabel, labelpad=20)
-        self.catch_axes(*pos).set_xlim(h_width, len(names)+1)
-        self.catch_axes(*pos).set_xticks(arange(1.5-(1-h_width)/2,
-                                                len(names)+1.5-(1-h_width)/2,
+        self.catch_axes(*pos).set_xlim(h_width, len(names) + 1)
+        self.catch_axes(*pos).set_xticks(arange(1.5 - (1 - h_width) / 2,
+                                                len(names) + 1.5 - (1 - h_width) / 2,
                                                 1))
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
@@ -972,7 +969,7 @@ class MultiPlotter(object):
                                      loc="best", prop=self.font_legend, **legend_dict)
 
     def bar_cum_plot(self, frame, fields, pos=(1, 1), colors={}, loc='left',
-                     names=[],  title='Hist me', h_width=0.9, ylabel="Kwh",
+                     names=[], title='Hist me', h_width=0.9, ylabel="Kwh",
                      emphs=[], line_dict={}, legend_dict={}, **kwargs):
         """
             Plot a cumulated bar plot of each fields inside the frame and
@@ -990,7 +987,7 @@ class MultiPlotter(object):
                 - **kwargs will be passed to axe.bar()
         """
         # # Print data informations
-        columns = frame[fields+emphs].columns
+        columns = frame[fields + emphs].columns
         # # Get names
         names = names or self.names
         # # Get fields
@@ -998,7 +995,7 @@ class MultiPlotter(object):
         # # Get an integer list of the index used to place bar plot
         # # See `matplotlib.pyplot.bar` specially `left` kwargs argument
         length = len(frame)
-        frame.index = [el for el in range(1, length+1)]
+        frame.index = [el for el in range(1, length + 1)]
         left_shifts = frame.index.values
         frame.index = left_shifts
         print('\n---' + 'Plotting cumulated Bars' + '---' + '\n', columns)
@@ -1022,7 +1019,7 @@ class MultiPlotter(object):
         if emphs:
             for emph in emphs:
                 temp[emph] = self.catch_axes(*pos).bar(left=frame.index.values,
-                                                       height=[0]*length,
+                                                       height=[0] * length,
                                                        bottom=frame[emph],
                                                        ec=self.colors[emph],
                                                        color=self.colors[emph],
@@ -1031,9 +1028,9 @@ class MultiPlotter(object):
                                                        **line_dict)
         # # Set axe parameters
         self.catch_axes(*pos).set_ylabel(ylabel=ylabel, labelpad=20)
-        self.catch_axes(*pos).set_xlim(h_width, len(names)+1)
-        self.catch_axes(*pos).set_xticks(arange(1.5-(1-h_width)/2,
-                                                len(names)+1.5-(1-h_width)/2,
+        self.catch_axes(*pos).set_xlim(h_width, len(names) + 1)
+        self.catch_axes(*pos).set_xticks(arange(1.5 - (1 - h_width) / 2,
+                                                len(names) + 1.5 - (1 - h_width) / 2,
                                                 1))
         # Add xticks labels
         self.set_xtiks_labels(pos, names)
@@ -1044,7 +1041,7 @@ class MultiPlotter(object):
 
 
 ########################
-#### Main Program : ####
+#    Main Program :    #
 ########################
 
 
@@ -1061,12 +1058,12 @@ if __name__ == '__main__':
 
     # Read csv and store values as a dict
     frames = read_csv((dataframe, ),
-                      convert_index=(convert_to_datetime,)*10,
-                      delimiter=(";",)*10,
-                      index_col=("Date",)*10,
-                      in_conv_index=(None,)*10,
-                      skiprows=(1,)*10,
-                      splitters=("_",)*10)
+                      convert_index=(convert_to_datetime,) * 10,
+                      delimiter=(";",) * 10,
+                      index_col=("Date",) * 10,
+                      in_conv_index=(None,) * 10,
+                      skiprows=(1,) * 10,
+                      splitters=("_",) * 10)
 
 ##############
 # EVALUATION #
@@ -1163,7 +1160,7 @@ if __name__ == '__main__':
     # Each xticks = short month name + Taux de couverture de couverture solaire mensuelle
     percents = ['{:.1%}'.format(i)
                 for i in Plot.frames['Barplot']['Taux de couverture'].values]
-    Plot.change_xticks_labels([short_names, [' : ']*12,
+    Plot.change_xticks_labels([short_names, [' : '] * 12,
                                percents])
 
     # Adjust plot format
