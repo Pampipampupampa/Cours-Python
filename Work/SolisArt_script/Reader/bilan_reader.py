@@ -26,15 +26,17 @@
 
 # Select configuration file between projects
 # from bilan_constants_IGC_AIRvector import *
-from bilan_constants_IGC_AIRvector_20160204 import *
-fold = FOLDER/'clean'/'IGC'
+
+from bilan_constants_IGC_AIRvector_20160705 import *
+fold = FOLDER / 'clean' / 'IGC' / 'airVectorRecyclePassive_solar16'
+
 # from bilan_constants_Solisart_WATERvector import *
 # fold = FOLDER/'clean'/'SolisArt'
 
 
 def test_index(name, plot):
     """
-        Recursive loop to check index value user input.
+        Loop to check index value user input.
         Does not yet raise Value
     """
     flag = False
@@ -95,6 +97,54 @@ def test_index(name, plot):
 # Not a full year
 # bordeauxAirRecycleStartOctober-4p_20160209.csv
 # bordeauxAir6M-4p_20160215.csv bordeauxAir6M-4p_20160216.csv
+# limogesAir6M-4p_20160607.csv limogesAirSkyProScaled12CPC586M-4p_20160607.csv
+
+# IGC air recycle system 20160628 (version16): DHW 40
+# bordeauxAir40T6M-4p_20160628.csv strasbourgAir40T6M-4p_20160629.csv toulouseAir40T6M-4p_20160629
+# limogesAir40T6M-4p_20160629 marseilleAir40T6M-4p_20160629
+# limogesAir40T6M19R16-4p_20160629.csv strasbourgAir40T6M19R16-4p_20160629.csv toulouseAir40T6M19R16-4p_20160629.csv
+# bordeauxAir40T6M19R16-4p_20160628.csv marseilleAir40T6M19R16-4p_20160629.csv
+# bordeauxAir100Tampon40T6M-4p_20160629.csv bordeauxAir200ECS40T6M-4p_20160629.csv bordeauxAir100ECS40T6M-4p_20160629.csv
+# bordeauxAir400ECS40T6M-4p_20160629.csv
+
+# IGC AIR RECYCLE SYSTEM 20160630 (**VERSION16**): DHW 55
+# Cities
+# bordeauxAir55T6M-4p_20160630.csv marseilleAir55T6M-4p_20160630.csv limogesAir55T6M-4p_20160630.csv toulouseAir55T6M-4p_20160630.csv
+# strasbourgAir55T6M-4p_20160630.csv
+# Ballon ECS
+# bordeauxAir100ECS55T6M-4p_20160630.csv bordeauxAir200ECS55T6M-4p_20160630.csv bordeauxAir400ECS55T6M-4p_20160630.csv
+# Ballon stockage
+# bordeauxAir100Tampon6M-4p_20160630.csv bordeauxAir200Tampon6M-4p_20160630.csv bordeauxAir400Tampon6M-4p_20160630.csv
+# Nbr capteur
+# limogesAir55T6M-6p_20160630.csv limogesAir55T6M-8p_20160630.csv
+# Inclinaison
+# limogesAir60Inc55T6M-4p_20160630.csv limogesAir45Inc55T6M-4p_20160630.csv strasbourgAir60Inc55T6M-4p_20160630.csv
+# Orientation
+# limogesAiSO55T6M-4p_20160630.csv limogesAiSE55T6M-4p_20160630.csv
+# Type capteur
+# strasbourgAirSkyProS6M-4p_20160630.csv strasbourgAirRadco308cS6M-4p_20160630.csv
+# Puisage
+# limogesAirRepartiPuisage55T6M-4p_20160701.csv limogesAirMatinPuisaget55T6M-4p_20160701.csv
+# Variation débit
+# limogesAir2040Debit55T6M-4p_20160701.csv limogesAir2020Debit55T6M-4p_20160701.csv limogesAir7070Debit55T6M-4p_20160701.csv limogesAir4040Debit55T6M-4p_20160701.csv
+# DeltaT
+# limogesAir5Delta55T6M-4p_20160701.csv bordeauxAir5Delta55T6M-4p_20160701.csv limogesAir15Delta55T6M-4p_20160701.csv bordeauxAir15Delta55T6M-4p_20160701.csv
+# Température ballon
+# limogesAir40T6M-4p_20160701.csv bordeauxAir40T6M-4p_20160701.csv
+# Année entière 19-18
+# marseilleAir55T-4p_20160702.csv limogesAir55T-4p_20160702.csv strasbourgAir55T-4p_20160702.csv toulouseAir55T-4p_20160702.csv bordeauxAir55T-4p_20160702.csv
+# Setpoint
+# bordeauxAir55T6M20R18-4p_20160701.csv limogesAir55T6M20R18-4p_20160701.csv
+# Surchauffe
+# limogesAir55T6MPasSurchauffe-4p_20160701.csv bordeauxAir55T6MPasSurchauffe-4p_20160701.csv strasbourgAir55T6MPasSurchauffe-4p_20160701.csv
+# Tempo Élec
+# limogesAir240TempoElec55T6M-4p_20160701.csv limogesAir120TempoElec55T6M-4p_20160701.csv
+# Tempo débit
+# limogesAir900TempoDebit55T6M-4p_20160701.csv limogesAir300TempoDebit55T6M-4p_20160701.csv
+# Ventilation
+# limogesAir55T6M90V90-4p_20160705.csv bordeauxAir55T6M90V90-4p_20160705.csv
+# Année entière 20-18
+# limogesAir55T20R18-4p_20160705.csv bordeauxAir55T20R18-4p_20160705.csv
 
 # Debugger
 # import pdb; pdb.set_trace()
@@ -170,7 +220,7 @@ if __name__ == '__main__':
     # Keep only 2014 datas into the dict
     # datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
 
-    # Remove first months row if not complete (Make initialization outside results)
+    # Remove first months row if not complete (Remove initialization from results)
     for name in frames:
         # Check fist month length
         length_first_month = len(frames[name][frames[name].index.month == frames[name].index[0].month].resample("D"))
@@ -424,11 +474,12 @@ if __name__ == '__main__':
                 #                              prop=Plot.font_legend)
             elif 'box' in plot:
                 Plot.colors = col_dict['box']
-                names = [short_names[month_nb-1] for month_nb in structs[name][plot][1]]
+                names = [short_names[month_nb - 1] for month_nb in structs[name][plot][1]]
                 Plot.boxes_mult_plot(structs[name][plot][0], pos=pos, mean=False,
                                      patch_artist=True, loc='center', rot=0,
                                      prop_legend={'ncol': 1, 'names': names},
-                                     title=titles[plot] + '\n{}'.format(name_cap))
+                                     title=titles[plot] + '\n{}'.format(name_cap),
+                                     notch=True)
 
                 # # Remove after publi
                 # Plot.boxes_mult_plot(structs[name][plot], pos=pos, mean=False, rot=0,
@@ -440,14 +491,14 @@ if __name__ == '__main__':
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
                 if "_B" in plot:
-                    explode = [0.1, 0.1, 0.1]  # Initial value for explode
+                    explode = [0.1, 0.1, 0.1, 0.1]  # Initial value for explode
                 else:
-                    explode = [0.1]       # Initial value for explode
+                    explode = [0.1, 0.1]       # Initial value for explode
                 # To have len() matching between explode and fields[plot][1]
                 while len(explode) < len(fields[plot][1]):
                     explode.append(0.0)
                 # Add specific title for diag_B
-                if any(c in plot for c in ('_B', '_P')):
+                if any(c in plot for c in ('_B', '_H', '_D')):
                     frame = structs[name][plot]
                     columns = frame.columns
                     p_title = '{1} : {0:.2%}'.format(frame.get_value(titles[plot],
@@ -512,12 +563,12 @@ if __name__ == '__main__':
     Plot.tight_layout()
     # Removes empty axes (only last one for now)
     Plot.clean_axes(sum_)
-    # Save plots
+    # # Save plots
     base_name = "Simulation"
     if len(datas) == 1:
         base_name = name
     sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white", dpi=150)
+             base_name=base_name, plotter=Plot, facecolor="white", dpi=300)
 
     # Display plots
     Plot.show()

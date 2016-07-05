@@ -136,12 +136,12 @@ field_converter = {"T0.T": "T1_statique[°C]", "Pump_Control.T1": "T1",
 #                  "EInternal.y": "InternalGains_Energy"
 #                  }
 
-air_regulation_20151020 = {"Pump_Control.Text": "T9_ext",  "TRooAir.T": "T12_house",
+air_regulation_20151020 = {"Pump_Control.Text": "T9_ext", "TRooAir.T": "T12_house",
                            "Tsoufflage_stable.T": "T14_blowing",
                            "Tsolar_instruction.T": "T12_consigneSolaire",
                            "Tinstruction.T": "T12_consigne"}
 
-airSystem_20151012 = {"Control.T1": "T1",  "Control.T3": "T3",
+airSystem_20151012 = {"Control.T1": "T1", "Control.T3": "T3",
                       "Control.T4": "T4", "Control.T5": "T5",
                       "Control.T7": "T7", "Control.T8": "T8",
                       "Tsolar_instruction.T": "T12_consigneSolaire",
@@ -378,7 +378,7 @@ def benchmark(func):
         t = time.process_time()
         res = func(*args, **kwargs)
         print("{} has spent {} sec to finish".format(func.__name__,
-                                                     time.process_time()-t))
+                                                     time.process_time() - t))
         return res
     return wrapper
 
@@ -463,7 +463,7 @@ def to_W_per_m2(struct, column):
     nb_collector = int(csv_in.split("-")[1].split("p")[0])
     # print(nb_collector, collector_area)
     try:
-        struct[column] *= 20 / (collector_area*nb_collector)
+        struct[column] *= 20 / (collector_area * nb_collector)
     except ZeroDivisionError:
         struct[column] = 0
 
@@ -483,7 +483,7 @@ def to_kwh(struct, column):
           - struct is a panda dataFrame
           - column is a panda dataFrame column name
     """
-    struct[column] /= (1000.*3600.)
+    struct[column] /= (1000. * 3600.)
 
 
 def change_fields(struct, convert_dico):
@@ -542,8 +542,8 @@ def remove_duplicate(struct):
     print("After treatment  : {0:{fill}{align}6} rows".format(after,
                                                               fill=" ",
                                                               align=">"))
-    print("-"*10 + ">" + " "*7 +
-          " {0:{fill}{align}6} removed\n".format(before-after,
+    print("-" * 10 + ">" + " " * 7 +
+          " {0:{fill}{align}6} removed\n".format(before - after,
                                                  fill=" ",
                                                  align=">"))
     # Return reorganized struct
@@ -653,9 +653,9 @@ if __name__ == '__main__':
 
     # # IGC
     csv_in = "D:\\Github\\solarsystem\\Outputs\\raw\\IGC\\" + \
-             "bordeauxAir6M-4p_20160216.csv"
+             "bordeauxAir55T6M90V90-4p_20160705.csv"
     csv_out = "D:\\Github\\solarsystem\\Outputs\\clean\\IGC\\" + \
-              "bordeauxAir6M-4p_20160216.csv"
+              "bordeauxAir55T6M90V90-4p_20160705.csv"
 
     # Start time for timestep
     start = datetime.datetime(year=2014, month=1, day=1)
@@ -671,7 +671,7 @@ if __name__ == '__main__':
     print("Input file is : {}".format(csv_in))
     print("Output file is : {}".format(csv_out))
     flag = input("Press <Yes> to continue ... : ")
-    print("-"*50)
+    print("-" * 50)
     if flag in ("Yes", "Y", "y", "yes", "YES"):
         # Parse and clean CSV file
         print("\n### Start to build {} ###".format(csv_out))
@@ -680,8 +680,8 @@ if __name__ == '__main__':
                                      D_type="", nrows=None, head=head,
                                      convert_dicts=(airSystem_20160126,
                                                     unit_converter)))
-        print("-"*25 + "\nFields are :")
+        print("-" * 25 + "\nFields are :")
         for field in fields:
             print(field)
-        print("-"*25, "\n")
+        print("-" * 25, "\n")
         print(" ----> File {} \n was generated without errors".format(csv_out))
