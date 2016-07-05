@@ -16,9 +16,9 @@
 ::
 IF "%DevEnvDir%"=="" (
   :: 64 bit
-  CALL "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
+  ::CALL "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\amd64\vcvars64.bat"  >nul 2>&1
   :: 32 bit
-  ::CALL "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"  >nul 2>&1
+  CALL "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"  >nul 2>&1
   IF ERRORLEVEL 1 (
     ECHO Problem configuring the Visual Studio tools for command-line use
     GOTO done

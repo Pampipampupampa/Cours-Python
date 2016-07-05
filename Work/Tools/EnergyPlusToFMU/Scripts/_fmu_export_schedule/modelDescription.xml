@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is file 'modelDescription.xml' for input '_fmu-export-schedule.idf'. -->
+<fmiModelDescription  fmiVersion="1.0"
+  modelName="_fmu-export-schedule.idf"
+  modelIdentifier="_fmu_export_schedule"
+  guid="b9a94c46a4fe1f8fbe800e568bcb7908"
+  description="Automatically generated from EnergyPlus input file _fmu-export-schedule.idf"
+  generationTool="idf-to-fmu-export-prep-win.exe"
+  generationDateAndTime="2016-03-01T11:27:00Z"
+  variableNamingConvention="flat"
+  numberOfContinuousStates="0"
+  numberOfEventIndicators="0">
+  <!-- Note guid is an md5 checksum of the IDF file. -->
+  <!-- Exposed model variables. -->
+  <ModelVariables>
+    <!-- Note valueReferences are (1, 2, 3...) for causality="input" (to E+). -->
+    <!-- Note valueReferences are (10001, 10002, 10003...) for "output" (from E+). -->
+    <!-- Note the order of valueReferences should match the order of elements in file 'variables.cfg'. -->
+    <ScalarVariable  name="Q"  valueReference="1"
+      variability="continuous"  causality="input"
+      description="IDF line 423">
+      <Real  start="0"/>
+    </ScalarVariable>
+    <ScalarVariable  name="TRooMea"  valueReference="10001"
+      variability="continuous"  causality="output"
+      description="IDF line 418">
+      <Real/>
+    </ScalarVariable>
+  </ModelVariables>
+  <!-- Implementation details for co-simulation. -->
+  <Implementation>
+    <!-- EnergyPlus provided as tool (as opposed to source code or DLL). -->
+    <CoSimulation_Tool>
+      <Capabilities
+        canHandleVariableCommunicationStepSize="false"
+        canHandleEvents="false"
+        canRejectSteps="false"
+        canInterpolateInputs="false"
+        maxOutputDerivativeOrder="0"
+        canRunAsynchronuously="false"
+        canSignalEvents="false"
+        canBeInstantiatedOnlyOncePerProcess="false"
+        canNotUseMemoryManagementFunctions="true"/>
+      <Model
+        entryPoint="fmu://resources/_fmu-export-schedule.idf"
+        manualStart="false"
+        type="text/plain">
+        <File  file="fmu://resources/variables.cfg"/>
+        <File  file="fmu://resources/FRA_Bordeaux.epw"/>
+      </Model>
+    </CoSimulation_Tool>
+  </Implementation>
+</fmiModelDescription>
