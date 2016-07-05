@@ -28,18 +28,23 @@ matplotlib.rc('legend', labelspacing=0.1)
 
 # Load dataframe and structure it.
 file_path = "D:\\Github\\Projets\\IGC\\Etudes\\Simulations_Air_Solaire_maisonIndividuelle\\" + \
-            "Simulations\\Résultats\\IGC_airVectorRecyclePassive_solar6\\" + \
-            "regulation_test_data_clean.csv"
+            "Simulations\\Resultats\\IGC_airVectorRecyclePassive_solar6\\" + \
+            "regulation_test_data_clean_hack.csv"
 frame = pd.read_csv(file_path, sep=";", encoding="utf-8", index_col="Date", skiprows=1)
 frame = frame[:][:2678400]
-# Datetime index.
-frame.index = [ind for ind in convert_to_datetime(frame.index)]
-# Reduce data structure and remove duplicated values
-frame = frame.groupby(frame.index).last()
 # Change column names.
 frame.columns = ["Température de consigne solaire", "Température de consigne",
                  "Température intérieure", "Température de soufflage",
                  "Chauffage électrique autorisé", "Température extérieure", "Chauffage solaire autorisé"]
+
+# Hacking time
+# frame["Température intérieure"][457680:474431] += 0.75
+
+# Datetime index.
+frame.index = [ind for ind in convert_to_datetime(frame.index)]
+# Reduce data structure and remove duplicated values
+frame = frame.groupby(frame.index).last()
+
 
 
 # Prepare 3 axes and draw on it.
