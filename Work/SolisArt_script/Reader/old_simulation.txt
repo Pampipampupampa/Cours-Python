@@ -1,0 +1,49 @@
+# Solisart:
+# chambery-0p_20150206.csv bordeaux-0p_20150210.csv marseille-0p_20150208.csv strasbourg-0p_20150209.csv lyon-0p_20150218.csv
+# chambery-3p_20150206.csv bordeaux-3p_20150208.csv marseille-3p_20150207.csv strasbourg-3p_20150210.csv lyon-3p_20150218.csv
+# chambery-6p_20150207.csv bordeaux-6p_20150209.csv marseille-6p_20150208.csv strasbourg-6p_20150211.csv lyon-6p_20150219.csv
+# chambery-9p_20150208.csv bordeaux-9p_20150210.csv marseille-9p_20150209.csv strasbourg-9p_20150211.csv lyon-9p_20150219.csv
+# chambery300vm-6p_20150218.csv chambery300vp-6p_20150218.csv
+# strasbourgLaurent-6p_20150126.csv   ---> Laurent Strasbourg file
+
+# IGC: IGC_airVectorRecyclePassive_solar5 and IGC_airVectorRecyclePassive_solar_MeteoFrance3
+# bordeauxAirRecycle-6p_20150606.csv bordeauxAirRecycle-4p_20150605.csv bordeauxAirRecycle-2p_20150605.csv
+# bordeauxAirRecycle45Inc-4p_20150607.csv bordeauxAirRecycle60Inc-4p_20150607.csv
+# bordeauxAirRecycle45mOrientation-4p_20150607.csv bordeauxAirRecycle45pOrientation-4p_20150607.csv
+# bordeauxAirRecycle100vmDHW-4p_20150606.csv bordeauxAirRecycle100vpDHW-4p_20150604.csv bordeauxAirRecycle100vpDHW-6p_20150604.csv
+# bordeauxAirRecycle200vpBuffer-4p_20150606.csv bordeauxAirRecycle200vmBuffer-4p_20150606.csv
+# bordeauxAirRecyclePuisageReparti-4p_20150620.csv bordeauxAirRecyclePuisageMatin-4p_20150620.csv
+# bordeauxAirRecycleM2012-4p_20150609.csv bordeauxAirRecycleM2013-4p_20150609.csv bordeauxAirRecycleM2014-4p_20150610.csv
+# bordeauxAirRecycle1er-4p_20150622.csv bordeauxAirRecycle2nd-4p_20150622.csv bordeauxAirRecycle3rd-4p_20150622.csv
+
+# IGC system 20151026:
+# bordeauxAirRecycle-4p_20151009.csv  # Ground temperature from weather data file.
+# nantesAirRecycle-4p_20151018.csv limogesAirRecycle-4p_20151017.csv
+# bordeauxAirRecycle-4p_20151017.csv bordeauxAirRecycleNoOverheat-4p_20151018.csv bordeauxAirRecycle-6p_20151019.csv
+# bordeauxAirRecycle200Buffer200DHW-4p_20151020.csv bordeauxAirRecycle200DHW-4p_20151020.csv
+
+# IGC air recycle system 20151202:
+# bordeauxAirRecycle-4p_20151129.csv toulouseAirRecycle-4p_20151130.csv nantesAirRecycle-4p_20151128.csv
+# biarritzAirRecycle-4p_20151201.csv limogesAirRecycle-4p_20151201.csv
+# bordeauxAirRecycleSkyPro12CPC58-4p_20151201.csv
+
+# IGC air recycle system 20160203 (version12):
+# Glazed
+# limogesAirRecycle-4p_20160203.csv bordeauxAirRecycle-4p_20160204.csv bordeauxAirRecycle-4p_20160209.csv
+# limogesAirRecycleInc45-4p_20160204.csv
+# Tubular
+# limogesAirRecycleSkyProScaled12CPC58-4p_20160204.csv
+
+# IGC air recycle system 20160219 (version14):
+# Not a full year
+# bordeauxAirRecycleStartOctober-4p_20160209.csv
+# bordeauxAir6M-4p_20160215.csv bordeauxAir6M-4p_20160216.csv
+# limogesAir6M-4p_20160607.csv limogesAirSkyProScaled12CPC586M-4p_20160607.csv
+
+# IGC air recycle system 20160628 (version16): DHW 40
+# bordeauxAir40T6M-4p_20160628.csv strasbourgAir40T6M-4p_20160629.csv toulouseAir40T6M-4p_20160629
+# limogesAir40T6M-4p_20160629 marseilleAir40T6M-4p_20160629
+# limogesAir40T6M19R16-4p_20160629.csv strasbourgAir40T6M19R16-4p_20160629.csv toulouseAir40T6M19R16-4p_20160629.csv
+# bordeauxAir40T6M19R16-4p_20160628.csv marseilleAir40T6M19R16-4p_20160629.csv
+# bordeauxAir100Tampon40T6M-4p_20160629.csv bordeauxAir200ECS40T6M-4p_20160629.csv bordeauxAir100ECS40T6M-4p_20160629.csv
+# bordeauxAir400ECS40T6M-4p_20160629.csv

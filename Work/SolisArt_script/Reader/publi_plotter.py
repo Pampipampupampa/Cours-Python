@@ -130,9 +130,9 @@ for x in range(2):
             # line_.set_markeredgewidth(4)
         # Add correct legend to each lines and title
         if y % 2:
-            axes_bis[x][y].legend([number+' collectors' for number in ['3', '6', '9']], loc=1, prop=font_legend, ncol=1)
+            axes_bis[x][y].legend([number + ' collectors' for number in ['3', '6', '9']], loc=1, prop=font_legend, ncol=1)
         else:
-            axes[x][y].legend([number+' collectors' for number in ['3', '6', '9']], loc=2, prop=font_legend, ncol=1)
+            axes[x][y].legend([number + ' collectors' for number in ['3', '6', '9']], loc=2, prop=font_legend, ncol=1)
         # Add title to each plot
         axes[x][y].set_title(label=cities[x][y][0][:-3].capitalize(), loc='center', fontdict=font_title)
         # Color match between yaxis and lines

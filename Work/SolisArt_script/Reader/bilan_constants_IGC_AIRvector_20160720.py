@@ -10,7 +10,7 @@
           perdu.
         - Le taux de couverture est sur les bar plots.
     Il est plus intéressant de voir comment évolue la part réelle de solaire au cours
-    de l’année (voir `Production_solaire\nutile`).
+    de l’année (voir `Production_solaire\nvalorisée`).
 """
 
 from Plotters.evaluation import *
@@ -23,8 +23,8 @@ A_COL = {'IDMK25': 2.32, 'Cobralino': 1.926,
          'SkyProScaled12CPC58': 2.32, 'SkyProS': 2.32}
 
 # Bar emphazis
-emphs_dict = {'bar_cumA': ['Pertes_solaires'],
-              'bar_cumC': ['Production_solaire\nutile'],
+emphs_dict = {'bar_cumA': ['Solaire_non_valorisée'],
+              'bar_cumC': ['Production\nsolaire'],
               'bar_supC': ['Production\nsolaire'],
               'bar_supDispo': [],
               'bar_cumD': [],
@@ -35,7 +35,7 @@ conv_dict = {'DrawingUp_Energy': 'Besoins_ECS_puisage',
              'SolarHeating_Energy': 'Chauffage_solaire_actif',
              'SolarDrawingUp_Energy': 'ECS\nsolaire',
              'Collector_Energy': 'Production\nsolaire',
-             'CollectorPanel_Energy': 'Energie captable',
+             'CollectorPanel_Energy': 'Énergie captable',
              'ElecDHW_Energy': 'Consommation\nElec_ECS',
              'ElecHeating_Energy': 'Chauffage\nelec',
              'InternalGains_Energy': 'Gains\ninternes',
@@ -51,24 +51,24 @@ new_fields = (
               # Consommations
               ('Consommation\nappoint', 'Consommation\nElec_ECS',
                'Chauffage\nelec', '+'),
-              ('Energie\nnécessaire', 'Production\nsolaire', 'Consommation\nappoint', '+'),
+              ('Énergie\nnécessaire', 'Production\nsolaire', 'Consommation\nappoint', '+'),
               ('Sanitaire_total', 'Consommation\nElec_ECS', 'ECS\nsolaire', '+'),
               # Répartition des pertes
-              ('Apport_ballon_ECS', 'Consommation\nElec_ECS', 'ECS\nsolaire', '+'),
-              ('ratio_solaire', 'ECS\nsolaire', 'Apport_ballon_ECS', '/'),
-              ('ratio_elec', 'Consommation\nElec_ECS', 'Apport_ballon_ECS', '/'),
+              ('Apports_ballon_ECS', 'Consommation\nElec_ECS', 'ECS\nsolaire', '+'),
+              ('ratio_solaire', 'ECS\nsolaire', 'Apports_ballon_ECS', '/'),
+              ('ratio_elec', 'Consommation\nElec_ECS', 'Apports_ballon_ECS', '/'),
               # Pertes réelles (les pertes des ballons utiles à l’ambiance ne sont pas considérées)
               ('Stockage_pertes', 'Ballon_stockage_pertes', 'Ballon_stockage_gains', '-'),
               ('Sanitaire_pertes', 'Ballon_ECS_pertes', 'Ballon_ECS_gains', '-'),
               ('Sanitaire_pertes_solaires', 'Sanitaire_pertes', 'ratio_solaire', '*'),
-              ('Pertes_elec', 'Sanitaire_pertes', 'ratio_elec', '*'),  # Pertes électrique du ballon ECS
+              ('Elec_non_valorisée', 'Sanitaire_pertes', 'ratio_elec', '*'),  # Pertes électrique du ballon ECS
               ('Ballons_pertes_solaires', 'Stockage_pertes', 'Sanitaire_pertes_solaires', '+'),
-              ('Pertes_solaires', 'Ballons_pertes_solaires', 'Pertes réseau', '+'),
-              ('Pertes', 'Pertes_solaires', 'Pertes_elec', '+'),
+              ('Solaire_non_valorisée', 'Ballons_pertes_solaires', 'Pertes réseau', '+'),
+              ('Non valorisée', 'Solaire_non_valorisée', 'Elec_non_valorisée', '+'),
               # Productions solaires utiles
-              ('Production_solaire\nutile', 'Production\nsolaire', 'Pertes_solaires', '-'),
-              ('Production_elec\nutile', 'Consommation\nappoint', 'Pertes_elec', '-'),
-              ('solaire_elecUtile', 'Production_elec\nutile', 'Production\nsolaire', '+'),
+              ('Production_solaire\nvalorisée', 'Production\nsolaire', 'Solaire_non_valorisée', '-'),
+              ('Production_appoint\nvalorisée', 'Consommation\nappoint', 'Elec_non_valorisée', '-'),
+              ('solaire_elec_valorisée', 'Production_appoint\nvalorisée', 'Production\nsolaire', '+'),
               ('Chauffage_solaire_passif', 'Ballon_ECS_gains', 'Ballon_stockage_gains', '+'),
               ('Chauffage\nsolaire', 'Chauffage_solaire_actif', 'Chauffage_solaire_passif', '+'),
               # Besoins
@@ -77,15 +77,15 @@ new_fields = (
               ('Besoins\nECS', 'Sanitaire_total', 'Ballon_ECS_pertes', '-'),            # Besoin puisage + maintient ballon ECS à température
               ('Besoins', 'Besoins\nECS', 'Besoins\nChauffage', '+'),
               # Rendements
-              ('Taux de couverture', 'Production\nsolaire', 'Energie\nnécessaire', '/'),
+              ('Taux de couverture', 'Production\nsolaire', 'Énergie\nnécessaire', '/'),
               # (prod solaire - pertes) / (prod solaire + elec utile) --> Vraie part solaire
-              ('Part solaire\nBesoins', 'Production_solaire\nutile', 'solaire_elecUtile', '/'),
+              ('Part solaire\nBesoins', 'Production_solaire\nvalorisée', 'solaire_elec_valorisée', '/'),
               ('Part_solaire\nChauffage', 'Chauffage\nsolaire', 'Besoins\nChauffage', '/'),
               ('Part_solaire\nECS', 'ECS\nsolaire', 'Sanitaire_total', '/'),
-              ('Rendement capteur', 'Production\nsolaire', 'Energie captable', '/'),
-              ('Rendement solaire', 'Production_solaire\nutile', 'Energie captable', '/'),
+              ('Rendement capteur', 'Production\nsolaire', 'Énergie captable', '/'),
+              ('Rendement solaire', 'Production_solaire\nvalorisée', 'Énergie captable', '/'),
               # Part_solaire non récupérée par les capteurs solaires.
-              ('Solaire_non_capté', 'Energie captable', 'Production\nsolaire', '-'))
+              ('Solaire_non_capté', 'Énergie captable', 'Production\nsolaire', '-'))
 
 
 # Prepare Taux de couverture (list of formatted datas)
@@ -105,7 +105,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'box_HDir': ['HDirNor', 'Direct'],
           'box_S': ['Speed_S6', 'Speed_S5', 'Speed_S2'],
           'diag_B': [conv_value_list,
-                     ['Besoins\nChauffage', 'Besoins\nECS', 'Pertes_solaires', 'Gains\ninternes', 'Pertes_elec']],
+                     ['Besoins\nChauffage', 'Besoins\nECS', 'Solaire_non_valorisée', 'Gains\ninternes', 'Elec_non_valorisée']],
           'diag_P': [conv_value_list,
                      ['Consommation\nappoint', 'Production\nsolaire']],
           'diag_H': [conv_value_list,
@@ -113,7 +113,7 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'diag_D': [conv_value_list,
                      ['Consommation\nElec_ECS', 'ECS\nsolaire']],  # Part solaire sur les BESOINS d’ECS
           'bar_cumC': [conv_value_list,
-                       ['Besoins\nECS', 'Besoins\nChauffage', 'Pertes_solaires']],
+                       ['Besoins\nECS', 'Besoins\nChauffage', 'Solaire_non_valorisée']],
           'bar_cumA': [conv_value_list,
                        ['Production\nsolaire', 'Consommation\nappoint']],
           'bar_cumH': [conv_value_list,
@@ -121,17 +121,17 @@ fields = {'box_Tbal': ['T3', 'T4', 'T5'],
           'bar_cumD': [conv_value_list,
                        ['ECS\nsolaire', 'Consommation\nElec_ECS']],
           'bar_supC': [conv_value_list,
-                       ['Besoins\nECS', 'Besoins\nChauffage', 'Pertes_solaires']],
+                       ['Besoins\nECS', 'Besoins\nChauffage', 'Solaire_non_valorisée']],
           'bar_supDispo': [conv_value_list,
-                           ['Energie captable', 'Production\nsolaire', 'Production_solaire\nutile']],
+                           ['Énergie captable', 'Production\nsolaire', 'Production_solaire\nvalorisée']],
           # This plot return a cumulative evolution of Taux de couverture and Rendement.
           # We deal with energy not power so we don’t have taux de couverture and Rendement
           # at each time step.
           'area_E': ['Taux de couverture', 'Rendement capteur'],
-          'area_P': ['Production\nsolaire', 'Pertes_solaires', 'Consommation\nappoint'],
-          'area_EB': ['Besoins\nECS', 'Besoins\nChauffage', 'Pertes_solaires'],
+          'area_P': ['Production\nsolaire', 'Solaire_non_valorisée', 'Consommation\nappoint'],
+          'area_EB': ['Besoins\nECS', 'Besoins\nChauffage', 'Solaire_non_valorisée'],
           'line_E': ['Besoins\nECS', 'Production\nsolaire', 'Consommation\nappoint', 'Besoins\nChauffage'],
-          'line_ES': ['Production\nsolaire', 'Energie captable'],
+          'line_ES': ['Production\nsolaire', 'Énergie captable'],
           'line_TE': ['T1', 'T3', 'T5'],
           'line_Tint': ['T12_house'],
           'line_T': ['T9_ext', "T13_exch_inlet", 'T13_exch_outlet', 'T14_blowing'],
@@ -150,19 +150,19 @@ col_dict = {'box': (('#268bd2', '#002b36', '#268bd2', '#268bd2', '#268bd2'),
             'diag_P': ['#d33682', 'orange'],
             'diag_H': ['#d33682', 'orange'],  # Part solaire sur les BESOINS de chauffage
             'diag_D': ['#d33682', 'orange'],  # Part solaire sur les BESOINS d’ECS
-            'bar_cumA': {'Consommation\nappoint': '#fdf6e3', 'Production\nsolaire': 'orange',
-                         'Pertes totales': '#cb4b16'},
+            'bar_cumA': {'Production_appoint\nvalorisée': '#fdf6e3', 'Production_solaire\nvalorisée': 'orange',
+                         'Non valorisée': '#cb4b16'},
             'bar_cumC': {'Consommation\nappoint': '#dc322f', 'Besoins\nChauffage': '#fdf6e3',
-                         'Besoins\nECS': '#268bd2', 'Production_solaire\nutile': 'orange',
-                         'Pertes_solaires': '#cb4b16'},
+                         'Besoins\nECS': '#268bd2', 'Production\nsolaire': 'orange',
+                         'Solaire_non_valorisée': '#cb4b16'},
             'bar_cumD': {'Consommation\nElec_ECS': '#fdf6e3', 'ECS\nsolaire': 'orange'},
             'bar_cumH': {'Chauffage\nelec': '#fdf6e3', 'Chauffage\nsolaire': 'orange'},
             'bar_supDispo': {'Production\nsolaire': 'orange',
-                             'Energie captable': '#fdf6e3',
-                             'Production_solaire\nutile': '#859900'},
+                             'Énergie captable': '#fdf6e3',
+                             'Production_solaire\nvalorisée': '#859900'},
             'bar_supC': {'Consommation\nappoint': '#dc322f', 'Besoins\nChauffage': '#fdf6e3',
                          'Besoins\nECS': '#268bd2', 'Production\nsolaire': 'orange',
-                         'Pertes_solaires': '#cb4b16'},
+                         'Solaire_non_valorisée': '#cb4b16'},
             'area_E': 'Accent', 'line_E': 'Accent', 'line_TE': 'Accent',
             'line_ES': 'Accent', 'line_Tint': 'Accent', 'line_H': 'Accent', 'line_debA': 'Accent',
             'line_debS': 'Accent', 'line_debC': 'Accent', 'line_T': 'Accent',
@@ -215,7 +215,7 @@ titles = {'title': 'Bilan de la simulation',
 # IF ADDED FIELD ALREADY IN `new_fields` REMOVE IT !!
 JSON_ENERGY_FIELDS = ['Gains\ninternes', 'Chauffage_solaire_actif',
                       'Chauffage\nelec',
-                      'Energie captable', 'ECS\nsolaire',
+                      'Énergie captable', 'ECS\nsolaire',
                       'Consommation\nElec_ECS',
                       'Production\nsolaire'] + [field[0] for field in new_fields]
 
