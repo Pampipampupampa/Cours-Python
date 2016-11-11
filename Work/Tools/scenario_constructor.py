@@ -127,23 +127,23 @@ if __name__ == '__main__':
     # Generation of IGC schedules
     #
     # FOLDER = "D://Github//Projets//IGC//Etudes//Simulations_Air_Solaire_maisonIndividuelle//Simulations//Scenarios//"
-    FOLDER = "D://Github//Projets//IGC//Etudes//Simulations_Air_Solaire_maisonIndividuelle//Etude//Scenarios//"
-    occupancy, lights, equipments = FOLDER + "occupancy.csv", FOLDER + "lights.csv", FOLDER + "equipments_RT2012.csv"
+    # FOLDER = "D://Github//Projets//IGC//Etudes//Simulations_Air_Solaire_maisonIndividuelle//Etude//Scenarios//"
+    # occupancy, lights, equipments = FOLDER + "occupancy.csv", FOLDER + "lights.csv", FOLDER + "equipments_RT2012.csv"
 
-    consigne, solaire, ventilation = FOLDER + "consigne.csv", FOLDER + "solaire.csv", FOLDER + "ventilation.csv"
-    consigneRT = FOLDER + "consigneRT.csv"
-    hiver_occ = FOLDER + "occultation_hiver.csv"
-    ete_est_occ, ete_ouest_occ = FOLDER + "occultation_ete_est.csv", FOLDER + "occultation_ete_ouest.csv"
-    puisage_soir, puisage_soir_4pers = FOLDER + "puisage_soir.csv", FOLDER + "puisage_soir_4pers.csv"
+    # consigne, solaire, ventilation = FOLDER + "consigne.csv", FOLDER + "solaire.csv", FOLDER + "ventilation.csv"
+    # consigneRT = FOLDER + "consigneRT.csv"
+    # hiver_occ = FOLDER + "occultation_hiver.csv"
+    # ete_est_occ, ete_ouest_occ = FOLDER + "occultation_ete_est.csv", FOLDER + "occultation_ete_ouest.csv"
+    # puisage_soir, puisage_soir_4pers = FOLDER + "puisage_soir.csv", FOLDER + "puisage_soir_4pers.csv"
 
-    puisage_reparti, puisage_matin = FOLDER + "puisage_reparti.csv", FOLDER + "puisage_matin.csv"
-    consigne_19_16 = FOLDER + "consigne_19_16.csv"
-    consigne_solaire_10_10 = FOLDER + "consigne_solaire_10_10.csv"
-    consigne_19_18_16 = FOLDER + "consigne_19_18_16.csv"
-    consigne_20_18_16, consigne_solaire_22_10, ventilation_hygroB = (FOLDER + "consigne_20_18_16.csv",
-                                                                     FOLDER + "consigne_solaire_22_10.csv",
-                                                                     FOLDER + "ventilation_hygroB.csv")
-    ventilation_hygroA = FOLDER + "ventilation_hygroA.csv"
+    # puisage_reparti, puisage_matin = FOLDER + "puisage_reparti.csv", FOLDER + "puisage_matin.csv"
+    # consigne_19_16 = FOLDER + "consigne_19_16.csv"
+    # consigne_solaire_10_10 = FOLDER + "consigne_solaire_10_10.csv"
+    # consigne_19_18_16 = FOLDER + "consigne_19_18_16.csv"
+    # consigne_20_18_16, consigne_solaire_22_10, ventilation_hygroB = (FOLDER + "consigne_20_18_16.csv",
+    #                                                                  FOLDER + "consigne_solaire_22_10.csv",
+    #                                                                  FOLDER + "ventilation_hygroB.csv")
+    # ventilation_hygroA = FOLDER + "ventilation_hygroA.csv"
 
     # schedule = week_schedule_from_table([occupancy, lights, equipments],
     #                                     step_size=3600, delimiter=",")
@@ -159,6 +159,32 @@ if __name__ == '__main__':
     #                                     step_size=3600, delimiter=",")
     # schedule = week_schedule_from_table([occupancy, lights, equipments, hiver_occ, ete_est_occ, ete_ouest_occ],
     #                                     step_size=3600, delimiter=",")
-    schedule = week_schedule_from_table(FOLDER + "puisage_soir_4pers.csv",
+    # schedule = week_schedule_from_table(FOLDER + "puisage_soir_4pers.csv",
+    #                                     step_size=3600, delimiter=",")
+
+    FOLDER = "D://Github//Projets//IGC//Etudes//Simulations_Air_Solaire_maisonIndividuelle//Etude_201611//Scenarios//"
+    puisage_reparti33 = FOLDER + "puisage_reparti_33.csv"
+    puisage_EN12977_27, puisage_EN12977_33, puisage_EN12977_40 = (FOLDER + "puisage_EN12976_27.csv",
+                                                                  FOLDER + "puisage_EN12976_33.csv",
+                                                                  FOLDER + "puisage_EN12976_40.csv")
+    puisage_matin33, puisage_soir33 = (FOLDER + "puisage_matin_33.csv",
+                                       FOLDER + "puisage_soir_33.csv")
+    # puisage_matin27, puisage_soir27 = (FOLDER + "puisage_matin_27.csv",
+    #                                    FOLDER + "puisage_soir_27.csv")
+    # puisage_matin40, puisage_soir40 = (FOLDER + "puisage_matin_40.csv",
+    #                                    FOLDER + "puisage_soir_40.csv")
+    # occupation = FOLDER + "occupation.csv"
+    # eclairage = FOLDER + "eclairageRT2012.csv"
+    # equipement = FOLDER + "equipementRT2012.csv"
+    # consigne_20_18_16, consigne_19_18_16 = (FOLDER + "consigne_20_18_16.csv",
+    #                                         FOLDER + "consigne_19_18_16.csv")
+    # consigne_solaire_22_10 = FOLDER + "consigne_solaire_22_10.csv"
+    # consigne_solaire_variable_10 = FOLDER + "consigne_solaire_variable_10.csv"
+    # ventilation_hygroA, ventilation_hygroB = (FOLDER + "ventilation_hygroA.csv",
+    #                                           FOLDER + "ventilation_hygroB.csv")
+    # schedule = week_schedule_from_table([consigne_19_18_16, consigne_solaire_variable_10, ventilation_hygroA],
+    #                                     step_size=3600, delimiter=",")
+    schedule = week_schedule_from_table(puisage_soir33,
                                         step_size=3600, delimiter=",")
+
     print(schedule)

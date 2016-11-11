@@ -59,7 +59,7 @@ def create_gradiant(nbr_color, first=(0, 0, 0), last=(255, 255, 255)):
     # Normalize color from RGB values
     first = [el / 255 for el in first]
     last = [el / 255 for el in last]
-    return [tuple(f + (l - f) / nbr_color * el for (f, l) in zip(first, last)) for el in range(nbr_color + 1)]
+    return [tuple(f + (l - f) / nbr_color * el for (f, l) in zip(first, last)) for el in range(nbr_color)]
 
 
 def make_colormap(seq):
@@ -107,17 +107,15 @@ def month_mapper(month):
 # Folder to store plots
 FOLDER = Path("D:/Github/solarsystem/Outputs/Plots_stock/No_automations/")
 # File to load
-json_file = Path("test/json_test.json")
+json_file = Path("D:/Github/Projets/IGC/Etudes/Simulations_Air_Solaire_maisonIndividuelle/PreEtude2/Resultats/energy.json")
 # Fields to extract
 fields = ("Consommation\nappoint",          # Conso électrique
-          "Production_appoint\nvalorisée",  # Conso électrique (sans les pertes)
           "Production\nsolaire",            # Production solaire
           "Production_solaire\nvalorisée",  # Production solaire utile (sans les pertes)
-          "Solaire_non_valorisée",          # Pertes solaire
-          "Part_solaire\nChauffage",        # Couverture chauffage
-          "Part_solaire\nECS",              # Couverture ECS
-          "Rendement solaire",              # Rapport absorbée / captable
-          "Besoins")                        # Besoin chauffage + ECS
+          "Pertes réseau",                  # Pertes solaire
+          "Couverture\nChauffage",        # Couverture chauffage
+          "Couverture\nECS",              # Couverture ECS
+          "Rendement solaire")              # Rapport absorbée / captable
 # Month to extract (or annual values)
 month = "Heating season"
 # Load json file
@@ -126,10 +124,26 @@ with open(json_file, 'r', encoding='utf-8') as json_file:
 
 # Simulation to extract
 # Capteurs
-simulations = ("limogesAir60Inc55T6M-4p", "limogesAir45Inc55T6M-4p", "strasbourgAir60Inc55T6M-4p",
-               "limogesAiSO55T6M-4p", "limogesAiSE55T6M-4p",
-               "limogesAir55T6M-6p", "limogesAir55T6M-8p", "limogesAir55T6M-4p",
-               "strasbourgAir55T6M-4p", "strasbourgAirSkyProS6M-4p", "strasbourgAirRadco308cS6M-4p")
+# simulations = ("limogesAir60Inc55T6M-4p", "limogesAir45Inc55T6M-4p", "strasbourgAir60Inc55T6M-4p",
+#                "limogesAiSO55T6M-4p", "limogesAiSE55T6M-4p",
+#                "limogesAir55T6M-6p", "limogesAir55T6M-8p", "limogesAir55T6M-4p",
+#                "strasbourgAir55T6M-4p", "strasbourgAirSkyProS6M-4p", "strasbourgAirRadco308cS6M-4p")
+
+# # Modification algorithm
+# simulations = ("limogesAir240TempoElec55T6M-4p", "limogesAir120TempoElec55T6M-4p", "limogesAir55T6M-4p",
+#                "limogesAir900TempoDebit55T6M-4p", "limogesAir300TempoDebit55T6M-4p", "limogesAir5Delta55T6M-4p",
+#                "limogesAir15Delta55T6M-4p", "limogesAir55T6M90V90-4p", "limogesAir55T6MPasSurchauffe-4p")
+
+# # Tank size variations
+# simulations = ("bordeauxAir100ECS55T6M-4p", "bordeauxAir200ECS55T6M-4p", "bordeauxAir400ECS55T6M-4p",
+#                "bordeauxAir100Tampon6M-4p", "bordeauxAir200Tampon6M-4p", "bordeauxAir400Tampon6M-4p",
+#                "bordeauxAir55T6M-4p")
+
+# # Inclinaison / Orientation
+# simulations = ("limogesAiSO55T6M-4p", "limogesAiSE55T6M-4p",
+#                "limogesAir60Inc55T6M-4p", "limogesAir45Inc55T6M-4p", "strasbourgAir60Inc55T6M-4p",
+#                "strasbourgAirSkyProS6M-4p", "strasbourgAirRadco308cS6M-4p",
+#                "limogesAir55T6M-4p", "strasbourgAir55T6M-4p")
 
 # Load json into a dataframe
 df = json_to_df(data_d=data, simulations=simulations, fields=fields, month=month)
@@ -150,12 +164,12 @@ title = title.format(month_mapper(month))
 label_color_data = "Rendement des capteurs solaires [%]"
 label_length_data = "Couverture ECS [%]"
 label_width_data = "Couverture chauffage [%]"
-label_top_bar_data = "(Production solaire valorisée / Consommation électrique valorisée) [kWh]"
+label_top_bar_data = "(Production solaire valorisée / Consommation électrique) [kWh]"
 # Define data location
-length_data = "Part_solaire\nECS"
-width_data = "Part_solaire\nChauffage"
+length_data = "Couverture\nECS"
+width_data = "Couverture\nChauffage"
 color_data = "Rendement solaire"
-top_bar_data = ("Production_solaire\nvalorisée", "Production_appoint\nvalorisée")
+top_bar_data = ("Production_solaire\nvalorisée", "Consommation\nappoint")
 # Sort rows according to color_data (from lower to upper value)
 df = df.sort_values(by=color_data, ascending=False)
 
@@ -251,8 +265,8 @@ leg_right.get_title().set_position((0, 10))
 (plt.setp(label, alpha=alpha_text) for label in leg_right.get_texts())
 
 # Create a fake reversed colorbar to go from few losses to a lot of losses (Hack)
-# Remove last and first color chunk to match colors from bar to colormap   (Hack)
-ctb = LinearSegmentedColormap.from_list('custombar', customcmap[-2:1:-1], N=1000)
+# ctb = LinearSegmentedColormap.from_list('custombar', customcmap[-2:1:-1], N=1000)
+ctb = LinearSegmentedColormap.from_list('custombar', customcmap[::-1], N=1000)
 # Trick from http://stackoverflow.com/questions/8342549/
 # matplotlib-add-colorbar-to-a-sequence-of-line-plots
 min_losses, max_losses = np.min(df[color_data]), np.max(df[color_data])

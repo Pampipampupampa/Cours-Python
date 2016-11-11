@@ -26,8 +26,8 @@ import json
 
 from path import Path
 
-from bilan_constants_IGC_AIRvector_20160720 import *
-fold = Path("D:\Github\Projets\IGC\Etudes\Simulations_Air_Solaire_maisonIndividuelle\Etude\Resultats\Data")
+from bilan_constants_IGC_AIRvector_20161107 import *
+fold = Path("D:\Github\Projets\IGC\Etudes\Simulations_Air_Solaire_maisonIndividuelle\PreEtude2\Resultats\Data")
 
 # from bilan_constants_Solisart_WATERvector import *
 # fold = FOLDER/'clean'/'SolisArt'
@@ -82,7 +82,10 @@ def test_index(name, plot):
 # limogesAirRepartiPuisage55T6M-4p_20160701.csv limogesAirMatinPuisaget55T6M-4p_20160701.csv
 
 # DeltaT
+# Sans effet PID
 # limogesAir5Delta55T6M-4p_20160701.csv bordeauxAir5Delta55T6M-4p_20160701.csv limogesAir15Delta55T6M-4p_20160701.csv bordeauxAir15Delta55T6M-4p_20160701.csv
+# effet PID
+# limogesAir5Delta55T6M-4p_20160826.csv bordeauxAir5Delta55T6M-4p_20160826.csv limogesAir15Delta55T6M-4p_20160826.csv bordeauxAi15Deltar55T6M-4p_20160826.csv
 
 # Température ballon
 # limogesAir40T6M-4p_20160701.csv bordeauxAir40T6M-4p_20160701.csv
@@ -193,6 +196,7 @@ if __name__ == '__main__':
     # datas = {name: EvalData(EvalData.keep_year(frames[name])) for name in frames}
 
     # Remove first months row if not complete (Remove initialization from results)
+    # Integration are still false yet ...
     for name in frames:
         # Check first month length
         length_first_month = len(frames[name][frames[name].index.month == frames[name].index[0].month].resample("D"))
@@ -254,33 +258,33 @@ if __name__ == '__main__':
                                                             new_fields=new_fields,
                                                             fields=fields[el][0]))
 
-    # --------------------------------------------------------------------------
-                # Here we populate the energy_json ().
-                # JSON_TEMP_FIELDS constant define inside bilan_constant file.
-                if 'Dispo' in el:
-                    # Explicit copy
-                    tmp = structs[name][el][0][JSON_ENERGY_FIELDS].copy()
-                    tmp.index = structs[name][el][1].copy()
-                    tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
-                    tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
-                    tmp['Part_solaire\nECS'] = tmp['Part_solaire\nECS'] * 100
-                    tmp['Part_solaire\nChauffage'] = tmp['Part_solaire\nChauffage'] * 100
-                    tmp['Part solaire\nBesoins'] = tmp['Part solaire\nBesoins'] * 100
-                    for mth in tmp.index:
-                        energy_json.setdefault(name, {})[mth] = {para: tmp[para][mth]
-                                                                 for para in tmp.columns}
-                        # Add mean value for other column not described inside JSON_ENERGY_FIELDS
-                        f_temp = datas[name].frame[JSON_TEMP_FIELDS].copy()
-                        # Explication: meth:`evaluation.EvalData.bar_energy`
-                        if f_temp[:][-1:].index.is_month_end:
-                            f_temp = f_temp.resample('M', "mean")
-                        else:
-                            f_temp = f_temp.resample('M', "mean")[:-1]
-                        f_temp.index = tmp.index
-                        for temperature in f_temp.columns:
-                            energy_json.setdefault(name, {})[mth][temperature] = f_temp[temperature][mth]
 
-    # --------------------------------------------------------------------------
+    # # --------------------------------------------------------------------------
+    #             # Here we populate the energy_json ().
+    #             # JSON_TEMP_FIELDS constant define inside bilan_constant file.
+    #             if 'Dispo' in el:
+    #                 # Explicit copy
+    #                 tmp = structs[name][el][0][JSON_ENERGY_FIELDS].copy()
+    #                 tmp.index = structs[name][el][1].copy()
+    #                 tmp['CouvertureTotale'] = tmp['CouvertureTotale'] * 100
+    #                 tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
+    #                 tmp['Couverture\nECS'] = tmp['Couverture\nECS'] * 100
+    #                 tmp['Couverture\nChauffage'] = tmp['Couverture\nChauffage'] * 100
+    #                 for mth in tmp.index:
+    #                     energy_json.setdefault(name, {})[mth] = {para: tmp[para][mth]
+    #                                                              for para in tmp.columns}
+    #                     # Add mean value for other column not described inside JSON_ENERGY_FIELDS
+    #                     f_temp = datas[name].frame[JSON_TEMP_FIELDS].copy()
+    #                     # Explication: meth:`evaluation.EvalData.bar_energy`
+    #                     if f_temp[:][-1:].index.is_month_end:
+    #                         f_temp = f_temp.resample('M', "mean")
+    #                     else:
+    #                         f_temp = f_temp.resample('M', "mean")[:-1]
+    #                     f_temp.index = tmp.index
+    #                     for temperature in f_temp.columns:
+    #                         energy_json.setdefault(name, {})[mth][temperature] = f_temp[temperature][mth]
+
+    # # --------------------------------------------------------------------------
 
             elif 'box' in el:
                 structs[name][el] = (datas[name].box_actions(datas[name].frame,
@@ -303,11 +307,10 @@ if __name__ == '__main__':
                     else:
                         tmp.name = "Annual"
                     tmp = tmp[JSON_ENERGY_FIELDS]
-                    tmp['Taux de couverture'] = tmp['Taux de couverture'] * 100
+                    tmp['CouvertureTotale'] = tmp['CouvertureTotale'] * 100
                     tmp['Rendement capteur'] = tmp['Rendement capteur'] * 100
-                    tmp['Part_solaire\nECS'] = tmp['Part_solaire\nECS'] * 100
-                    tmp['Part_solaire\nChauffage'] = tmp['Part_solaire\nChauffage'] * 100
-                    tmp['Part solaire\nBesoins'] = tmp['Part solaire\nBesoins'] * 100
+                    tmp['Couverture\nECS'] = tmp['Couverture\nECS'] * 100
+                    tmp['Couverture\nChauffage'] = tmp['Couverture\nChauffage'] * 100
                     # Populate json dict with Series values
                     energy_json.setdefault(name, {})[tmp.name] = {ind: tmp[ind] for ind in tmp.index}
 
@@ -398,7 +401,7 @@ if __name__ == '__main__':
                     # Check number and size of collectors
                     print("**********   ", nb_col, area_col, "   ***********")
                     for column_name in structs[name][plot][0].columns:
-                        if any(c in column_name for c in ("Taux de couverture",
+                        if any(c in column_name for c in ("CouvertureTotale",
                                                           "Rendement capteur",
                                                           "Rendement solaire")):
                             continue
@@ -433,18 +436,18 @@ if __name__ == '__main__':
                     # Taux de couverture de couverture solaire mensuel
                     percents = ['{:.0%}'.format(i)
                                 for i in
-                                structs[name][plot][0]['Taux de couverture'].values]
+                                structs[name][plot][0]['CouvertureTotale'].values]
                 if 'D' in plot:
                     # Taux de couverture de couverture solaire mensuel ECS
                     percents = ['{:.0%}'.format(i)
                                 for i in
-                                structs[name][plot][0]['Part_solaire\nECS'].values]
+                                structs[name][plot][0]['Couverture\nECS'].values]
 
                 if 'H' in plot:
                     # Taux de couverture de couverture solaire mensuel pour le chauffage
                     percents = ['{:.0%}'.format(i)
                                 for i in
-                                structs[name][plot][0]['Part_solaire\nChauffage'].values]
+                                structs[name][plot][0]['Couverture\nChauffage'].values]
                 if 'Dispo' in plot:
                     # Taux de couverture de couverture solaire mensuel
                     percents = ['\n{:.0%}\n{:.0%}'.format(i, j)
@@ -484,9 +487,11 @@ if __name__ == '__main__':
             elif 'diag' in plot:
                 Plot.colors = col_dict[plot]
                 if "_B" in plot:
-                    explode = [0.0, 0.0, 0., 0.1, 0.0]  # Initial value for explode
+                    explode = [0.1, 0.1, 0.0, 0.0, 0.1, 0.1]  # Initial value for explode
+                elif "_A" in plot:
+                    explode = [0.0, 0.0, 0.0, 0.0, 0.0]  # Initial value for explode
                 else:
-                    explode = [0.0, 0.1]       # Initial value for explode
+                    explode = [0.0, 0.0, 0.1, 0.1]       # Initial value for explode
                 # To have len() matching between explode and fields[plot][1]
                 while len(explode) < len(fields[plot][1]):
                     explode.append(0.0)
@@ -560,8 +565,8 @@ if __name__ == '__main__':
     base_name = "Simulation"
     if len(datas) == 1:
         base_name = name
-    sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
-             base_name=base_name, plotter=Plot, facecolor="white", dpi=300)
+    # sav_plot(folder="D:\Github\solarsystem\Outputs\Plots_stock",
+    #          base_name=base_name, plotter=Plot, facecolor="white", dpi=300)
 
     # Display plots
     Plot.show()

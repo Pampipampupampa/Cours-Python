@@ -414,27 +414,24 @@ class EvalData(object):
         # To avoid unnecessary bar we only keep complete month.
         # So if a simulation ended at 2016-12-27 and start at 2016-01-01 we keep only
         # 11 month for bar plot.
-        if frame[:][-1:].index.is_month_end:
-            frame = frame[fields].resample('M', "last")
+        if frame.last_valid_index().is_month_end:
+            df = (frame[fields].resample('M').last() -
+                  frame[fields].resample('M').first())
         else:
-            frame = frame[fields].resample('M', "last")[:-1]
-        frame_copy = frame.copy(deep=True)  # Keep a trace of the original frame
-        frame = frame - frame.shift(1)      # Substract all rows by the upper one
-        # After the shift the first row have a 'NaN' value because we can get a
-        # upper row for the upper one.
-        frame.iloc[0] = frame_copy.iloc[0]  # Assign first row of copy to original
-        length = len(frame)
+            df = (frame[fields].resample('M').last().ix[:-1] -
+                  frame[fields].resample('M').first().ix[:-1])
+        length = len(df)
         # Get month name for each row
-        month_xticks = ["{:%B}".format(frame.index[i]) for i in range(length)]
+        month_xticks = ["{:%B}".format(df.index[i]) for i in range(length)]
         if new_fields:
             # For each new fields
             for new in new_fields:
                 # Create new columns
-                frame[new[0]] = self.add_column(frame,
-                                                used_cols=(new[1], new[2]),
-                                                operator=new[3])
+                df[new[0]] = self.add_column(df,
+                                             used_cols=(new[1], new[2]),
+                                             operator=new[3])
         # Return data and a shortened version of monthly x ticks
-        return frame, self.shorter_months(month_xticks)
+        return df, self.shorter_months(month_xticks)
 
     def diag_energy(self, frame, fields=None, new_fields=()):
         """
@@ -449,7 +446,7 @@ class EvalData(object):
         # Default value for fields
         fields = fields or self.fields
         # Keep only last time step of ``month`` for all fields
-        frame = frame[-1:][fields]
+        frame = frame[-1:][fields] - frame[fields].resample("M").first().ix[0]
         if new_fields:
             # For each new columns
             for new in new_fields:
@@ -537,37 +534,39 @@ class MultiPlotter(object):
                                            sharex=self.sharex,
                                            sharey=self.sharey,
                                            facecolor=facecolor)
-        self._zoomed = False
+        self._zoomed = None
         # Add event on click (see zoom, unzoom and on_key_m)
         self.fig.canvas.mpl_connect('key_press_event', self.on_key)
         # Tollbar instance
         self.toolbar = self.fig.canvas.toolbar
         self.figure_title()
 
-    def zoom(self, selected_ax):
+    def zoom(self, event):
         """
             Additional option to zoom to full screen current selected_ax.
         """
-        # Set visible to false for all figures
-        for ax in self.axes.flat:
-            ax.set_visible(False)
-        # Get selected_ax current position and change to full screen
+        # Get ax under mouse cursor
+        selected_ax = event.inaxes
+        for ax in event.canvas.figure.axes:
+            if ax is not selected_ax:
+                ax.set_visible(False)
+        # Store ax and its old position
         self._original_size = selected_ax.get_position()
+        # Change selected ax
+        self._zoomed = selected_ax
         selected_ax.set_position([0.125, 0.1, 0.775, 0.8])
         selected_ax.set_visible(True)
-        # Change flag to change effect on next click
-        self._zoomed = True
 
-    def unzoom(self, selected_ax):
+    def unzoom(self, event):
         """
-            Additional option to unzoom current selected_ax.
+            Unzoom zoomed ax.
         """
         # Cancel actions
-        selected_ax.set_position(self._original_size)
-        for ax in self.axes.flat:
+        self._zoomed.set_position(self._original_size)
+        for ax in event.canvas.figure.axes:
             ax.set_visible(True)
-        # Change flag to change effect on next click
-        self._zoomed = False
+        # No more zoomed axes
+        self._zoomed = None
 
     def display_axis(self, selected_ax):
         """ Additional option to hide/show current selected_ax. """
@@ -584,10 +583,10 @@ class MultiPlotter(object):
         if event.inaxes is None:
             return
         if event.key == "m":
-            if self._zoomed:
-                self.unzoom(event.inaxes)  # Axe instance
+            if self._zoomed is not None:
+                self.unzoom(event)  # Axe instance
             else:
-                self.zoom(event.inaxes)  # Axe instance
+                self.zoom(event)    # Axe instance
         elif event.key == "d":
             self.display_axis(event.inaxes)
         self.fig.canvas.draw()
